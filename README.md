@@ -1,4 +1,4 @@
-```markdown
+
 # LMPowerConsuption
 
 **LMPowerConsuption** is a lightweight framework for **measuring both the
@@ -21,8 +21,6 @@ augmented generation systems.
 ---
 
 ## 🔖 Repository layout
-```
-
 LMPowerConsuption/
 ├─ scripts/
 │  ├─ hotpot\_smol\_eval\_scored.py   # HotpotQA evaluation & energy
@@ -30,8 +28,6 @@ LMPowerConsuption/
 ├─ Energy/                         # per‑question CodeCarbon logs
 ├─ avg\_results.txt                 # running table of overall scores
 └─ requirements.txt                # pinned deps
-
-````
 
 ---
 
