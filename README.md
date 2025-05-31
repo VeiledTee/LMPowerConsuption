@@ -68,7 +68,7 @@ Each script can be tweaked via the constants at the top:
 | File                            | What it contains                                |       |         |                            |
 | ------------------------------- | ----------------------------------------------- | ----- | ------- | -------------------------- |
 | `boolq_smol_q_only_results.csv` | `qid, predicted, gold, em, energy_kWh` per item |       |         |                            |
-| `avg_results.txt`               | \`DATASET                                       | MODEL | avg\_EM | avg\_energy\_kWh\` per run |
+| `avg_results.txt`               | DATASET                                       | VERSION |MODEL | avg\_EM | avg\_energy\_kWh\` per run |
 | `Energy/energy_<id>.csv`        | Raw `codecarbon` trace for the *id‑th* prompt   |       |         |                            |
 
 Merge multiple runs with pandas or Excel to rank models by **energy per correct
