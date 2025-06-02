@@ -56,7 +56,7 @@ def norm(text: str) -> str:
         return "true"
     if "no" in t and "yes" not in t:
         return "false"
-    return "other"          # forces F1/EM to ignore this row
+    return "other"  # forces F1/EM to ignore this row
 
 
 def make_prompt(in_prompt_text):
