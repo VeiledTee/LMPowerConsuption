@@ -100,6 +100,6 @@ with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
 avg_em, avg_e = em_sum / len(ds), energy_sum / len(ds)
 with open("avg_results.txt", "a", encoding="utf-8") as fp:
     fp.write(
-        f"{DATASET_NAME}|{'ctx' if INCLUDE_PASSAGE else 'q'}|{MODEL_NAME}|{avg_em:.4f}|{avg_e:.6f}\n"
+        f"{DATASET_NAME}|{'q+r' if INCLUDE_PASSAGE else 'q'}|{MODEL_NAME}|{avg_em:.4f}|{avg_e:.6f}\n"
     )
 print(f"Done → {CSV_OUT} | EM={avg_em:.4f} | kWh/qa={avg_e:.6f}")
