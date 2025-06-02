@@ -1,2 +1,1 @@
-DATASET | Version | MODEL | avg_EM | avg_energy_kWh
-google/boolq|q|HuggingFaceTB/SmolLM2-1.7B-Instruct|0.7600|0.000009
+DATE|DATASET|Version|MODEL|# Questions|avg_EM|avg_F1|avg_energy_kWh|time
