@@ -9,18 +9,18 @@ augmented generation systems.
 
 ---
 
-## ✨ Key ideas
-* **One‑liner experiments** – run any HF model on any HF dataset with a single
+## ✨Key ideas
+***One‑liner experiments** – run any HF model on any HF dataset with a single
   config flag.  
-* **Energy first‑class** – every prompt is wrapped in a
+***Energy first‑class** – every prompt is wrapped in a
   [`codecarbon`](https://github.com/mlco2/codecarbon) tracker; per‑question
   Joules and aggregate kWh are logged automatically.  
-* **Reproducible CSV outputs** – predictions, gold answers, EM / F1 and kWh are
+***Reproducible CSV outputs** – predictions, gold answers, EM/F1 and kWh are
   saved in tidy files ready for pandas/R analysis.
 
 ---
 
-## 🔖 Repository layout
+## 🔖Repository layout
 LMPowerConsuption/
 ├─ scripts/
 │  ├─ hotpot\_smol\_eval\_scored.py   # HotpotQA evaluation & energy
@@ -31,10 +31,10 @@ LMPowerConsuption/
 
 ---
 
-## ⚡️ Quick start
+## ⚡️Quick start
 
 ```bash
-# 1 — clone & create minimal env
+# 1—clone & create minimal env
 git clone https://github.com/VeiledTee/LMPowerConsuption.git
 cd LMPowerConsuption
 python -m venv .venv && .venv/Scripts/activate   # Windows
@@ -42,10 +42,10 @@ python -m ensurepip --upgrade
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
-# 2 — run a demo (BoolQ, question‑only prompt)
+# 2—run a demo (BoolQ, question‑only prompt)
 python scripts/boolq_smol_eval_scored.py
 
-# 3 — check results
+# 3—check results
 cat boolq_smol_q_only_results.csv      # per‑question data
 cat avg_results.txt                    # dataset‑level summary
 ````
@@ -56,14 +56,14 @@ Each script can be tweaked via the constants at the top:
 
 | Flag              | Meaning                                                      |
 | ----------------- | ------------------------------------------------------------ |
-| `INCLUDE_PASSAGE` |  Include dataset context/passage in the prompt               |
+| `INCLUDE_PASSAGE` | Include dataset context/passage in the prompt               |
 | `N_SAMPLES`       | Evaluate only the first *n* rows (speedy smoke‑run)          |
 | `MODEL_NAME`      | Any HF identifier (quantised GGUF works via `ctransformers`) |
 | `MAX_NEW_TOK`     | Decoding budget per question                                 |
 
 ---
 
-## 📊 Output files
+## 📊Output files
 
 | File                            | What it contains                                |       |         |                            |
 | ------------------------------- | ----------------------------------------------- | ----- | ------- | -------------------------- |
@@ -76,7 +76,7 @@ answer**.
 
 ---
 
-## 🔌 Adding a new benchmark
+## 🔌Adding a new benchmark
 
 1. Copy one of the scripts in `scripts/`.
 2. Change `DATASET_NAME`, `build_prompt()` and scoring function.
@@ -85,17 +85,17 @@ answer**.
 
 ---
 
-## 🛠 Requirements
+## 🛠Requirements
 
-\* Python ≥ 3.9
-\* `transformers`, `datasets`, `codecarbon`, `accelerate`
-\* NVIDIA GPU (optional) – int‑4 models fit in 6‑8 GB; CPU also works (slower).
+\*Python≥3.9
+\*`transformers`, `datasets`, `codecarbon`, `accelerate`
+\*NVIDIA GPU(optional) – int‑4 models fit in 6‑8GB; CPU also works (slower).
 
 Exact versions are pinned in `requirements.txt`.
 
 ---
 
-## 🤝 Contributing
+## 🤝Contributing
 
 Pull requests that add new datasets, models, or alternative energy loggers
 (`zeus`, `pyRAPL`, IPMI) are very welcome!  Please open an issue first to
