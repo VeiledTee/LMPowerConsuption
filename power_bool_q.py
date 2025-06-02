@@ -8,12 +8,13 @@ from datetime import date
 import torch
 from codecarbon import EmissionsTracker
 from datasets import load_dataset
+from sklearn.metrics import f1_score
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ─── config ───
-INCLUDE_PASSAGE = False  # True → include BoolQ passage
+INCLUDE_PASSAGE = False  # True → include passage
 MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "google/boolq"
 SPLIT = "validation"
@@ -65,6 +66,7 @@ def make_prompt(in_prompt_text):
 # ─── evaluation loop with progress bar ───
 os.makedirs(ENERGY_OUT, exist_ok=True)
 em_sum = energy_sum = 0.0
+preds, golds = [], []
 t0 = time.perf_counter()
 with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
     total=len(ds), desc="BoolQ eval", ncols=80
@@ -92,23 +94,31 @@ with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
             .strip()
         )
         pred, gold = norm(pred_raw), ("true" if ex["answer"] else "false")
+        preds.append(pred)
+        golds.append(gold)
         em = int(pred == gold)
         em_sum += em
         energy_sum += float(energy)
-        wr.writerow([idx, pred_raw, gold, em, f"{energy:.6f}"])
-        bar.set_postfix(acc=f"{em_sum/(idx+1):.3f}")  # live acc on bar
-        bar.update()
-t_total = time.perf_counter() - t0  # ── total elapsed seconds
 
-# ─── summary line ───
-avg_em, avg_e = em_sum / len(ds), energy_sum / len(ds)
-today = date.today().isoformat()  # e.g. "2025-06-02"
+        wr.writerow([idx, pred_raw, gold, em, f"{energy:.6f}"])
+        bar.set_postfix(acc=f"{em_sum/(idx+1):.3f}")
+        bar.update()
+
+t_total = time.perf_counter() - t0
+avg_em = em_sum / len(ds)
+avg_energy = energy_sum / len(ds)
+avg_f1 = f1_score(golds, preds, pos_label="true")
+
+today = date.today().isoformat()
 
 with open("avg_results.txt", "a", encoding="utf-8") as fp:
     fp.write(
         f"{today}|{DATASET_NAME}|{'q+r' if INCLUDE_PASSAGE else 'q'}|"
-        f"{MODEL_NAME}|{len(ds)}|{avg_em:.4f}|{avg_e:.6f}|{t_total:.2f}\n"
+        f"{MODEL_NAME}|{len(ds)}|{avg_em:.4f}|{avg_f1:.4f}|"
+        f"{avg_energy:.6f}|{t_total:.2f}\n"
     )
+
 print(
-    f"Done → {CSV_OUT} | EM={avg_em:.4f} | kWh/qa={avg_e:.6f} | total s={t_total:.2f}"
+    f"Done → {CSV_OUT} | EM={avg_em:.4f} | F1={avg_f1:.4f} "
+    f"| kWh/qa={avg_energy:.6f} | total s={t_total:.2f}"
 )
