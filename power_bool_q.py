@@ -18,8 +18,8 @@ INCLUDE_PASSAGE = False  # True → include passage
 MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "google/boolq"
 SPLIT = "validation"
-N_SAMPLES = 5  # None uses entire split
-MAX_NEW_TOK = 32
+N_SAMPLES = None  # None uses entire split
+MAX_NEW_TOK = 4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 CSV_OUT = "boolq_smol_ctx.csv" if INCLUDE_PASSAGE else "boolq_smol_q.csv"
 ENERGY_OUT = "Energy"
@@ -46,21 +46,25 @@ if N_SAMPLES:
 YES, NO = {"yes", "true"}, {"no", "false"}
 
 
-def norm(txt: str) -> str:
-    t = txt.strip().lower()
-    return (
-        "true"
-        if any(w in t for w in YES)
-        else "false" if any(w in t for w in NO) else t
-    )
+def norm(text: str) -> str:
+    t = text.lower()
+    if "true" in t:
+        return "true"
+    if "false" in t:
+        return "false"
+    if "yes" in t and "no" not in t:
+        return "true"
+    if "no" in t and "yes" not in t:
+        return "false"
+    return "other"          # forces F1/EM to ignore this row
 
 
 def make_prompt(in_prompt_text):
     q = in_prompt_text["question"]
     ctx = in_prompt_text.get("passage", "")
     if INCLUDE_PASSAGE:
-        return f"### Instruction:\nAnswer true or false only by using the passage.\n\n### Passage:\n{ctx}\n\n### Question:\n{q}\n\n### Response:\n"
-    return f"### Instruction:\nAnswer true or false only.\n\n### Question:\n{q}\n\n### Response:\n"
+        return f"### Instruction:\nAnswer only true or false by using the passage.\n\n### Passage:\n{ctx}\n\n### Question:\n{q}\n\n### Response:\n"
+    return f"### Instruction:\nAnswer only true or false.\n\n### Question:\n{q}\n\n### Response:\n"
 
 
 # ─── evaluation loop with progress bar ───
@@ -93,7 +97,10 @@ with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
             .split("### Response:")[-1]
             .strip()
         )
-        pred, gold = norm(pred_raw), ("true" if ex["answer"] else "false")
+        pred = norm(pred_raw)
+        # print(pred_raw)
+        # print(pred)
+        gold = "true" if ex["answer"] else "false"
         preds.append(pred)
         golds.append(gold)
         em = int(pred == gold)
