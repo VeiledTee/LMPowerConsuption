@@ -1,3 +1,5 @@
 DATASET | Version | MODEL | avg_EM | avg_energy_kWh
 google/boolq | Question + Passage | HuggingFaceTB/SmolLM2-1.7B-Instruct | 0.6600 | 0.000008
 google/boolq | HuggingFaceTB/SmolLM2-1.7B-Instruct | 0.6250 | 0.000008
+hotpotqa/hotpot_qa | Question | HuggingFaceTB/SmolLM2-1.7B-Instruct | 0.0000 | 0.003214
+google/boolq|q|HuggingFaceTB/SmolLM2-1.7B-Instruct|0.7600|0.000009
