@@ -14,6 +14,8 @@ N_SAMPLES = 200  # None → full split
 MAX_NEW_TOK = 32
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
+print(DEVICE)
+
 CSV_OUT = (
     "boolq_smol_q_passage_results.csv"
     if INCLUDE_PASSAGE
