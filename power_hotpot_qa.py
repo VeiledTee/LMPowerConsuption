@@ -1,7 +1,9 @@
 import csv
 import logging
 import os
+import time
 import warnings
+from datetime import date
 
 import torch
 from codecarbon import EmissionsTracker
@@ -63,6 +65,8 @@ def make_prompt(in_prompt_text):
 # ─── evaluation loop with progress bar ───
 os.makedirs(ENERGY_OUT, exist_ok=True)
 em_sum = energy_sum = 0.0
+t0 = time.perf_counter()  # ── start global timer :contentReference[oaicite:1]{index=1}
+
 with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
     total=len(ds), desc="BoolQ eval", ncols=80
 ) as bar:  # tqdm usage :contentReference[oaicite:3]{index=3}
@@ -95,11 +99,17 @@ with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
         wr.writerow([idx, pred_raw, gold, em, f"{energy:.6f}"])
         bar.set_postfix(acc=f"{em_sum/(idx+1):.3f}")  # live acc on bar
         bar.update()
+t_total = time.perf_counter() - t0  # ── total elapsed seconds
 
 # ─── summary line ───
 avg_em, avg_e = em_sum / len(ds), energy_sum / len(ds)
+today = date.today().isoformat()  # e.g. "2025-06-02"
+
 with open("avg_results.txt", "a", encoding="utf-8") as fp:
     fp.write(
-        f"{DATASET_NAME}|{'q+r' if INCLUDE_PASSAGE else 'q'}|{MODEL_NAME}|{avg_em:.4f}|{avg_e:.6f}\n"
+        f"{today}|{DATASET_NAME}|{'q+r' if INCLUDE_PASSAGE else 'q'}|"
+        f"{MODEL_NAME}|{len(ds)}|{avg_em:.4f}|{avg_e:.6f}|{t_total:.2f}\n"
     )
-print(f"Done → {CSV_OUT} | EM={avg_em:.4f} | kWh/qa={avg_e:.6f}")
+print(
+    f"Done → {CSV_OUT} | EM={avg_em:.4f} | kWh/qa={avg_e:.6f} | total s={t_total:.2f}"
+)
