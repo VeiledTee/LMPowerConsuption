@@ -13,7 +13,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ─── config ───
-INCLUDE_PASSAGE = False  # True → include BoolQ passage
+INCLUDE_PASSAGE = False  # True → include passage
 MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "google/boolq"
 SPLIT = "validation"
@@ -65,11 +65,11 @@ def make_prompt(in_prompt_text):
 # ─── evaluation loop with progress bar ───
 os.makedirs(ENERGY_OUT, exist_ok=True)
 em_sum = energy_sum = 0.0
-t0 = time.perf_counter()  # ── start global timer :contentReference[oaicite:1]{index=1}
+t0 = time.perf_counter()
 
 with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
     total=len(ds), desc="BoolQ eval", ncols=80
-) as bar:  # tqdm usage :contentReference[oaicite:3]{index=3}
+) as bar:
     wr = csv.writer(f)
     wr.writerow(["qid", "pred", "gold", "em", "energy_kWh"])
     for idx, ex in enumerate(ds):
@@ -99,17 +99,18 @@ with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
         wr.writerow([idx, pred_raw, gold, em, f"{energy:.6f}"])
         bar.set_postfix(acc=f"{em_sum/(idx+1):.3f}")  # live acc on bar
         bar.update()
-t_total = time.perf_counter() - t0  # ── total elapsed seconds
+t_total = time.perf_counter() - t0
 
 # ─── summary line ───
-avg_em, avg_e = em_sum / len(ds), energy_sum / len(ds)
-today = date.today().isoformat()  # e.g. "2025-06-02"
+avg_em = em_sum / len(ds)
+avg_energy = energy_sum / len(ds)
+today = date.today().isoformat()
 
 with open("avg_results.txt", "a", encoding="utf-8") as fp:
     fp.write(
         f"{today}|{DATASET_NAME}|{'q+r' if INCLUDE_PASSAGE else 'q'}|"
-        f"{MODEL_NAME}|{len(ds)}|{avg_em:.4f}|{avg_e:.6f}|{t_total:.2f}\n"
+        f"{MODEL_NAME}|{len(ds)}|{avg_em:.4f}|{avg_energy:.6f}|{t_total:.2f}\n"
     )
 print(
-    f"Done → {CSV_OUT} | EM={avg_em:.4f} | kWh/qa={avg_e:.6f} | total s={t_total:.2f}"
+    f"Done → {CSV_OUT} | EM={avg_em:.4f} | kWh/qa={avg_energy:.6f} | total s={t_total:.2f}"
 )
