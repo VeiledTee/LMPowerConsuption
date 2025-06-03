@@ -1,1 +1,2 @@
 DATE|DATASET|Version|MODEL|# Questions|avg_EM|avg_F1|avg_energy_kWh|time
+2025-06-03|google/boolq|q|HuggingFaceTB/SmolLM2-1.7B-Instruct|3270|0.5462|0.5723|0.000013|19000.14
