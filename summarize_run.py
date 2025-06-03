@@ -1,72 +1,79 @@
+#!/usr/bin/env python3
 """
-Summarise a results CSV.
+Summarise BoolQ *or* HotpotQA run.
 
-The CSV is expected to have the header
-["qid","raw_pred","pred","gold","em","energy_kWh","time (s)"]
+CSV must have the header
+qid,raw_pred,pred,gold,em,energy_kWh,time (s)   # BoolQ
+or
+qid,pred,gold,em,f1,energy_kWh,time (s)         # Hotpot
 
-It outputs one pipe‑separated line to avg_results.txt:
-YYYY‑MM‑DD|<dataset>|<tag>|<model>|<N>|<accuracy>|<F1>|<avg‑kWh>|<avg‑s>
+Outputs one pipe‑separated line to avg_results.txt:
+YYYY‑MM‑DD|dataset|tag|model|N|acc|f1|avg‑kWh|avg‑s
 """
 
-import csv
+from __future__ import annotations
+import csv, re, string, sys
 from datetime import date
 from pathlib import Path
 from typing import List
 
-from sklearn.metrics import f1_score
-
-# ─── edit these four vars for each run ────────────────────────────────
-CSV_IN = Path("boolq_smol_q+r.csv")  # result file to summarise
-DATASET = "google/boolq"
-TAG = "q+r"  # "q" or "q+r"
-MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+# -- EDIT THESE FOUR VALUES BEFORE RUNNING ---------------
+CSV_IN      = Path("boolq_smol_q.csv")            # first CLI arg = csv path
+DATASET     = "google/boolq"         # "hotpotqa/hotpot_qa" or "google/boolq"
+TAG         = "q"                        # "q" or "q+r"
+MODEL       = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 RESULTS_TXT = Path("avg_results.txt")
-# ──────────────────────────────────────────────────────────────────────
 
+# -- helper: Hotpot normalise + F1 ------------------
+def _norm(txt: str) -> str:
+    txt = txt.lower()
+    txt = "".join(ch for ch in txt if ch not in string.punctuation)
+    txt = re.sub(r"\b(a|an|the)\b", " ", txt)
+    return " ".join(txt.split())
 
-def load_rows(path: Path) -> list[dict]:
-    with path.open(encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+def hotpot_em(pred: str, gold: str) -> int:
+    return int(_norm(pred) == _norm(gold))
 
+def hotpot_f1(pred: str, gold: str) -> float:
+    p, g = _norm(pred).split(), _norm(gold).split()
+    common = set(p) & set(g)
+    if not common:
+        return 0.0
+    prec = len(common) / len(p)
+    rec  = len(common) / len(g)
+    return 2 * prec * rec / (prec + rec)
 
+# -- main summariser --------------------------
 def main() -> None:
-    rows = load_rows(CSV_IN)
+    if not str(CSV_IN).endswith('.csv'):
+        raise SystemExit("Provide a CSV.")
+    with CSV_IN.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
     if not rows:
-        raise SystemExit("CSV is empty – nothing to summarise.")
+        raise SystemExit("CSV is empty.")
 
-    y_true: List[str] = []
-    y_pred: List[str] = []
-    energy_vals: List[float] = []
-    time_vals: List[float] = []
+    n          = len(rows)
+    energy_sum = sum(float(r["energy_kWh"]) for r in rows)
+    time_sum   = sum(0 if r["time (s)"] is None else float(r["time (s)"]) for r in rows)
 
-    em_sum = 0
-    for row in rows:
-        gold = row["gold"].strip().lower()
-        pred = row["pred"].strip().lower()
-        y_true.append(gold)
-        y_pred.append(pred)
-        em_sum += int(row["em"])
-        energy_vals.append(float(row["energy_kWh"]))
-        time_vals.append(float(row["time (s)"]))
+    if "boolq" in DATASET:                        # ——— BoolQ branch
+        from sklearn.metrics import f1_score      # sklearn only if needed
+        golds = [r["gold"].strip().lower() for r in rows]
+        preds = [r["pred"].strip().lower() for r in rows]
+        acc   = sum(int(p == g) for p, g in zip(preds, golds)) / n
+        f1    = f1_score(golds, preds, labels=["true", "false"],
+                         average="micro")
+    else:                                         # ——— HotpotQA branch
+        acc = sum(hotpot_em(r["pred"], r["gold"]) for r in rows) / n
+        f1  = sum(hotpot_f1(r["pred"], r["gold"]) for r in rows) / n
 
-    n = len(rows)
-    accuracy = em_sum / n
-    f1 = f1_score(y_true, y_pred, labels=["true", "false"], average="micro")
-    avg_kwh = sum(energy_vals) / n
-    avg_time_s = sum(time_vals) / n
+    line = (f"{date.today().isoformat()}|{DATASET}|{TAG}|{MODEL}|{n}|"
+            f"{acc:.4f}|{f1:.4f}|{energy_sum/n:.6f}|{time_sum/n:.4f}\n")
 
-    line = (
-        f"{date.today().isoformat()}|{DATASET}|{TAG}|{MODEL_NAME}|{n}|"
-        f"{accuracy:.4f}|{f1:.4f}|{avg_kwh:.6f}|{avg_time_s:.4f}\n"
-    )
-
-    RESULTS_TXT.write_text("", encoding="utf-8") if not RESULTS_TXT.exists() else None
     with RESULTS_TXT.open("a", encoding="utf-8") as fp:
         fp.write(line)
 
-    print("Appended summary:")
-    print(line.strip())
-
+    print("Appended:", line.strip())
 
 if __name__ == "__main__":
     main()
