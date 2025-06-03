@@ -5,11 +5,11 @@ import string
 import time
 import warnings
 from pathlib import Path
-from tqdm import tqdm
 
 import torch
 from codecarbon import EmissionsTracker
 from datasets import load_dataset
+from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
@@ -62,12 +62,12 @@ def build_prompt(ex: dict, include_passage: bool) -> str:
             "### Instruction:\nAnswer briefly and factually.\n\n"
             f"### Question:\n{q}\n\n### Response:\n"
         )
-    titles = {t for t in ex["supporting_facts"]['title']}
-    context = ''
+    titles = {t for t in ex["supporting_facts"]["title"]}
+    context = ""
     if titles != {}:
-        context = '. '.join(ex['context']['title'])
-        for s in ex['context']['sentences']:
-            context += ''.join(s)
+        context = ". ".join(ex["context"]["title"])
+        for s in ex["context"]["sentences"]:
+            context += "".join(s)
 
     return (
         "### Instruction:\nAnswer using the context.\n\n"
@@ -93,7 +93,8 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
 
     remaining = len(dataset) - start_qid
     with csv_out.open(mode, newline="", encoding="utf-8") as fout, tqdm(
-            total=remaining, desc=f"Batches {tag}", ncols=80) as pbar:
+        total=remaining, desc=f"Batches {tag}", ncols=80
+    ) as pbar:
         writer = csv.writer(fout)
         if mode == "w":
             writer.writerow(
