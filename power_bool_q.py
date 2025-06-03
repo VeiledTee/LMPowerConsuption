@@ -88,14 +88,14 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
             tracker = EmissionsTracker(
                 project_name=f"boolq_{tag}",
                 output_dir=str(ENERGY_DIR),
-                output_file=f"energy_{tag}_{batch_start}_{batch_end-1}.csv",
+                output_file=f"energy_{tag}_{batch_start}_{batch_end - 1}.csv",
                 log_level="error",
             )
 
-            for ex in batch:
-                prompt = build_prompt(
-                    ex["question"], ex.get("passage", ""), include_passage
-                )
+            # enumerate gives offset; start=batch_start makes it absolute
+            for qid, ex in enumerate(batch, start=batch_start):
+                prompt = build_prompt(ex["question"],
+                                      ex.get("passage", ""), include_passage)
                 t_0 = time.time()
                 tracker.start()
                 with torch.inference_mode():
@@ -107,16 +107,13 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 q_kwh = tracker.stop()
                 elapsed = time.time() - t_0
 
-                raw_pred = (
-                    tokenizer.decode(out[0], skip_special_tokens=True)
-                    .split("### Response:")[-1]
-                    .strip()
-                )
+                raw_pred = tokenizer.decode(out[0], skip_special_tokens=True) \
+                    .split("### Response:")[-1].strip()
                 pred = norm(raw_pred)
                 gold = "true" if ex["answer"] else "false"
                 em = int(pred == gold)
 
-                writer.writerow([ex["idx"], raw_pred, pred, gold, em, q_kwh, elapsed])
+                writer.writerow([qid, raw_pred, pred, gold, em, q_kwh, elapsed])
                 f_out.flush()
 
             torch.cuda.empty_cache()
