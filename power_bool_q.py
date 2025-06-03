@@ -4,6 +4,7 @@ import os
 import time
 import warnings
 from datetime import date
+from pathlib import Path
 
 import torch
 from codecarbon import EmissionsTracker
@@ -13,23 +14,26 @@ from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
-# ─── config ───
-INCLUDE_PASSAGE = False  # True → include passage
+# ── static hyper‑params ──
 MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "google/boolq"
 SPLIT = "validation"
-N_SAMPLES = None  # None uses entire split
-MAX_NEW_TOK = 4
+N_SAMPLES = None  # None → full split
+MAX_NEW_TOK = 64
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-CSV_OUT = "boolq_smol_ctx.csv" if INCLUDE_PASSAGE else "boolq_smol_q.csv"
-ENERGY_OUT = "Energy"
+ENERGY_DIR = Path("Energy")
+RESULTS_TXT = Path("avg_results.txt")
+MODES = {"q": False, "q+r": True}  # tag → INCLUDE_PASSAGE
 
-# ─── quiet mode ───
-warnings.filterwarnings("ignore")  # stdlib filter
-hf_log.set_verbosity_error()  # HF logging off
+YES, NO = {"yes", "true"}, {"no", "false"}
+
+# ── housekeeping ──
+warnings.filterwarnings("ignore")
+hf_log.set_verbosity_error()
 logging.getLogger("codecarbon").setLevel(logging.ERROR)
+ENERGY_DIR.mkdir(exist_ok=True)
 
-# ─── load model & data ───
+# ── load model + data once ──
 tok = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
 model = (
     AutoModelForCausalLM.from_pretrained(
@@ -39,93 +43,105 @@ model = (
     .eval()
 )
 
-ds = load_dataset(DATASET_NAME, split=SPLIT)
+ds_base = load_dataset(DATASET_NAME, split=SPLIT)
 if N_SAMPLES:
-    ds = ds.select(range(N_SAMPLES))
-
-YES, NO = {"yes", "true"}, {"no", "false"}
+    ds_base = ds_base.select(range(N_SAMPLES))
 
 
 def norm(text: str) -> str:
     t = text.lower()
-    if "true" in t:
+    if "true" in t or ("yes" in t and "no" not in t):
         return "true"
-    if "false" in t:
+    elif "false" in t or ("no" in t and "yes" not in t):
         return "false"
-    if "yes" in t and "no" not in t:
-        return "true"
-    if "no" in t and "yes" not in t:
-        return "false"
-    return "other"  # forces F1/EM to ignore this row
+    return "other"
 
 
-def make_prompt(in_prompt_text):
-    q = in_prompt_text["question"]
-    ctx = in_prompt_text.get("passage", "")
-    if INCLUDE_PASSAGE:
-        return f"### Instruction:\nAnswer only true or false by using the passage.\n\n### Passage:\n{ctx}\n\n### Question:\n{q}\n\n### Response:\n"
-    return f"### Instruction:\nAnswer only true or false.\n\n### Question:\n{q}\n\n### Response:\n"
-
-
-# ─── evaluation loop with progress bar ───
-os.makedirs(ENERGY_OUT, exist_ok=True)
-em_sum = energy_sum = 0.0
-preds, golds = [], []
-t0 = time.perf_counter()
-with open(CSV_OUT, "w", newline="", encoding="utf-8") as f, tqdm(
-    total=len(ds), desc="BoolQ eval", ncols=80
-) as bar:
-    wr = csv.writer(f)
-    wr.writerow(["qid", "pred", "gold", "em", "energy_kWh"])
-    for idx, ex in enumerate(ds):
-        tracker = EmissionsTracker(
-            project_name="boolq_smol",
-            log_level="error",
-            output_dir="Energy",
-            output_file=f"energy_{idx}.csv",
+def build_prompt(q: str, passage: str, use_ctx: bool) -> str:
+    if use_ctx:
+        return (
+            "### Instruction:\nAnswer only true or false using the passage.\n\n"
+            f"### Passage:\n{passage}\n\n### Question:\n{q}\n\n### Response:\n"
         )
-        tracker.start()
-        with torch.inference_mode():
-            generated = model.generate(
-                **tok(make_prompt(ex), return_tensors="pt").to(DEVICE),
-                max_new_tokens=MAX_NEW_TOK,
-                do_sample=False,
-            )
-        energy = tracker.stop()
-        pred_raw = (
-            tok.decode(generated[0], skip_special_tokens=True)
-            .split("### Response:")[-1]
-            .strip()
-        )
-        pred = norm(pred_raw)
-        # print(pred_raw)
-        # print(pred)
-        gold = "true" if ex["answer"] else "false"
-        preds.append(pred)
-        golds.append(gold)
-        em = int(pred == gold)
-        em_sum += em
-        energy_sum += float(energy)
-
-        wr.writerow([idx, pred_raw, gold, em, f"{energy:.6f}"])
-        bar.set_postfix(acc=f"{em_sum/(idx+1):.3f}")
-        bar.update()
-
-t_total = time.perf_counter() - t0
-avg_em = em_sum / len(ds)
-avg_energy = energy_sum / len(ds)
-avg_f1 = f1_score(golds, preds, pos_label="true")
-
-today = date.today().isoformat()
-
-with open("avg_results.txt", "a", encoding="utf-8") as fp:
-    fp.write(
-        f"{today}|{DATASET_NAME}|{'q+r' if INCLUDE_PASSAGE else 'q'}|"
-        f"{MODEL_NAME}|{len(ds)}|{avg_em:.4f}|{avg_f1:.4f}|"
-        f"{avg_energy:.6f}|{t_total:.2f}\n"
+    return (
+        "### Instruction:\nAnswer only true or false.\n\n"
+        f"### Question:\n{q}\n\n### Response:\n"
     )
 
-print(
-    f"Done → {CSV_OUT} | EM={avg_em:.4f} | F1={avg_f1:.4f} "
-    f"| kWh/qa={avg_energy:.6f} | total s={t_total:.2f}"
-)
+
+# ── evaluation wrapper ──
+def run_mode(tag: str, include_passage: bool) -> None:
+    csv_out = f"boolq_smol_{tag}.csv"
+    em_sum = energy_sum = 0.0
+    preds, golds = [], []
+
+    t0 = time.perf_counter()
+    with open(csv_out, "w", newline="", encoding="utf-8") as f, tqdm(
+        total=len(ds_base), desc=f"BoolQ {tag}", ncols=80
+    ) as bar:
+        wr = csv.writer(f)
+        wr.writerow(["qid", "raw_pred", "pred", "gold", "em", "energy_kWh"])
+
+        for idx, ex in enumerate(ds_base):
+            prompt = build_prompt(
+                ex["question"], ex.get("passage", ""), include_passage
+            )
+
+            tracker = EmissionsTracker(
+                project_name=f"boolq_{tag}",
+                output_dir=str(ENERGY_DIR),
+                output_file=f"energy_{tag}_{idx}.csv",
+                log_level="error",
+            )
+
+            tracker.start()
+
+            with torch.inference_mode():
+                out = model.generate(
+                    **tok(prompt, return_tensors="pt").to(DEVICE),
+                    max_new_tokens=MAX_NEW_TOK,
+                    do_sample=False,
+                )
+            energy = tracker.stop()
+
+            raw_pred = (
+                tok.decode(out[0], skip_special_tokens=True)
+                .split("### Response:")[-1]
+                .strip()
+            )
+            pred = norm(raw_pred)
+            gold = "true" if ex["answer"] else "false"
+
+            preds.append(pred)
+            golds.append(gold)
+            em = int(pred == gold)
+            em_sum += em
+            energy_sum += float(energy)
+
+            wr.writerow([idx, raw_pred, pred, gold, em, f"{energy:.6f}"])
+            bar.set_postfix(acc=f"{em_sum/(idx+1):.3f}")
+            bar.update()
+
+    # metrics
+    avg_em = em_sum / len(ds_base)
+    avg_f1 = f1_score(golds, preds, pos_label="true", average="micro")
+    avg_energy = energy_sum / len(ds_base)
+    t_total = time.perf_counter() - t0
+    today = date.today().isoformat()
+
+    with RESULTS_TXT.open("a", encoding="utf-8") as fp:
+        fp.write(
+            f"{today}|{DATASET_NAME}|{tag}|{MODEL_NAME}|{len(ds_base)}|"
+            f"{avg_em:.4f}|{avg_f1:.4f}|{avg_energy:.6f}|{t_total:.2f}\n"
+        )
+
+    print(
+        f"{tag}: EM={avg_em:.4f} | F1={avg_f1:.4f} | "
+        f"kWh/qa={avg_energy:.6f} | s={t_total:.2f}"
+    )
+
+
+# ── run both modes ──
+if __name__ == "__main__":
+    for tag, use_ctx in MODES.items():
+        run_mode(tag, use_ctx)
