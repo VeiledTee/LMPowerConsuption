@@ -18,7 +18,7 @@ DATASET_NAME = "hotpotqa/hotpot_qa"
 SPLIT = "validation"
 N_SAMPLES = 5  # None → full split
 MAX_NEW_TOK = 64
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = "cpu"
 
 CSV_OUT = (
     "hotpot_smol_q_ctx_results.csv"
