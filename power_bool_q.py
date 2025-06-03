@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
-import csv, logging, time, warnings
+import csv
+import logging
+import time
+import warnings
 from pathlib import Path
 
 import torch
 from codecarbon import EmissionsTracker
 from datasets import load_dataset
 from tqdm import tqdm
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    logging as hf_log,
-)
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import logging as hf_log
 
 # ── static hyper‑params ───────────────────────────────────────────────
-MODEL_NAME   = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "google/boolq"
-SPLIT        = "validation"
-N_SAMPLES    = None
-MAX_NEW_TOK  = 64
-DEVICE       = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE   = 128
-ENERGY_DIR   = Path("Energy")
-MODES        = {"q+r": True}  # {"q": False, "q+r": True}
+SPLIT = "validation"
+N_SAMPLES = None
+MAX_NEW_TOK = 64
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+BATCH_SIZE = 128
+ENERGY_DIR = Path("Energy")
+MODES = {"q+r": True}  # {"q": False, "q+r": True}
 
 YES, NO = {"yes", "true"}, {"no", "false"}
 
@@ -30,6 +30,7 @@ warnings.filterwarnings("ignore")
 hf_log.set_verbosity_error()
 logging.getLogger("codecarbon").setLevel(logging.ERROR)
 ENERGY_DIR.mkdir(exist_ok=True)
+
 
 # ── helpers ───────────────────────────────────────────────────────────
 def norm(text: str) -> str:
@@ -40,19 +41,21 @@ def norm(text: str) -> str:
         return "false"
     return "other"
 
+
 def build_prompt(q: str, passage: str, use_ctx: bool) -> str:
     if use_ctx:
-        return ("### Instruction:\nAnswer only true or false using the passage.\n\n"
-                f"### Passage:\n{passage}\n\n### Question:\n{q}\n\n### Response:\n")
-    return ("### Instruction:\nAnswer only true or false.\n\n"
-            f"### Question:\n{q}\n\n### Response:\n")
+        return (
+            "### Instruction:\nAnswer only true or false using the passage.\n\n"
+            f"### Passage:\n{passage}\n\n### Question:\n{q}\n\n### Response:\n"
+        )
+    return (
+        "### Instruction:\nAnswer only true or false.\n\n"
+        f"### Question:\n{q}\n\n### Response:\n"
+    )
+
 
 # ── evaluation wrapper (batched, resumable) ───────────────────────────
-def run_mode(tag: str,
-             include_passage: bool,
-             dataset,
-             model,
-             tokenizer) -> None:
+def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None:
     csv_out = Path(f"boolq_smol_{tag}.csv")
 
     start_qid, mode = 0, "w"
@@ -68,9 +71,10 @@ def run_mode(tag: str,
     print(f"{tag}: resuming at qid {start_qid}")
 
     remaining = len(dataset) - start_qid
-    with (csv_out.open(mode, newline="", encoding="utf-8") as f_out, tqdm(
-        total=remaining, desc=f"Batches {tag}", ncols=80
-    ) as pbar):
+    with (
+        csv_out.open(mode, newline="", encoding="utf-8") as f_out,
+        tqdm(total=remaining, desc=f"Batches {tag}", ncols=80) as pbar,
+    ):
         writer = csv.writer(f_out)
         if mode == "w":
             writer.writerow(
@@ -103,11 +107,14 @@ def run_mode(tag: str,
                 q_kwh = tracker.stop()
                 elapsed = time.time() - t_0
 
-                raw_pred = tokenizer.decode(out[0], skip_special_tokens=True)\
-                           .split("### Response:")[-1].strip()
+                raw_pred = (
+                    tokenizer.decode(out[0], skip_special_tokens=True)
+                    .split("### Response:")[-1]
+                    .strip()
+                )
                 pred = norm(raw_pred)
                 gold = "true" if ex["answer"] else "false"
-                em   = int(pred == gold)
+                em = int(pred == gold)
 
                 writer.writerow([ex["idx"], raw_pred, pred, gold, em, q_kwh, elapsed])
                 f_out.flush()
@@ -118,13 +125,17 @@ def run_mode(tag: str,
 
     print(f"{tag}: finished; results saved to {csv_out}")
 
+
 # ─── main: load resources once, run modes ─────────────────────────────
 if __name__ == "__main__":
     tok = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
-    mdl = (AutoModelForCausalLM.from_pretrained(
-              MODEL_NAME,
-              torch_dtype=torch.float16 if DEVICE == "cuda" else None)
-           .to(DEVICE).eval())
+    mdl = (
+        AutoModelForCausalLM.from_pretrained(
+            MODEL_NAME, torch_dtype=torch.float16 if DEVICE == "cuda" else None
+        )
+        .to(DEVICE)
+        .eval()
+    )
     data = load_dataset(DATASET_NAME, split=SPLIT)
     if N_SAMPLES:
         data = data.select(range(N_SAMPLES))
