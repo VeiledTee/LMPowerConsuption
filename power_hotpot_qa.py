@@ -4,7 +4,6 @@ import re
 import string
 import time
 import warnings
-from datetime import date
 from pathlib import Path
 
 import torch
@@ -18,23 +17,22 @@ MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
-N_SAMPLES = None  # None → full split
+N_SAMPLES = None
 MAX_NEW_TOK = 64
 BATCH_SIZE = 128
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+MODES = {"q": False, "q+r": True}
 
-MODES = {"q": False, "q+r": True}  # tag → include_passage flag
 ENERGY_DIR = Path("Energy").resolve()
-RESULTS_TXT = Path("avg_results.txt").resolve()
 ENERGY_DIR.mkdir(exist_ok=True)
 
-# ─── silence transformers / codecarbon chatter ────────────────────────
+# ─── quiet library chatter ────────────────────────────────────────────
 warnings.filterwarnings("ignore")
 hf_log.set_verbosity_error()
 logging.getLogger("codecarbon").setLevel(logging.ERROR)
 
 
-# ─── HotpotQA helpers ─────────────────────────────────────────────────
+# ─── token normaliser & per‑row scorers (kept) ────────────────────────
 def _normalize(txt: str) -> str:
     txt = txt.lower()
     txt = "".join(ch for ch in txt if ch not in string.punctuation)
@@ -74,30 +72,29 @@ def build_prompt(ex: dict, include_passage: bool) -> str:
     )
 
 
-# ─── single‑mode runner ───────────────────────────────────────────────
+# ─── single‑mode runner (CSV only) ────────────────────────────────────
 def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None:
     csv_out = Path(f"hotpot_smol_{tag}.csv")
 
-    # resume point
     start_qid, mode = 0, "w"
     if csv_out.exists():
-        last_line = ""
+        last = ""
         with csv_out.open() as f:
             for l in f:
                 if l.strip():
-                    last_line = l
-        if last_line and last_line.split(",")[0].isdigit():
-            start_qid = int(last_line.split(",")[0]) + 1
+                    last = l
+        if last and last.split(",")[0].isdigit():
+            start_qid = int(last.split(",")[0]) + 1
             mode = "a"
     print(f"{tag}: resuming at qid {start_qid}")
 
-    em_sum = f1_sum = energy_sum = 0.0
-    t0 = time.perf_counter()
-
-    with csv_out.open(mode, newline="", encoding="utf-8") as fout:
+    remaining = len(dataset) - start_qid
+    with csv_out.open(mode, newline="", encoding="utf-8") as fout, torch.no_grad():
         writer = csv.writer(fout)
         if mode == "w":
-            writer.writerow(["qid", "pred", "gold", "em", "f1", "energy_kWh"])
+            writer.writerow(
+                ["qid", "pred", "gold", "em", "f1", "energy_kWh", "time (s)"]
+            )
 
         for batch_start in range(start_qid, len(dataset), BATCH_SIZE):
             batch_end = min(batch_start + BATCH_SIZE, len(dataset))
@@ -108,17 +105,20 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 output_dir=str(ENERGY_DIR),
                 output_file=f"energy_{tag}_{batch_start}_{batch_end-1}.csv",
                 log_level="error",
-            ).start()
+            )
 
-            rows = []
             for ex in batch:
                 prompt = build_prompt(ex, include_passage)
-                with torch.inference_mode():
-                    out = model.generate(
-                        **tokenizer(prompt, return_tensors="pt").to(DEVICE),
-                        max_new_tokens=MAX_NEW_TOK,
-                        do_sample=False,
-                    )
+                t0 = time.time()
+                tracker.start()
+                out = model.generate(
+                    **tokenizer(prompt, return_tensors="pt").to(DEVICE),
+                    max_new_tokens=MAX_NEW_TOK,
+                    do_sample=False,
+                )
+                kwh = tracker.stop()
+                elapsed = time.time() - t0
+
                 pred = (
                     tokenizer.decode(out[0], skip_special_tokens=True)
                     .split("### Response:")[-1]
@@ -128,44 +128,17 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 em = exact_match(pred, gold)
                 f1 = f1_score(pred, gold)
 
-                em_sum += em
-                f1_sum += f1
-                rows.append([ex["idx"], pred, gold, em, f1])
-
-            batch_kwh = tracker.stop()
-            energy_sum += batch_kwh
-            kwh_per_q = batch_kwh / len(rows)
-
-            for r in rows:
-                writer.writerow([*r, f"{kwh_per_q:.6f}"])
-            fout.flush()
+                writer.writerow([ex["idx"], pred, gold, em, f1, kwh, elapsed])
+                fout.flush()
 
             torch.cuda.empty_cache()
             torch.cuda.ipc_collect()
 
-    # write summary
-    n_done = len(dataset) - start_qid
-    avg_em = em_sum / n_done
-    avg_f1 = f1_sum / n_done
-    avg_energy = energy_sum / n_done
-    wall = time.perf_counter() - t0
-    today = date.today().isoformat()
-
-    with RESULTS_TXT.open("a", encoding="utf-8") as fp:
-        fp.write(
-            f"{today}|{DATASET_NAME}|{tag}|{MODEL_NAME}|{n_done}|"
-            f"{avg_em:.4f}|{avg_f1:.4f}|{avg_energy:.6f}|{wall:.2f}\n"
-        )
-
-    print(
-        f"{tag}: EM={avg_em:.4f} | F1={avg_f1:.4f} | "
-        f"kWh/qa={avg_energy:.6f} | s={wall:.2f}"
-    )
+    print(f"{tag}: finished; results saved to {csv_out}")
 
 
-# ─── main: load resources once, run both modes ────────────────────────
+# ─── main: load once, run modes ───────────────────────────────────────
 if __name__ == "__main__":
-    # load once
     tok = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
     mdl = (
         AutoModelForCausalLM.from_pretrained(
