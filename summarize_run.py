@@ -1,64 +1,69 @@
-from __future__ import annotations
+"""
+Summarise a results CSV.
+
+The CSV is expected to have the header
+["qid","raw_pred","pred","gold","em","energy_kWh","time (s)"]
+
+It outputs one pipe‑separated line to avg_results.txt:
+YYYY‑MM‑DD|<dataset>|<tag>|<model>|<N>|<accuracy>|<F1>|<avg‑kWh>|<avg‑s>
+"""
 
 import csv
-import time
 from datetime import date
 from pathlib import Path
 from typing import List
 
 from sklearn.metrics import f1_score
 
-# ─── CONFIG ──────────────────────────────────────────────────────────────
-CSV_IN: Path = Path("boolq_smol_q_full.csv")  # your result file
-DATASET_NAME = "google/boolq"
-MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
-INCLUDE_PASSAGE = False  # True if “q+r” run
-# ──────────────────────────────────────────────────────────────────────────
-
-YES, NO = {"yes", "true"}, {"no", "false"}
-
-
-def _norm(text: str) -> str:
-    """Normalise to 'true' / 'false' / 'other'."""
-    t = text.strip().lower()
-    if any(w in t for w in YES):
-        return "true"
-    if any(w in t for w in NO):
-        return "false"
-    return "other"
+# ─── edit these four vars for each run ────────────────────────────────
+CSV_IN      = Path("boolq_smol_q+r.csv")        # result file to summarise
+DATASET     = "google/boolq"
+TAG         = "q+r"                             # "q" or "q+r"
+MODEL_NAME  = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+RESULTS_TXT = Path("avg_results.txt")
+# ──────────────────────────────────────────────────────────────────────
 
 
-def load_csv(path: Path) -> tuple[List[str], List[str], List[float]]:
-    y_true, y_pred, energy = [], [], []
-    with path.open(newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            y_pred.append(_norm(row["pred"]))
-            y_true.append(_norm(row["gold"]))
-            energy.append(float(row["energy_kWh"]))
-    return y_true, y_pred, energy
+def load_rows(path: Path) -> list[dict]:
+    with path.open(encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
 
 def main() -> None:
-    start = time.perf_counter()
-    golds, preds, energies = load_csv(CSV_IN)
+    rows = load_rows(CSV_IN)
+    if not rows:
+        raise SystemExit("CSV is empty – nothing to summarise.")
 
-    em = sum(p == g for p, g in zip(preds, golds)) / len(golds)
-    # micro handles any stray "other" labels gracefully
-    f1 = f1_score(golds, preds, labels=["true", "false"], average="micro")
-    avg_kwh = sum(energies) / len(energies)
-    wall = time.perf_counter() - start
+    y_true: List[str]   = []
+    y_pred: List[str]   = []
+    energy_vals: List[float] = []
+    time_vals:   List[float] = []
 
-    tag = "q+r" if INCLUDE_PASSAGE else "q"
-    summary = (
-        f"{date.today().isoformat()}|{DATASET_NAME}|{tag}|{MODEL_NAME}|"
-        f"{len(golds)}|{em:.4f}|{f1:.4f}|{avg_kwh:.6f}|{wall:.2f}\n"
-    )
+    em_sum = 0
+    for row in rows:
+        gold = row["gold"].strip().lower()
+        pred = row["pred"].strip().lower()
+        y_true.append(gold)
+        y_pred.append(pred)
+        em_sum += int(row["em"])
+        energy_vals.append(float(row["energy_kWh"]))
+        time_vals.append(float(row["time (s)"]))
 
-    with Path("avg_results.txt").open("a", encoding="utf-8") as fp:
-        fp.write(summary)
+    n = len(rows)
+    accuracy   = em_sum / n
+    f1         = f1_score(y_true, y_pred, labels=["true", "false"], average="micro")
+    avg_kwh    = sum(energy_vals) / n
+    avg_time_s = sum(time_vals) / n
 
-    print("Appended:", summary.strip())
+    line = (f"{date.today().isoformat()}|{DATASET}|{TAG}|{MODEL_NAME}|{n}|"
+            f"{accuracy:.4f}|{f1:.4f}|{avg_kwh:.6f}|{avg_time_s:.4f}\n")
+
+    RESULTS_TXT.write_text("", encoding="utf-8") if not RESULTS_TXT.exists() else None
+    with RESULTS_TXT.open("a", encoding="utf-8") as fp:
+        fp.write(line)
+
+    print("Appended summary:")
+    print(line.strip())
 
 
 if __name__ == "__main__":
