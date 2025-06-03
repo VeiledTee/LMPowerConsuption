@@ -18,11 +18,11 @@ MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
-N_SAMPLES = None
+N_SAMPLES = 10
 MAX_NEW_TOK = 64
 BATCH_SIZE = 128
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-MODES = {"q": False, "q+r": True}
+MODES = {"q+r": True}  # {"q": False, "q+r": True}
 
 ENERGY_DIR = Path("Energy").resolve()
 ENERGY_DIR.mkdir(exist_ok=True)
@@ -62,14 +62,16 @@ def build_prompt(ex: dict, include_passage: bool) -> str:
             "### Instruction:\nAnswer briefly and factually.\n\n"
             f"### Question:\n{q}\n\n### Response:\n"
         )
-    titles = {t for t, _ in ex["supporting_facts"]}
-    ctx = (
-        "\n\n".join(" ".join(s) for t, s in ex["context"] if t in titles)
-        or "Context unavailable."
-    )
+    titles = {t for t in ex["supporting_facts"]['title']}
+    context = ''
+    if titles != {}:
+        context = '. '.join(ex['context']['title'])
+        for s in ex['context']['sentences']:
+            context += ''.join(s)
+
     return (
         "### Instruction:\nAnswer using the context.\n\n"
-        f"### Context:\n{ctx}\n\n### Question:\n{q}\n\n### Response:\n"
+        f"### Context:\n{context}\n\n### Question:\n{q}\n\n### Response:\n"
     )
 
 
@@ -109,7 +111,8 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 log_level="error",
             )
 
-            for ex in batch:
+            for qid, ex in enumerate(batch, start=batch_start):
+                print(ex)
                 prompt = build_prompt(ex, include_passage)
                 t0 = time.time()
                 tracker.start()
@@ -130,7 +133,7 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 em = exact_match(pred, gold)
                 f1 = f1_score(pred, gold)
 
-                writer.writerow([ex["idx"], pred, gold, em, f1, kwh, elapsed])
+                writer.writerow([qid, pred, gold, em, f1, kwh, elapsed])
                 fout.flush()
 
             torch.cuda.empty_cache()
