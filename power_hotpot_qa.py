@@ -5,6 +5,7 @@ import string
 import time
 import warnings
 from pathlib import Path
+from tqdm import tqdm
 
 import torch
 from codecarbon import EmissionsTracker
@@ -89,7 +90,8 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
     print(f"{tag}: resuming at qid {start_qid}")
 
     remaining = len(dataset) - start_qid
-    with csv_out.open(mode, newline="", encoding="utf-8") as fout, torch.no_grad():
+    with csv_out.open(mode, newline="", encoding="utf-8") as fout, tqdm(
+            total=remaining, desc=f"Batches {tag}", ncols=80) as pbar:
         writer = csv.writer(fout)
         if mode == "w":
             writer.writerow(
@@ -133,6 +135,7 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
 
             torch.cuda.empty_cache()
             torch.cuda.ipc_collect()
+            pbar.update(len(batch))
 
     print(f"{tag}: finished; results saved to {csv_out}")
 
