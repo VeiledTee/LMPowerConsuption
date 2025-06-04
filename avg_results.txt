@@ -1,3 +1,3 @@
-DATE|DATASET|Version|MODEL|# Questions|avg_EM|avg_F1|avg_energy_kWh|time|avg_tokens
-2025-06-03|google/boolq|q|HuggingFaceTB/SmolLM2-1.7B-Instruct|3270|0.5462|0.5723|0.000639|1.0631|11.61
-2025-06-03|google/boolq|q+r|HuggingFaceTB/SmolLM2-1.7B-Instruct|3270|0.6884|0.6884|0.000350|0.6144|1.02
+DATE|DATASET|Version|MODEL|# Questions|avg_EM|avg_F1|avg_energy_kWh|avg_retriever_energy_kWh|time|avg_tokens
+2025-06-03|google/boolq|q|HuggingFaceTB/SmolLM2-1.7B-Instruct|3270|0.5462|0.5723|0.000639|0|1.0631|11.61
+2025-06-03|google/boolq|q+r|HuggingFaceTB/SmolLM2-1.7B-Instruct|3270|0.6884|0.6884|0.000350|0|0.6144|1.02
