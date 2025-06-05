@@ -16,15 +16,13 @@ from __future__ import annotations
 import csv
 import re
 import string
-import sys
 from datetime import date
 from pathlib import Path
-from typing import List
 
-# -- EDIT THESE FOUR VALUES BEFORE RUNNING ---------------
-CSV_IN = Path("boolq_smol_q.csv")  # first CLI arg = csv path
+# -- BEFORE RUNNING ---------------
+CSV_IN = Path("boolq_smol_q+r.csv")  # first CLI arg = csv path
 DATASET = "google/boolq"  # "hotpotqa/hotpot_qa" or "google/boolq"
-TAG = "q"  # "q" or "q+r"
+TAG = str(CSV_IN).split('_')[-1].split('.')[0]  # "q" or "q+r"
 MODEL = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 RESULTS_TXT = Path("avg_results.txt")
 
@@ -66,18 +64,20 @@ def main() -> None:
 
     if "boolq" in DATASET:  # ——— BoolQ branch
         from sklearn.metrics import f1_score  # sklearn only if needed
+        tok_sum = sum(len((r.get("raw_pred")).split()) for r in rows)
 
         golds = [r["gold"].strip().lower() for r in rows]
         preds = [r["pred"].strip().lower() for r in rows]
         acc = sum(int(p == g) for p, g in zip(preds, golds)) / n
         f1 = f1_score(golds, preds, labels=["true", "false"], average="micro")
     else:  # ——— HotpotQA branch
+        tok_sum = sum(len((r.get("pred")).split()) for r in rows)
         acc = sum(hotpot_em(r["pred"], r["gold"]) for r in rows) / n
         f1 = sum(hotpot_f1(r["pred"], r["gold"]) for r in rows) / n
 
     line = (
         f"{date.today().isoformat()}|{DATASET}|{TAG}|{MODEL}|{n}|"
-        f"{acc:.4f}|{f1:.4f}|{energy_sum/n:.6f}|{time_sum/n:.4f}\n"
+        f"{acc:.4f}|{f1:.4f}|{energy_sum/n:.6f}|{time_sum/n:.4f}|{tok_sum/n:.2f}\n"
     )
 
     with RESULTS_TXT.open("a", encoding="utf-8") as fp:

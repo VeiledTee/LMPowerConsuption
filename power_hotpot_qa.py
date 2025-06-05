@@ -18,7 +18,7 @@ MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
-N_SAMPLES = 10
+N_SAMPLES = None
 MAX_NEW_TOK = 64
 BATCH_SIZE = 128
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -113,15 +113,22 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
             )
 
             for qid, ex in enumerate(batch, start=batch_start):
-                print(ex)
                 prompt = build_prompt(ex, include_passage)
                 t0 = time.time()
                 tracker.start()
-                out = model.generate(
-                    **tokenizer(prompt, return_tensors="pt").to(DEVICE),
-                    max_new_tokens=MAX_NEW_TOK,
-                    do_sample=False,
-                )
+                with torch.inference_mode():
+                    try:
+                        out = model.generate(
+                        **tokenizer(prompt, return_tensors="pt").to(DEVICE),
+                        max_new_tokens=MAX_NEW_TOK,
+                        do_sample=False,
+                        )
+                    except torch.OutOfMemoryError:
+                        out = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=None).to('cpu').eval().generate(
+                            **tokenizer(prompt, return_tensors="pt").to('cpu'),
+                            max_new_tokens=MAX_NEW_TOK,
+                            do_sample=False,
+                        )
                 kwh = tracker.stop()
                 elapsed = time.time() - t0
 

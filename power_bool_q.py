@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import csv
 import logging
 import time
@@ -99,11 +98,18 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 t_0 = time.time()
                 tracker.start()
                 with torch.inference_mode():
-                    out = model.generate(
+                    try:
+                        out = model.generate(
                         **tokenizer(prompt, return_tensors="pt").to(DEVICE),
                         max_new_tokens=MAX_NEW_TOK,
                         do_sample=False,
-                    )
+                        )
+                    except torch.OutOfMemoryError:
+                        out = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=None).to('cpu').eval().generate(
+                            **tokenizer(prompt, return_tensors="pt").to('cpu'),
+                            max_new_tokens=MAX_NEW_TOK,
+                            do_sample=False,
+                        )
                 q_kwh = tracker.stop()
                 elapsed = time.time() - t_0
 
