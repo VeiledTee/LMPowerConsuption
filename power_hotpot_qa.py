@@ -14,15 +14,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ─── fixed hyper‑params ────────────────────────────────────────────────
-MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+MODEL_NAME = "distilbert/distilgpt2"
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
 N_SAMPLES = None
 MAX_NEW_TOK = 64
 BATCH_SIZE = 128
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-MODES = {"q+r": True}  # {"q": False, "q+r": True}
+DEVICE = "cpu"
+MODES = {"q": False, "q+r": True}  # {"q": False, "q+r": True}
 
 ENERGY_DIR = Path("Energy").resolve()
 ENERGY_DIR.mkdir(exist_ok=True)
