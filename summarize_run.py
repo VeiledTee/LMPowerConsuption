@@ -20,8 +20,8 @@ from datetime import date
 from pathlib import Path
 
 # -- BEFORE RUNNING ---------------
-CSV_IN = Path("boolq_smol_q+r.csv")  # first CLI arg = csv path
-DATASET = "google/boolq"  # "hotpotqa/hotpot_qa" or "google/boolq"
+CSV_IN = Path("hotpot_smol_q+r.csv")  # first CLI arg = csv path
+DATASET = "hotpotqa/hotpot_qa"  # "hotpotqa/hotpot_qa" or "google/boolq"
 TAG = str(CSV_IN).split('_')[-1].split('.')[0]  # "q" or "q+r"
 MODEL = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 RESULTS_TXT = Path("avg_results.txt")
