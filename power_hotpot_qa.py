@@ -88,12 +88,12 @@ def build_prompt(ex: dict, include_passage: bool) -> str:
         context = ". ".join(ex["context"]["title"])
         for s in ex["context"]["sentences"]:
             context += "".join(s)
-    return f"Context: {context}\nQuestion: {q}\nAnswer:"
+    return f"Context: {context}\n\nQuestion: {q}\nAnswer:"
 
 
 # ─── single‑mode runner (CSV only) ────────────────────────────────────
 def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None:
-    csv_out = Path(f"hotpot_{MODEL_NAME.split('/')[-1]}_{tag}.csv")
+    csv_out = Path(f"hotpot_{MODEL_NAME.split('/')[-1]}_{tag}_clean.csv")
 
     start_qid, mode = 0, "w"
     if csv_out.exists():
@@ -134,21 +134,35 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 tracker.start()
                 with torch.inference_mode():
                     try:
+                        inputs = tokenizer(
+                            prompt,
+                            return_tensors="pt",
+                        ).to(DEVICE)
                         out = model.generate(
-                            **tokenizer(prompt, return_tensors="pt", truncation=True, max_length=MAX_NEW_TOK).to(DEVICE),
+                            **inputs,
                             max_new_tokens=MAX_NEW_TOK,
                             do_sample=False,
+                            no_repeat_ngram_size=2,  # Prevent n-gram repeats
+                            repetition_penalty=1.5,  # Discourage repetition
+                            eos_token_id=tokenizer.eos_token_id  # Stop at EOS
                         )
                     except torch.OutOfMemoryError:
-                        out = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=None).to('cpu').eval().generate(
-                            **tokenizer(prompt, return_tensors="pt").to('cpu'),
+                        inputs = tokenizer(
+                            prompt,
+                            return_tensors="pt",
+                        ).to('cpu')
+                        out = model.generate(
+                            **inputs,
                             max_new_tokens=MAX_NEW_TOK,
                             do_sample=False,
+                            no_repeat_ngram_size=2,  # Prevent n-gram repeats
+                            repetition_penalty=1.5,  # Discourage repetition
+                            eos_token_id=tokenizer.eos_token_id  # Stop at EOS
                         )
                 tracker.stop()
                 row = parse_last_cc_row(Path(f"Energy/{cc_outfile}"))
 
-                pred = tokenizer.decode(out[0], skip_special_tokens=True).strip()
+                pred = tokenizer.decode(out[0], skip_special_tokens=True).strip().split('Answer: ')[-1]
 
                 gold = ex["answer"]
                 em = exact_match(pred, gold)
