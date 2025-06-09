@@ -14,7 +14,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ─── fixed hyper‑params ────────────────────────────────────────────────
-MODEL_NAME = "distilbert/distilgpt2"
+MODEL_NAME = "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
@@ -23,6 +23,21 @@ MAX_NEW_TOK = 64
 BATCH_SIZE = 128
 DEVICE = "cpu"
 MODES = {"q": False, "q+r": True}  # {"q": False, "q+r": True}
+print(f"{'='*25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'='*25}")
+
+ENERGY_DIR = Path("Energy").resolve()
+ENERGY_DIR.mkdir(exist_ok=True)
+
+# MODEL_NAME = "openai-community/gpt2-xl"  # openai-community/gpt2-xl OR distilbert/distilgpt2
+# DATASET_NAME = "hotpotqa/hotpot_qa"
+# CONFIG = "fullwiki"
+# SPLIT = "validation"
+# N_SAMPLES = None
+# MAX_NEW_TOK = 64
+# BATCH_SIZE = 32
+# DEVICE = "cpu"
+# MODES = {"q": False}  # {"q": False, "q+r": True}
+# print(f"{'='*25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'='*25}")
 
 ENERGY_DIR = Path("Energy").resolve()
 ENERGY_DIR.mkdir(exist_ok=True)
@@ -33,7 +48,15 @@ hf_log.set_verbosity_error()
 logging.getLogger("codecarbon").setLevel(logging.ERROR)
 
 
-# ─── token normaliser & per‑row scorers (kept) ────────────────────────
+# ─── token normaliser & per‑row scorers ────────────────────────
+def parse_last_cc_row(cc_file: Path) -> dict:
+    # CodeCarbon writes one header + one data row in our use‑case
+    with cc_file.open() as f:
+        header = f.readline().strip().split(",")
+        values = f.readline().strip().split(",")
+    return dict(zip(header, values))
+
+
 def _normalize(txt: str) -> str:
     txt = txt.lower()
     txt = "".join(ch for ch in txt if ch not in string.punctuation)
@@ -58,31 +81,24 @@ def f1_score(pred: str, gold: str) -> float:
 def build_prompt(ex: dict, include_passage: bool) -> str:
     q = ex["question"]
     if not include_passage:
-        return (
-            "### Instruction:\nAnswer briefly and factually.\n\n"
-            f"### Question:\n{q}\n\n### Response:\n"
-        )
+        return f"Question: {q}\nAnswer:"
     titles = {t for t in ex["supporting_facts"]["title"]}
     context = ""
-    if titles != {}:
+    if titles:
         context = ". ".join(ex["context"]["title"])
         for s in ex["context"]["sentences"]:
             context += "".join(s)
-
-    return (
-        "### Instruction:\nAnswer using the context.\n\n"
-        f"### Context:\n{context}\n\n### Question:\n{q}\n\n### Response:\n"
-    )
+    return f"Context: {context}\nQuestion: {q}\nAnswer:"
 
 
 # ─── single‑mode runner (CSV only) ────────────────────────────────────
 def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None:
-    csv_out = Path(f"hotpot_smol_{tag}.csv")
+    csv_out = Path(f"hotpot_{MODEL_NAME.split('/')[-1]}_{tag}.csv")
 
     start_qid, mode = 0, "w"
     if csv_out.exists():
         last = ""
-        with csv_out.open() as f:
+        with csv_out.open(encoding="utf-8") as f:
             for l in f:
                 if l.strip():
                     last = l
@@ -98,30 +114,30 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
         writer = csv.writer(fout)
         if mode == "w":
             writer.writerow(
-                ["qid", "pred", "gold", "em", "f1", "energy_kWh", "time (s)"]
+                ["qid", "pred", "gold", "em", "f1", "energy_kWh", "emissions (kg)", "time (s)"]
             )
 
         for batch_start in range(start_qid, len(dataset), BATCH_SIZE):
             batch_end = min(batch_start + BATCH_SIZE, len(dataset))
             batch = dataset.select(range(batch_start, batch_end))
+            cc_outfile = f"energy_{MODEL_NAME.split('/')[-1]}_{tag}_{batch_start}_{batch_end-1}.csv"
 
             tracker = EmissionsTracker(
-                project_name=f"hotpot_{tag}",
+                project_name=f"hotpot_{MODEL_NAME.split('/')[-1]}_{tag}",
                 output_dir=str(ENERGY_DIR),
-                output_file=f"energy_{tag}_{batch_start}_{batch_end-1}.csv",
+                output_file=cc_outfile,
                 log_level="error",
             )
 
             for qid, ex in enumerate(batch, start=batch_start):
                 prompt = build_prompt(ex, include_passage)
-                t0 = time.time()
                 tracker.start()
                 with torch.inference_mode():
                     try:
                         out = model.generate(
-                        **tokenizer(prompt, return_tensors="pt").to(DEVICE),
-                        max_new_tokens=MAX_NEW_TOK,
-                        do_sample=False,
+                            **tokenizer(prompt, return_tensors="pt", truncation=True, max_length=MAX_NEW_TOK).to(DEVICE),
+                            max_new_tokens=MAX_NEW_TOK,
+                            do_sample=False,
                         )
                     except torch.OutOfMemoryError:
                         out = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=None).to('cpu').eval().generate(
@@ -129,23 +145,22 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                             max_new_tokens=MAX_NEW_TOK,
                             do_sample=False,
                         )
-                kwh = tracker.stop()
-                elapsed = time.time() - t0
+                tracker.stop()
+                row = parse_last_cc_row(Path(f"Energy/{cc_outfile}"))
 
-                pred = (
-                    tokenizer.decode(out[0], skip_special_tokens=True)
-                    .split("### Response:")[-1]
-                    .strip()
-                )
+                pred = tokenizer.decode(out[0], skip_special_tokens=True).strip()
+
                 gold = ex["answer"]
                 em = exact_match(pred, gold)
                 f1 = f1_score(pred, gold)
-
-                writer.writerow([qid, pred, gold, em, f1, kwh, elapsed])
+                kwh = row["energy_consumed"]
+                emissions_kg = row["emissions"]
+                print(f"qid: {qid}\nPRED:\n{pred}\nGOLD:\n{gold}\n{'-' * 50}")
+                writer.writerow([qid, pred, gold, em, f1, kwh, emissions_kg, row["duration"]])
                 fout.flush()
 
-            torch.cuda.empty_cache()
-            torch.cuda.ipc_collect()
+            # torch.cuda.empty_cache()
+            # torch.cuda.ipc_collect()
             pbar.update(len(batch))
 
     print(f"{tag}: finished; results saved to {csv_out}")
