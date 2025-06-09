@@ -12,17 +12,18 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ── static hyper‑params ───────────────────────────────────────────────
-MODEL_NAME = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+MODEL_NAME = "openai-community/gpt2-xl"  # openai-community/gpt2-xl OR distilbert/distilgpt2
 DATASET_NAME = "google/boolq"
 SPLIT = "validation"
 N_SAMPLES = None
 MAX_NEW_TOK = 64
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 128
+DEVICE = "cpu"
+BATCH_SIZE = 32
 ENERGY_DIR = Path("Energy")
-MODES = {"q+r": True}  # {"q": False, "q+r": True}
+MODES = {"q": False}  # {"q": False, "q+r": True}
 
 YES, NO = {"yes", "true"}, {"no", "false"}
+print(f"{'='*25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'='*25}")
 
 # ── logging / warnings ────────────────────────────────────────────────
 warnings.filterwarnings("ignore")
@@ -55,12 +56,12 @@ def build_prompt(q: str, passage: str, use_ctx: bool) -> str:
 
 # ── evaluation wrapper (batched, resumable) ───────────────────────────
 def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None:
-    csv_out = Path(f"boolq_smol_{tag}.csv")
+    csv_out = Path(f"boolq_{MODEL_NAME.split('/')[-1]}_{tag}.csv")
 
     start_qid, mode = 0, "w"
     if csv_out.exists():
         last = ""
-        with csv_out.open() as f:
+        with csv_out.open(encoding='utf-8') as f:
             for line in f:
                 if line.strip():
                     last = line
@@ -125,8 +126,8 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 writer.writerow([qid, raw_pred, pred, gold, em, q_kwh, elapsed])
                 f_out.flush()
 
-            torch.cuda.empty_cache()
-            torch.cuda.ipc_collect()
+            # torch.cuda.empty_cache()
+            # torch.cuda.ipc_collect()
             pbar.update(len(batch))
 
     print(f"{tag}: finished; results saved to {csv_out}")
@@ -137,7 +138,7 @@ if __name__ == "__main__":
     tok = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
     mdl = (
         AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME, torch_dtype=torch.float16 if DEVICE == "cuda" else None
+            MODEL_NAME, torch_dtype=None
         )
         .to(DEVICE)
         .eval()

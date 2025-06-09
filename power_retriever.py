@@ -1,165 +1,79 @@
-import csv, warnings, time, torch, datetime, json
+import json, time, tarfile
 from pathlib import Path
-from beir import util as beir_util
-from beir.datasets.data_loader import GenericDataLoader
-from rank_bm25 import BM25Okapi
-from sentence_transformers import SentenceTransformer, util as st_util
+from multiprocessing import Pool, cpu_count
 from codecarbon import EmissionsTracker
+from sklearn.feature_extraction.text import TfidfVectorizer
+from datasets import load_dataset
 
-# ── configuration ─────────────────────────────────────────────
-DATASET     = "hotpotqa"
-SPLIT       = "test"                    # "train" | "validation" | "test"
-TOP_K       = 5
-DENSE_MODEL = "nishimoto/contriever-sentencetransformer"
-DEVICE      = "cpu"
-DATA_DIR    = Path("datasets") / DATASET
-ZIP_URL     = f"https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{DATASET}.zip"
-SUMMARY_CSV = Path("energy_summary.csv")
-warnings.filterwarnings("ignore")
-# ──────────────────────────────────────────────────────────────
+# ────── CONFIG ─────────────────────────────────────────────────────
+DUMP_PATH = Path("enwiki-20171001-pages-meta-current-withlinks-processed.tar.bz2")
+N_ARTICLES = 50000  # Set None to use all
+TOP_K = 10
+NUM_WORKERS = max(1, cpu_count() - 1)
 
-def ensure_dataset():
-    if DATA_DIR.exists(): return
-    print("> downloading dataset once …")
-    beir_util.download_and_unzip(ZIP_URL, DATA_DIR.parent)
+# ────── HOTPOT QUESTIONS ───────────────────────────────────────────
+hotpot = load_dataset("hotpotqa", "fullwiki", split="validation[:100]")
 
-def save_summary(row_dict: dict):
-    new_file = not SUMMARY_CSV.exists()
-    with SUMMARY_CSV.open("a", newline="") as fp:
-        wr = csv.DictWriter(fp, fieldnames=row_dict.keys())
-        if new_file: wr.writeheader()
-        wr.writerow(row_dict)
+# ────── EXTRACT ARTICLES ───────────────────────────────────────────
+def load_article(member_bytes: bytes):
+    try:
+        obj = json.loads(member_bytes)
+        text = " ".join("".join(s) for s in obj["text"])
+        return text
+    except:
+        return None
 
-def parse_last_cc_row(cc_file: Path) -> dict:
-    # CodeCarbon writes one header + one data row in our use‑case
-    with cc_file.open() as f:
-        header = f.readline().strip().split(",")
-        values = f.readline().strip().split(",")
-    return dict(zip(header, values))
+def extract_all_articles(tar_path: Path, limit: int | None = None) -> list[str]:
+    with tarfile.open(tar_path, "r:bz2") as archive:
+        members = [m for m in archive.getmembers() if m.isfile()]
+        if limit: members = members[:limit]
 
-def run_tracker(project_name: str):
-    out_file = f"{project_name}.csv"
+        with Pool(NUM_WORKERS) as pool:
+            results = pool.map(
+                lambda m: load_article(archive.extractfile(m).read()),
+                members
+            )
+
+        return [r for r in results if r]
+
+# ────── LOAD WIKI ARTICLES ─────────────────────────────────────────
+print("Loading Wikipedia articles...")
+articles = extract_all_articles(DUMP_PATH, N_ARTICLES)
+print(f"Loaded {len(articles):,} articles.")
+
+# ────── TF-IDF INDEXING ─────────────────────────────────────────────
+vectorizer = TfidfVectorizer(max_features=100000, stop_words="english")
+tfidf_matrix = vectorizer.fit_transform(articles)
+
+# ────── PER-QUERY RETRIEVAL + ENERGY ───────────────────────────────
+retrieved = {}
+energy_dir = Path("Energy"); energy_dir.mkdir(exist_ok=True)
+energy_csv = energy_dir / "retrieval_energy_per_query.csv"
+with open(energy_csv, "w", encoding="utf-8") as outf:
+    outf.write("qid,duration,energy_consumed,emissions\n")
+
+for idx, ex in enumerate(hotpot):
     tracker = EmissionsTracker(
-        project_name=project_name,
-        output_dir=".",
-        output_file=out_file,
-        log_level="error"
+        project_name="hotpot_retrieval",
+        output_dir=str(energy_dir),
+        output_file=None,
+        log_level="error",
+        measure_power_secs=0.5,
     )
-    tracker.start(); start = time.time()
-    return tracker, Path(out_file), start
+    tracker.start()
+    start = time.time()
 
-# ── data ----------------------------------------------------------------
-ensure_dataset()
-corpus, queries, qrels = GenericDataLoader(str(DATA_DIR)).load(split=SPLIT)
-doc_ids = list(corpus.keys())[:50]
-docs    = [corpus[d]["text"] for d in doc_ids]
-n_docs, n_q = len(doc_ids), len(queries)
-print(f"> corpus={n_docs:,}  queries={n_q:,}  split={SPLIT}")
+    qv = vectorizer.transform([ex["question"]])
+    scores = (qv @ tfidf_matrix.T).toarray()[0]
+    top_idxs = scores.argsort()[-TOP_K:][::-1]
+    retrieved[idx] = [articles[i] for i in top_idxs]
 
-def em_at_1(hits, qid): return int(hits and hits[0] in qrels.get(qid, {}))
-def rec_at_k(hits, qid): return int(bool(set(hits[:TOP_K]) & set(qrels.get(qid, {}))))
+    duration = time.time() - start
+    emissions = tracker.stop()
 
-# ── 1. BM25 index build -------------------------------------------------
-tracker, cc_path, t0 = run_tracker("bm25_index")
-bm25 = BM25Okapi([d.split() for d in docs])
-tracker.stop()
-row = parse_last_cc_row(cc_path)
-save_summary({
-    "timestamp": row["timestamp"],
-    "project_name": "bm25_index",
-    "stage": "index",
-    "retriever": "bm25",
-    "split": SPLIT,
-    "docs": n_docs,
-    "queries": n_q,
-    "duration": row["duration"],
-    "energy_kWh": row["energy_consumed"],
-    "cpu_power": row["cpu_power"],
-    "gpu_power": row["gpu_power"],
-    "ram_power": row["ram_power"],
-    "emissions_kg": row["emissions"]
-})
+    with open(energy_csv, "a", encoding="utf-8") as outf:
+        outf.write(f"{idx},{duration:.4f},{emissions.energy_consumed:.6f},{emissions.emissions:.6f}\n")
 
-# ── 2. Dense embedding build -------------------------------------------
-tracker, cc_path, _ = run_tracker("dense_embed")
-encoder = SentenceTransformer(DENSE_MODEL, device=DEVICE)
-doc_emb = encoder.encode(docs, convert_to_tensor=True, batch_size=128,
-                         show_progress_bar=True)
-tracker.stop()
-row = parse_last_cc_row(cc_path)
-save_summary({
-    "timestamp": row["timestamp"],
-    "project_name": "dense_embed",
-    "stage": "index",
-    "retriever": "dense",
-    "split": SPLIT,
-    "docs": n_docs,
-    "queries": n_q,
-    "duration": row["duration"],
-    "energy_kWh": row["energy_consumed"],
-    "cpu_power": row["cpu_power"],
-    "gpu_power": row["gpu_power"],
-    "ram_power": row["ram_power"],
-    "emissions_kg": row["emissions"]
-})
-
-# ── 3. BM25 evaluation --------------------------------------------------
-tracker, cc_path, _ = run_tracker("bm25_eval")
-bm25_em = bm25_rec = 0
-for qid, query in queries.items():
-    sc = bm25.get_scores(query.split())
-    top = sorted(range(len(sc)), key=sc.__getitem__, reverse=True)[:TOP_K]
-    hits = [doc_ids[i] for i in top]
-    bm25_em  += em_at_1(hits, qid)
-    bm25_rec += rec_at_k(hits, qid)
-tracker.stop()
-row = parse_last_cc_row(cc_path)
-save_summary({
-    "timestamp": row["timestamp"],
-    "project_name": "bm25_eval",
-    "stage": "eval",
-    "retriever": "bm25",
-    "split": SPLIT,
-    "docs": n_docs,
-    "queries": n_q,
-    "duration": row["duration"],
-    "energy_kWh": row["energy_consumed"],
-    "cpu_power": row["cpu_power"],
-    "gpu_power": row["gpu_power"],
-    "ram_power": row["ram_power"],
-    "emissions_kg": row["emissions"],
-    "EM@1": f"{bm25_em/n_q:.4f}",
-    f"Recall@{TOP_K}": f"{bm25_rec/n_q:.4f}"
-})
-
-# ── 4. Dense evaluation -------------------------------------------------
-tracker, cc_path, _ = run_tracker("dense_eval")
-dense_em = dense_rec = 0
-for qid, query in queries.items():
-    q_vec = encoder.encode(query, convert_to_tensor=True, device=DEVICE)
-    top = torch.topk(st_util.dot_score(q_vec, doc_emb)[0], k=TOP_K).indices.tolist()
-    hits = [doc_ids[i] for i in top]
-    dense_em  += em_at_1(hits, qid)
-    dense_rec += rec_at_k(hits, qid)
-tracker.stop()
-row = parse_last_cc_row(cc_path)
-save_summary({
-    "timestamp": row["timestamp"],
-    "project_name": "dense_eval",
-    "stage": "eval",
-    "retriever": "dense",
-    "split": SPLIT,
-    "docs": n_docs,
-    "queries": n_q,
-    "duration": row["duration"],
-    "energy_kWh": row["energy_consumed"],
-    "cpu_power": row["cpu_power"],
-    "gpu_power": row["gpu_power"],
-    "ram_power": row["ram_power"],
-    "emissions_kg": row["emissions"],
-    "EM@1": f"{dense_em/n_q:.4f}",
-    f"Recall@{TOP_K}": f"{dense_rec/n_q:.4f}"
-})
-
-# ── final report --------------------------------------------------------
-print("\nSummary rows appended to", SUMMARY_CSV)
+# ────── SAVE RESULTS ───────────────────────────────────────────────
+Path("retrieved_articles.json").write_text(json.dumps(retrieved, indent=2), encoding="utf-8")
+print(f"Retrieved top-{TOP_K} articles for {len(hotpot)} questions.")
