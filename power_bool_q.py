@@ -12,15 +12,16 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ── static hyper‑params ───────────────────────────────────────────────
-MODEL_NAME = "openai-community/gpt2-xl"  # openai-community/gpt2-xl OR distilbert/distilgpt2
+MODEL_NAME = "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
 DATASET_NAME = "google/boolq"
+CONFIG = "fullwiki"
 SPLIT = "validation"
 N_SAMPLES = None
 MAX_NEW_TOK = 64
+BATCH_SIZE = 128
 DEVICE = "cpu"
-BATCH_SIZE = 32
+MODES = {"q": False, "q+r": True}  # {"q": False, "q+r": True}
 ENERGY_DIR = Path("Energy")
-MODES = {"q": False}  # {"q": False, "q+r": True}
 
 YES, NO = {"yes", "true"}, {"no", "false"}
 print(f"{'='*25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'='*25}")
