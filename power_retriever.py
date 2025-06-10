@@ -2,39 +2,61 @@ import json, time, tarfile
 from pathlib import Path
 from multiprocessing import Pool, cpu_count
 from codecarbon import EmissionsTracker
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import HashingVectorizer
 from datasets import load_dataset
 
 # ────── CONFIG ─────────────────────────────────────────────────────
 DUMP_PATH = Path("enwiki-20171001-pages-meta-current-withlinks-processed.tar.bz2")
-N_ARTICLES = 50000  # Set None to use all
+N_ARTICLES = 500  # Set None to use all
 TOP_K = 10
 NUM_WORKERS = max(1, cpu_count() - 1)
 
 # ────── HOTPOT QUESTIONS ───────────────────────────────────────────
-hotpot = load_dataset("hotpotqa", "fullwiki", split="validation[:100]")
+hotpot = load_dataset("hotpotqa/hotpot_qa", "fullwiki", split="validation[:100]")
 
 # ────── EXTRACT ARTICLES ───────────────────────────────────────────
-def load_article(member_bytes: bytes):
+def load_article(member_bytes: bytes) -> str | None:
     try:
-        obj = json.loads(member_bytes)
+        obj = json.loads(member_bytes.decode("utf-8"))
         text = " ".join("".join(s) for s in obj["text"])
         return text
     except:
         return None
 
+
+
+def read_and_extract_article(args):
+    tar_path, member = args
+    try:
+        with tarfile.open(tar_path, "r:bz2") as archive:
+            f = archive.extractfile(member)
+            if f:
+                return load_article(f.read())
+            return None
+    except:
+        return None
+
 def extract_all_articles(tar_path: Path, limit: int | None = None) -> list[str]:
+    print("Opening archive...")
     with tarfile.open(tar_path, "r:bz2") as archive:
         members = [m for m in archive.getmembers() if m.isfile()]
-        if limit: members = members[:limit]
+        if limit:
+            members = members[:limit]
 
-        with Pool(NUM_WORKERS) as pool:
-            results = pool.map(
-                lambda m: load_article(archive.extractfile(m).read()),
-                members
-            )
+        # Read all file bytes first (safe before parallel)
+        byte_blobs = []
+        for m in members:
+            f = archive.extractfile(m)
+            if f:
+                byte_blobs.append(f.read())
 
-        return [r for r in results if r]
+    print("Processing articles in parallel...")
+    with Pool(NUM_WORKERS) as pool:
+        results = pool.map(load_article, byte_blobs)
+
+    return [r for r in results if r]
+
+
 
 # ────── LOAD WIKI ARTICLES ─────────────────────────────────────────
 print("Loading Wikipedia articles...")
@@ -42,7 +64,12 @@ articles = extract_all_articles(DUMP_PATH, N_ARTICLES)
 print(f"Loaded {len(articles):,} articles.")
 
 # ────── TF-IDF INDEXING ─────────────────────────────────────────────
-vectorizer = TfidfVectorizer(max_features=100000, stop_words="english")
+vectorizer = HashingVectorizer(
+    n_features=2**12,  # adjustable
+    alternate_sign=False,
+    norm='l2',
+    stop_words="english"
+)
 tfidf_matrix = vectorizer.fit_transform(articles)
 
 # ────── PER-QUERY RETRIEVAL + ENERGY ───────────────────────────────
@@ -58,8 +85,8 @@ for idx, ex in enumerate(hotpot):
         output_dir=str(energy_dir),
         output_file=None,
         log_level="error",
-        measure_power_secs=0.5,
     )
+
     tracker.start()
     start = time.time()
 
