@@ -180,6 +180,8 @@ def retrieve_with_emissions(
     if return_titles:
         top_k_idx = scores.argsort()[-10:][::-1]
         top_titles = [article_titles[i] for i in top_k_idx]
+    else:
+        top_titles = []
 
     tracker.stop()
 
