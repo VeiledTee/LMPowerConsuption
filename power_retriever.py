@@ -14,6 +14,7 @@ NUM_WORKERS = max(1, cpu_count() - 1)
 # ────── HOTPOT QUESTIONS ───────────────────────────────────────────
 hotpot = load_dataset("hotpotqa/hotpot_qa", "fullwiki", split="validation[:100]")
 
+
 # ────── EXTRACT ARTICLES ───────────────────────────────────────────
 def load_article(member_bytes: bytes) -> str | None:
     try:
@@ -22,7 +23,6 @@ def load_article(member_bytes: bytes) -> str | None:
         return text
     except:
         return None
-
 
 
 def read_and_extract_article(args):
@@ -35,6 +35,7 @@ def read_and_extract_article(args):
             return None
     except:
         return None
+
 
 def extract_all_articles(tar_path: Path, limit: int | None = None) -> list[str]:
     print("Opening archive...")
@@ -57,7 +58,6 @@ def extract_all_articles(tar_path: Path, limit: int | None = None) -> list[str]:
     return [r for r in results if r]
 
 
-
 # ────── LOAD WIKI ARTICLES ─────────────────────────────────────────
 print("Loading Wikipedia articles...")
 articles = extract_all_articles(DUMP_PATH, N_ARTICLES)
@@ -67,14 +67,15 @@ print(f"Loaded {len(articles):,} articles.")
 vectorizer = HashingVectorizer(
     n_features=2**12,  # adjustable
     alternate_sign=False,
-    norm='l2',
-    stop_words="english"
+    norm="l2",
+    stop_words="english",
 )
 tfidf_matrix = vectorizer.fit_transform(articles)
 
 # ────── PER-QUERY RETRIEVAL + ENERGY ───────────────────────────────
 retrieved = {}
-energy_dir = Path("Energy"); energy_dir.mkdir(exist_ok=True)
+energy_dir = Path("Energy")
+energy_dir.mkdir(exist_ok=True)
 energy_csv = energy_dir / "retrieval_energy_per_query.csv"
 with open(energy_csv, "w", encoding="utf-8") as outf:
     outf.write("qid,duration,energy_consumed,emissions\n")
@@ -99,8 +100,12 @@ for idx, ex in enumerate(hotpot):
     emissions = tracker.stop()
 
     with open(energy_csv, "a", encoding="utf-8") as outf:
-        outf.write(f"{idx},{duration:.4f},{emissions.energy_consumed:.6f},{emissions.emissions:.6f}\n")
+        outf.write(
+            f"{idx},{duration:.4f},{emissions.energy_consumed:.6f},{emissions.emissions:.6f}\n"
+        )
 
 # ────── SAVE RESULTS ───────────────────────────────────────────────
-Path("retrieved_articles.json").write_text(json.dumps(retrieved, indent=2), encoding="utf-8")
+Path("retrieved_articles.json").write_text(
+    json.dumps(retrieved, indent=2), encoding="utf-8"
+)
 print(f"Retrieved top-{TOP_K} articles for {len(hotpot)} questions.")

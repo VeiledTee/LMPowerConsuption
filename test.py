@@ -19,7 +19,9 @@ def convert_seconds(total_seconds):
 
 
 # ─── Load full wiki articles ──────────────────────────────────────
-base_dir = Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\enwiki-20171001-pages-meta-current-withlinks-processed")
+base_dir = Path(
+    r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\enwiki-20171001-pages-meta-current-withlinks-processed"
+)
 documents = []
 article_titles = []
 
@@ -34,7 +36,11 @@ for subdir, dirs, files in os.walk(base_dir):
                         try:
                             obj = json.loads(line)
                             if isinstance(obj.get("text"), list) and obj.get("text"):
-                                article_text = " ".join("".join(sent) for sent in obj["text"] if isinstance(sent, list))
+                                article_text = " ".join(
+                                    "".join(sent)
+                                    for sent in obj["text"]
+                                    if isinstance(sent, list)
+                                )
                                 if article_text.strip():
                                     documents.append(article_text)
                                     article_titles.append(obj.get("title", ""))
@@ -44,7 +50,9 @@ for subdir, dirs, files in os.walk(base_dir):
                 continue
 total_s = time.time() - t0
 hours, minutes, seconds = convert_seconds(total_s)
-print(f"Collected {len(documents)} full articles in {hours} hours, {minutes} minutes, {seconds} seconds")
+print(
+    f"Collected {len(documents)} full articles in {hours} hours, {minutes} minutes, {seconds} seconds"
+)
 
 
 # ─── Fit TF-IDF over all articles ─────────────────────────────────
@@ -52,13 +60,15 @@ t0 = time.time()
 vectorizer = HashingVectorizer(
     n_features=2**12,  # adjustable
     alternate_sign=False,
-    norm='l2',
-    stop_words="english"
+    norm="l2",
+    stop_words="english",
 )
 tfidf_matrix = vectorizer.transform(documents)
 total_s = time.time() - t0
 hours, minutes, seconds = convert_seconds(total_s)
-print(f"Indexed {len(documents)} articles in {hours} hours, {minutes} minutes, {seconds} seconds")
+print(
+    f"Indexed {len(documents)} articles in {hours} hours, {minutes} minutes, {seconds} seconds"
+)
 
 # ─── Load HotpotQA queries ────────────────────────────────────────
 DATASET_NAME = "hotpotqa/hotpot_qa"
@@ -75,7 +85,7 @@ out_dir.mkdir(exist_ok=True)
 clean_data_csv = out_dir / "tfidf_hotpot_retrieval.csv"
 cc_outfile = "energy_tfidf_hotpot_retrieval.csv"
 
-columns = ['qid', 'question', 'duration', 'energy_consumed', 'emissions']
+columns = ["qid", "question", "duration", "energy_consumed", "emissions"]
 energy_emissions_df = pd.DataFrame(columns=columns)
 
 
@@ -86,7 +96,7 @@ for idx, example in enumerate(dataset):
         project_name="hotpotqa_retrieval",
         output_dir=str(out_dir),
         output_file=cc_outfile,
-        log_level="error"
+        log_level="error",
     )
 
     tracker.start()

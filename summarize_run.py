@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """
-Summarise BoolQ *or* HotpotQA run.
+Summarise HotpotQA run with full retrieval + inference energy.
 
-CSV must have the header
-qid,raw_pred,pred,gold,em,energy_kWh,time (s)   # BoolQ
-or
-qid,pred,gold,em,f1,energy_kWh,time (s)         # Hotpot
+CSV header:
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
 
-Outputs one pipe‑separated line to avg_results.txt:
-YYYY‑MM‑DD|dataset|tag|model|N|acc|f1|avg‑kWh|avg‑s
+Output pipe-separated line to avg_results.txt:
+YYYY-MM-DD|dataset|tag|model|N|acc|f1|
+inf_energy|inf_emissions|inf_avg_dur|
+ret_energy|ret_emissions|ret_avg_dur|
+total_energy|total_emissions|total_avg_dur
 """
-
-from __future__ import annotations
 
 import csv
 import re
@@ -19,18 +18,18 @@ import string
 from datetime import date
 from pathlib import Path
 
-# -- BEFORE RUNNING ---------------
-CSV_IN = Path("hotpot_smol_q+r.csv")  # first CLI arg = csv path
-DATASET = "hotpotqa/hotpot_qa"  # "hotpotqa/hotpot_qa" or "google/boolq"
-TAG = str(CSV_IN).split('_')[-1].split('.')[0]  # "q" or "q+r"
+# -- CONFIG ---------------------------------------
+CSV_IN = Path("hotpot_power_run.csv")
+DATASET = "hotpotqa/hotpot_qa"
+TAG = str(CSV_IN).split("_")[-1].split(".")[0]
 MODEL = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 RESULTS_TXT = Path("avg_results.txt")
 
 
-# -- helper: Hotpot normalise + F1 ------------------
+# -- Normalization exactly as HotpotQA official --
 def _norm(txt: str) -> str:
     txt = txt.lower()
-    txt = "".join(ch for ch in txt if ch not in string.punctuation)
+    txt = "".join(ch for ch in string.punctuation)
     txt = re.sub(r"\b(a|an|the)\b", " ", txt)
     return " ".join(txt.split())
 
@@ -49,35 +48,37 @@ def hotpot_f1(pred: str, gold: str) -> float:
     return 2 * prec * rec / (prec + rec)
 
 
-# -- main summariser --------------------------
-def main() -> None:
-    if not str(CSV_IN).endswith(".csv"):
-        raise SystemExit("Provide a CSV.")
+# -- Main summarizer --
+def main():
     with CSV_IN.open(encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
-    if not rows:
-        raise SystemExit("CSV is empty.")
 
     n = len(rows)
-    energy_sum = sum(float(r["energy_kWh"]) for r in rows)
-    time_sum = sum(0 if r["time (s)"] is None else float(r["time (s)"]) for r in rows)
+    acc = sum(int(r["em"]) for r in rows) / n
+    f1_avg = sum(float(r["f1"]) for r in rows) / n
 
-    if "boolq" in DATASET:  # ——— BoolQ branch
-        from sklearn.metrics import f1_score  # sklearn only if needed
-        tok_sum = sum(len((r.get("raw_pred")).split()) for r in rows)
+    # Inference sums
+    inf_energy = sum(float(r["inference_energy_consumed (kWh)"]) for r in rows)
+    inf_emissions = sum(float(r["inference_emissions (kg)"]) for r in rows)
+    inf_duration = sum(float(r["inference_duration (s)"]) for r in rows)
 
-        golds = [r["gold"].strip().lower() for r in rows]
-        preds = [r["pred"].strip().lower() for r in rows]
-        acc = sum(int(p == g) for p, g in zip(preds, golds)) / n
-        f1 = f1_score(golds, preds, labels=["true", "false"], average="micro")
-    else:  # ——— HotpotQA branch
-        tok_sum = sum(len((r.get("pred")).split()) for r in rows)
-        acc = sum(hotpot_em(r["pred"], r["gold"]) for r in rows) / n
-        f1 = sum(hotpot_f1(r["pred"], r["gold"]) for r in rows) / n
+    # Retrieval sums
+    ret_energy = sum(float(r["retrieval_energy_consumed (kWh)"]) for r in rows)
+    ret_emissions = sum(float(r["retrieval_emissions (kg)"]) for r in rows)
+    ret_duration = sum(float(r["retrieval_duration (s)"]) for r in rows)
 
+    # Totals
+    total_energy = inf_energy + ret_energy
+    total_emissions = inf_emissions + ret_emissions
+    total_duration = inf_duration + ret_duration
+
+    # Final line with full breakdown
     line = (
         f"{date.today().isoformat()}|{DATASET}|{TAG}|{MODEL}|{n}|"
-        f"{acc:.4f}|{f1:.4f}|{energy_sum/n:.6f}|{time_sum/n:.4f}|{tok_sum/n:.2f}\n"
+        f"{acc:.4f}|{f1_avg:.4f}|"
+        f"{inf_energy:.6f}|{inf_emissions:.6f}|{inf_duration/n:.4f}|"
+        f"{ret_energy:.6f}|{ret_emissions:.6f}|{ret_duration/n:.4f}|"
+        f"{total_energy:.6f}|{total_emissions:.6f}|{total_duration/n:.4f}\n"
     )
 
     with RESULTS_TXT.open("a", encoding="utf-8") as fp:
