@@ -205,9 +205,9 @@ def _tail_row(path: Path) -> dict:
         last = f.readlines()[-1].strip().split(",")
 
     return {
-        "duration": float(last[3]),
-        "emissions": float(last[4]),
-        "energy_consumed": float(last[12]),
+        "duration": float(last[4]),
+        "emissions": float(last[5]),
+        "energy_consumed": float(last[13]),
     }
 
 
