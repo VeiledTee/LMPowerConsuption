@@ -144,9 +144,12 @@ def fit_tfidf(documents: list[str], n_features: int = 2**12):
 
 def get_corpus_and_index(base_dir: Path):
     if CORPUS_CACHE.exists() and TFIDF_CACHE.exists():
+        print("Cache's exist - moving on")
         return joblib.load(CORPUS_CACHE), joblib.load(TFIDF_CACHE)
-
+    print("Cache's don't exist")
+    print("Loading Wiki")
     docs, titles = load_wiki_corpus(base_dir)
+    print("Wiki loaded - indexing and fitting TF-IDF")
     vec, mat = fit_tfidf(docs)
     joblib.dump((docs, titles), CORPUS_CACHE)
     joblib.dump((vec, mat), TFIDF_CACHE)
