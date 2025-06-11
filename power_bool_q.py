@@ -12,7 +12,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import logging as hf_log
 
 # ── static hyper‑params ───────────────────────────────────────────────
-MODEL_NAME = "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
+MODEL_NAME = (
+    "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
+)
 DATASET_NAME = "google/boolq"
 CONFIG = "fullwiki"
 SPLIT = "validation"
@@ -62,7 +64,7 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
     start_qid, mode = 0, "w"
     if csv_out.exists():
         last = ""
-        with csv_out.open(encoding='utf-8') as f:
+        with csv_out.open(encoding="utf-8") as f:
             for line in f:
                 if line.strip():
                     last = line
@@ -102,15 +104,22 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
                 with torch.inference_mode():
                     try:
                         out = model.generate(
-                        **tokenizer(prompt, return_tensors="pt").to(DEVICE),
-                        max_new_tokens=MAX_NEW_TOK,
-                        do_sample=False,
-                        )
-                    except torch.OutOfMemoryError:
-                        out = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=None).to('cpu').eval().generate(
-                            **tokenizer(prompt, return_tensors="pt").to('cpu'),
+                            **tokenizer(prompt, return_tensors="pt").to(DEVICE),
                             max_new_tokens=MAX_NEW_TOK,
                             do_sample=False,
+                        )
+                    except torch.OutOfMemoryError:
+                        out = (
+                            AutoModelForCausalLM.from_pretrained(
+                                MODEL_NAME, torch_dtype=None
+                            )
+                            .to("cpu")
+                            .eval()
+                            .generate(
+                                **tokenizer(prompt, return_tensors="pt").to("cpu"),
+                                max_new_tokens=MAX_NEW_TOK,
+                                do_sample=False,
+                            )
                         )
                 q_kwh = tracker.stop()
                 elapsed = time.time() - t_0
@@ -138,9 +147,7 @@ def run_mode(tag: str, include_passage: bool, dataset, model, tokenizer) -> None
 if __name__ == "__main__":
     tok = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
     mdl = (
-        AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME, torch_dtype=None
-        )
+        AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=None)
         .to(DEVICE)
         .eval()
     )
