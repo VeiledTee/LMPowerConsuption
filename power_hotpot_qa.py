@@ -21,14 +21,16 @@ from transformers import logging as hf_log
 MODEL_NAME = (
     "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
 )
-DATASET_NAME = "hotpotqa/hotpot_qa"
+DATASET_NAME = (
+    "openai-community/gpt2-xl"  # openai-community/gpt2-xl OR distilbert/distilgpt2
+)
 CONFIG = "fullwiki"
 SPLIT = "validation"
 N_SAMPLES = None
 MAX_NEW_TOK = 64
 BATCH_SIZE = 32
 DEVICE = "cpu"
-MODES = {"q": False, "q+r": True}  # {"q": False, "q+r": True}
+MODES = {"q": False}  # {"q": False, "q+r": True}
 WIKI_DIR = "enwiki-20171001-pages-meta-current-withlinks-processed"
 CORPUS_CACHE = Path("wiki.pkl")
 TFIDF_CACHE = Path("tfidf.pkl")
@@ -38,20 +40,6 @@ print(f"{'=' * 25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'=' * 25}")
 
 ENERGY_DIR = Path("Energy").resolve()
 ENERGY_DIR.mkdir(exist_ok=True)
-
-# MODEL_NAME = "openai-community/gpt2-xl"  # openai-community/gpt2-xl OR distilbert/distilgpt2
-# DATASET_NAME = "hotpotqa/hotpot_qa"
-# CONFIG = "fullwiki"
-# SPLIT = "validation"
-# N_SAMPLES = None
-# MAX_NEW_TOK = 64
-# BATCH_SIZE = 32
-# DEVICE = "cpu"
-# MODES = {"q": False}  # {"q": False, "q+r": True}
-# print(f"{'='*25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'='*25}")
-#
-# ENERGY_DIR = Path("Energy").resolve()
-# ENERGY_DIR.mkdir(exist_ok=True)
 
 # ─── quiet library chatter ────────────────────────────────────────────
 warnings.filterwarnings("ignore")
@@ -217,13 +205,18 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
         f"hotpot_{MODEL_NAME.split('/')[-1]}_{run_tag}_inference_retrieval.csv"
     )
 
-    t0 = time.time()
-    (docs, titles), (vectorizer, tfidf_matrix) = get_corpus_and_index(Path(WIKI_DIR))
-    total_s = time.time() - t0
-    hours, minutes, seconds = convert_seconds(total_s)
-    print(
-        f"Loaded and indexed {len(docs)} articles in {hours} hours, {minutes} minutes, {seconds} seconds"
-    )
+    if run_tag == "q+r":
+        t0 = time.time()
+        (docs, titles), (vectorizer, tfidf_matrix) = get_corpus_and_index(
+            Path(WIKI_DIR)
+        )
+        total_s = time.time() - t0
+        hours, minutes, seconds = convert_seconds(total_s)
+        print(
+            f"Loaded and indexed {len(docs)} articles in {hours} hours, {minutes} minutes, {seconds} seconds"
+        )
+    else:
+        print(f"Tag is {run_tag} --- skipping wiki")
 
     # Resume support
     start_qid = 0
@@ -280,7 +273,17 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                 prompt = build_prompt(ex, include_passage)
                 inference_tracker.start()
                 with torch.inference_mode():
-                    inputs = tokenizer(prompt, return_tensors="pt")
+                    MAX_CTX_LEN = (
+                        model.config.n_positions - MAX_NEW_TOK
+                    )  # 1024-64 = 960
+
+                    inputs = tokenizer(
+                        prompt,
+                        return_tensors="pt",
+                        truncation=True,
+                        max_length=MAX_CTX_LEN,
+                        padding=False,
+                    )
                     try:
                         out = model.generate(
                             **inputs.to(DEVICE),
