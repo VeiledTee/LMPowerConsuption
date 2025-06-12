@@ -173,20 +173,32 @@ def filter_candidates(q: str, inv: dict, k: int = 5_000) -> list[int]:
 
 
 def get_corpus_and_index(base_dir: Path):
-    if CORPUS_CACHE.exists() and TFIDF_CACHE.exists() and INDEX_CACHE.exists():
-        print("Cache's exist - moving on")
-        return joblib.load(CORPUS_CACHE), joblib.load(TFIDF_CACHE), joblib.load(INDEX_CACHE)
-    print("Cache's don't exist")
-    print("Loading Wiki")
-    docs, titles = load_wiki_corpus(base_dir)
-    joblib.dump((docs, titles), CORPUS_CACHE)
-    print("Wiki loaded - fitting TF-IDF")
-    vectorizer, tfidf_matrix = fit_tfidf(docs)
-    joblib.dump((vectorizer, tfidf_matrix), TFIDF_CACHE)
-    print("TF-IDF fit - indexing TF-IDF")
-    inv_index = build_inv_index(docs)
-    joblib.dump(inv_index, Path("inv.pkl"))
+    # ─── Corpus ────────────────────────────────────────────────────────────────
+    if CORPUS_CACHE.exists():
+        docs, titles = joblib.load(CORPUS_CACHE)
+    else:
+        print("Loading Wikipedia dump…")
+        docs, titles = load_wiki_corpus(base_dir)
+        joblib.dump((docs, titles), CORPUS_CACHE)
+
+    # ─── TF-IDF ────────────────────────────────────────────────────────────────
+    if TFIDF_CACHE.exists():
+        vectorizer, tfidf_matrix = joblib.load(TFIDF_CACHE)
+    else:
+        print("Fitting TF-IDF model…")
+        vectorizer, tfidf_matrix = fit_tfidf(docs)
+        joblib.dump((vectorizer, tfidf_matrix), TFIDF_CACHE)
+
+    # ─── Inverted Index (depends on TF-IDF) ────────────────────────────────────
+    if INDEX_CACHE.exists():
+        inv_index = joblib.load(INDEX_CACHE)
+    else:
+        print("Building inverted index…")
+        inv_index = build_inv_index(docs)          # or use vectorizer/tfidf_matrix if required
+        joblib.dump(inv_index, INDEX_CACHE)
+
     return (docs, titles), (vectorizer, tfidf_matrix), inv_index
+
 
 
 def retrieve_with_emissions(
