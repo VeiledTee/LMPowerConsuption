@@ -1,46 +1,55 @@
+import argparse
 import pandas as pd
+from pathlib import Path
 
-pd.set_option("display.max_rows", None)
-pd.set_option("display.max_columns", None)
-pd.set_option("display.width", None)
-pd.set_option("display.max_colwidth", None)
+RESULT_COLS = {
+    "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
+    "emissions": ("inference_emissions (kg)", "retrieval_emissions (kg)"),
+    "time": ("inference_duration (s)", "retrieval_duration (s)"),
+}
 
-# Load the CSV result files
-distilgpt2_q = pd.read_csv("hotpot_distilgpt2_q.csv")
-distilgpt2_qr = pd.read_csv("hotpot_distilgpt2_q+r.csv")
-gpt2xl_q = pd.read_csv("hotpot_gpt2-xl_q.csv")
 
-# Compute average metrics for each setup
-summary = pd.DataFrame(
-    {
-        "Model": ["distilgpt2_q", "distilgpt2_q+r", "gpt2-xl_q"],
-        "Context Used": [False, True, False],
-        "EM": [
-            distilgpt2_q["em"].mean(),
-            distilgpt2_qr["em"].mean(),
-            gpt2xl_q["em"].mean(),
-        ],
-        "F1": [
-            distilgpt2_q["f1"].mean(),
-            distilgpt2_qr["f1"].mean(),
-            gpt2xl_q["f1"].mean(),
-        ],
-        "Avg Energy (kWh)": [
-            distilgpt2_q["energy_kWh"].mean(),
-            distilgpt2_qr["energy_kWh"].mean(),
-            gpt2xl_q["energy_kWh"].mean(),
-        ],
-        "Avg Emissions (kg)": [
-            distilgpt2_q["emissions (kg)"].mean(),
-            distilgpt2_qr["emissions (kg)"].mean(),
-            gpt2xl_q["emissions (kg)"].mean(),
-        ],
-        "Avg Time (s)": [
-            distilgpt2_q["time (s)"].mean(),
-            distilgpt2_qr["time (s)"].mean(),
-            gpt2xl_q["time (s)"].mean(),
-        ],
+def _combined_mean(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
+    """Average the inference + retrieval columns."""
+    return (df[c1] + df[c2]) / 2.0
+
+
+def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """Add energy_kWh, emissions_kg, time_s averaged over retrieval + inference."""
+    for new_name, (c1, c2) in RESULT_COLS.items():
+        df[f"combined_{new_name}"] = _combined_mean(df, c1, c2)
+    return df
+
+
+def summarise(model_name: str, df: pd.DataFrame, context_used: bool) -> dict:
+    """Return one-row summary dict for a single model run."""
+    df = add_combined_cols(df)
+
+    return {
+        "model": model_name,
+        "context_used": context_used,
+        "em": df["em"].mean(),
+        "f1": df["f1"].mean(),
+        "avg_energy_kWh": df["combined_energy"].mean(),
+        "avg_emissions_kg": df["combined_emissions"].mean(),
+        "avg_time_s": df["combined_time"].mean(),
     }
-)
 
-print(summary)
+
+def _load(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise FileNotFoundError(path)
+    return pd.read_csv(path)
+
+
+def main() -> None:
+    summaries = [
+        summarise("distilgpt2_q",  _load(Path("hotpot_distilgpt2_q.csv")),  False),
+        summarise("distilgpt2_q+r", _load(Path("hotpot_distilgpt2_q+r.csv")), True),
+        summarise("gpt2-xl_q",     _load(Path("hotpot_gpt2-xl_q.csv")),     False),
+    ]
+    print(pd.DataFrame(summaries).to_markdown(index=False))
+
+
+if __name__ == "__main__":
+    main()
