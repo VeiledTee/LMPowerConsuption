@@ -1,9 +1,12 @@
-import json, time, tarfile
-from pathlib import Path
+import json
+import tarfile
+import time
 from multiprocessing import Pool, cpu_count
+from pathlib import Path
+
 from codecarbon import EmissionsTracker
-from sklearn.feature_extraction.text import HashingVectorizer
 from datasets import load_dataset
+from sklearn.feature_extraction.text import HashingVectorizer
 
 # ────── CONFIG ─────────────────────────────────────────────────────
 DUMP_PATH = Path("enwiki-20171001-pages-meta-current-withlinks-processed.tar.bz2")
