@@ -9,6 +9,9 @@ from pathlib import Path
 from typing import Any
 from collections import defaultdict
 
+from pathlib import Path, PurePath
+import bz2, json, html, re
+
 import joblib
 import pandas as pd
 import torch
@@ -41,7 +44,7 @@ HASH_BITS = 20
 TOKEN_PATTERN = r"(?u)\b\w+\b"
 _PUNCT_RE = re.compile(r"[^\w\s]")
 _WS_RE = re.compile(r"\s+")
-_LINK_RE = re.compile(r"</?a[^>]*>", flags=re.I)
+_LINK_RE = re.compile(r"</?a[^>]*>", re.I)
 print(f"{'=' * 25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'=' * 25}")
 
 ENERGY_DIR = Path("Energy").resolve()
@@ -101,34 +104,50 @@ def strip_links(txt: str) -> str:
     return _LINK_RE.sub("", txt).strip()
 
 
-def load_wiki_corpus(root: Path) -> tuple[list[str], list[str]]:
+def smart_open(p: Path):
+    # Hotpot files are *not* compressed; fall back to bz2 only if needed
+    return (bz2.open if p.suffix == ".bz2" else open)(p, "rt", encoding="utf-8", errors="ignore")
+
+
+def load_wiki_corpus(root: Path):
     docs, titles = [], []
-    for path in root.rglob("*.bz2"):
-        with bz2.open(path, "rt", encoding="utf-8", errors="ignore") as fh:
+    for p in root.rglob("wiki_*"):
+        print(p)
+        if p.is_dir():                 # skip sub-dirs
+            continue
+        with bz2.open(p, "rt") as fh:  # all files in the dump are bz2-compressed
             for line in fh:
-                page = json.loads(line)
+                try:
+                    page = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+
                 title = page["title"]
                 if page.get("redirect") or title.endswith("(disambiguation)"):
                     continue
-                para = "".join(page["text"][0]).strip()         # first paragraph
-                para = strip_links(para)
-                if len(para) >= INTRO_MIN_CHARS and not para.startswith("=="):
-                    docs.append(para)
-                    titles.append(title)
-    print(len(docs))
+                # ------------- pick the first “real” paragraph -------------
+                for para_tokens in page["text"]:
+                    para = "".join(para_tokens).strip()
+                    if len(para) >= INTRO_MIN_CHARS and not para.startswith("=="):
+                        para = _LINK_RE.sub("", para)  # strip <a …> tags
+                        docs.append(para)
+                        titles.append(title)
+                        break                           # done with this page
+            print(len(docs))
+    print(f"Documents collected: {len(docs):,}")
     assert len(docs) > 5_000_000, "Corpus too small – wrong path?"
     return docs, titles
 
 
 def fit_tfidf(docs: list[str]):
     vec = HashingVectorizer(
-        n_features=1 << 20,        # 2**20
+        n_features=1 << HASH_BITS,
         ngram_range=(1, 2),
         alternate_sign=False,
         norm="l2",
         stop_words="english",
         lowercase=True,
-        token_pattern=r"(?u)\\b\\w+\\b",
+        token_pattern=r"(?u)\b\w+\b",
     )
     return vec, vec.transform(docs)
 
@@ -174,6 +193,7 @@ def filter_candidates(q: str, inv: dict, k: int = 5_000) -> list[int]:
 def get_corpus_and_index(base_dir: Path):
     # ─── Corpus ────────────────────────────────────────────────────────────────
     if CORPUS_CACHE.exists():
+        print("Wikipedia dump exists")
         docs, titles = joblib.load(CORPUS_CACHE)
     else:
         print("Loading Wikipedia dump…")
@@ -182,6 +202,7 @@ def get_corpus_and_index(base_dir: Path):
 
     # ─── TF-IDF ────────────────────────────────────────────────────────────────
     if TFIDF_CACHE.exists():
+        print("Fitted Tf-IDF exists")
         vectorizer, tfidf_matrix = joblib.load(TFIDF_CACHE)
     else:
         print("Fitting TF-IDF model…")
@@ -190,6 +211,7 @@ def get_corpus_and_index(base_dir: Path):
 
     # ─── Inverted Index (depends on TF-IDF) ────────────────────────────────────
     if INDEX_CACHE.exists():
+        print("Inverted index exists")
         inv_index = joblib.load(INDEX_CACHE)
     else:
         print("Building inverted index…")
@@ -197,7 +219,6 @@ def get_corpus_and_index(base_dir: Path):
         joblib.dump(inv_index, INDEX_CACHE)
 
     return (docs, titles), (vectorizer, tfidf_matrix), inv_index
-
 
 
 def retrieve_with_emissions(
