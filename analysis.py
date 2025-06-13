@@ -10,12 +10,12 @@ RESULT_COLS = {
 
 
 def _combined_mean(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
-    """Average the inference + retrieval columns."""
+    """Average the inference + r columns."""
     return (df[c1] + df[c2]) / 2.0
 
 
 def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
-    """Add energy_kWh, emissions_kg, time_s averaged over retrieval + inference."""
+    """Add energy_kWh, emissions_kg, time_s averaged over r + inference."""
     for new_name, (c1, c2) in RESULT_COLS.items():
         df[f"combined_{new_name}"] = _combined_mean(df, c1, c2)
     return df
@@ -31,8 +31,14 @@ def summarise(model_name: str, df: pd.DataFrame, context_used: bool) -> dict:
         "em": df["em"].mean(),
         "f1": df["f1"].mean(),
         "avg_energy_kWh": df["combined_energy"].mean(),
+        "avg_r_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
+        "avg_i_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
         "avg_emissions_kg": df["combined_emissions"].mean(),
+        "avg_r_emissions_kg": df["retrieval_emissions (kg)"].mean(),
+        "avg_i_emissions_kg": df["inference_emissions (kg)"].mean(),
         "avg_time_s": df["combined_time"].mean(),
+        "avg_r_time_s": df["retrieval_duration (s)"].mean(),
+        "avg_i_time_s": df["inference_duration (s)"].mean(),
     }
 
 
