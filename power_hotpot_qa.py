@@ -23,9 +23,7 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
 
 # ─── fixed hyper‑params ────────────────────────────────────────────────
-MODEL_NAME = (
-    "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
-)
+MODEL_NAME = "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
@@ -34,15 +32,16 @@ MAX_NEW_TOK = 64
 BATCH_SIZE = 32
 DEVICE = "cpu"
 MODES = {"q+r": True}  # {"q": False, "q+r": True}
-WIKI_DIR = "enwiki-20171001-pages-meta-current-withlinks-processed"
+WIKI_DIR = r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\enwiki-20171001-pages-meta-current-withlinks-processed"
 CORPUS_CACHE = Path("wiki.pkl")
 TFIDF_CACHE = Path("tfidf.pkl")
 INDEX_CACHE = Path("index.pkl")
-INTRO_LEN = 50
+INTRO_MIN_CHARS = 51
 HASH_BITS = 20
 TOKEN_PATTERN = r"(?u)\b\w+\b"
 _PUNCT_RE = re.compile(r"[^\w\s]")
 _WS_RE = re.compile(r"\s+")
+_LINK_RE = re.compile(r"</?a[^>]*>", flags=re.I)
 print(f"{'=' * 25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'=' * 25}")
 
 ENERGY_DIR = Path("Energy").resolve()
@@ -81,13 +80,15 @@ def build_prompt(ex: dict, include_passage: bool) -> str:
     q = ex["question"]
     if not include_passage:
         return f"Question: {q}\nAnswer:"
-    titles = {t for t in ex["supporting_facts"]["title"]}
+
+    # Build context properly
     context = ""
-    if titles:
-        context = ". ".join(ex["context"]["title"])
-        for s in ex["context"]["sentences"]:
-            context += "".join(s)
-    return f"Context: {context}\n\nQuestion: {q}\nAnswer:"
+    for para in ex["context"]:
+        title = para[0]
+        sentences = " ".join(para[1])
+        context += f"{title}: {sentences}\n"
+
+    return f"Context: {context}\nQuestion: {q}\nAnswer:"
 
 
 def _normalize(text: str) -> str:
@@ -96,40 +97,38 @@ def _normalize(text: str) -> str:
     return text
 
 
-def load_wiki_corpus(base_dir: Path):
+def strip_links(txt: str) -> str:
+    return _LINK_RE.sub("", txt).strip()
+
+
+def load_wiki_corpus(root: Path) -> tuple[list[str], list[str]]:
     docs, titles = [], []
-    for root, _, files in os.walk(base_dir):
-        for fn in files:
-            if not fn.endswith(".bz2"):
-                continue
-            with bz2.open(Path(root, fn), "rt", encoding="utf-8", errors="ignore") as f:
-                for ln in f:
-                    try:
-                        page = json.loads(ln)
-                        title = page.get("title", "")
-                        if title.endswith("(disambiguation)") or page.get("redirect", False):
-                            continue
-                        # Process first qualifying paragraph only
-                        for para in page.get("text", [])[:1]:
-                            if isinstance(para, list):
-                                text = "".join(para).strip()
-                                if len(text) >= INTRO_LEN and not text.startswith("=="):
-                                    docs.append(_normalize(text))
-                                    titles.append(title)
-                    except Exception:
-                        continue
+    for path in root.rglob("*.bz2"):
+        with bz2.open(path, "rt", encoding="utf-8", errors="ignore") as fh:
+            for line in fh:
+                page = json.loads(line)
+                title = page["title"]
+                if page.get("redirect") or title.endswith("(disambiguation)"):
+                    continue
+                para = "".join(page["text"][0]).strip()         # first paragraph
+                para = strip_links(para)
+                if len(para) >= INTRO_MIN_CHARS and not para.startswith("=="):
+                    docs.append(para)
+                    titles.append(title)
+    print(len(docs))
+    assert len(docs) > 5_000_000, "Corpus too small – wrong path?"
     return docs, titles
 
 
-def fit_tfidf(docs):
+def fit_tfidf(docs: list[str]):
     vec = HashingVectorizer(
-        n_features=1 << HASH_BITS,
+        n_features=1 << 20,        # 2**20
         ngram_range=(1, 2),
         alternate_sign=False,
         norm="l2",
         stop_words="english",
         lowercase=True,
-        token_pattern=TOKEN_PATTERN,
+        token_pattern=r"(?u)\\b\\w+\\b",
     )
     return vec, vec.transform(docs)
 
@@ -381,7 +380,6 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                         "energy_consumed": 0,
                         "emissions": 0,
                     }
-                print(f"RET: {retrieval_metrics}")
                 prompt = build_prompt(ex, include_passage)
                 generated_text, inference_metrics = inference_with_emissions(
                     prompt=prompt,
@@ -392,8 +390,7 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                     max_new_tokens=MAX_NEW_TOK,
                     run_tag=run_tag,
                 )
-                print(f"INF: {inference_metrics}")
-                pred = generated_text[0].strip().split("Answer: ")[-1]
+                pred = generated_text.strip().split("Answer: ")[-1]
                 gold = ex["answer"]
                 em = exact_match(pred, gold)
                 f1 = f1_score(pred, gold)
@@ -417,7 +414,13 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                         "retrieval_emissions (kg)": retrieval_metrics["emissions"],
                     }
                 )
-                print(batch_results[-1])
+                if qid < 3:  # Print first 3 samples
+                    print(f"\n=== SAMPLE {qid} ===")
+                    print(f"QUESTION: {ex['question']}")
+                    print(f"GOLD ANSWER: {ex['answer']}")
+                    print(f"RETRIEVED TITLES: {ex['context']}")
+                    print(f"FULL PROMPT:\n{prompt[:1000]}...")
+                    print(f"FULL GENERATION:\n{generated_text}")
 
             # Convert batch results to dataframe and save incrementally
             df_batch = pd.DataFrame(batch_results)
