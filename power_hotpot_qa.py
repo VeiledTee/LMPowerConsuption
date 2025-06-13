@@ -1,40 +1,40 @@
 import bz2
+import gc
 import json
 import logging
-import os
 import re
 import time
 import warnings
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
-from collections import defaultdict
-
-from pathlib import Path, PurePath
-import bz2, json, html, re
 
 import joblib
 import pandas as pd
 import torch
 from codecarbon import EmissionsTracker
 from datasets import load_dataset
-from sklearn.feature_extraction.text import HashingVectorizer
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, HashingVectorizer
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import logging as hf_log
-from collections import Counter
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
-
+from transformers import AutoModelForCausalLM, AutoTokenizer, logging as hf_log
 
 # ─── fixed hyper‑params ────────────────────────────────────────────────
-MODEL_NAME = "distilbert/distilgpt2"  # openai-community/gpt2-xl OR distilbert/distilgpt2
+MODEL_CANDIDATES = [
+    # "distilbert/distilgpt2",
+    # "openai-community/gpt2-xl",
+    "google/gemma-2b-it",  # 2-b Gemma (instruct)
+    "google/gemma-7b-it",  # 7-b Gemma (instruct)
+    "meta-llama/Llama-2-7b-hf",  # Llama-2 7 b
+    "meta-llama/Llama-2-13b-hf",  # Llama-2 13 b
+]
 DATASET_NAME = "hotpotqa/hotpot_qa"
 CONFIG = "fullwiki"
 SPLIT = "validation"
 N_SAMPLES = None
 MAX_NEW_TOK = 64
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 DEVICE = "cpu"
-MODES = {"q+r": True}  # {"q": False, "q+r": True}
+MODES = {"q": False}  # {"q": False, "q+r": True}
 WIKI_DIR = r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\enwiki-20171001-pages-meta-current-withlinks-processed"
 CORPUS_CACHE = Path("wiki.pkl")
 TFIDF_CACHE = Path("tfidf.pkl")
@@ -45,7 +45,6 @@ TOKEN_PATTERN = r"(?u)\b\w+\b"
 _PUNCT_RE = re.compile(r"[^\w\s]")
 _WS_RE = re.compile(r"\s+")
 _LINK_RE = re.compile(r"</?a[^>]*>", re.I)
-print(f"{'=' * 25}\nMODEL: {MODEL_NAME}\nMODES: {MODES}\n{'=' * 25}")
 
 ENERGY_DIR = Path("Energy").resolve()
 ENERGY_DIR.mkdir(exist_ok=True)
@@ -54,6 +53,22 @@ ENERGY_DIR.mkdir(exist_ok=True)
 warnings.filterwarnings("ignore")
 hf_log.set_verbosity_error()
 logging.getLogger("codecarbon").setLevel(logging.ERROR)
+
+
+# ─── load hugging facce model ─────────────────────────────────────────
+def load_model(name: str, device: str = DEVICE):
+    tok = AutoTokenizer.from_pretrained(name, use_fast=True)
+    mdl = (
+        AutoModelForCausalLM.from_pretrained(
+            name,
+            torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+            device_map="auto" if device == "cuda" else None,
+            trust_remote_code=True,  # Gemma + Llama-2 need this
+        )
+        .to(device)
+        .eval()
+    )
+    return tok, mdl
 
 
 # ─── token normaliser & per‑row scorers ────────────────────────
@@ -79,19 +94,35 @@ def f1_score(pred: str, gold: str) -> float:
     return 2 * prec * rec / (prec + rec)
 
 
+def title_sentence_pairs(item: dict) -> list[str]:
+    pairs = []
+    for title, sent_list in zip(item["title"], item["sentences"]):
+        line = f"{title}: {' '.join(s.strip() for s in sent_list)}"
+        pairs.append(line)
+    return pairs
+
+
 def build_prompt(ex: dict, include_passage: bool) -> str:
     q = ex["question"]
-    if not include_passage:
-        return f"Question: {q}\nAnswer:"
+    if include_passage:
+        lines = []
+        context = ""
+        for title, sent_list in zip(ex["context"]["title"], ex["context"]["sentences"]):
+            # join the sentence fragments for this title
+            paragraph = " ".join(s.strip() for s in sent_list)
+            lines.append(f"{title}: {paragraph}")
+            # join every title-paragraph pair with a newline
+            context += "\n".join(lines)
 
-    # Build context properly
-    context = ""
-    for para in ex["context"]:
-        title = para[0]
-        sentences = " ".join(para[1])
-        context += f"{title}: {sentences}\n"
-
-    return f"Context: {context}\nQuestion: {q}\nAnswer:"
+        return f"Answer the following to the best of your ability. " \
+               f"You must provide an answer. " \
+               f"If you are unsure, make an educated guess based on what you know and the context provided. " \
+               f"Context: {context}\nQuestion: {q}\nAnswer:"
+    else:
+        return f"Answer the following to the best of your ability. " \
+               f"You must provide an answer. " \
+               f"If you are unsure, make an educated guess based on what you know. " \
+               f"Question: {q}\nAnswer:"
 
 
 def _normalize(text: str) -> str:
@@ -106,14 +137,16 @@ def strip_links(txt: str) -> str:
 
 def smart_open(p: Path):
     # Hotpot files are *not* compressed; fall back to bz2 only if needed
-    return (bz2.open if p.suffix == ".bz2" else open)(p, "rt", encoding="utf-8", errors="ignore")
+    return (bz2.open if p.suffix == ".bz2" else open)(
+        p, "rt", encoding="utf-8", errors="ignore"
+    )
 
 
 def load_wiki_corpus(root: Path):
     docs, titles = [], []
     for p in root.rglob("wiki_*"):
         print(p)
-        if p.is_dir():                 # skip sub-dirs
+        if p.is_dir():  # skip sub-dirs
             continue
         with bz2.open(p, "rt") as fh:  # all files in the dump are bz2-compressed
             for line in fh:
@@ -132,7 +165,7 @@ def load_wiki_corpus(root: Path):
                         para = _LINK_RE.sub("", para)  # strip <a …> tags
                         docs.append(para)
                         titles.append(title)
-                        break                           # done with this page
+                        break  # done with this page
             print(len(docs))
     print(f"Documents collected: {len(docs):,}")
     assert len(docs) > 5_000_000, "Corpus too small – wrong path?"
@@ -215,7 +248,7 @@ def get_corpus_and_index(base_dir: Path):
         inv_index = joblib.load(INDEX_CACHE)
     else:
         print("Building inverted index…")
-        inv_index = build_inv_index(docs)          # or use vectorizer/tfidf_matrix if required
+        inv_index = build_inv_index(docs)  # or use vectorizer/tfidf_matrix if required
         joblib.dump(inv_index, INDEX_CACHE)
 
     return (docs, titles), (vectorizer, tfidf_matrix), inv_index
@@ -291,7 +324,12 @@ def inference_with_emissions(
         log_level="error",
     ) as tr:
         with torch.inference_mode():
-            max_ctx_len = model.config.n_positions - max_new_tokens
+            ctx_limit = (
+                getattr(model.config, "n_positions", None)
+                or getattr(model.config, "max_position_embeddings", None)
+                or tokenizer.model_max_length  # final fallback
+            )
+            max_ctx_len = ctx_limit - max_new_tokens
             inputs = tokenizer(
                 prompt,
                 return_tensors="pt",
@@ -326,6 +364,10 @@ def inference_with_emissions(
         "energy_consumed": float(power_consumption_data.energy_consumed),
         "emissions": float(power_consumption_data.emissions),
     }
+    if torch.cuda.is_available():
+        del tokens, inputs  # drop references
+        torch.cuda.empty_cache()  # release cached blocks
+    gc.collect()
     return text, metrics
 
 
@@ -345,10 +387,15 @@ def _tail_row(path: Path) -> dict:
 
 
 # ─── single‑mode runner (CSV only) ────────────────────────────────────
-def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> None:
-    csv_out = Path(
-        f"hotpot_{MODEL_NAME.split('/')[-1]}_{run_tag}_inference_retrieval.csv"
-    )
+def run_mode(
+    run_tag: str,
+    include_passage: bool,
+    dataset,
+    hf_model,
+    hf_model_name,
+    text_tokenizer,
+) -> None:
+    csv_out = Path(f"hotpot_{hf_model_name.split('/')[-1]}_{run_tag}.csv")
 
     if run_tag == "q+r":
         t0 = time.time()
@@ -393,7 +440,7 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                         tfidf_matrix=tfidf_matrix,
                         article_titles=titles,
                         inv_index=inv_index,
-                        precomputed_vec=q_vec
+                        precomputed_vec=q_vec,
                     )
                 else:
                     retrieval_metrics = {
@@ -404,9 +451,9 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                 prompt = build_prompt(ex, include_passage)
                 generated_text, inference_metrics = inference_with_emissions(
                     prompt=prompt,
-                    model=model,
-                    model_name=MODEL_NAME,
-                    tokenizer=tokenizer,
+                    model=hf_model,
+                    model_name=hf_model_name,
+                    tokenizer=text_tokenizer,
                     device=DEVICE,
                     max_new_tokens=MAX_NEW_TOK,
                     run_tag=run_tag,
@@ -435,36 +482,32 @@ def run_mode(run_tag: str, include_passage: bool, dataset, model, tokenizer) -> 
                         "retrieval_emissions (kg)": retrieval_metrics["emissions"],
                     }
                 )
-                if qid < 3:  # Print first 3 samples
-                    print(f"\n=== SAMPLE {qid} ===")
-                    print(f"QUESTION: {ex['question']}")
-                    print(f"GOLD ANSWER: {ex['answer']}")
-                    print(f"RETRIEVED TITLES: {ex['context']}")
-                    print(f"FULL PROMPT:\n{prompt[:1000]}...")
-                    print(f"FULL GENERATION:\n{generated_text}")
 
             # Convert batch results to dataframe and save incrementally
             df_batch = pd.DataFrame(batch_results)
             df_batch.to_csv(csv_out, mode="a", header=not csv_out.exists(), index=False)
+            del df_batch, batch_results
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            gc.collect()
 
             pbar.update(len(batch))
-
+    del hf_model, text_tokenizer
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    gc.collect()
     print(f"{run_tag}: finished; results saved to {csv_out}")
 
 
-# ─── main: load once, run modes ───────────────────────────────────────
 if __name__ == "__main__":
-    tok = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
-    mdl = (
-        AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME, torch_dtype=torch.float16 if DEVICE == "cuda" else None
-        )
-        .to(DEVICE)
-        .eval()
-    )
-    data = load_dataset(DATASET_NAME, CONFIG, split=SPLIT, trust_remote_code=True)
-    if N_SAMPLES:
-        data = data.select(range(N_SAMPLES))
+    # loop through every candidate (comment out to test just one)
+    for model_name in MODEL_CANDIDATES:
+        print(f"\n=== Running model: {model_name} ===")
+        tokenizer, model = load_model(model_name, device=DEVICE)
 
-    for tag, ctx in MODES.items():
-        run_mode(tag, ctx, data, mdl, tok)
+        data = load_dataset(DATASET_NAME, CONFIG, split=SPLIT, trust_remote_code=True)
+        if N_SAMPLES:
+            data = data.select(range(N_SAMPLES))
+
+        for tag, ctx in MODES.items():
+            run_mode(tag, ctx, data, model, model_name, tokenizer)
