@@ -101,7 +101,7 @@ regex==2024.11.6
 requests==2.32.3
 rich==14.0.0
 safetensors==0.5.3
-scikit-learn==1.6.1
+scikit-learn==1.7.0
 scipy==1.15.3
 sentence-transformers==4.1.0
 sentencepiece==0.2.0
