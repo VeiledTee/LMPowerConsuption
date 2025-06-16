@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import torch
 
+
 @dataclass(frozen=True)
 class ExperimentConfig:
     model_candidates: List[str]
@@ -25,18 +26,21 @@ class ExperimentConfig:
     result_dir: Path
     retrieval_only: bool
     log_level: str = "INFO"
-    prompt_templates: Dict[str, str] = field(default_factory=lambda: {
-        "with_context": (
-            "Answer the following to the best of your ability. You must provide an answer. "
-            "If you are unsure, make an educated guess based on what you know and the context provided. "
-            "Context: {context}\nQuestion: {question}\nAnswer:"
-        ),
-        "without_context": (
-            "Answer the following to the best of your ability. You must provide an answer. "
-            "If you are unsure, make an educated guess based on what you know. "
-            "Question: {question}\nAnswer:"
-        )
-    })
+    prompt_templates: Dict[str, str] = field(
+        default_factory=lambda: {
+            "with_context": (
+                "Answer the following to the best of your ability. You must provide an answer. "
+                "If you are unsure, make an educated guess based on what you know and the context provided. "
+                "Context: {context}\nQuestion: {question}\nAnswer:"
+            ),
+            "without_context": (
+                "Answer the following to the best of your ability. You must provide an answer. "
+                "If you are unsure, make an educated guess based on what you know. "
+                "Question: {question}\nAnswer:"
+            ),
+        }
+    )
+
 
 CONFIG = ExperimentConfig(
     model_candidates=[
@@ -54,9 +58,9 @@ CONFIG = ExperimentConfig(
     device="cuda" if torch.cuda.is_available() else "cpu",
     modes={"q": False},
     wiki_dir=Path("data/enwiki-processed"),
-    corpus_cache=Path(__file__).resolve().parent.parent / "cache" / "wiki.pkl",
-    tfidf_cache=Path(__file__).resolve().parent.parent / "cache" / "tfidf.pkl",
-    index_cache=Path(__file__).resolve().parent.parent / "cache" / "index.pkl",
+    corpus_cache=Path("cache/wiki.pkl"),
+    tfidf_cache=Path("cache/tfidf.pkl"),
+    index_cache=Path("cache/index.pkl"),
     intro_min_chars=51,
     hash_bits=20,
     token_pattern=r"(?u)\b\w+\b",

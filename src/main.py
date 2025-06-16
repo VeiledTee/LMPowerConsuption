@@ -30,7 +30,7 @@ def run() -> None:
             CONFIG.dataset_name,
             CONFIG.config,
             split=CONFIG.split,
-            trust_remote_code=True
+            trust_remote_code=True,
         )
         if CONFIG.n_samples:
             dataset = dataset.select(range(CONFIG.n_samples))
@@ -77,7 +77,7 @@ def run_mode(
     include_passage: bool,
     dataset: Dataset,
     tokenizer: any,
-    model: any
+    model: any,
 ) -> None:
     """
     Run evaluation for a specific model and mode.
@@ -91,7 +91,9 @@ def run_mode(
         model: Model instance (or None).
     """
     logger.info(f"Starting {mode_tag} mode for {model_name}")
-    csv_path: Path = CONFIG.result_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv"
+    csv_path: Path = (
+        CONFIG.result_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv"
+    )
 
     wiki_data: tuple | None = None
     if mode_tag == "q+r":
@@ -114,9 +116,7 @@ def run_mode(
 
     results: list[dict] = []
     pbar = tqdm(
-        total=len(dataset) - start_idx,
-        desc=f"{model_name} ({mode_tag})",
-        unit="sample"
+        total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})", unit="sample"
     )
 
     for idx in range(start_idx, len(dataset)):
@@ -124,50 +124,52 @@ def run_mode(
             sample = dataset[idx]
             sample_id = sample.get("id", idx)
 
-            retrieval_metrics: dict = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
+            retrieval_metrics: dict = {
+                "duration": 0.0,
+                "energy_consumed": 0.0,
+                "emissions": 0.0,
+            }
             if wiki_data:
                 docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
                 _, retrieval_metrics = retrieve(
-                    sample["question"],
-                    vectorizer,
-                    tfidf_matrix,
-                    titles,
-                    inv_index
+                    sample["question"], vectorizer, tfidf_matrix, titles, inv_index
                 )
 
             prompt: str = build_prompt(sample, include_passage)
             prediction: str = ""
-            inference_metrics: dict = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
+            inference_metrics: dict = {
+                "duration": 0.0,
+                "energy_consumed": 0.0,
+                "emissions": 0.0,
+            }
 
             if model and tokenizer:
                 full_output, inference_metrics = inference(
-                    prompt,
-                    model,
-                    tokenizer,
-                    model_name,
-                    mode_tag
+                    prompt, model, tokenizer, model_name, mode_tag
                 )
                 prediction = full_output.split("Answer: ")[-1].strip()
 
             em: float = exact_match(prediction, sample["answer"])
             f1: float = f1_score(prediction, sample["answer"])
 
-            results.append({
-                "qid": sample_id,
-                "model": model_name,
-                "mode": mode_tag,
-                "question": sample["question"],
-                "prediction": prediction,
-                "answer": sample["answer"],
-                "em": em,
-                "f1": f1,
-                "retrieval_duration": retrieval_metrics["duration"],
-                "retrieval_energy": retrieval_metrics["energy_consumed"],
-                "retrieval_emissions": retrieval_metrics["emissions"],
-                "inference_duration": inference_metrics["duration"],
-                "inference_energy": inference_metrics["energy_consumed"],
-                "inference_emissions": inference_metrics["emissions"],
-            })
+            results.append(
+                {
+                    "qid": sample_id,
+                    "model": model_name,
+                    "mode": mode_tag,
+                    "question": sample["question"],
+                    "prediction": prediction,
+                    "answer": sample["answer"],
+                    "em": em,
+                    "f1": f1,
+                    "retrieval_duration": retrieval_metrics["duration"],
+                    "retrieval_energy": retrieval_metrics["energy_consumed"],
+                    "retrieval_emissions": retrieval_metrics["emissions"],
+                    "inference_duration": inference_metrics["duration"],
+                    "inference_energy": inference_metrics["energy_consumed"],
+                    "inference_emissions": inference_metrics["emissions"],
+                }
+            )
 
             if len(results) >= CONFIG.batch_size:
                 save_results(results, csv_path)
@@ -196,12 +198,7 @@ def save_results(results: list[dict], csv_path: Path) -> None:
         csv_path: Path to the output CSV file.
     """
     df = pd.DataFrame(results)
-    df.to_csv(
-        csv_path,
-        mode="a",
-        header=not csv_path.exists(),
-        index=False
-    )
+    df.to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
 
 
 if __name__ == "__main__":

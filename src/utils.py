@@ -7,14 +7,17 @@ from config import CONFIG
 def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
+
 def strip_links(text: str) -> str:
     return re.sub(r"</?a[^>]*>", "", text).strip()
+
 
 def convert_seconds(total_seconds):
     hours = int(total_seconds // 3600)
     minutes = int((total_seconds % 3600) // 60)
     seconds = int(total_seconds % 60)
     return hours, minutes, seconds
+
 
 def tail_row(path: Path):
     with path.open() as f:
@@ -25,14 +28,15 @@ def tail_row(path: Path):
         "energy_consumed": float(last[13]),
     }
 
+
 def setup_logging():
     logging.basicConfig(
         level=CONFIG.log_level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
-            logging.FileHandler(CONFIG.energy_dir / 'experiment.log'),
-            logging.StreamHandler()
-        ]
+            logging.FileHandler(CONFIG.energy_dir / "experiment.log"),
+            logging.StreamHandler(),
+        ],
     )
     return logging.getLogger("energy_eval")
 

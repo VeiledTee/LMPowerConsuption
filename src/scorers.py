@@ -1,8 +1,10 @@
 import re
 from utils import normalize
 
+
 def exact_match(pred: str, gold: str) -> int:
     return int(normalize(pred) == normalize(gold))
+
 
 def f1_score(pred: str, gold: str) -> float:
     pt, gt = normalize(pred).split(), normalize(gold).split()
