@@ -13,7 +13,7 @@ from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve
 from scorers import exact_match, f1_score
-from utils import setup_logging, convert_seconds, ensure_config_dirs
+from utils import convert_seconds, ensure_config_dirs, setup_logging
 
 logger = setup_logging()
 ensure_config_dirs()
@@ -162,12 +162,12 @@ def run_mode(
                     "answer": sample["answer"],
                     "em": em,
                     "f1": f1,
-                    "retrieval_duration": retrieval_metrics["duration"],
-                    "retrieval_energy": retrieval_metrics["energy_consumed"],
-                    "retrieval_emissions": retrieval_metrics["emissions"],
                     "inference_duration": inference_metrics["duration"],
                     "inference_energy": inference_metrics["energy_consumed"],
                     "inference_emissions": inference_metrics["emissions"],
+                    "retrieval_duration": retrieval_metrics["duration"],
+                    "retrieval_energy": retrieval_metrics["energy_consumed"],
+                    "retrieval_emissions": retrieval_metrics["emissions"],
                 }
             )
 
