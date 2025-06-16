@@ -1,102 +1,96 @@
+# Energy-Efficient QA System
 
-# LMPowerConsuption
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**LMPowerConsuption** is a lightweight framework for **measuring both the
-accuracy *and* energy‑usage of small language models (SLMs) on popular QA
-benchmarks**.  
-It grew out of my PhD work on environmentally aware evaluation of retrieval‑
-augmented generation systems.
+This project evaluates the energy consumption of large language models on the HotpotQA benchmark, comparing different configurations and retrieval approaches.
 
----
+## 📋 Features
 
-## ✨Key ideas
-***One‑liner experiments** – run any HF model on any HF dataset with a single
-  config flag.  
-***Energy first‑class** – every prompt is wrapped in a
-  [`codecarbon`](https://github.com/mlco2/codecarbon) tracker; per‑question
-  Joules and aggregate kWh are logged automatically.  
-***Reproducible CSV outputs** – predictions, gold answers, EM/F1 and kWh are
-  saved in tidy files ready for pandas/R analysis.
+- Energy consumption tracking with CodeCarbon
+- Support for multiple LLMs (Gemma, Llama-2)
+- Two evaluation modes: with and without retrieval
+- Wikipedia-based document retrieval system
+- Comprehensive metrics: EM, F1, energy, emissions
+- Resume functionality for long-running experiments
 
----
+## 🚀 Getting Started
 
-## 🔖Repository layout
-LMPowerConsuption/
-├─ scripts/
-│  ├─ hotpot\_smol\_eval\_scored.py   # HotpotQA evaluation & energy
-│  └─ boolq\_smol\_eval\_scored.py    # BoolQ evaluation & energy
-├─ Energy/                         # per‑question CodeCarbon logs
-├─ avg\_results.txt                 # running table of overall scores
-└─ requirements.txt                # pinned deps
+### Prerequisites
+- Python 3.10+
+- PyTorch (with CUDA if available)
 
----
-
-## ⚡️Quick start
-
+### Installation
 ```bash
-# 1—clone & create minimal env
 git clone https://github.com/VeiledTee/LMPowerConsuption.git
 cd LMPowerConsuption
-python -m venv .venv && .venv/Scripts/activate   # Windows
-python -m ensurepip --upgrade
-pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
+```
 
-# 2—run a demo (BoolQ, question‑only prompt)
-python scripts/boolq_smol_eval_scored.py
+### Configuration
+Edit `config.py` to:
+- Select models (`model_candidates`)
+- Adjust experiment parameters (`batch_size`, `max_new_tokens`)
+- Set paths (`wiki_dir`, `energy_dir`)
+- Choose modes (`modes`)
 
-# 3—check results
-cat boolq_smol_q_only_results.csv      # per‑question data
-cat avg_results.txt                    # dataset‑level summary
-````
+### Running the Experiment
+```bash
+python main.py
+```
 
-### Command‑line options
+### Expected Output
+```
+2023-10-15 14:30:00 - energy_eval - INFO - Starting experiment with config:...
+2023-10-15 14:30:01 - energy_eval - INFO - Loaded dataset with 1000 samples
+2023-10-15 14:30:05 - energy_eval - INFO - Running model: google/gemma-2b-it
+2023-10-15 14:30:10 - energy_eval - INFO - Starting q mode for google/gemma-2b-it
+100%|████████████████████████| 1000/1000 [15:20<00:00, 1.08s/sample]
+2023-10-15 14:45:30 - energy_eval - INFO - Completed q mode for google/gemma-2b-it
+...
+```
 
-Each script can be tweaked via the constants at the top:
+Results will be saved in CSV format to `results/energy/`.
 
-| Flag              | Meaning                                                      |
-| ----------------- | ------------------------------------------------------------ |
-| `INCLUDE_PASSAGE` | Include dataset context/passage in the prompt               |
-| `N_SAMPLES`       | Evaluate only the first *n* rows (speedy smoke‑run)          |
-| `MODEL_NAME`      | Any HF identifier (quantised GGUF works via `ctransformers`) |
-| `MAX_NEW_TOK`     | Decoding budget per question                                 |
+## 🧩 Project Structure
+```
+energy-efficient-qa/
+├── config.py             # Experiment configuration
+├── main.py               # Main orchestration script
+├── inference.py          # Model loading and generation
+├── prompts.py            # Prompt engineering
+├── retrieval.py          # Wikipedia retrieval system
+├── scorers.py            # Evaluation metrics (EM, F1)
+├── utils.py              # Utility functions
+├── requirements.txt      # Dependencies
+├── README.md             # This document
+└── results/              # Output directory (auto-created)
+    └── energy/           # Energy and performance results
+```
 
----
+## 📊 Results Analysis
+Results include:
+- Question ID and text
+- Model predictions and gold answers
+- Exact Match and F1 scores
+- Energy consumption (kWh)
+- CO2 emissions (kg)
+- Processing duration (seconds)
 
-## 📊Output files
+Use Pandas for analysis:
+```python
+import pandas as pd
 
-| File                            | What it contains                                |       |         |                            |
-| ------------------------------- | ----------------------------------------------- | ----- | ------- | -------------------------- |
-| `boolq_smol_q_only_results.csv` | `qid, predicted, gold, em, energy_kWh` per item |       |         |                            |
-| `avg_results.txt`               | DATASET                                       | VERSION |MODEL | avg\_EM | avg\_energy\_kWh\` per run |
-| `Energy/energy_<id>.csv`        | Raw `codecarbon` trace for the *id‑th* prompt   |       |         |                            |
+df = pd.read_csv("results/energy/hotpot_gemma-2b-it_q+r.csv")
+mean_f1 = df["f1"].mean()
+total_energy = df["inference_energy"].sum()
+print(f"Average F1: {mean_f1:.2f}, Total Energy: {total_energy:.4f} kWh")
+```
 
-Merge multiple runs with pandas or Excel to rank models by **energy per correct
-answer**.
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-## 🔌Adding a new benchmark
-
-1. Copy one of the scripts in `scripts/`.
-2. Change `DATASET_NAME`, `build_prompt()` and scoring function.
-3. Log EM/F1 exactly as in Hotpot or BoolQ; `energy_sum` & `avg_results.txt`
-   require no changes.
-
----
-
-## 🛠Requirements
-
-\*Python≥3.9
-\*`transformers`, `datasets`, `codecarbon`, `accelerate`
-\*NVIDIA GPU(optional) – int‑4 models fit in 6‑8GB; CPU also works (slower).
-
-Exact versions are pinned in `requirements.txt`.
-
----
-
-## 🤝Contributing
-
-Pull requests that add new datasets, models, or alternative energy loggers
-(`zeus`, `pyRAPL`, IPMI) are very welcome!  Please open an issue first to
-discuss the scope.
+## 🙏 Acknowledgments
+- HotpotQA dataset providers
+- Hugging Face Transformers library
+- CodeCarbon for emissions tracking
