@@ -1,1 +1,7 @@
 /venv/
+/cache/
+/datasets/
+/LMPowerConsumption/.idea/LMPowerConsumption.iml
+/LMPowerConsumption/.idea/modules.xml
+/LMPowerConsumption/.idea/inspectionProfiles/profiles_settings.xml
+/LMPowerConsumption/.idea/vcs.xml
