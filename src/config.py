@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
+
 import torch
 
 
@@ -44,7 +45,6 @@ class ExperimentConfig:
 
 CONFIG = ExperimentConfig(
     model_candidates=[
-        "google/gemma-2b-it",
         "google/gemma-7b-it",
         "meta-llama/Llama-2-7b-hf",
         "meta-llama/Llama-2-13b-hf",
@@ -54,8 +54,8 @@ CONFIG = ExperimentConfig(
     split="validation",
     n_samples=None,
     max_new_tokens=64,
-    batch_size=16,
-    device="cuda" if torch.cuda.is_available() else "cpu",
+    batch_size=32,
+    device="cpu",  # "cuda" if torch.cuda.is_available() else "cpu"
     modes={"q": False},
     wiki_dir=Path("data/enwiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
@@ -66,5 +66,5 @@ CONFIG = ExperimentConfig(
     token_pattern=r"(?u)\b\w+\b",
     energy_dir=Path(__file__).resolve().parent.parent / "results" / "energy",
     result_dir=Path(__file__).resolve().parent.parent / "results",
-    retrieval_only=True,
+    retrieval_only=False,
 )
