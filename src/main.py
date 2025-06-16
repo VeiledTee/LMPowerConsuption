@@ -154,20 +154,17 @@ def run_mode(
 
             results.append(
                 {
-                    "qid": sample_id,
-                    "model": model_name,
-                    "mode": mode_tag,
-                    "question": sample["question"],
-                    "prediction": prediction,
-                    "answer": sample["answer"],
+                    "qid": idx,
+                    "pred": prediction,
+                    "gold": sample["answer"],
                     "em": em,
                     "f1": f1,
-                    "inference_duration": inference_metrics["duration"],
-                    "inference_energy": inference_metrics["energy_consumed"],
-                    "inference_emissions": inference_metrics["emissions"],
-                    "retrieval_duration": retrieval_metrics["duration"],
-                    "retrieval_energy": retrieval_metrics["energy_consumed"],
-                    "retrieval_emissions": retrieval_metrics["emissions"],
+                    "inference_duration (s)": inference_metrics["duration"],
+                    "inference_energy (kWh)": inference_metrics["energy_consumed"],
+                    "inference_emissions (kg)": inference_metrics["emissions"],
+                    "retrieval_duration (s)": retrieval_metrics["duration"],
+                    "retrieval_energy (kWh)": retrieval_metrics["energy_consumed"],
+                    "retrieval_emissions (kg)": retrieval_metrics["emissions"],
                 }
             )
 
