@@ -1,6 +1,8 @@
 import logging
+import os
 import re
 from pathlib import Path
+
 from config import CONFIG
 
 
@@ -30,11 +32,16 @@ def tail_row(path: Path):
 
 
 def setup_logging():
+    log_file_path = CONFIG.energy_dir / "experiment.log"
+
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
+
     logging.basicConfig(
         level=CONFIG.log_level,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
-            logging.FileHandler(CONFIG.energy_dir / "experiment.log"),
+            logging.FileHandler(log_file_path),
             logging.StreamHandler(),
         ],
     )

@@ -1,16 +1,20 @@
 import bz2
 import json
-import joblib
 import re
 from collections import Counter, defaultdict
+
+import joblib
 from codecarbon import EmissionsTracker
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, HashingVectorizer
+from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS,
+                                             HashingVectorizer)
+
 from config import CONFIG
 from utils import normalize, strip_links
 
 
 def load_wiki():
     if CONFIG.corpus_cache.exists():
+        print(CONFIG.corpus_cache)
         docs, titles = joblib.load(CONFIG.corpus_cache)
         if not docs:
             raise ValueError("Corpus cache loaded, but no documents found in it.")

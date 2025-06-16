@@ -1,6 +1,7 @@
 import argparse
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 
 RESULT_COLS = {
     "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
