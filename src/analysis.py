@@ -50,8 +50,12 @@ def _load(path: Path) -> pd.DataFrame:
 
 def main() -> None:
     summaries = [
-        summarise("distilgpt2_q", _load(Path("../results/hotpot_distilgpt2_q.csv")), False),
-        summarise("distilgpt2_q+r", _load(Path("../results/hotpot_distilgpt2_q+r.csv")), True),
+        summarise(
+            "distilgpt2_q", _load(Path("../results/hotpot_distilgpt2_q.csv")), False
+        ),
+        summarise(
+            "distilgpt2_q+r", _load(Path("../results/hotpot_distilgpt2_q+r.csv")), True
+        ),
         summarise(
             "distilgpt2_q+r_IR",
             _load(Path("hotpot_distilgpt2_q+r_inference_retrieval.csv")),

@@ -30,7 +30,9 @@ def load_wiki():
                         continue
                     for para_tokens in page.get("text", []):
                         para = "".join(para_tokens).strip()
-                        if len(para) >= CONFIG.intro_min_chars and not para.startswith("=="):
+                        if len(para) >= CONFIG.intro_min_chars and not para.startswith(
+                            "=="
+                        ):
                             para = strip_links(para)
                             docs.append(para)
                             titles.append(title)
@@ -75,7 +77,9 @@ def retrieve(question, vectorizer, tfidf_matrix, titles, inv_index):
         q_vec = vectorizer.transform([question])
         tokens = re.findall(CONFIG.token_pattern, normalize(question))
         tokens = [t for t in tokens if t not in ENGLISH_STOP_WORDS]
-        ngrams = tokens + [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
+        ngrams = tokens + [
+            f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)
+        ]
         counter = Counter()
         for ng in ngrams:
             counter.update(inv_index.get(ng, []))

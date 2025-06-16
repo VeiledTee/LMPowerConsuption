@@ -19,6 +19,7 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, HashingVectorize
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer, logging as hf_log
 
+
 @dataclass(frozen=True)
 class ExperimentConfig:
     model_candidates: List[str]
@@ -40,18 +41,20 @@ class ExperimentConfig:
     energy_dir: Path
     retrieval_only: bool
     log_level: str = "INFO"
-    prompt_templates: Dict[str, str] = field(default_factory=lambda: {
-        "with_context": (
-            "Answer the following to the best of your ability. You must provide an answer. "
-            "If you are unsure, make an educated guess based on what you know and the context provided. "
-            "Context: {context}\nQuestion: {question}\nAnswer:"
-        ),
-        "without_context": (
-            "Answer the following to the best of your ability. You must provide an answer. "
-            "If you are unsure, make an educated guess based on what you know. "
-            "Question: {question}\nAnswer:"
-        )
-    })
+    prompt_templates: Dict[str, str] = field(
+        default_factory=lambda: {
+            "with_context": (
+                "Answer the following to the best of your ability. You must provide an answer. "
+                "If you are unsure, make an educated guess based on what you know and the context provided. "
+                "Context: {context}\nQuestion: {question}\nAnswer:"
+            ),
+            "without_context": (
+                "Answer the following to the best of your ability. You must provide an answer. "
+                "If you are unsure, make an educated guess based on what you know. "
+                "Question: {question}\nAnswer:"
+            ),
+        }
+    )
 
 
 CONFIG = ExperimentConfig(
@@ -85,11 +88,11 @@ warnings.filterwarnings("ignore")
 hf_log.set_verbosity_error()
 logging.basicConfig(
     level=CONFIG.log_level,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(CONFIG.energy_dir / 'experiment.log'),
-        logging.StreamHandler()
-    ]
+        logging.FileHandler(CONFIG.energy_dir / "experiment.log"),
+        logging.StreamHandler(),
+    ],
 )
 logger = logging.getLogger("energy_eval")
 CONFIG.energy_dir.mkdir(parents=True, exist_ok=True)
@@ -124,9 +127,13 @@ def build_prompt(example: Dict[str, Any], include_passage: bool) -> str:
     if include_passage:
         context = "\n".join(
             f"{title}: {' '.join(s.strip() for s in sents)}"
-            for title, sents in zip(example["context"]["title"], example["context"]["sentences"])
+            for title, sents in zip(
+                example["context"]["title"], example["context"]["sentences"]
+            )
         )
-        return CONFIG.prompt_templates["with_context"].format(context=context, question=q)
+        return CONFIG.prompt_templates["with_context"].format(
+            context=context, question=q
+        )
     else:
         return CONFIG.prompt_templates["without_context"].format(question=q)
 
@@ -168,7 +175,9 @@ def load_wiki(config: ExperimentConfig):
                         continue
                     for para_tokens in page.get("text", []):
                         para = "".join(para_tokens).strip()
-                        if len(para) >= config.intro_min_chars and not para.startswith("=="):
+                        if len(para) >= config.intro_min_chars and not para.startswith(
+                            "=="
+                        ):
                             para = strip_links(para)
                             docs.append(para)
                             titles.append(title)
@@ -213,7 +222,9 @@ def retrieve(question, vectorizer, tfidf_matrix, titles, inv_index, config):
         q_vec = vectorizer.transform([question])
         tokens = re.findall(config.token_pattern, normalize(question))
         tokens = [t for t in tokens if t not in ENGLISH_STOP_WORDS]
-        ngrams = tokens + [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
+        ngrams = tokens + [
+            f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)
+        ]
         counter = Counter()
         for ng in ngrams:
             counter.update(inv_index.get(ng, []))
@@ -229,10 +240,19 @@ def retrieve(question, vectorizer, tfidf_matrix, titles, inv_index, config):
         "emissions": float(data.emissions),
     }
 
+
 def inference(prompt, model, tokenizer, config, model_name, run_tag):
-    with EmissionsTracker(project_name=f"hotpot_{model_name}_{run_tag}", log_level="error") as tracker:
+    with EmissionsTracker(
+        project_name=f"hotpot_{model_name}_{run_tag}", log_level="error"
+    ) as tracker:
         with torch.inference_mode():
-            inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=tokenizer.model_max_length - config.max_new_tokens, padding=False).to(config.device)
+            inputs = tokenizer(
+                prompt,
+                return_tensors="pt",
+                truncation=True,
+                max_length=tokenizer.model_max_length - config.max_new_tokens,
+                padding=False,
+            ).to(config.device)
             tokens = model.generate(
                 **inputs,
                 max_new_tokens=config.max_new_tokens,
@@ -261,66 +281,103 @@ def run():
             tokenizer = model = None
         else:
             tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                torch_dtype=torch.float16 if CONFIG.device == "cuda" else torch.float32,
-                device_map="auto" if CONFIG.device == "cuda" else None,
-                trust_remote_code=True,
-            ).to(CONFIG.device).eval()
+            model = (
+                AutoModelForCausalLM.from_pretrained(
+                    model_name,
+                    torch_dtype=(
+                        torch.float16 if CONFIG.device == "cuda" else torch.float32
+                    ),
+                    device_map="auto" if CONFIG.device == "cuda" else None,
+                    trust_remote_code=True,
+                )
+                .to(CONFIG.device)
+                .eval()
+            )
 
         for mode_tag, include_passage in CONFIG.modes.items():
             logger.info(f"Running mode: {mode_tag}")
-            csv_path = CONFIG.energy_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv"
+            csv_path = (
+                CONFIG.energy_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv"
+            )
             start_idx = 0
             if csv_path.exists():
                 df = pd.read_csv(csv_path)
                 if not df.empty:
                     start_idx = int(df["qid"].max()) + 1
 
-            docs, titles, vectorizer, tfidf_matrix, inv_index = ([], [], None, None, None)
+            docs, titles, vectorizer, tfidf_matrix, inv_index = (
+                [],
+                [],
+                None,
+                None,
+                None,
+            )
             if mode_tag == "q+r":
                 docs, titles, vectorizer, tfidf_matrix, inv_index = load_wiki(CONFIG)
 
-            pbar = tqdm(total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})")
+            pbar = tqdm(
+                total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})"
+            )
             results = []
 
             for idx in range(start_idx, len(dataset)):
                 sample = dataset[idx]
                 sample_id = sample.get("id", idx)
 
-                retrieval_metrics = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
+                retrieval_metrics = {
+                    "duration": 0.0,
+                    "energy_consumed": 0.0,
+                    "emissions": 0.0,
+                }
                 if mode_tag == "q+r":
-                    _, retrieval_metrics = retrieve(sample["question"], vectorizer, tfidf_matrix, titles, inv_index, CONFIG)
+                    _, retrieval_metrics = retrieve(
+                        sample["question"],
+                        vectorizer,
+                        tfidf_matrix,
+                        titles,
+                        inv_index,
+                        CONFIG,
+                    )
 
                 prompt = build_prompt(sample, include_passage)
                 if CONFIG.retrieval_only:
                     prediction = ""
-                    inference_metrics = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
+                    inference_metrics = {
+                        "duration": 0.0,
+                        "energy_consumed": 0.0,
+                        "emissions": 0.0,
+                    }
                 else:
-                    full_output, inference_metrics = inference(prompt, model, tokenizer, CONFIG, model_name, mode_tag)
+                    full_output, inference_metrics = inference(
+                        prompt, model, tokenizer, CONFIG, model_name, mode_tag
+                    )
                     prediction = full_output.split("Answer: ")[-1].strip()
                 em = exact_match(prediction, sample["answer"])
                 f1 = f1_score(prediction, sample["answer"])
 
-                results.append({
-                    "qid": sample_id,
-                    "model": model_name,
-                    "mode": mode_tag,
-                    "question": sample["question"],
-                    "prediction": prediction,
-                    "answer": sample["answer"],
-                    "em": em,
-                    "f1": f1,
-                    "retrieval_duration": retrieval_metrics["duration"],
-                    "retrieval_energy": retrieval_metrics["energy_consumed"],
-                    "retrieval_emissions": retrieval_metrics["emissions"],
-                    "inference_duration": inference_metrics["duration"],
-                    "inference_energy": inference_metrics["energy_consumed"],
-                    "inference_emissions": inference_metrics["emissions"],
-                })
+                results.append(
+                    {
+                        "qid": sample_id,
+                        "model": model_name,
+                        "mode": mode_tag,
+                        "question": sample["question"],
+                        "prediction": prediction,
+                        "answer": sample["answer"],
+                        "em": em,
+                        "f1": f1,
+                        "retrieval_duration": retrieval_metrics["duration"],
+                        "retrieval_energy": retrieval_metrics["energy_consumed"],
+                        "retrieval_emissions": retrieval_metrics["emissions"],
+                        "inference_duration": inference_metrics["duration"],
+                        "inference_energy": inference_metrics["energy_consumed"],
+                        "inference_emissions": inference_metrics["emissions"],
+                    }
+                )
 
                 if len(results) >= CONFIG.batch_size or idx == len(dataset) - 1:
-                    pd.DataFrame(results).to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
+                    pd.DataFrame(results).to_csv(
+                        csv_path, mode="a", header=not csv_path.exists(), index=False
+                    )
                     results = []
 
                 if CONFIG.device == "cuda" and idx % CONFIG.batch_size == 0:
