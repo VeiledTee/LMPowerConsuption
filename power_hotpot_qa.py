@@ -15,9 +15,11 @@ import pandas as pd
 import torch
 from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, HashingVectorizer
+from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS,
+                                             HashingVectorizer)
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer, logging as hf_log
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import logging as hf_log
 
 
 @dataclass(frozen=True)
