@@ -1,5 +1,5 @@
 /venv/
-/cache/
+/src/cache/
 /datasets/
 /LMPowerConsumption/.idea/LMPowerConsumption.iml
 /LMPowerConsumption/.idea/modules.xml
