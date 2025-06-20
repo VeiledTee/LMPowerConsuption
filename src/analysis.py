@@ -3,8 +3,6 @@ from pathlib import Path
 
 import pandas as pd
 
-PROJECT_DIR = Path(__file__).resolve().parents[1]
-RESULTS_DIR = PROJECT_DIR / "results"
 
 RESULT_COLS = {
     "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
