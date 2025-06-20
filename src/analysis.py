@@ -52,17 +52,16 @@ def _load(path: Path) -> pd.DataFrame:
 def main() -> None:
     summaries = [
         summarise(
-            "distilgpt2_q", _load(Path("../results/hotpot_distilgpt2_q.csv")), False
+            "gemma-2b-it_q", _load(Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\hotpot_gemma-2b-it_q.csv")), False
         ),
         summarise(
-            "distilgpt2_q+r", _load(Path("../results/hotpot_distilgpt2_q+r.csv")), True
+            "gemma-2b-it_q+r", _load(Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\hotpot_gemma-2b-it_q+r.csv")), True
         ),
         summarise(
-            "distilgpt2_q+r_IR",
-            _load(Path("hotpot_distilgpt2_q+r_inference_retrieval.csv")),
-            True,
+            "gemma-7b-it_q",
+            _load(Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\hotpot_gemma-7b-it_q.csv")),
+            False,
         ),
-        summarise("gpt2-xl_q", _load(Path("../results/hotpot_gpt2-xl_q.csv")), False),
     ]
     print(pd.DataFrame(summaries).to_markdown(index=False))
 
