@@ -7,6 +7,8 @@ import pandas as pd
 import torch
 from datasets import Dataset, load_dataset
 from tqdm import tqdm
+import json
+from datasets import Dataset
 
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
@@ -21,20 +23,31 @@ ensure_config_dirs()
 
 def run() -> None:
     """Main experiment runner."""
+    project_dir = Path(__file__).resolve().parents[1]
+    data_dir = project_dir / "data"
     start_time = time.time()
     logger.info(f"Starting experiment with config:\n{CONFIG}")
     logger.info(f"Using device: {CONFIG.device}")
 
+    dataset_path = Path(data_dir / "hotpot_mini.jsonl")
+
     try:
-        dataset: Dataset = load_dataset(
-            CONFIG.dataset_name,
-            CONFIG.config,
-            split=CONFIG.split,
-            trust_remote_code=True,
-        )
-        if CONFIG.n_samples:
-            dataset = dataset.select(range(CONFIG.n_samples))
-        logger.info(f"Loaded dataset with {len(dataset)} samples")
+        if dataset_path.exists():
+            logger.info(f"Loading dataset from {dataset_path}")
+            with open(dataset_path, "r", encoding="utf-8") as f:
+                data = [json.loads(line) for line in f]
+            dataset = Dataset.from_list(data)
+            logger.info(f"Loaded mini dataset with {len(dataset)} samples")
+        else:
+            dataset: Dataset = load_dataset(
+                CONFIG.dataset_name,
+                CONFIG.config,
+                split=CONFIG.split,
+                trust_remote_code=True,
+            )
+            if CONFIG.n_samples:
+                dataset = dataset.select(range(CONFIG.n_samples))
+            logger.info(f"Loaded dataset with {len(dataset)} samples")
     except Exception as e:
         logger.error(f"Dataset loading failed: {str(e)}")
         return
