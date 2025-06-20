@@ -3,6 +3,9 @@ from pathlib import Path
 
 import pandas as pd
 
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+RESULTS_DIR = PROJECT_DIR / "results"
+
 RESULT_COLS = {
     "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
     "emissions": ("inference_emissions (kg)", "retrieval_emissions (kg)"),
@@ -50,18 +53,16 @@ def _load(path: Path) -> pd.DataFrame:
 
 
 def main() -> None:
+    project_dir = Path(__file__).resolve().parents[1]
+    results_dir = project_dir / "results"
+
     summaries = [
-        summarise(
-            "gemma-2b-it_q", _load(Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\hotpot_gemma-2b-it_q.csv")), False
-        ),
-        summarise(
-            "gemma-2b-it_q+r", _load(Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\hotpot_gemma-2b-it_q+r.csv")), True
-        ),
-        summarise(
-            "gemma-7b-it_q",
-            _load(Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\hotpot_gemma-7b-it_q.csv")),
-            False,
-        ),
+        summarise("distilgpt2_q", _load(results_dir / "hotpot_distilgpt2_q.csv"), False),
+        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_distilgpt2_q+r.csv"), True),
+        summarise("gpt2-xl_q", _load(results_dir / "hotpot_gpt2-xl_q.csv"), False),
+        summarise("gemma-2b-it_q", _load(results_dir / "hotpot_gemma-2b-it_q.csv"), False),
+        summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_gemma-2b-it_q+r.csv"), True),
+        summarise("gemma-7b-it_q", _load(results_dir / "hotpot_gemma-7b-it_q.csv"), False),
     ]
     print(pd.DataFrame(summaries).to_markdown(index=False))
 
