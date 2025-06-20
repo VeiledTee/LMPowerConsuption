@@ -11,15 +11,15 @@ RESULT_COLS = {
 }
 
 
-def _combined_mean(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
+def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
     """Average the inference + r columns."""
-    return (df[c1] + df[c2]) / 2.0
+    return df[c1] + df[c2]
 
 
 def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
     """Add energy_kWh, emissions_kg, time_s averaged over r + inference."""
     for new_name, (c1, c2) in RESULT_COLS.items():
-        df[f"combined_{new_name}"] = _combined_mean(df, c1, c2)
+        df[f"combined_{new_name}"] = _combined(df, c1, c2)
     return df
 
 
