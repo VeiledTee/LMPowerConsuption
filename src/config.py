@@ -45,9 +45,12 @@ class ExperimentConfig:
 
 CONFIG = ExperimentConfig(
     model_candidates=[
-        "google/gemma-7b-it",
-        "meta-llama/Llama-2-7b-hf",
-        "meta-llama/Llama-2-13b-hf",
+        "distilbert/distilgpt2",
+        # "openai-community/gpt2-xl"
+        # "google/gemma-2b",
+        # "google/gemma-7b",
+        # "meta-llama/Llama-2-7b-hf",
+        # "meta-llama/Llama-2-13b-hf",
     ],
     dataset_name="hotpotqa/hotpot_qa",
     config="fullwiki",
@@ -55,8 +58,10 @@ CONFIG = ExperimentConfig(
     n_samples=None,
     max_new_tokens=64,
     batch_size=32,
-    device="cpu",  # "cuda" if torch.cuda.is_available() else "cpu"
-    modes={"q": False},
+    # device="cpu",
+    device="cuda" if torch.cuda.is_available() else "cpu",
+    # modes={"q": False},
+    modes={"q+r": True},
     wiki_dir=Path("data/enwiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
     tfidf_cache=Path("cache/tfidf.pkl"),
