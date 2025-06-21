@@ -1,11 +1,10 @@
 import gc
-import logging
 import time
 from pathlib import Path
 
 import pandas as pd
 import torch
-from datasets import Dataset, load_dataset
+from datasets import load_dataset
 from tqdm import tqdm
 import json
 from datasets import Dataset
@@ -105,7 +104,7 @@ def run_mode(
     """
     logger.info(f"Starting {mode_tag} mode for {model_name}")
     csv_path: Path = (
-        CONFIG.result_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv"
+        CONFIG.result_dir / f"hotpot_mini_{model_name.split('/')[-1]}_{mode_tag}.csv"
     )
 
     wiki_data: tuple | None = None
