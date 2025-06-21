@@ -12,7 +12,7 @@ RESULT_COLS = {
 
 
 def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
-    """Average the inference + r columns."""
+    """Average the inference + retrieval columns."""
     return df[c1] + df[c2]
 
 
@@ -62,7 +62,7 @@ def main() -> None:
         summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_gemma-2b-it_q+r.csv"), True),
         summarise("gemma-7b-it_q", _load(results_dir / "hotpot_gemma-7b-it_q.csv"), False),
     ]
-    print(pd.DataFrame(summaries).to_markdown(index=False))
+    print(pd.DataFrame(summaries).to_csv('summaries.csv', index=False))
 
 
 if __name__ == "__main__":
