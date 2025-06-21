@@ -23,13 +23,14 @@ def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def summarise(model_name: str, df: pd.DataFrame, context_used: bool) -> dict:
+def summarise(model_name: str, df: pd.DataFrame, context_used: bool, dataset_version: str) -> dict:
     """Return one-row summary dict for a single model run."""
     df = add_combined_cols(df)
 
     return {
         "model": model_name,
         "context_used": context_used,
+        "dataset_version": dataset_version,
         "em": df["em"].mean(),
         "f1": df["f1"].mean(),
         "avg_energy_kWh": df["combined_energy"].mean(),
@@ -55,12 +56,12 @@ def main() -> None:
     results_dir = project_dir / "results"
 
     summaries = [
-        summarise("distilgpt2_q", _load(results_dir / "hotpot_distilgpt2_q.csv"), False),
-        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_distilgpt2_q+r.csv"), True),
-        summarise("gpt2-xl_q", _load(results_dir / "hotpot_gpt2-xl_q.csv"), False),
-        summarise("gemma-2b-it_q", _load(results_dir / "hotpot_gemma-2b-it_q.csv"), False),
-        summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_gemma-2b-it_q+r.csv"), True),
-        summarise("gemma-7b-it_q", _load(results_dir / "hotpot_gemma-7b-it_q.csv"), False),
+        summarise("distilgpt2_q", _load(results_dir / "hotpot_distilgpt2_q.csv"), False, 'full'),
+        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_distilgpt2_q+r.csv"), True, 'full'),
+        summarise("gpt2-xl_q", _load(results_dir / "hotpot_gpt2-xl_q.csv"), False, 'full'),
+        summarise("gemma-2b-it_q", _load(results_dir / "hotpot_gemma-2b-it_q.csv"), False, 'full'),
+        summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_gemma-2b-it_q+r.csv"), True, 'full'),
+        summarise("gemma-7b-it_q", _load(results_dir / "hotpot_gemma-7b-it_q.csv"), False, 'full'),
     ]
     print(pd.DataFrame(summaries).to_csv('summaries.csv', index=False))
 
