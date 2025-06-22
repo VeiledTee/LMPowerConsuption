@@ -28,7 +28,7 @@ def run() -> None:
     logger.info(f"Starting experiment with config:\n{CONFIG}")
     logger.info(f"Using device: {CONFIG.device}")
 
-    dataset_path = Path(data_dir / "hotpot_mini.jsonl")
+    dataset_path = Path(data_dir / "hotpot_mini_128.jsonl")
 
     try:
         if dataset_path.exists():
@@ -104,7 +104,7 @@ def run_mode(
     """
     logger.info(f"Starting {mode_tag} mode for {model_name}")
     csv_path: Path = (
-        CONFIG.result_dir / f"hotpot_mini_{model_name.split('/')[-1]}_{mode_tag}.csv"
+        CONFIG.result_dir / f"hotpot_mini_128_{model_name.split('/')[-1]}_{mode_tag}.csv"
     )
 
     wiki_data: tuple | None = None
@@ -172,10 +172,10 @@ def run_mode(
                     "em": em,
                     "f1": f1,
                     "inference_duration (s)": inference_metrics["duration"],
-                    "inference_energy (kWh)": inference_metrics["energy_consumed"],
+                    "inference_energy_consumed (kWh)": inference_metrics["energy_consumed"],
                     "inference_emissions (kg)": inference_metrics["emissions"],
                     "retrieval_duration (s)": retrieval_metrics["duration"],
-                    "retrieval_energy (kWh)": retrieval_metrics["energy_consumed"],
+                    "retrieval_energy_consumed (kWh)": retrieval_metrics["energy_consumed"],
                     "retrieval_emissions (kg)": retrieval_metrics["emissions"],
                 }
             )
