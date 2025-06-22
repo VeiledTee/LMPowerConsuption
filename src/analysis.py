@@ -23,26 +23,34 @@ def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def summarise(model_name: str, df: pd.DataFrame, context_used: bool, dataset_version: str) -> dict:
+def summarise(model_name: str, df: pd.DataFrame, context_used: bool, dataset_version) -> dict:
     """Return one-row summary dict for a single model run."""
     df = add_combined_cols(df)
 
+    # Per-sample carbon intensities
+    inf_intensity = (df["inference_emissions (kg)"] / df["inference_energy_consumed (kWh)"]).mean()
+    ret_intensity = (df["retrieval_emissions (kg)"] / df["retrieval_energy_consumed (kWh)"]).mean()
+    comb_intensity = (df["combined_emissions"] / df["combined_energy"]).mean()
+
     return {
-        "model": model_name,
-        "context_used": context_used,
-        "dataset_version": dataset_version,
-        "em": df["em"].mean(),
-        "f1": df["f1"].mean(),
-        "avg_energy_kWh": df["combined_energy"].mean(),
-        "avg_r_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
-        "avg_i_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
-        "avg_emissions_kg": df["combined_emissions"].mean(),
-        "avg_r_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-        "avg_i_emissions_kg": df["inference_emissions (kg)"].mean(),
-        "avg_time_s": df["combined_time"].mean(),
-        "avg_r_time_s": df["retrieval_duration (s)"].mean(),
-        "avg_i_time_s": df["inference_duration (s)"].mean(),
-    }
+            "model": model_name,
+            "context_used": context_used,
+            "dataset_version": str(dataset_version),
+            "f1": df["f1"].mean(),
+            "em": df["em"].mean(),
+
+            # Total energy/emissions (correct aggregates)
+            "avg_energy_kWh": df["combined_energy"].mean(),
+            "avg_emissions_kg": df["combined_emissions"].mean(),
+
+            # Mean carbon intensities (true per-sample means)
+            "mean_i_carbon_intensity": inf_intensity,
+            "mean_r_carbon_intensity": ret_intensity,
+            "mean_combined_carbon_intensity": comb_intensity,
+
+            # Total durations
+            "avg_time_s": df["combined_time"].mean(),
+        }
 
 
 def _load(path: Path) -> pd.DataFrame:
@@ -59,11 +67,25 @@ def main() -> None:
         summarise("distilgpt2_q", _load(results_dir / "hotpot_distilgpt2_q.csv"), False, 'full'),
         summarise("distilgpt2_q+r", _load(results_dir / "hotpot_distilgpt2_q+r.csv"), True, 'full'),
         summarise("gpt2-xl_q", _load(results_dir / "hotpot_gpt2-xl_q.csv"), False, 'full'),
-        summarise("gemma-2b-it_q", _load(results_dir / "hotpot_gemma-2b-it_q.csv"), False, 'full'),
-        summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_gemma-2b-it_q+r.csv"), True, 'full'),
-        summarise("gemma-7b-it_q", _load(results_dir / "hotpot_gemma-7b-it_q.csv"), False, 'full'),
+
+        summarise("distilgpt2_q", _load(results_dir / "hotpot_mini_128_distilgpt2_q.csv"), False, '128'),
+        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_128_distilgpt2_q+r.csv"), True, '128'),
+        summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_128_gpt2-xl_q.csv"), False, '128'),
+
+        summarise("distilgpt2_q", _load(results_dir / "hotpot_mini_512_distilgpt2_q.csv"), False, '512'),
+        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_512_distilgpt2_q+r.csv"), True, '512'),
+        summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_512_gpt2-xl_q.csv"), False, '512'),
+
+        summarise("gemma-2b_q", _load(results_dir / "hotpot_mini_128_gemma-2b_q.csv"), False, '128'),
+        summarise("gemma-2b_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b_q+r.csv"), True, '128'),
+        summarise("gemma-7b_q", _load(results_dir / "hotpot_mini_128_gemma-7b_q.csv"), False, '128'),
+
+        summarise("gemma-2b-it_q", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q.csv"), False, '128'),
+        summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv"), True, '128'),
+        summarise("gemma-7b-it_q", _load(results_dir / "hotpot_mini_128_gemma-7b-it_q.csv"), False, '128'),
     ]
-    print(pd.DataFrame(summaries).to_csv('summaries.csv', index=False))
+    pd.DataFrame(summaries).to_csv('summaries.csv', index=False)
+    print(pd.DataFrame(summaries).to_markdown(index=False))
 
 
 if __name__ == "__main__":
