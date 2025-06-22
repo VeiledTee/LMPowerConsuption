@@ -47,8 +47,10 @@ CONFIG = ExperimentConfig(
     model_candidates=[
         "distilbert/distilgpt2",
         # "openai-community/gpt2-xl"
-        # "google/gemma-2b",
         # "google/gemma-7b",
+        # "google/gemma-7b-it",
+        "google/gemma-2b",
+        "google/gemma-2b-it",
         # "meta-llama/Llama-2-7b-hf",
         # "meta-llama/Llama-2-13b-hf",
     ],
