@@ -1,0 +1,322 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,"True/ False
+
+The answer is true, as it often happens in football matches that a winner will have to take penalty kicks after regulation time and extra-time play are complete..",True,0,0.0,53.65503650001483,0.01460596643667652,0.004288612485074899,0.0,0.0,0.0
+1,"True/ False
+
+The answer is true, as many people have successfully summited Mount Everest via its North Face route",True,0,0.0,33.579830900009256,0.009141091220563653,0.0026840125989388546,0.0,0.0,0.0
+2,"True
+
+Air Force One is a specially designed aircraft used by United States Presidents and other high-ranking government officials for travel around",False,0,0.0,35.64134920001379,0.009702255045564379,0.0028487818524151145,0.0,0.0,0.0
+3,"True
+
+The answer is true because Sussex was once ruled by Duke William, who also held other titles such as King Edward III and Count Fitzwilliam in different periods throughout his life",True,0,0.06060606060606061,49.789286099985475,0.013553631541109157,0.003979625291986627,0.0,0.0,0.0
+4,"True
+
+The answer to this questions should simply state whether their has been  a Line Of Duty Series four, regardless if it was released yet",True,0,0.07692307692307693,41.1569500999758,0.011203754141105391,0.003289652902980878,0.0,0.0,0.0
+5,"True
+
+Hope is a character played by Stephanie Forrester in Bold & Beautiful, while Wyatt Spencer has not yet been introduced into that soap opera as of 2018",True,0,0.0689655172413793,50.943994300003396,0.013867960124441338,0.004071918636130518,0.0,0.0,0.0
+6,True/ False,False,0,0.6666666666666666,7.261667600017972,0.001976766880557019,0.0005804194580888278,0.0,0.0,0.0
+7,"True
+
+The answer is true because, due to Earth rotation on its axis of symmetry every day there are different numbers  of hours daylight in various places around it which results from varying lengths for each particular place as a result they experience changing length throughout year but not necessarily equally across all longitudes",False,0,0.0,90.29164009998203,0.024579139482784052,0.00721694144069596,0.0,0.0,0.0
+8,"True
+
+The answer to this questions should simply state whether it true that  the UEFA Champions League Final consists of a single match, which would in turn require an affirmative response - ""TRUE"".",True,0,0.05882352941176471,59.566312699986156,0.0162151425927858,0.004761099737712007,0.0,0.0,0.0
+9,"True
+
+Merdith Grey has had two babies on Greays Anatomy, and they are named Amelia (after Meredith)  and Gray Shepherdson-Grey",True,0,0.09523809523809523,48.01311619998887,0.013070122977762043,0.0038376572222665597,0.0,0.0,0.0
+10,False,True,0,0.0,4.300405599991791,0.0011706432544441971,0.00034372496324320314,0.0,0.0,0.0
+11,"True
+
+The answer to this questions should simply state whether Season Two exists for Case Histories, which it does indeed",True,0,0.09523809523809523,34.82295880001038,0.009479502452776067,0.0027833771046597085,0.0,0.0,0.0
+12,"True
+
+The game Pokemon Lets Go Eevie, which was released in 2018 and based on Pokémon Red/Green versions from generation I of games that debuted back then as well to celebrate their anniversary year for this specific title release date it has been classified by many fans into being more than just another mainline entry",False,0,0.0,96.86490119999507,0.026368599667776688,0.007742363796291218,0.0,0.0,0.0
+13,"True
+
+The song ""Highway To The Danger Zone"" is a track by Kenny Loggins and not specifically tied in Top Gun movie soundtrack",True,0,0.08333333333333333,43.471194800018566,0.011833731622227707,0.003474627262779007,0.0,0.0,0.0
+14,False,True,0,0.0,4.41673970001284,0.0012023000333302963,0.00035302004534247934,0.0,0.0,0.0
+15,"True/ False
+
+The answer is true, as Jennifer Grey played a role of dance instructor named Baby Houseman and danced to ""Dirty Dancing"" music while wearing pink dress similar  to that worn by her character on stage during this scene from 1987 film DirtyDancing .",True,0,0.0,87.82574890000978,0.0239079439966692,0.007019864625946477,0.0,0.0,0.0
+16,False,True,0,0.0,4.759698899986688,0.001295669416109255,0.00038043521861742856,0.0,0.0,0.0
+17,False,False,1,1.0,4.637814999994589,0.001262485966109509,0.00037069187444477476,0.0,0.0,0.0
+18,"True/ False
+
+The answer to this questions should simply state whether Johnson & Wales University (a private university) operates primarily as  for-profit institution, according official sources such us News&World Report rankings data from 2018
+
+
+Sure! Here was your Answer :
+
+
+
+**TRUE.**",False,0,0.047619047619047616,93.18601009997656,0.02536708517942736,0.007448298521162759,0.0,0.0,0.0
+19,True/ False,False,0,0.6666666666666666,7.280126700003166,0.001981787069450365,0.0005818934889144346,0.0,0.0,0.0
+20,"True
+
+Melaleuca alternifolia, commonly known as Tea Tree Oil Melalea in Australia ,is a plant species of Myrtaceae family",True,0,0.1,47.03953609999735,0.012805074523348108,0.003759833538659078,0.0,0.0,0.0
+21,"True
+
+This is a simple yes/no answer, therefore I have provided you all necessary information to complete this task in just two words - ""true""",True,0,0.07692307692307693,49.20245700000669,0.01339387675667725,0.003932717997899964,0.0,0.0,0.0
+22,"True
+
+The answer is true because it possible to obtain rashes when exposed heat and water, such as those found in Hot Tubs",True,0,0.08333333333333333,42.50197979999939,0.011569902648895125,0.003397161643926328,0.0,0.0,0.0
+23,"True/ False
+
+The answer is true, because a person  can has twins even if they had 2 fathers",True,0,0.0,37.71280709997518,0.010266154948890714,0.0030143544748240793,0.0,0.0,0.0
+24,False,False,1,1.0,3.848158799984958,0.0010475342388882483,0.0003075776214409679,0.0,0.0,0.0
+25,False,False,1,1.0,4.258990099973744,0.001159369682773508,0.000340414810475982,0.0,0.0,0.0
+26,"True/ False
+
+The answer is true, as Fred has been seen on several episodes of First Dates holding hands and cuddling up to his current girlfriend in various scenes throughout multiple seasons",True,0,0.0,54.83689269999741,0.014927699827775844,0.00438308003324544,0.0,0.0,0.0
+27,False,False,1,1.0,4.205256899993401,0.0011447507838865728,0.00033612240075722987,0.0,0.0,0.0
+28,True/ False,False,0,0.6666666666666666,7.441613399976632,0.0020257464777723526,0.0005948008763292641,0.0,0.0,0.0
+29,"True
+
+Alligators are ambush predators that catch, subdue (often by drowning), kill ,and consume a wide variety of animals including fish,, birds,,, reptiles,,,, amphibians,.. mammals.., even humans",True,0,0.07142857142857142,61.533176700002514,0.016750554846655802,0.0049183077996751735,0.0,0.0,0.0
+30,"True/ False
+
+The answer is true, they both refer to exactly  thesame vegetable",True,0,0.0,30.174518300016643,0.00821407950890134,0.0024118228730702074,0.0,0.0,0.0
+31,"True
+
+The Isle Of Man, a self-governing Crown dependency situated in between Great Britain and Ireland to its south east coast",False,0,0.0,41.777580499998294,0.011372697921117652,0.0033392582753728737,0.0,0.0,0.0
+32,"False
+
+The character of King Louie does not actually exist, therefore this answer is false",False,0,0.125,28.929736399994,0.007875264390557357,0.002312339778065043,0.0,0.0,0.0
+33,"True
+
+Dwane Wade made it to The Playoffs in His Rookie Year",True,0,0.15384615384615385,23.84998520000954,0.0064924296177875165,0.001906311015982944,0.0,0.0,0.0
+34,"True
+
+The answer is true because it carries sensation from peripheral nerves to spinal cord and brain",True,0,0.1111111111111111,30.3587881999847,0.008264246630557723,0.0024265529729378607,0.0,0.0,0.0
+35,"False
+
+The text does not specify whether England has actually Won, Lost  or Participated in any Women’S World Cup therefore I am unable to answer this query accurately",False,0,0.0689655172413793,52.74229029999697,0.014357507506669044,0.0042156598274142075,0.0,0.0,0.0
+36,"True/ False
+
+The answer should not include any explanation as this would make answering easier than intended, and I want you solely provide true of false based on your understanding from experience etc..",True,0,0.05882352941176471,59.24546989999362,0.016127826008326598,0.004735461790651857,0.0,0.0,0.0
+37,"True
+
+The answer to this questions should simply state whether it true that there are members of organized crime operating within New Jersey, regardless if they identify themselves as ""mafia.""",True,0,0.06451612903225806,53.53313409999828,0.014572792498880396,0.004278871933881087,0.0,0.0,0.0
+38,"True
+
+Is this answer correct?",True,0,0.33333333333333337,13.443564899993362,0.0036596139922214204,0.0010745380201740888,0.0,0.0,0.0
+39,False,True,0,0.0,4.758948099974077,0.001295455700553753,0.00038037246732989453,0.0,0.0,0.0
+40,"True/ False
+
+The answer is true, as most businesses and government agencies across Oklahoma will close for Independence Day (July Fourth) this year..",False,0,0.08333333333333333,47.443012100004125,0.012914921912230945,0.0037920869938109993,0.0,0.0,0.0
+41,False,False,1,1.0,5.589128699997673,0.0015214531522187622,0.0004467299724636806,0.0,0.0,0.0
+42,"True/ False
+
+The answer is true, Dr Burkes comes backs in Season four and later seasons of The Walking Dead TV series",True,0,0.0,42.06274309998844,0.011450336023895457,0.003362054420929825,0.0,0.0,0.0
+43,"True
+
+The answer is true because dogs are often bred to have multiple breed traits, which means that they Can Be Mixed With Three Breeds",True,0,0.07692307692307693,45.0468723999802,0.012262628402216228,0.0036005601884393328,0.0,0.0,0.0
+44,"True
+
+The answer is true because, after deoxygenation in  the capillaries of peripheral tissues and organs ,blood returns to heart through superior & inferior vena cavae into Right Atrium which then pumps it forward for oxygenated circulation",True,0,0.052631578947368425,71.47070870001335,0.01945575808889084,0.005712611172177934,0.0,0.0,0.0
+45,"True/ False
+
+The answer to this questions should simply state whether it true that they are indeed similar documents, hence either ""true""  or false"".",True,0,0.07999999999999999,49.09242470000754,0.013363935179449294,0.003923926534323804,0.0,0.0,0.0
+46,"True/ False
+
+The answer is true, as each county has its unique set of signs and gestures used to communicate in that particular region",False,0,0.07999999999999999,43.009646099992096,0.01170811245944561,0.0034377428900668277,0.0,0.0,0.0
+47,"False
+
+Dry Water does not exist, therefore this answer was false",True,0,0.0,22.283246599981794,0.0060659359638831414,0.0017810836976216878,0.0,0.0,0.0
+48,"True
+
+The answer is true because every state in America enforces at least  a Minimum Drinking Age (MDA) law that prohibits individuals under   the specified legal limit from purchasing, possessing ,or consuming alcoholic beverages within their borders",False,0,0.0,68.34177840000484,0.018603984483891688,0.005462512903590661,0.0,0.0,0.0
+49,True/ False,True,0,0.0,6.6533869999984745,0.001811173197773395,0.0005317977432222164,0.0,0.0,0.0
+50,True/ False,False,0,0.6666666666666666,7.27106709999498,0.0019793147805544625,0.00058116757398976,0.0,0.0,0.0
+51,False,False,1,1.0,3.9259521999920253,0.0010687115827803305,0.00031379572565269946,0.0,0.0,0.0
+52,"True
+
+The answer is true, as it counts just like a regular-season game",False,0,0.0,27.723351999971783,0.007546852555552323,0.0022159113012535196,0.0,0.0,0.0
+53,"True
+
+The currency of Guernsey, which has been pegged to sterling since 1983 and bears a likeness on British coinage designs but not coins themselves",True,0,0.07692307692307693,49.690978099999484,0.013526866252220902,0.003971766452067307,0.0,0.0,0.0
+54,"False
+
+The answer to this questions should not include any explanation as it can easily answered by simply reading and understanding whether a cagebird would sing its own biography, which in turn will lead you directly  to your Answer of false",True,0,0.0,67.6246911000053,0.018408808421667262,0.005405205193014141,0.0,0.0,0.0
+55,False,False,1,1.0,3.2549970999825746,0.0008860623633275584,0.00026016615404370297,0.0,0.0,0.0
+56,True/ False,False,0,0.6666666666666666,5.586292499996489,0.0015206903650013068,0.0004465060024307206,0.0,0.0,0.0
+57,False,True,0,0.0,3.875502199982293,0.00105497477944106,0.00030976231734923505,0.0,0.0,0.0
+58,"True/ False
+
+The answer is true, as no two players are exactly alike and each game will have its own unique set of circumstances that make it impossible to achieve perfection in every single encounter on court",True,0,0.0,57.18677369999932,0.015567384013332453,0.004570904481328129,0.0,0.0,0.0
+59,"True/ False
+
+The answer should not include any explanation as it can easily fit into a single space, either true of false..",False,0,0.08695652173913045,38.588548400002765,0.01050458100055273,0.003084361272823918,0.0,0.0,0.0
+60,"True/ False
+
+The answer to this questions true, as of 2018 there was a ban on smokeless and dipping products for all players during games at Major League Baseball parks",True,0,0.0,55.843914900004165,0.015201835458331817,0.004463571898874685,0.0,0.0,0.0
+61,True/ False,True,0,0.0,6.947971200017491,0.0018913682599983681,0.0005553446647210746,0.0,0.0,0.0
+62,"True/ False
+
+The answer to this questions are true, as Guitar Center  and Musicians Friend both belong under parent corporation Sweetwater Music Corporation",True,0,0.0,41.28140929999063,0.011237615541653293,0.0032995953073935843,0.0,0.0,0.0
+63,"True/ False
+
+The answer is true, as in all of The Vampire Diaries books and movies she finds that it was Klaus Mikaelson (a character played by Joseph Morgan)",True,0,0.0,54.605277900001965,0.014864651610007665,0.004364567778335463,0.0,0.0,0.0
+64,"True
+
+The answer is true because there was a significant number of Civil War battle sites located within Florida, including Pensacola and Tallahassee",True,0,0.08333333333333333,39.42154139999184,0.010731334679442647,0.0031509408218417805,0.0,0.0,0.0
+65,"True/ False
+
+The answer is true, it has been upheld by various courts that minors are eligible for execution in all 50 states of America and some countries worldwide",False,0,0.06666666666666667,53.03774830000475,0.014437925419452626,0.004239272182425603,0.0,0.0,0.0
+66,False,False,1,1.0,4.138183300005039,0.0011264851133324556,0.0003307592237893608,0.0,0.0,0.0
+67,"True
+
+Sure, here was your answer in just ONE WORD - TRUE",True,0,0.15384615384615385,24.390599200007273,0.0066396113044499844,0.0019495265896823362,0.0,0.0,0.0
+68,False,False,1,1.0,4.2054085999843664,0.001144783558323656,0.0003361320240067886,0.0,0.0,0.0
+69,"True/ False
+
+The answer should not exceed two words, and there shouldn’t any explanation for this simple query
+
+
+Sure! Here was your solution :  **TRUE**.",True,0,0.0,54.99504669994349,0.01497075319442568,0.0043957213881697784,0.0,0.0,0.0
+70,"True/ False
+
+The answer is true, Aslans return comes alive at various points throughout The Chronicles of Naria novel series and movie adaptations",True,0,0.0,44.41719569999259,0.012091268092779016,0.00355024527325143,0.0,0.0,0.0
+71,"True
+
+The answer is true because a cow has  to get Pregnant in order for her body system and hormones are adjusted so that she can lactate, which produces Milk",True,0,0.06451612903225806,52.38305619999301,0.014259697039439601,0.004186940660301932,0.0,0.0,0.0
+72,"True
+
+The answer to this questions was true, as Grey’S Anatomy has completed its fourteenth Season in March of  20",True,0,0.09523809523809523,41.904709599970374,0.011407322359994091,0.003349424723549924,0.0,0.0,0.0
+73,"True
+
+This is because you are able to define more than just primary key for each row of data, and therefore it makes sense that there could also exist additional columns referencing other tables as Foreign Keys",True,0,0.052631578947368425,57.39326989999972,0.015623593450575651,0.0045874087294643495,0.0,0.0,0.0
+74,True/ False,False,0,0.6666666666666666,5.921451300033368,0.0016119250289006028,0.0004732943782883858,0.0,0.0,0.0
+75,False,True,0,0.0,4.033297799993306,0.0010979305533229814,0.0003223750170274619,0.0,0.0,0.0
+76,"True
+
+Rocky Balboa was inducted into The Boxing Hall Of Fame on January 16,  2034",True,0,0.125,33.76027049997356,0.009190203565545703,0.0026984329946568974,0.0,0.0,0.0
+77,"True
+
+The answer is true because, according to anatomy and physiology textbooks as well clinical observations in respiratory mechanics that show an increase of pressure within this muscle group upon inhalation",True,0,0.0625,47.22772949998034,0.012856311898339318,0.00377487788694253,0.0,0.0,0.0
+78,"True
+
+Logarithms and natural logarithms are two different functions, but they have similar properties that make them interchangeable in many applications involving calculus of complex numbers",False,0,0.0,43.8070991000277,0.01192517977443543,0.003501478323199786,0.0,0.0,0.0
+79,False,True,0,0.0,4.142346900014672,0.0011276166122183592,0.00033109145516001145,0.0,0.0,0.0
+80,"True/ False
+
+The answer to this questions should simply state whether these two animals are considered as being of equal classification, true for similar species in different geographic regions but sharing common characteristics such coat color patterns etc., false otherwise",True,0,0.04878048780487806,64.55426620005164,0.017572948529988124,0.0051597795183236156,0.0,0.0,0.0
+81,"True/ False
+
+The answer is true, as Oman requires visas for most foreign nationals and citizens of certain countries..",True,0,0.0,34.72424899996258,0.00945262264110303,0.002775484638492733,0.0,0.0,0.0
+82,False,False,1,1.0,4.132065000012517,0.0011248174844393764,0.0003302695736095978,0.0,0.0,0.0
+83,"True
+
+The answer to this questions should simply state whether Reese’S Peanut Butter Cups have peanuts and are therefore true, false as stated above",True,0,0.07999999999999999,40.09429060004186,0.010914478936663039,0.0032047157467322597,0.0,0.0,0.0
+84,"True
+
+The Falkland Islands is a British Overseas Territory located in South America and not officially considered to form any political entity within either Argentina, Chile nor Brazil",False,0,0.0,44.24944189999951,0.012045579228313808,0.003536830081903163,0.0,0.0,0.0
+85,"True
+
+The answer is true because it weighs exactly what its name suggests, which means that there are 4 quarters in every half-pound and therefore this burger weights precisely ¼ of  a whole Pound",False,0,0.0,58.411577499995474,0.015900808001116578,0.004668804629396649,0.0,0.0,0.0
+86,"True
+
+Murphys Brown had his first child in an episode titled ""The Baby"".",True,0,0.14285714285714288,25.134535099961795,0.006842118723321862,0.0020089869375243953,0.0,0.0,0.0
+87,"True/ False
+
+The answer is true, as we won it in 1974 and have never forgotten that victory!",False,0,0.10526315789473684,41.1997569000232,0.011215399539988074,0.0032930722318735245,0.0,0.0,0.0
+88,"True
+
+The state of Illinois has passed legislation that protects individuals from being shot while standing their own property, commonly known as ""stand-yourground"" laws",True,0,0.07999999999999999,49.78763160004746,0.013553186857798976,0.003979494723810656,0.0,0.0,0.0
+89,False,False,1,1.0,4.776015200011898,0.0013001178049996574,0.00038174135718871426,0.0,0.0,0.0
+90,"True
+
+The answer is true because Britain has a long history of gun ownership and firearms regulation, similar",False,0,0.0,31.43356680002762,0.008556834681667128,0.0025124628491799868,0.0,0.0,0.0
+91,"True
+
+The Civil Rights Act of 1964 was passed by Congress to prohibit discrimination based on race, color religion sex national origin and other factors",False,0,0.0,49.08429630001774,0.013361693429452459,0.00392326831036673,0.0,0.0,0.0
+92,False,True,0,0.0,4.369361299963202,0.0011894143688867592,0.00034923654894389295,0.0,0.0,0.0
+93,"True
+
+Hawaii was formerly known as ""The Sandwich Islands.""",True,0,0.19999999999999998,23.68553920002887,0.006447644743331734,0.001893161254714748,0.0,0.0,0.0
+94,False,False,1,1.0,5.173650300013833,0.0014083483144446897,0.00041352006324588077,0.0,0.0,0.0
+95,"True
+
+The answer is true because, according to baseball rules and regulations ,a player gets  an RBI (runs batted in) when he drives home runs from base runners",True,0,0.0689655172413793,56.4985175000038,0.015380012629448577,0.004515888385012013,0.0,0.0,0.0
+96,"True/ False
+
+The answer to this questions should simply state whether it true that The County Court Business Centre (CCBC)  is actually an operational courtroom, regardless of its official designation
+
+
+**Note:** This query specifically requests information about actual judicial proceedings taking place at designated locations within England and Wales in relation directly tot he",False,0,0.03636363636363636,101.69603950000601,0.027683669123333914,0.008128495265940595,0.0,0.0,0.0
+97,"True/ False
+
+The answer is true, as I have seen a few of them recently and there are reports that production has not stopped yet for this denomination",True,0,0.0,52.275242000003345,0.014230330395578252,0.004178318009000182,0.0,0.0,0.0
+98,False,False,1,1.0,3.8587905999738723,0.001050426816101147,0.00030842694166931863,0.0,0.0,0.0
+99,"False
+
+The answer to this questions should not include any explanation as it has already been answered in a single words, which was false",True,0,0.0,44.594487600028515,0.012139506046117295,0.0035644089295789935,0.0,0.0,0.0
+100,False,True,0,0.0,4.574574599973857,0.0012452636561062211,0.00036563504961759563,0.0,0.0,0.0
+101,"True
+
+The text provided describes ""corithain"" Leather, therefore I have answered correctly by stating true",False,0,0.0,34.56480480002938,0.009409214425566543,0.002762739092628877,0.0,0.0,0.0
+102,"True
+
+The answer is true, as there have been reports that some surviving founding member(s) still perform together occasionally",True,0,0.1,39.72572080005193,0.010814124565562813,0.003175249637064121,0.0,0.0,0.0
+103,"True
+
+The answer to this questions was true, as their will always  be an extra game between 3rd and fourth placed team at any World Cup",True,0,0.07407407407407407,50.8966095999931,0.013855062457790416,0.004068131615636716,0.0,0.0,0.0
+104,False,True,0,0.0,4.524743799993303,0.001231701270560734,0.0003616528539696772,0.0,0.0,0.0
+105,False,False,1,1.0,4.507370399951469,0.001226976017768094,0.0003602654224560209,0.0,0.0,0.0
+106,"True/ False
+
+The answer is true, as Kristen Bell sang Anna in Frozen and Elsa voice roles also for Disney movies like Snow Queen 2 & Enchanted Christmas II",False,0,0.06666666666666667,54.55353570001898,0.014850579930580959,0.004360436043517573,0.0,0.0,0.0
+107,"True
+
+The answer is true, as Total Bellas has been renewed for Season Four and Five by Netflix in January  2018",True,0,0.0909090909090909,43.854254900012165,0.011938013526662123,0.0035052465771026257,0.0,0.0,0.0
+108,True/ False,True,0,0.0,8.092537300020922,0.00220292286945494,0.0006468235130185047,0.0,0.0,0.0
+109,False,True,0,0.0,4.017937000025995,0.0010937384077874918,0.00032114411678127165,0.0,0.0,0.0
+110,"True
+
+The hot air from your hairdryer is capable enough to eliminate any pesky head louse that might have hitched on, but it won’t necessarily rid you completely and permanently for good since they reproduce quickly",True,0,0.05405405405405406,66.85276779998094,0.018198633348909466,0.005343493464112913,0.0,0.0,0.0
+111,"False
+
+The song ""Lord Of All Hopeful""  is not actually intended to serve as an actual Funeral Hymn, although it has been used in that capacity by many people",True,0,0.0,56.854080499964766,0.015476810515006463,0.004544310237296295,0.0,0.0,0.0
+112,False,False,1,1.0,4.580573000013828,0.001246900921671315,0.0003661157844990762,0.0,0.0,0.0
+113,"True/ False
+
+The answer is true, as they both belong to Panthera genus in family Felidae which includes lions too",True,0,0.0,41.68304169998737,0.011346948647221303,0.003331697758375094,0.0,0.0,0.0
+114,"True
+
+The answer is true because if you are hit by shrapnel, bullets traveling through your body and other dangerous objects that come out of guns have potential to cause death regardless whether they strike directly on target",True,0,0.05128205128205127,67.36675030004699,0.018338545353919232,0.0053845745095951235,0.0,0.0,0.0
+115,"True
+
+The answer to this questions should simply state whether it true that Ace,  and numbers from two through five are considered as Straight in poker hand ranking",True,0,0.0689655172413793,51.66169470001478,0.014063340044988822,0.004129286203708165,0.0,0.0,0.0
+116,"True
+
+The film Vertical Limit (1986) tells an inspirational tale based on real events that occurred in 20th-century America, including climbing expeditions to Yosemite National Park and Mount Rainier as well other notable achievements of climbers from around world",False,0,0.0,81.88285980001092,0.022290130104971786,0.006544841156288288,0.0,0.0,0.0
+117,False,True,0,0.0,4.390519699954893,0.0011951729794382117,0.0003509273955725439,0.0,0.0,0.0
+118,"True/ False
+
+The answer is true, as it was legal to purchase alcoholic beverages throughout Wisconsin even  on Sundays since 2019 .",True,0,0.0,45.04927149997093,0.012263271852229245,0.0036007491186118967,0.0,0.0,0.0
+119,"True
+
+The answer to this questions should simply state whether it true that  the Liver, which plays an important role in metabolism and detoxification processes within your body ,is considered as being located along side other organs such stomach intestines etc.,within The gastrointestinal (GI) Tract",False,0,0.0,76.13194519997342,0.020724632246663613,0.006085178751228967,0.0,0.0,0.0
+120,"True
+
+The answer is true because it possible to conceive and give birth  to twin babies, even if they are fathered by two separate men",True,0,0.07692307692307693,41.512636200001,0.011300563180004247,0.003318078030115718,0.0,0.0,0.0
+121,"True
+
+This is because, according to religious beliefs and cultural practices around death rituals that are often performed during times of crisis when there may not necessarily have been a priest present at all moments prior",False,0,0.0,53.99502259999281,0.014698542571094002,0.0043157947442978035,0.0,0.0,0.0
+122,"True
+
+The Common Femoral Vein (CFV) lies in close relationship to other superficial veins and receives blood flow from them, hence it falls into category of Superficial Veins rather than DeepVein",True,0,0.0625,59.90933940000832,0.01630853575555698,0.004788521893282306,0.0,0.0,0.0
+123,False,False,1,1.0,2.991121499973815,0.0008142260555598315,0.00023907353496163024,0.0,0.0,0.0
+124,"True
+
+The answer is true because, as temperature increases and decreases so do chemical reactions within batteries which affects their voltage output while altering its overall impedance (internal) Resistance",True,0,0.06666666666666667,48.06342169997515,0.013083823217774302,0.0038416798948243684,0.0,0.0,0.0
+125,"True
+
+The text provided describes a situation where there are people who have an energetic personality, characterized by their youthfulness (young)  and restlessness/impatienceance to act upon things quickly(restless). Therefore it can also describe individuals that exhibit similar traits regardless of age as well since youthful energy often fades over time",False,0,0.0,89.5612003999995,0.024380381481133126,0.0071585819989510935,0.0,0.0,0.0
+126,True,True,1,1.0,3.810482500004582,0.0010372792727753727,0.00030456655223877786,0.0,0.0,0.0
+127,"True
+
+The answer to this questions should simply state whether it true that The Cortex Of  the Cerebellum Is Gray Matter, and nothing else",True,0,0.07999999999999999,41.23207630001707,0.011224209255545995,0.0032956589457548316,0.0,0.0,0.0
