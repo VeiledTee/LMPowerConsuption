@@ -23,10 +23,13 @@ def load_model_and_tokenizer(model_name):
 def inference(prompt, model, tokenizer, model_name, run_tag):
     try:
         with EmissionsTracker(
-                project_name=f"hotpot_{model_name}_{run_tag}", log_level="error"
+            project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
+            log_level="error",
         ) as tracker:
             with torch.inference_mode():
-                model_max_ctx = getattr(model.config, "max_position_embeddings", tokenizer.model_max_length)
+                model_max_ctx = getattr(
+                    model.config, "max_position_embeddings", tokenizer.model_max_length
+                )
                 max_length_val = max(1, model_max_ctx - CONFIG.max_new_tokens)
 
                 inputs = tokenizer(
@@ -34,11 +37,13 @@ def inference(prompt, model, tokenizer, model_name, run_tag):
                     return_tensors="pt",
                     truncation=True,
                     max_length=max_length_val,
-                    padding=False
+                    padding=False,
                 ).to(CONFIG.device)
 
                 if inputs.input_ids.shape[1] > model_max_ctx:
-                    print(f"Truncating from {inputs.input_ids.shape[1]} to {model_max_ctx}")
+                    print(
+                        f"Truncating from {inputs.input_ids.shape[1]} to {model_max_ctx}"
+                    )
                     inputs = {k: v[:, -model_max_ctx:] for k, v in inputs.items()}
 
                 # Determine appropriate pad_token_id

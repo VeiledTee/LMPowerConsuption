@@ -36,17 +36,24 @@ def run() -> None:
             with open(dataset_path, "r", encoding="utf-8") as f:
                 data = [json.loads(line) for line in f]
             dataset = Dataset.from_list(data)
-            logger.info(f"Loaded mini dataset with {len(dataset)} samples")
-        else:
+            logger.info(
+                f"Loaded mini dataset with {len(dataset)} samples from {dataset_path}"
+            )
+        elif "hotpot" in CONFIG.dataset_name:
             dataset: Dataset = load_dataset(
                 CONFIG.dataset_name,
                 CONFIG.config,
                 split=CONFIG.split,
                 trust_remote_code=True,
             )
-            if CONFIG.n_samples:
-                dataset = dataset.select(range(CONFIG.n_samples))
-            logger.info(f"Loaded dataset with {len(dataset)} samples")
+            logger.info(f"Loaded Hotpot dataset with {len(dataset)} samples")
+        elif "boolq" in CONFIG.dataset_name:
+            dataset: Dataset = load_dataset(
+                CONFIG.dataset_name,
+                split=CONFIG.split,
+                trust_remote_code=True,
+            )
+            logger.info(f"Loaded BoolQ dataset with {len(dataset)} samples")
     except Exception as e:
         logger.error(f"Dataset loading failed: {str(e)}")
         return
@@ -91,24 +98,18 @@ def run_mode(
     tokenizer: any,
     model: any,
 ) -> None:
-    """
-    Run evaluation for a specific model and mode.
+    """Run evaluation for a specific model and mode."""
+    # Determine dataset identifier for CSV naming
+    dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
+    csv_path: Path = (
+        CONFIG.result_dir / f"{dataset_id}_{model_name.split('/')[-1]}_{mode_tag}.csv"
+    )
+    # csv_path: Path = CONFIG.result_dir / f"{dataset_id}_128_{model_name.split('/')[-1]}_{mode_tag}.csv"
+    # csv_path: Path = CONFIG.result_dir / f"{dataset_id}_512_{model_name.split('/')[-1]}_{mode_tag}.csv"
 
-    Args:
-        model_name: Name of the model.
-        mode_tag: Evaluation mode identifier (e.g., 'q', 'q+r').
-        include_passage: Whether to include retrieved passage in prompt.
-        dataset: Dataset object to evaluate on.
-        tokenizer: Tokenizer instance (or None).
-        model: Model instance (or None).
-    """
-    logger.info(f"Starting {mode_tag} mode for {model_name}")
-    csv_path: Path = (CONFIG.result_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv")
-    # csv_path: Path = (CONFIG.result_dir / f"hotpot_mini_128_{model_name.split('/')[-1]}_{mode_tag}.csv")
-    # csv_path: Path = (CONFIG.result_dir / f"hotpot_mini_512_{model_name.split('/')[-1]}_{mode_tag}.csv")
-
+    # Load Wikipedia only for HotpotQA in retrieval mode
     wiki_data: tuple | None = None
-    if mode_tag == "q+r":
+    if mode_tag == "q+r" and "hotpot" in CONFIG.dataset_name:
         try:
             wiki_data = load_wiki()
             logger.info("Loaded Wikipedia corpus and indexes")
@@ -116,6 +117,7 @@ def run_mode(
             logger.error(f"Wikipedia loading failed: {str(e)}")
             return
 
+    # Resume from last saved index
     start_idx: int = 0
     if csv_path.exists():
         try:
@@ -136,46 +138,72 @@ def run_mode(
             sample = dataset[idx]
             sample_id = sample.get("id", idx)
 
-            retrieval_metrics: dict = {
+            # Initialize metrics
+            retrieval_metrics = {
                 "duration": 0.0,
                 "energy_consumed": 0.0,
                 "emissions": 0.0,
             }
-            if wiki_data:
-                docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
-                _, retrieval_metrics = retrieve(
-                    sample["question"], vectorizer, tfidf_matrix, titles, inv_index
-                )
+            context = ""
 
-            prompt: str = build_prompt(sample, include_passage)
+            context = ""
+            if mode_tag == "q+r":
+                if "hotpot" in CONFIG.dataset_name and wiki_data:
+                    # HotpotQA: Retrieve passages
+                    docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+                    context, ret_metrics = retrieve(
+                        sample["question"], vectorizer, tfidf_matrix, titles, inv_index
+                    )
+                    retrieval_metrics.update(ret_metrics)
+                elif "boolq" in CONFIG.dataset_name:
+                    # BoolQ: Use provided passage
+                    context = sample.get("passage", "")
+
+            # Build prompt with context
+            sample_for_prompt = sample.copy()
+            if context:
+                sample_for_prompt["context"] = context
+            prompt = build_prompt(sample_for_prompt, include_passage)
+
+            # Generate prediction
             prediction: str = ""
             inference_metrics: dict = {
                 "duration": 0.0,
                 "energy_consumed": 0.0,
                 "emissions": 0.0,
             }
-
             if model and tokenizer:
                 full_output, inference_metrics = inference(
                     prompt, model, tokenizer, model_name, mode_tag
                 )
                 prediction = full_output.split("Answer: ")[-1].strip()
 
-            em: float = exact_match(prediction, sample["answer"])
-            f1: float = f1_score(prediction, sample["answer"])
+            # Convert gold answer to string for BoolQ
+            gold_answer = sample["answer"]
+            if not isinstance(gold_answer, str):
+                gold_answer = str(gold_answer)
 
+            # Calculate scores
+            em: float = exact_match(prediction, gold_answer)
+            f1: float = f1_score(prediction, gold_answer)
+
+            # Collect results
             results.append(
                 {
                     "qid": idx,
                     "pred": prediction,
-                    "gold": sample["answer"],
+                    "gold": gold_answer,
                     "em": em,
                     "f1": f1,
                     "inference_duration (s)": inference_metrics["duration"],
-                    "inference_energy_consumed (kWh)": inference_metrics["energy_consumed"],
+                    "inference_energy_consumed (kWh)": inference_metrics[
+                        "energy_consumed"
+                    ],
                     "inference_emissions (kg)": inference_metrics["emissions"],
                     "retrieval_duration (s)": retrieval_metrics["duration"],
-                    "retrieval_energy_consumed (kWh)": retrieval_metrics["energy_consumed"],
+                    "retrieval_energy_consumed (kWh)": retrieval_metrics[
+                        "energy_consumed"
+                    ],
                     "retrieval_emissions (kg)": retrieval_metrics["emissions"],
                 }
             )
@@ -188,12 +216,10 @@ def run_mode(
 
         except Exception as e:
             logger.error(f"Error processing sample {idx}: {str(e)}")
-
         pbar.update(1)
 
     if results:
         save_results(results, csv_path)
-
     pbar.close()
     logger.info(f"Completed {mode_tag} mode for {model_name}")
 
