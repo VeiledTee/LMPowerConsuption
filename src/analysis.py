@@ -1,8 +1,19 @@
-import argparse
 from pathlib import Path
-
 import pandas as pd
 
+
+# Mapping from internal model keys to display names
+MODEL_DISPLAY_NAMES = {
+    "distilgpt2_q": "DistilGPT2 (Base)",
+    "distilgpt2_q+r": "DistilGPT2 (Context)",
+    "gpt2-xl_q": "GPT2-XL (Base)",
+    "gemma-2b_q": "Gemma 2B (Base)",
+    "gemma-2b_q+r": "Gemma 2B (Context)",
+    "gemma-7b_q": "Gemma 7B (Base)",
+    "gemma-2b-it_q": "Gemma 2B-IT (Base)",
+    "gemma-2b-it_q+r": "Gemma 2B-IT (Context)",
+    "gemma-7b-it_q": "Gemma 7B-IT (Base)",
+}
 
 RESULT_COLS = {
     "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
@@ -17,43 +28,32 @@ def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
 
 
 def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
-    """Add energy_kWh, emissions_kg, time_s averaged over r + inference."""
+    """Add combined energy, emissions, and time by summing inference + retrieval."""
     for new_name, (c1, c2) in RESULT_COLS.items():
         df[f"combined_{new_name}"] = _combined(df, c1, c2)
     return df
 
 
-def summarise(model_name: str, df: pd.DataFrame, context_used: bool, dataset_version) -> dict:
-    """Return one-row summary dict for a single model run."""
+def summarise(model_key: str, df: pd.DataFrame, context_used: bool, dataset_version) -> dict:
+    """Return one-row summary dict for a single model run, using display names."""
     df = add_combined_cols(df)
-
-    # Per-sample carbon intensities
-    inf_intensity = (df["inference_emissions (kg)"] / df["inference_energy_consumed (kWh)"]).mean()
-    ret_intensity = (df["retrieval_emissions (kg)"] / df["retrieval_energy_consumed (kWh)"]).mean()
-    comb_intensity = (df["combined_emissions"] / df["combined_energy"]).mean()
+    display_name = MODEL_DISPLAY_NAMES.get(model_key, model_key)
     return {
-        "model": model_name,
+        "model": display_name,
         "context_used": context_used,
         "dataset_version": str(dataset_version),
         "f1": df["f1"].mean(),
         "em": df["em"].mean(),
-
-        # Total energy (correct aggregates)
-        "avg_energy_kWh": df["combined_energy"].mean(),
+        # Energy
+        "total_energy_kWh": df["combined_energy"].mean(),
         "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
         "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
-        # Total emissions (correct aggregates)
-        "avg_emissions_kg": df["combined_emissions"].mean(),
+        # Emissions
+        "total_emissions_kg": df["combined_emissions"].mean(),
         "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-
-        # Mean carbon intensities (true per-sample means)
-        "mean_i_carbon_intensity": inf_intensity,
-        "mean_r_carbon_intensity": ret_intensity,
-        "mean_combined_carbon_intensity": comb_intensity,
-
-        # Total durations
-        "avg_time_s": df["combined_time"].mean(),
+        # Time
+        "total_time_s": df["combined_time"].mean(),
     }
 
 
@@ -76,9 +76,9 @@ def main() -> None:
         summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_128_distilgpt2_q+r.csv"), True, '128'),
         summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_128_gpt2-xl_q.csv"), False, '128'),
 
-        # summarise("distilgpt2_q", _load(results_dir / "hotpot_mini_512_distilgpt2_q.csv"), False, '512'),
-        # summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_512_distilgpt2_q+r.csv"), True, '512'),
-        # summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_512_gpt2-xl_q.csv"), False, '512'),
+        summarise("distilgpt2_q", _load(results_dir / "hotpot_mini_512_distilgpt2_q.csv"), False, '512'),
+        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_512_distilgpt2_q+r.csv"), True, '512'),
+        summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_512_gpt2-xl_q.csv"), False, '512'),
 
         summarise("gemma-2b_q", _load(results_dir / "hotpot_mini_128_gemma-2b_q.csv"), False, '128'),
         summarise("gemma-2b_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b_q+r.csv"), True, '128'),
@@ -87,9 +87,17 @@ def main() -> None:
         summarise("gemma-2b-it_q", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q.csv"), False, '128'),
         summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv"), True, '128'),
         summarise("gemma-7b-it_q", _load(results_dir / "hotpot_mini_128_gemma-7b-it_q.csv"), False, '128'),
+
+        summarise("gemma-2b-it_q", _load(results_dir / "boolq_128_gemma-2b-it_q.csv"), False, '128'),
+        summarise("gemma-2b-it_q+r", _load(results_dir / "boolq_128_gemma-2b-it_q+r.csv"), True, '128'),
+        summarise("gemma-7b-it_q", _load(results_dir / "boolq_128_gemma-7b-it_q.csv"), False, '128'),
+        summarise("gemma-7b-it_q", _load(results_dir / "boolq_128_gemma-7b-it_q_simplified.csv"), False, '128'),
     ]
-    pd.DataFrame(summaries).to_csv(results_dir / 'summaries.csv', index=False)
-    print(pd.DataFrame(summaries).to_markdown(index=False))
+
+    df_summary = pd.DataFrame(summaries)
+
+    df_summary.to_csv(results_dir / 'boolq_summaries.csv', index=False, float_format='%.6f')
+    print(df_summary.to_markdown(index=False, floatfmt=".6f"))
 
 
 if __name__ == "__main__":
