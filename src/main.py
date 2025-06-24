@@ -28,8 +28,8 @@ def run() -> None:
     logger.info(f"Using device: {CONFIG.device}")
 
     # dataset_path = Path(data_dir / "hotpot_mini_128.jsonl")
-    dataset_path = Path(data_dir / "boolq_mini_128.jsonl")
-    # dataset_path = Path(data_dir / "hotpot_mini_129.jsonl")
+    # dataset_path = Path(data_dir / "boolq_mini_128.jsonl")
+    dataset_path = Path(data_dir / "hotpot_mini_129.jsonl")
 
     try:
         if dataset_path.exists():
