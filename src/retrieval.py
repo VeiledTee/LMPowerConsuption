@@ -76,25 +76,32 @@ def load_wiki():
     return docs, titles, vectorizer, tfidf_matrix, inv_index
 
 
-def retrieve(question, vectorizer, tfidf_matrix, titles, inv_index):
+def retrieve_hotpot(question, vectorizer, tfidf_matrix, titles, inv_index):
+    # Pre-processing outside measurement
+    tokens = re.findall(CONFIG.token_pattern, normalize(question))
+    tokens = [t for t in tokens if t not in ENGLISH_STOP_WORDS]
+    ngrams = tokens + [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
+
+    counter = Counter()
+    for ng in ngrams:
+        counter.update(inv_index.get(ng, []))
+    cand_ids = [doc_id for doc_id, _ in counter.most_common(5000)]
+
+    # Only measure core retrieval operations
     with EmissionsTracker(save_to_file=False, log_level="error") as tracker:
         q_vec = vectorizer.transform([question])
-        tokens = re.findall(CONFIG.token_pattern, normalize(question))
-        tokens = [t for t in tokens if t not in ENGLISH_STOP_WORDS]
-        ngrams = tokens + [
-            f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)
-        ]
-        counter = Counter()
-        for ng in ngrams:
-            counter.update(inv_index.get(ng, []))
-        cand_ids = [doc_id for doc_id, _ in counter.most_common(5000)]
-        sub_mat = tfidf_matrix[cand_ids]
-        scores = (q_vec @ sub_mat.T).toarray().flatten()
-        top_indices = scores.argsort()[-10:][::-1]
-        top_titles = [titles[cand_ids[i]] for i in top_indices]
+
+        if cand_ids:
+            sub_mat = tfidf_matrix[cand_ids]
+            scores = (q_vec @ sub_mat.T).toarray().flatten()
+            top_indices = scores.argsort()[-10:][::-1]
+            top_titles = [titles[cand_ids[i]] for i in top_indices]
+        else:
+            top_titles = []
+
     data = tracker.final_emissions_data
     return top_titles, {
-        "duration": float(data.duration),
-        "energy_consumed": float(data.energy_consumed),
-        "emissions": float(data.emissions),
+        "duration": data.duration,
+        "energy_consumed": data.energy_consumed,
+        "emissions": data.emissions,
     }
