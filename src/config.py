@@ -1,13 +1,13 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 import torch
 
 
 @dataclass(frozen=True)
 class ExperimentConfig:
-    model_candidates: List[str]
+    model_types: dict[str, str]
     dataset_name: str
     config: str
     split: str
@@ -15,7 +15,7 @@ class ExperimentConfig:
     max_new_tokens: int
     batch_size: int
     device: str
-    modes: Dict[str, bool]
+    modes: dict[str, bool]
     wiki_dir: Path
     corpus_cache: Path
     tfidf_cache: Path
@@ -28,7 +28,7 @@ class ExperimentConfig:
     data_dir: Path
     retrieval_only: bool
     log_level: str = "INFO"
-    prompt_templates: Dict[str, str] = field(
+    prompt_templates: dict[str, str] = field(
         default_factory=lambda: {
             "hotpot": {
                     "with_context": (
@@ -60,16 +60,16 @@ class ExperimentConfig:
 
 
 CONFIG = ExperimentConfig(
-    model_candidates=[
-        "distilbert/distilgpt2",
-        # "openai-community/gpt2-xl",
-        # "google/gemma-7b",
-        # "google/gemma-7b-it",
-        # "google/gemma-2b",
-        # "google/gemma-2b-it",
-        # "meta-llama/Llama-2-7b-hf",
-        # "meta-llama/Llama-2-13b-hf",
-    ],
+    model_types={
+        "distilbert/distilgpt2": "huggingface",
+        # "openai-community/gpt2-xl": "huggingface",
+        # "google/gemma-7b": "huggingface",
+        # "google/gemma-7b-it": "huggingface",
+        # "google/gemma-2b": "huggingface",
+        # "google/gemma-2b-it": "huggingface",
+        # "meta-llama/Llama-2-7b-hf": "huggingface",
+        # "meta-llama/Llama-2-13b-hf": "huggingface",
+    },
     dataset_name="hotpotqa/hotpot_qa",
     # dataset_name="google/boolq",
     config="fullwiki",
