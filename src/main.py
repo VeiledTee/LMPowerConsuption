@@ -28,7 +28,7 @@ def run() -> None:
     logger.info(f"Starting experiment with config:\n{CONFIG}")
     logger.info(f"Using device: {CONFIG.device}")
 
-    dataset_path = Path(data_dir / "hotpot_mini_128.jsonl")
+    dataset_path = Path(data_dir / "hotpot_mini_129.jsonl")
 
     try:
         if dataset_path.exists():
@@ -103,9 +103,9 @@ def run_mode(
         model: Model instance (or None).
     """
     logger.info(f"Starting {mode_tag} mode for {model_name}")
-    csv_path: Path = (
-        CONFIG.result_dir / f"hotpot_mini_128_{model_name.split('/')[-1]}_{mode_tag}.csv"
-    )
+    csv_path: Path = (CONFIG.result_dir / f"hotpot_{model_name.split('/')[-1]}_{mode_tag}.csv")
+    # csv_path: Path = (CONFIG.result_dir / f"hotpot_mini_128_{model_name.split('/')[-1]}_{mode_tag}.csv")
+    # csv_path: Path = (CONFIG.result_dir / f"hotpot_mini_512_{model_name.split('/')[-1]}_{mode_tag}.csv")
 
     wiki_data: tuple | None = None
     if mode_tag == "q+r":
