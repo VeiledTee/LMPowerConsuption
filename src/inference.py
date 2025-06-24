@@ -3,6 +3,12 @@ from codecarbon import EmissionsTracker
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from config import CONFIG
+from ollama import generate
+
+
+def inference_ollama(prompt, model_name):
+    resp = generate(model=model_name, prompt=prompt)
+    return resp.get("response") or resp["choices"][0]["text"]
 
 
 def load_model_and_tokenizer(model_name):
@@ -20,12 +26,24 @@ def load_model_and_tokenizer(model_name):
     return tokenizer, model
 
 
-def inference(prompt, model, tokenizer, model_name, run_tag):
-    try:
-        with EmissionsTracker(
-            project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
-            log_level="error",
-        ) as tracker:
+def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
+    if provider == 'ollama':
+        try:
+            with EmissionsTracker(
+                    project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
+                    log_level="error",
+            ) as tracker:
+                text = inference_ollama(prompt, model_name)
+            return text, {
+                "duration": float(tracker.final_emissions_data.duration),
+                "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
+                "emissions": float(tracker.final_emissions_data.emissions),
+            }
+        except Exception as e:
+            print(f"Error during {provider} inference: {str(e)}")
+            raise
+    elif provider == 'huggingface':
+        try:
             with torch.inference_mode():
                 model_max_ctx = getattr(
                     model.config, "max_position_embeddings", tokenizer.model_max_length
@@ -49,23 +67,29 @@ def inference(prompt, model, tokenizer, model_name, run_tag):
                 # Determine appropriate pad_token_id
                 if tokenizer.pad_token_id is None:
                     tokenizer.pad_token_id = tokenizer.eos_token_id
+                with EmissionsTracker(
+                    project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
+                    log_level="error",
+                ) as tracker:
+                    tokens = model.generate(
+                        **inputs,
+                        max_new_tokens=CONFIG.max_new_tokens,
+                        do_sample=False,
+                        no_repeat_ngram_size=2,
+                        repetition_penalty=1.5,
+                        eos_token_id=tokenizer.eos_token_id,
+                        pad_token_id=tokenizer.pad_token_id,
+                    )
 
-                tokens = model.generate(
-                    **inputs,
-                    max_new_tokens=CONFIG.max_new_tokens,
-                    do_sample=False,
-                    no_repeat_ngram_size=2,
-                    repetition_penalty=1.5,
-                    eos_token_id=tokenizer.eos_token_id,
-                    pad_token_id=tokenizer.pad_token_id,
-                )
-
-        text = tokenizer.batch_decode(tokens, skip_special_tokens=True)[0]
-        return text, {
-            "duration": float(tracker.final_emissions_data.duration),
-            "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
-            "emissions": float(tracker.final_emissions_data.emissions),
-        }
-    except Exception as e:
-        print(f"Error during inference: {str(e)}")
-        raise
+            text = tokenizer.batch_decode(tokens, skip_special_tokens=True)[0]
+            return text, {
+                "duration": float(tracker.final_emissions_data.duration),
+                "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
+                "emissions": float(tracker.final_emissions_data.emissions),
+            }
+        except Exception as e:
+            print(f"Error during {provider} inference: {str(e)}")
+            raise
+    else:
+        print(f"Error during inference: Provider in CONFIG.model_types must be either 'ollama' or 'huggingface'.")
+        raise EnvironmentError
