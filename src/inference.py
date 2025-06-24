@@ -56,11 +56,10 @@ def inference(prompt, model, tokenizer, model_name, run_tag):
                 )
 
         text = tokenizer.batch_decode(tokens, skip_special_tokens=True)[0]
-        data = tracker.final_emissions_data
         return text, {
-            "duration": float(data.duration),
-            "energy_consumed": float(data.energy_consumed),
-            "emissions": float(data.emissions),
+            "duration": float(tracker.final_emissions_data.duration),
+            "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
+            "emissions": float(tracker.final_emissions_data.emissions),
         }
     except Exception as e:
         print(f"Error during inference: {str(e)}")
