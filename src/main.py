@@ -11,7 +11,7 @@ from tqdm import tqdm
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
-from retrieval import load_wiki, retrieve
+from retrieval import load_wiki, retrieve_hotpot
 from scorers import exact_match, f1_score
 from utils import convert_seconds, ensure_config_dirs, setup_logging
 
@@ -59,7 +59,7 @@ def run() -> None:
         logger.error(f"Dataset loading failed: {str(e)}")
         return
 
-    for model_name in CONFIG.model_candidates:
+    for model_name, provider in CONFIG.model_candidates:
         model_start = time.time()
         logger.info(f"\n{'=' * 60}\nRunning model: {model_name}\n{'=' * 60}")
 
@@ -73,7 +73,7 @@ def run() -> None:
                 continue
 
         for mode_tag, include_passage in CONFIG.modes.items():
-            run_mode(model_name, mode_tag, include_passage, dataset, tokenizer, model)
+            run_mode(model_name, mode_tag, include_passage, dataset, tokenizer, model, provider)
 
         if model:
             del model
@@ -98,6 +98,7 @@ def run_mode(
     dataset: Dataset,
     tokenizer: any,
     model: any,
+    provider: str,
 ) -> None:
     """Run evaluation for a specific model and mode."""
     # Determine dataset identifier for CSV naming
@@ -150,7 +151,7 @@ def run_mode(
                 if "hotpot" in CONFIG.dataset_name and wiki_data:
                     # HotpotQA: Retrieve passages
                     docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
-                    context, ret_metrics = retrieve(
+                    context, ret_metrics = retrieve_hotpot(
                         sample["question"], vectorizer, tfidf_matrix, titles, inv_index
                     )
                     retrieval_metrics.update(ret_metrics)
@@ -173,7 +174,7 @@ def run_mode(
             }
             if model and tokenizer:
                 full_output, inference_metrics = inference(
-                    prompt, model, tokenizer, model_name, mode_tag
+                    prompt, model, tokenizer, model_name, mode_tag, provider
                 )
                 prediction = full_output.split("Answer: ")[-1].strip()
 
