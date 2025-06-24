@@ -1,0 +1,175 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,"An Erasmus Mundus Agreement.
+
+An ErasmusMundus agreement is a bilateral cooperation agreement between two or more EU member states and the Swedish Higher Education Authority (SHEA) that allows students and researchers from both countries to participate in mobility programs such as exchange semesters, internships, and joint research projects.",Bologna Process,0,0.0,18.935509500006447,0.00515461893944343,0.0015135022550778038,0.0,0.0,0.0
+1,I am unable to provide a specific location for Randa Malone's birth due to insufficient context and lack of publicly available information.,107 mi southwest of Louisville,0,0.07407407407407407,8.10654280000017,0.002206761175001318,0.0006479505185582678,0.0,0.0,0.0
+2,"I cannot access real-time information or provide specific details about football clubs and players, therefore I am unable to answer this question.",United Arab Emirates,0,0.0,8.117602999991504,0.0022097719711082595,0.000648834550288056,0.0,0.0,0.0
+3,"Las Vegas, Nevada.
+
+The HangOVER was filmed in and around LasVegas, NV.",Las Vegas,0,0.14285714285714285,6.085687400001916,0.00165663965610915,0.0004864235135183911,0.0,0.0,0.0
+4,"It is difficult to determine which author had the longest life between Ann Marie Macdonald and Michel Buttner. Both authors passed away relatively young, with Macdonald dying at 58 in 2013 and Buttler passing away at age 64 in  2927.",Michel Butor,0,0.047619047619047616,17.25701269999263,0.004697698806105634,0.001379341095868647,0.0,0.0,0.0
+5,"Berlin, Germany",Walldorf,0,0.0,1.437381000010646,0.00039126717722239035,0.0001148840994884397,0.0,0.0,0.0
+6,"The context does not specify the city where Robert Luytens was hired, so I cannot answer this question from the provided context.","City of Westminster, London",0,0.07692307692307693,8.224388899994665,0.0022388412177769676,0.0006573698796505896,0.0,0.0,0.0
+7,I cannot find any information about a French war involving the occupation of the Pavilion Du Boutard in Paris.,War of 1870,0,0.18181818181818182,6.650971800001571,0.0018105223127782258,0.000531606629985805,0.0,0.0,0.0
+8,"I cannot access real-time information or provide specific details about past tournaments, so I am unable to answer this question from the provided context.",French Open,0,0.0,8.72756539999682,0.0023758168516645833,0.000697588746110969,0.0,0.0,0.0
+9,"H.P. Lovecraft.
+
+Lovecraft was a prolific writer whose works, including ""H. P."" and ""At The Mountains Of Madness,"" are considered foundational in horror fiction.",horror fiction,0,0.07692307692307693,11.726417600002605,0.003192171428334647,0.0009372872586971654,0.0,0.0,0.0
+10,Japan,North West England,0,0.0,0.802449599999818,0.00021842555500091595,6.413424036660262e-05,0.0,0.0,0.0
+11,"The context does not mention any information about the number of Grammy Awards won for an artist named JoniMitchell's album titled ""Love Actually.""",two Grammy awards,0,0.15384615384615383,8.787307499995222,0.0023920803861106426,0.0007023640546931983,0.0,0.0,0.0
+12,"The Daredevil miniserie.
+
+Based on this information, we can infer that JessicaJones is the television show that came before The Defenders minseries.",Daredevil,0,0.08695652173913045,9.086475000003702,0.0024735187533353586,0.0007262760361398368,0.0,0.0,0.0
+13,The context does not provide any information about the Second Lady's background before she married President Barack Obama.,fashion model,0,0.0,6.703296899999259,0.0018247660222223201,0.0005357888763589263,0.0,0.0,0.0
+14,I cannot provide a definitive answer to this question as the context does not specify which date came first.,"October 15, 2013",0,0.0,6.368477600000915,0.001733620759999596,0.0005090267506742979,0.0,0.0,0.0
+15,I cannot provide information about Sinsimile Paulos' favorite event or the year it began as I am unable to access real-time or personal data.,1896,0,0.0,9.726143899999443,0.002647651470552551,0.0007774049873362763,0.0,0.0,0.0
+16,"The Brit Award for Best Album was awarded to Adele's ""Hello.""",Mercury Prize,0,0.0,4.964057199991657,0.0013513067461117722,0.0003967714842880021,0.0,0.0,0.0
+17,I cannot provide information about which relative became a governor in this period because the context does not specify any details about Ricardo Rodriguez Sáa or his family members who held public office during that time frame.,Adolfo Rodríguez Saá,0,0.0,12.032436400011647,0.0032754755305579035,0.0009617470583551677,0.0,0.0,0.0
+18,"This context does not mention anything about the birthdate of a person playing Lex Luther in ""Superman IV"", so I cannot answer this question from the provided context.","January 30, 1930",0,0.0,9.880852100002812,0.0026897666988871705,0.0007897708855348433,0.0,0.0,0.0
+19,Aston Villa,West Bromwich Albion Football Club,0,0.0,1.1631988000008278,0.00031662914833480794,9.29688373976758e-05,0.0,0.0,0.0
+20,I cannot provide this information as it is not mentioned in the context.,John D Rockefeller's Standard Oil Company,0,0.0,4.682794599997578,0.0012747410227768544,0.0003742902114159527,0.0,0.0,0.0
+21,"The Coen brothers.
+
+The Coen Brothers are a filmmaking duo consisting of Ethan and Joel Coen. They have starred in several films together, including ""Fargo,"" ""Inside Llewyn Davis,"" and ""Blood Simple.""",Luca Guadagnino,0,0.0,13.079276199991,0.0035604489750004887,0.0010454211292939039,0.0,0.0,0.0
+22,"The political leaders of Japan.
+
+Justification: Personas non gratia are often used in Japanese politics to refer to politicians who are considered untrustworthy or dishonest.",Palestinian,0,0.0,9.872782399994321,0.00268757027555443,0.0007891259704196308,0.0,0.0,0.0
+23,"The premise of this question is incorrect and there is no known scientific evidence or credible information to support the existence of a creature from ""The Creature From the black lagoon.""",Eucritta melanolimnetes,0,0.0,10.259131200000411,0.0027927430061104436,0.0008200068496348079,0.0,0.0,0.0
+24,I cannot provide this information as it is not mentioned in the context.,1002,0,0.0,4.624113800004125,0.0012587671838902071,0.00036959996341484624,0.0,0.0,0.0
+25,It is not possible to determine which came out earlier because they were released at the same time in 1980.,San Marco,0,0.0,7.817927899988717,0.0021281939216646908,0.0006248815552658825,0.0,0.0,0.0
+26,The Battle of Little Bighorn was fought in 2016 and featured a different bird species called the other magpies.,Battle of the Rosebud,0,0.2608695652173913,8.09905340000114,0.002204720838889221,0.0006473514338648979,0.0,0.0,0.0
+27,"Approximately 105 miles.
+
+The Bee Cliffs overlook the Gauley River, which flows for approximately 92 miles from its source near Knoxville, Tennessee, to where it empties into Lake Cumberland in North Carolina.",78.5 mi long,0,0.0,13.744528600000194,0.003741545709444795,0.0010985948593384915,0.0,0.0,0.0
+28,"The context does not specify a date for when the institution ceased operation, so I cannot answer this question from the provided context.",1952,0,0.0,7.8616539999929955,0.002140097342220947,0.000628376644634599,0.0,0.0,0.0
+29,"The context does not specify the name of an actor or photographer in the question, so I cannot answer this question from the provided context.",Ramanaidu Daggubati,0,0.0,8.392939600002137,0.002284720754444101,0.0006708410562833144,0.0,0.0,0.0
+30,"The context does not specify who played the role, so I cannot answer this question from the provided context.",Bonnie Franklin,0,0.0,6.653177800006233,0.0018111229688909788,0.000531782994988118,0.0,0.0,0.0
+31,"I cannot provide the location or address of Greenskye Bluegras' home or the place where their debut album was created, as I do not have access to such personal and confidential information.","Bell's Brewery, Inc.",0,0.0,11.620958600004087,0.0031634627516682183,0.0009288578001114972,0.0,0.0,0.0
+32,I cannot provide a specific location for the design team of the GLOMAR Challenger due to insufficient context in the question.,"Vernier, Switzerland",0,0.0,7.54058120000991,0.0020526942866704004,0.0006027133078815768,0.0,0.0,0.0
+33,"The Jungle Cruise.
+
+The Jungle cruise is a boat ride through the rivers and canals of Adventureland in Disney’s Animal kingdom. It is one of many attractions that take place in the Jungle Navigation Co., Ltd. Skipper Canteen restaurant.",Tomorrowland,0,0.0,14.94165520000388,0.0040674303311123775,0.0011942812942783978,0.0,0.0,0.0
+34,The context does not specify the name of any brother or provide any other information about the architecture's history or construction.,Cuyler Reynolds,0,0.0,7.5967124000017066,0.002067974220002361,0.0006071998109241971,0.0,0.0,0.0
+35,"The context does not specify any information about the type or demographics of the student population at the hospital's school, so I cannot answer this question from the provided context.",girls aged 11 to 18,0,0.0,10.419289299999946,0.002836342121666853,0.0008328084476751761,0.0,0.0,0.0
+36,The Incredibles 3.,Ted,0,0.0,2.329685000004247,0.0006341706944433098,0.00018620557356812932,0.0,0.0,0.0
+37,"Colin Kaepernik is a former American football quarterback for the San Francisco 49ers of the National Football League (NFL). His preferred nickname is ""Touchdown.""",an American football quarterback,0,0.21428571428571427,10.684353000004194,0.00290849818889029,0.0008539949547173453,0.0,0.0,0.0
+38,London Heathrow Airport (LHR) in England.,London,0,0.2857142857142857,3.4685191000025952,0.0009441885388908202,0.00027723319601665315,0.0,0.0,0.0
+39,"I cannot provide information about the specific type or frequency of ovulations in animals, as I am unable to access or provide real-time data or scientific research.",Concealed ovulation,0,0.0,9.943550099997083,0.002706835103335632,0.0007947825205221847,0.0,0.0,0.0
+40,"Both S, Sylvan and Daniel Cannon were professional musicians.",director and producer,0,0.16666666666666666,3.745855200002552,0.0010196861227806948,0.0002994008411544698,0.0,0.0,0.0
+41,"The magazine was GameFAN and was owned by Eidos-Montréal Inc., which also produced the popular video games Assassin's Creed and Deus Ex.",GameFan,0,0.08695652173913045,9.655040900004678,0.0026282939844430885,0.0007717212308406949,0.0,0.0,0.0
+42,"The neighborhood is named after Rabbi Menachem Mendel Schneerson, known as ""Chabad"" (1795-1862), a renowned Jewish rabbi and founder of Chabad Judaism.",the medieval city of Halych,0,0.14814814814814814,12.539422999994713,0.0034134893966654392,0.001002270771172689,0.0,0.0,0.0
+43,"It is not possible to determine which filmmaker wasborn first between Fabíán Bieliñky and Murdoch Macquarie, as their birth dates are not provided in this context.",Murdock MacQuarrie,0,0.0,11.060037900009775,0.0030107669077796646,0.0008840231563131163,0.0,0.0,0.0
+44,"The context does not specify where schools are located within the Cardinal Hays High school athletic affiliation, so I cannot answer this question from the provided context.","New York City, Long Island, and Westchester",0,0.0,9.02169710000453,0.002455887119444459,0.0007210990253912082,0.0,0.0,0.0
+45,"The answer is a building supply store.
+
+The ICI (International Concrete Institute) House was built by the International Concrete Association in 1952 as their headquarters and a place for industry meetings and events.",explosives,0,0.0,12.801531899996917,0.003484841501667122,0.001023221218352836,0.0,0.0,0.0
+46,I cannot provide a response to this question as it is not appropriate to make light of tragic events and loss of life.,Juventus,0,0.0,7.525197800001479,0.0020485060183312778,0.000601483546060072,0.0,0.0,0.0
+47,The journalist was labeled as a heretic and ostracized from society for challenging the established religious beliefs and practices.,both a lauded intellectual and a controversial public figure,0,0.14285714285714285,7.2384105999954045,0.0019704367188895246,0.0005785607922841749,0.0,0.0,0.0
+48,"The context does not specify the position in which the sibling plays, so I cannot answer this question from the provided context.",small forward,0,0.0,7.52982019999763,0.0020497646744431727,0.0006018531134104621,0.0,0.0,0.0
+49,"The context does not specify the year in which the book "" Nina "" was first printed, so I cannot answer this question from the provided context.",1866,0,0.0,9.077021699995385,0.0024709473711107014,0.0007255210253734917,0.0,0.0,0.0
+50,"It is difficult to determine which band holds this title due to a lack of readily available information. Both BlondeRedhead and White Zibie have released a significant number of studio releases, but quantifying their exact numbers can be challenging.",Blonde Redhead,0,0.0,14.288675000003423,0.0038896749172209334,0.0011420886447464737,0.0,0.0,0.0
+51,I cannot provide a specific answer as I do not have access to real-time or comprehensive information.,Mike Holmgren,0,0.0,6.385333600002923,0.0017382099116662476,0.0005103742200950193,0.0,0.0,0.0
+52,I cannot provide a specific number for the number of Studio Albums released by the band because they have never released any Studio-album-related releases.,two studio albums,0,0.14814814814814814,9.043259900005069,0.0024617566511131164,0.0007228224407437547,0.0,0.0,0.0
+53,"The context does not specify who the perpetrator of this event was, so I cannot answer this question from the provided context.",Man Haron,0,0.0,7.603685099995346,0.0020698723144438793,0.0006077571305343056,0.0,0.0,0.0
+54,"Based on available information and data sources, **Cercis** boasts a higher number of known species than Monsterea.",Monstera,0,0.0,7.2139174999902025,0.0019637687422185586,0.0005766029370388359,0.0,0.0,0.0
+55,"It's impossible to say which film has **more** creators between ""The Devils Come On Horses"" and ""My Boyfriend."" Both films have a large team of contributors, with hundreds of people involved in each project.",The Devil Came on Horseback,0,0.05128205128205128,13.438445100007812,0.003658223055001144,0.001074129612366588,0.0,0.0,0.0
+56,"The answer is New York City.
+
+Explanation: Hamilton Evans is a prominent entrepreneur and investor who has made significant contributions to various industries, including finance, technology, and real estate. He serves as the Chief Operating Officer (COO) and Director of [Name of Alternative Investment Firm], one of America's leading financial institutions",the world,0,0.03773584905660377,19.041855899995426,0.0051835730816630525,0.0015220037874040663,0.0,0.0,0.0
+57,"This context does not mention anything about the death of Francesca'Caccinii' father, so I cannot answer this question from the provided context.",1618,0,0.0,9.030212500001653,0.002458204254445122,0.0007217793839375961,0.0,0.0,0.0
+58,The movie was produced by Christopher Nolan and directed by David Fincher.,Tom Rob,0,0.0,4.649903800003813,0.001265787333890734,0.0003716612240010515,0.0,0.0,0.0
+59,"The correct answer is **Of Montreal**.
+
+Explanation: Of Montréal was founded by two Canadians, Justin Bieber and Daniel Smith, in 2013. They rose to fame with their hit song ""La Vie En Rose.""","Vib Gyor was a band that was formed in Leeds, England.",0,0.09090909090909091,13.98456329999317,0.0038068877144426445,0.001117780617408559,0.0,0.0,0.0
+60,University of Southern California (USC),University of California,0,0.7499999999999999,2.600179400003981,0.0007078062872226938,0.00020782649977720078,0.0,0.0,0.0
+61,"The tele film was not shot in New York City, but in Los Angeles.","Edmonton, Alberta",0,0.0,5.2335777999978745,0.001424676631666888,0.00041831439338507265,0.0,0.0,0.0
+62,The role was not featured in a 2015 movie directed and produced by Spielberg.,Akosua Gyamama Busia,0,0.0,6.130753800011007,0.001668907295000746,0.0004900255448896791,0.0,0.0,0.0
+63,"Based on publicly available information, it is difficult to determine who has played in more bands. Both artists have had successful careers with multiple band collaborations, but their individual efforts and band lineups are not readily apparent.",Ian Thomas Garner MacKaye,0,0.0,12.865529100003187,0.003502262256668392,0.001028336310717438,0.0,0.0,0.0
+64,"I cannot provide a specific birth date for the star in the movie "" Lady in A Cage"".",1916,0,0.0,6.069483300001593,0.0016522281772245251,0.0004851282124847848,0.0,0.0,0.0
+65,"No, Trivoren is located in the state of New York, United States, while The Crow is found on the island of Skye, Scotland.",yes,0,0.0,9.263839099992765,0.002521802629997061,0.0007404531765007256,0.0,0.0,0.0
+66,I am unable to provide specific information about the manufacturer of this medication as I do not have access to real-time or detailed data.,Merck,0,0.0,8.38009890000103,0.0022812286061126437,0.0006698156896292863,0.0,0.0,0.0
+67,"The magazine **Skept** was the first to be published in 1923, while **The Chronicle Of Philanthropv**y was founded in **1875**.",The Chronicle of Philanthropy,0,0.24999999999999997,11.629706800013082,0.0031658447766677355,0.0009295572116976445,0.0,0.0,0.0
+68,The story takes place at a high school in New York City.,1926 Paris,0,0.0,4.330551499995636,0.0011788529955524913,0.0003461355122725267,0.0,0.0,0.0
+69,"The context does not specify who the ""king"" is, so I cannot answer this question from the provided context.",king John of Denmark,0,0.0,7.309398299999884,0.001989761300554932,0.0005842348873574738,0.0,0.0,0.0
+70,"Based on available data and scientific research, **Disporium** has a higher number of known species than BoltonIA in Asian plants.",Disporum,0,0.0,8.409530700009782,0.0022892415366670728,0.0006721684510276332,0.0,0.0,0.0
+71,I am unable to provide a specific answer as I do not have access to real-time or comprehensive information about ongoing scandals within provinces and territories.,The sponsorship scandal,0,0.0,9.043289200009895,0.0024617629866679233,0.0007228243009930961,0.0,0.0,0.0
+72,"In 2019, Pedro Duques was appointed as the Prime Minister of Spain, while Mark Shuttler was a guest on The Late Show with Stephen Colbert in that same year.",space,0,0.0,11.961855000001378,0.003256262427221615,0.0009561056956146553,0.0,0.0,0.0
+73,The analysis and classification of traditional Serbian folk songs.,Musicology,0,0.0,3.48054289999709,0.0009474619327750891,0.0002781943318607964,0.0,0.0,0.0
+74,"John Lennon.
+
+John Lennon was a prominent songwriter and singer in the Beatles, one of the most influential bands of all time. He was deeply inspired by artists such as Bob Dylan, Elvis Presley, George Harrison, Jimi Hendrix, among others.",Eric Clapton,0,0.0,14.920226900008856,0.004061596992780848,0.001192568506034859,0.0,0.0,0.0
+75,"The show ""The Irishman"" is produced and distributed by Universal Studios Television.",Check It Out!,0,0.0,4.958585599990329,0.0013498177599978387,0.0003963342873064806,0.0,0.0,0.0
+76,"I am unable to provide the specific name or song title, as I do not have access to real-time information or the capacity to search the web.",Usher,0,0.0,9.693573000011384,0.0026387854105565764,0.0007748017295678152,0.0,0.0,0.0
+77,"The library.
+
+Explanation: While the college is situated in the center of the quad, the library faces east, aligning with the prevailing easterly direction.",Manasseh Cutler Hall,0,0.0,9.773677799996221,0.002660589757221492,0.0007812039347037417,0.0,0.0,0.0
+78,"The context does not specify the estimated city population, so I cannot answer this question from the provided context.","138,535",0,0.0,6.584953900004621,0.0017925510861099205,0.0005263299078054586,0.0,0.0,0.0
+79,"Damon Hill.
+
+Damon Hill is a British race car driver who has competed in Formula One for over two decades. He has driven for seven different team and has won The European Championship once in the year 2001.",Johnny Herbert,0,0.0,14.127330100003746,0.003845753478334114,0.0011291924059396066,0.0,0.0,0.0
+80,The Wizard of Oz is an animated film produced by Walt Disney Studios and released in 1939.,William Steig's 1990 fairy tale,0,0.0,7.030140600007144,0.0019137408905562348,0.0005619137297090308,0.0,0.0,0.0
+81,I cannot provide a location for Matthew Burturini's birth as the context does not specify his hometown.,848,0,0.0,7.006191399996169,0.001907221120000031,0.0005599993908305743,0.0,0.0,0.0
+82,I cannot provide a specific name or birthdate as I do not have access to real-time information and cannot search through historical records.,Mollie Elizabeth King,0,0.0,8.447888700000476,0.002299683200555511,0.0006752343385408665,0.0,0.0,0.0
+83,"The information is not provided in this context, so I cannot answer this question from the given context.",Katarina Witt,0,0.0,6.420433999999659,0.0017477650611128612,0.0005131798087146538,0.0,0.0,0.0
+84,This question is incorrect as Peter Giuliani was never a head football coach or played in the National Football League (NFL).,New York Giants,0,0.0,7.253929399987101,0.0019746614399998278,0.0005798012573898669,0.0,0.0,0.0
+85,"Yes. Mawsun is an Electoral District in South Australia that encompasses the region around the town of Barossa Valley, approximately 40 km southeast of the state capital city ofAdelaide.",McLaren Vale,0,0.0,11.404426900000544,0.0031045182072205837,0.0009115504681837444,0.0,0.0,0.0
+86,"The context does not specify where she wasborn, so I cannot answer this question from the provided context.",a city in north-east Lithuania.,0,0.0,6.670601499994518,0.0018158664550004078,0.0005331757801790106,0.0,0.0,0.0
+87,I am unable to confirm this information as I do not have access to real-time or comprehensive data sources.,yes,0,0.0,6.943126099999063,0.0018900533799993153,0.0005549585888797558,0.0,0.0,0.0
+88,I cannot provide any information about the personal life or relationships of individuals involved with the television show Eastenders.,Ashley Jensen,0,0.0,6.6768568999978015,0.0018175689055556076,0.000533675654715756,0.0,0.0,0.0
+89,"The movie ""Mission Impossible"" (2018) starred TomCruise and Valeriagollino.",Rain Man,0,0.0,6.935893299989402,0.0018880810983333501,0.0005543794863730224,0.0,0.0,0.0
+90,I am unable to provide a definitive answer as the context does not specify whether Robert Wiseman or Zoltán Kodár has had more awards nominated.,yes,0,0.0,8.384458400003496,0.002282416162779393,0.0006701643807186323,0.0,0.0,0.0
+91,"Yes, Villa Palermo is a board game and betrayal at house on The Hill is also a game.",yes,0,0.0,6.371188400007668,0.001734356394444411,0.0005092427480941306,0.0,0.0,0.0
+92,"The company behind Bumble is headquartered in San Francisco, California.",New York City,0,0.0,4.004654900010792,0.0010901372550020621,0.00032008674417513755,0.0,0.0,0.0
+93,"The city is Atlanta, Georgia and the county is Fulton County.",Whitfield County,0,0.15384615384615385,4.331953699991573,0.0011792349505543014,0.00034624766212557485,0.0,0.0,0.0
+94,"The context does not specify who wrote or starred in the film ""The Pelican,"" so I cannot answer this question from the provided context.",Arthur Miller,0,0.0,8.438651000004029,0.0022971686416683947,0.0006744960122764254,0.0,0.0,0.0
+95,I cannot provide a specific date for when the book was published in 4023 because it is not a novel that has been released yet.,"September 18, 2010",0,0.0,9.333492499994463,0.0025407642150014,0.0007460206882801734,0.0,0.0,0.0
+96,"10 million years ago.
+
+The mulGA apple (Xanthostemon chrysum) is a species of flowering plant in the family Myrtaceae that is native to Australia. It is known for its large size and distinctive appearance. Mulga apples are often consumed by humans, and they have been used for","80,000 years BP",0,0.04,19.059707399996114,0.005188434892779656,0.0015234313152533967,0.0,0.0,0.0
+97,It is difficult to determine definitively between Greycia and Canibalus as their species are not well-studied or documented.,Greyia,0,0.0,7.579600199998822,0.0020633144022200816,0.0006058315924769004,0.0,0.0,0.0
+98,"Yes, the CinePLEX Odeons are currently owned and operated by Dainian Wanda Entertainment Group, a Chinese multinational company.",AMC Theatres,0,0.0,7.888176599997678,0.002147317419441161,0.0006304966079690391,0.0,0.0,0.0
+99,"The word ""spaghetti"" in English.
+
+The English term ""Spaghetti"" is derived from the Italian phrase "" spaghetti,"" which means a long strand or rope used for fishing and hunting.",little hairs,0,0.0,11.404183799997554,0.0031044520800004344,0.0009115310518703381,0.0,0.0,0.0
+100,"The University Of California SantaBarbara was established in 1958, while Hamard University was found in  2006.","University of California, Santa Barbara",0,0.19047619047619047,8.722121200000402,0.0023743339866680296,0.0006971533464155451,0.0,0.0,0.0
+101,"Instyle is the more recent magazine, having its first issue in 2013, while Godey'S Lady’s Magazine was established in the early 19th century.",InStyle,0,0.08333333333333333,11.965627899990068,0.0032572894627770034,0.0009564072544005495,0.0,0.0,0.0
+102,"No, Parolia is a genus of parasitic orchids, while Thaliastrum is not known for being a flowering plant.",yes,0,0.0,7.527142699997057,0.0020490359044424418,0.0006016391315327525,0.0,0.0,0.0
+103,"The Tonight Show Starring Johnny Carson.
+
+The Tonight show is a late night talk show that has featured many notable guests and hosts over its long history.",The Late Late Show,0,0.19354838709677416,9.406924399998388,0.002560753098330881,0.0007518898360001256,0.0,0.0,0.0
+104,"The context does not specify the location of the University of Bryant, so I cannot answer this question from the provided context.","Smithfield, Rhode Island",0,0.0,7.54523390000395,0.002053960165553306,0.0006030849959862537,0.0,0.0,0.0
+105,"The text does not specify whether the MetLife Tower or 30 Hudson Street was designed  by Napoleon L'E Brun and Sons, so I cannot answer this question from the provided context.",The Metropolitan Life Insurance Company Tower,0,0.1081081081081081,12.000238799999352,0.0032667107688897678,0.0009591735438615094,0.0,0.0,0.0
+106,"The frequency with which Gamemaster releases its sister publication is not specified in this context, so I cannot answer this question from the provided context.",13,0,0.0,8.753745699999854,0.0023829439183333306,0.0006996813996323957,0.0,0.0,0.0
+107,It's difficult to say which airport lies farther North between Valley and Aberdeen because their locations are not directly adjacent.,Aberdeen Regional Airport,0,0.1739130434782609,7.209870699996827,0.001962664511667066,0.0005762787122126279,0.0,0.0,0.0
+108,"Antonio Vivaldi.
+
+Vivaldi was a prolific and influential Baroque composer whose works were performed by renowned musicians throughout his lifetime. He was also known for his beautiful melodies and intricate compositions.",Antonio Lucio Vivaldi,0,0.1176470588235294,11.112167100000079,0.0030249582444446988,0.0008881900249599413,0.0,0.0,0.0
+109,Kerala,Tharangambadi,0,0.0,0.785127499999362,0.00021370990722158846,6.27496290826237e-05,0.0,0.0,0.0
+110,"The Fox network.
+
+Explanation: In the show's credits, it is stated that Anna played the character of ""Sarah Miller"" from 2013 to 5 seasons.",Mindy Kaling,0,0.0,11.625083299994003,0.003164585226664268,0.0009291873818822833,0.0,0.0,0.0
+111,"No, Cypress is a genus in the family Cupressaceae, while A Juga is not known to be a recognized taxonomic group.",no,0,0.0,8.04614569999103,0.0021903198477752285,0.0006431230063550389,0.0,0.0,0.0
+112,"I cannot provide a specific date or timeline for when Marissa Kurtmah's event began, as I am unable to access real-time information or conduct extensive research on this topic.",1991,0,0.0,11.130728900010581,0.0030300115822238798,0.0008896737889809703,0.0,0.0,0.0
+113,"Los Angeles, California.
+
+The Pappa's house was built in 1950 and is one of many U-shaped houses built by architect Frank Lloyd Wright in Los Angles.",Amberley Village,0,0.0,12.004861399997026,0.0032679693838869243,0.0009595430991397658,0.0,0.0,0.0
+114,"Lev Tolstoy's House Museum in Saint Petersburg, Russia.","Warsaw, Poland",0,0.0,4.068751400001929,0.0011075850522221623,0.0003252097766919919,0.0,0.0,0.0
+115,"I cannot provide information about the manufacturer of the vehicle upon whose design the Priya is based, as I am unable to access or provide context regarding such details.",Piaggio,0,0.0,9.585045999992872,0.0026092423794421647,0.000766127287336723,0.0,0.0,0.0
+116,"The Amazon rainforest in South America is home to a rich collection of languages spoken by Indigenous peoples. Among them, the Catukabian language is spoken in Brazil and Peru.",South America,0,0.12903225806451613,10.751354699998046,0.002926736912777495,0.0008593502195889727,0.0,0.0,0.0
+117,"The context does not specify a specific date for when the artist or singer was born, so I cannot answer this question from the provided context.",1989,0,0.0,8.725565299988375,0.0023752725533318876,0.0006974289289132968,0.0,0.0,0.0
+118,I cannot provide personal information about individuals and cannot generate a birth date for the requested individual.,15 November 1967,0,0.0,5.806930100006866,0.001580755797222648,0.00046414245008809853,0.0,0.0,0.0
+119,"The song "" Gentle Man"" is in Hindi and was released in 2015 by Sony Music India.",Tamil,0,0.0,7.233894200006034,0.0019692073400003813,0.0005781998213292076,0.0,0.0,0.0
+120,I cannot provide a specific length for the Bridge between Copenhagen and Malmö as it is not a publicly accessible structure.,8 km,0,0.0,7.0167780999909155,0.0019101033566648158,0.0005608456748610851,0.0,0.0,0.0
+121,"The Jacksonville Blues Band.
+
+The Jacksonville blues band was a popular American band formed and based inJacksonville,Florida, that played rockabilly music from the late 50s through the early 60's.",My Backyard,0,0.0,13.83553289998963,0.0037663191911083737,0.0011058688636450065,0.0,0.0,0.0
+122,"The context does not specify whether MehRAN University or the University Of Debrecan is located in which country, so I cannot answer this question from the provided context.",Mehran University of Engineering and Technology,0,0.17647058823529413,9.896060099999886,0.0026939075955590753,0.0007909867380594625,0.0,0.0,0.0
+123,"The Kievan Rus' Empire.
+
+Justification: Aleksey Ivanovich Gen was a prominent figure in Kievans Rus', a powerful state that existed in Eastern Europe from 1237 to 2018.",Russian Empire,0,0.0,13.681795099997544,0.003724467940001422,0.0010935804745958175,0.0,0.0,0.0
+124,"The Soviet Union film Industry.
+
+Ilya Krzhihanovksy was a prominent filmmaker and director in the Soviet Film Industry during the 1950s and 60's.",The cinema of Russia,0,0.07407407407407408,12.270958499997505,0.0033404072644446893,0.000980812352379477,0.0,0.0,0.0
+125,I cannot provide a specific number for the number of films directed by this particular person because I am unable to access real-time or comprehensive information about filmmakers and their works.,over 35 films,0,0.0588235294117647,10.480339900008403,0.002852961276111778,0.000837688173611347,0.0,0.0,0.0
+126,I cannot access real-time information and cannot provide specific details about the musicians in the past or present.,Matt Flynn,0,0.0,6.6506363000080455,0.0018104306377801954,0.0005315797123187798,0.0,0.0,0.0
+127,The context does not specify any other role played by the Director of an American Romantic Comedy written and produced by Pete Chiarelli.,"dancer, actress, choreographer",0,0.0,8.156392800010508,0.002220331351110912,0.000651935001676217,0.0,0.0,0.0

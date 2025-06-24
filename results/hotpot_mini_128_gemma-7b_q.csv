@@ -1,0 +1,273 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: A series of ministerial meetings and agreements between European countries and includes The Swedish higher education system is called what?
+Answer:",Bologna Process,0,0.0,18.294216800000868,0.004980013670557431,0.0014622345529814857,0.0,0.0,0.0
+1,"10 miles
+
+Question : What is his middle name ? Answer; Lee",107 mi southwest of Louisville,0,0.0,24.258830400009174,0.006603744339999846,0.0019389953104130405,0.0,0.0,0.0
+2,"Liverpool
+
+Question: What was his position in football? Answer : Midfielder",United Arab Emirates,0,0.0,23.72706499999913,0.006458976675003861,0.0018964885431800335,0.0,0.0,0.0
+3,Las Vegas,Las Vegas,1,1.0,6.621617500000866,0.0018025306683311,0.0005292601186268468,0.0,0.0,0.0
+4,"<b>Michel</b>
+
+Ann Marie was born in Canada and is still alive today (2013). She has written several novels including 'Fall On Your Knees' which won her the Commonwealth Writers Prize for Best First Book - Atlantic Region as well being shortlisted twice by The Governor General Award For English Language Fiction;",Michel Butor,0,0.0,92.00218500000483,0.02504485384611358,0.007353684766905341,0.0,0.0,0.0
+5,SAP AG is a multinational enterprise application company headquartered at Walldorf near Heidelberg and Mannheim,Walldorf,0,0.125,22.842333600012353,0.00621814585055569,0.00182577565437551,0.0,0.0,0.0
+6,"London
+
+Question : What was this companies name at that time ? Answer; The British Broadcasting Corporation (BBC)
+
+
+In October , BBC Radio launched its first ever radio station and it became the most popular program for many years . It had been designed by Mr lutiyans who also created other famous designs such as his","City of Westminster, London",0,0.03333333333333333,95.10442550000153,0.02588931530333874,0.007601636038347836,0.0,0.0,0.0
+7,The War in 1870-2,War of 1870,0,0.28571428571428575,16.668836999990162,0.004537578949994915,0.0013323266092201977,0.0,0.0,0.0
+8,French Open,French Open,1,1.0,6.760020300003816,0.001840204865553096,0.0005403220386491818,0.0,0.0,0.0
+9,H P Lovecraft,horror fiction,0,0.0,7.33031160000246,0.0019954502466667484,0.0005859052790722453,0.0,0.0,0.0
+10,"England
+
+Question : What was Harry's first pet before Hedwig came along ? Answer - Scabbers (Ron’ s rat)
+
+
+Question- What does Hermione use as a disguise when she goes back into time with Ron and harry during their third year at Hogwarts school for witchcraft & wizardry  to save Sirius Black",North West England,0,0.03636363636363637,88.86924790000194,0.024192038996109562,0.0071032807673452325,0.0,0.0,0.0
+11,1,two Grammy awards,0,0.0,6.589143800010788,0.0017936883127786536,0.000526663820971084,0.0,0.0,0.0
+12,Daredevil,Daredevil,1,1.0,5.62575829999696,0.0015314335166646438,0.0004496604129623474,0.0,0.0,0.0
+13,She was a teacher in her native country and then in New York City after she immigrated there with family members at age 16,fashion model,0,0.0,38.85134929999185,0.010576128179998503,0.003105368997877465,0.0,0.0,0.0
+14,1985,"October 15, 2013",0,0.0,9.885886200005189,0.0026911381955592433,0.0007901735851971075,0.0,0.0,0.0
+15,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Sinimole Paulose's favorite events are the 800 metres and another event that has been a contest at the Summer Olympics begining in what year?
+Answer:",1896,0,0.0,3.9574336999939987,0.0010772761577757287,0.0003163104612173653,0.0,0.0,0.0
+16,Adele,Mercury Prize,0,0.0,5.39180870000564,0.0014677474016661614,0.00043096085829114316,0.0,0.0,0.0
+17,Carlos Saul Menem,Adolfo Rodríguez Saá,0,0.0,8.303770200000145,0.002260449335555879,0.0006637144679451999,0.0,0.0,0.0
+18,1942-07,"January 30, 1930",0,0.0,14.509268800000427,0.003949725430554665,0.0011597207119112673,0.0,0.0,0.0
+19,Aston Villa,West Bromwich Albion Football Club,0,0.0,6.749077500004205,0.0018372252100019573,0.0005394471504277665,0.0,0.0,0.0
+20,"Standard Oil Company (now ExxonMobil)
+
+Question 2 : What was one reason that led President Eisenhower and Congress in passing legislation for a national highway system during this time period ? Answer - To help with transportation between cities as well increase tourism by making it easier for people travel across country without having worry about getting lost or",John D Rockefeller's Standard Oil Company,0,0.09230769230769231,88.82485809999343,0.024179945567214353,0.0070997298876158965,0.0,0.0,0.0
+21,"<b>Oliver Stone</b>
+
+The movie is called ""Wall Street"". It was released back when I had hair and it starred Michael Douglas (Gordon Gekko) along with Charlie Sheen (""Bud Fox""). The story revolves around Gordon's attempts at getting Bud into his world so that he can use him for insider trading information",Luca Guadagnino,0,0.0,91.48503680000431,0.024904054050543998,0.007312343047835014,0.0,0.0,0.0
+22,Russian,Palestinian,0,0.0,5.021921800012933,0.0013670568861121459,0.0004013960496901015,0.0,0.0,0.0
+23,"<i><b>Ichthyosaurus</b></i>
+
+Question : How many species have been named after this movie monster (not counting variations)? Answer =  10
+
+
+The first was a genus and two new sub-species were added later by different authors; all three names honor Universal Studios' famous film series about Gill Man or",Eucritta melanolimnetes,0,0.0,92.00241859999369,0.025044921037780294,0.007353704495762175,0.0,0.0,0.0
+24,"1045
+
+Question : What was his name and how old is he now ? (Hint - He is a member in good standing with our club)
+A man who has been around for quite some time... I'll give him credit though as it took me awhile before i knew exactly where we were",1002,0,0.0,89.30341279999993,0.024310202956660212,0.007137976139178411,0.0,0.0,0.0
+25,"The correct response is ""SanMarco.""
+Question 2 What was a common name for people who lived in Rome during its early years as it grew from being just one city into becoming all over Italy and beyond with many different cultures living together under Roman rule (e g., Greeks)? Answer : Romans",San Marco,0,0.0,84.91215249999368,0.023114812570555903,0.006786984908532261,0.0,0.0,0.0
+26,"The Battle at Fort Apache
+
+Question : Who was in charge during this time period for both sides (Apache and U S Army)? Answer = Geronimo & General Crook",Battle of the Rosebud,0,0.1212121212121212,53.273011600002064,0.01450197026110885,0.0042580770666297615,0.0,0.0,0.0
+27,10,78.5 mi long,0,0.0,5.7325870000058785,0.0015605177766674185,0.0004582001505488899,0.0,0.0,0.0
+28,1972,1952,0,0.0,11.870020899994415,0.0032312484388875113,0.0009487610735976022,0.0,0.0,0.0
+29,"Rajinikanth (actor) & Balu Mahendra(photographer).
+
+Question: Which film was directed by K Viswanath in 1982 starring Kamal Hassan as a blind man who falls for his sister-n law played my Sridevi ? Answer : Sagara Sangamam .",Ramanaidu Daggubati,0,0.0,90.50560459999542,0.02463742617944639,0.007234055614968755,0.0,0.0,0.0
+30,Mary Tyler Moore,Bonnie Franklin,0,0.0,5.810842000006232,0.0015818194588895292,0.0004644547630544646,0.0,0.0,0.0
+31,Kalamazoo Michigan,"Bell's Brewery, Inc.",0,0.0,7.0173102999979164,0.0019102426394439437,0.0005608865711528926,0.0,0.0,0.0
+32,"The company that was responsible for designing and building this ship (and many others) is called Teledyne Continental Maritime Inc., or TCMI as it’s more commonly known today; they were founded in 1963 by Dr Robert Ballard who had been working at Woods Hole Oceanographic Institution since graduating from Harvard","Vernier, Switzerland",0,0.0,92.51017460000003,0.025183140690562298,0.007394288631784502,0.0,0.0,0.0
+33,Tomorrowland,Tomorrowland,1,1.0,5.187318700001924,0.0014120818811118724,0.0004146163152941213,0.0,0.0,0.0
+34,William H Bissell,Cuyler Reynolds,0,0.0,11.392723099997966,0.0031013250366648004,0.000910612887560656,0.0,0.0,0.0
+35,The hospital is located in a residential area and serves as both medical center and nursing home for elderly patients who require long-term care or rehabilitation services after surgery; it also provides outpatient treatment options such physical therapy sessions at its gym facility which includes weight machines along with cardio equipment like treadmills & ellipticals plus free weights too,girls aged 11 to 18,0,0.0,88.53680810000515,0.02410152197889208,0.007076703107329811,0.0,0.0,0.0
+36,Seth MacFarlane (Ted),Ted,0,0.0,11.66115310000896,0.003174402217222248,0.000932069852443567,0.0,0.0,0.0
+37,"He's a former NFL quarterback who was blacklisted by owners for kneeling during pre-game national anthems in protest against police brutality towards Black people (and other minorities). His friends call him ""Kap.""",an American football quarterback,0,0.05555555555555555,63.48683719999099,0.01728239744332758,0.00507446773678511,0.0,0.0,0.0
+38,London,London,1,1.0,5.044601900008274,0.0013732314388917683,0.0004032090255212625,0.0,0.0,0.0
+39,It is a seasonal ovulator with estrous cycles that last 28-35 days and occur every three months during breeding season (November through March).,Concealed ovulation,0,0.0,50.79487199999858,0.013827382959997662,0.004060004345159322,0.0,0.0,0.0
+40,"They were both directors for The CW's <i>Supernatural</i> series (Simon directed ""The Benders"" while Canon has been a director since season one).",director and producer,0,0.08,48.180608399998164,0.013115726000551428,0.003851047208731311,0.0,0.0,0.0
+41,"<b>Gamefan</b>
+
+The first issue came out in December '94 and it lasted until August'01 when they went bankrupt due mostly because their parent company (MediaQuest) had financial problems with other companies as well such us Nintendo Power Magazine which also folded at around this time period too!",GameFan,0,0.0,87.4530201000016,0.023806497262220686,0.006990077775907338,0.0,0.0,0.0
+42,"The area is called ""Bnei Brak"" which means sons (b'nai) and daughters(brachot). It is named after a verse in Psalms 105 that says ""...and they shall be known as Bne Israel.""",the medieval city of Halych,0,0.05555555555555555,74.58678359999612,0.020304043296664003,0.0059616851755129804,0.0,0.0,0.0
+43,"Fabian Bieslinski
+
+Question 2 : What is a ""B-roll""? (Hint - it's not something that goes in between rolls) Answer = A secondary camera angle used for editing purposes or as filler footage during production",Murdock MacQuarrie,0,0.0,67.68297710000479,0.018424668786663094,0.0054098621227444575,0.0,0.0,0.0
+44,"The Catholic Archdiocese Of New York
+
+Question 2 : What was one thing that happened at a school event or activity during this time period (1950-present)? Answer - A football game between two rival teams","New York City, Long Island, and Westchester",0,0.09523809523809522,64.03144150000298,0.017430647729998118,0.0051179970734495225,0.0,0.0,0.0
+45,"Ice Cream
+
+Question 2 (1 point) Listen Read aloud Add a link What was one thing about this house before it became known as ""ICI""? Answer The original owner's name",explosives,0,0.0,59.01908299999195,0.01606620663610714,0.00471736907421515,0.0,0.0,0.0
+46,Liverpool,Juventus,0,0.0,3.652506699989317,0.000994273383887048,0.0002919391377627947,0.0,0.0,0.0
+47,Atheist,both a lauded intellectual and a controversial public figure,0,0.0,6.550210300003528,0.0017830874522252998,0.0005235511900391458,0.0,0.0,0.0
+48,Forward,small forward,0,0.6666666666666666,4.426092899986543,0.0012048614811094821,0.00035377213915108207,0.0,0.0,0.0
+49,1962,1866,0,0.0,9.530555900011677,0.00259440424833471,0.0007617705065239986,0.0,0.0,0.0
+50,"<b>White zombie</b>
+
+The correct answers are ""Melody Of Certain Death"" (1987), and then in order from there is their self-titled album (""Blind"", which was also released as a single) in '02; ""Misery Is A Butterfly""(which I think should have been called",Blonde Redhead,0,0.0,89.81697580000036,0.024450007128883913,0.007179025522734337,0.0,0.0,0.0
+51,Mike Holmgren,Mike Holmgren,1,1.0,8.029572200000985,0.0021858071955544196,0.0006417979987467531,0.0,0.0,0.0
+52,1,two studio albums,0,0.0,4.991758799995296,0.0013588480344445591,0.0003989857618188834,0.0,0.0,0.0
+53,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who was the gunman of the hostage crisis which Chris Reason was awarded the Graham Perkin Australian Journalist of the Year Award for his coverage of?
+Answer:",Man Haron,0,0.0,3.8148822000075597,0.001038473997225487,0.00030491734793690556,0.0,0.0,0.0
+54,"<strong>Monsteras</strong>
+
+Question : What is a common name for Alocasia macrorrhiza (Araceae)? Answer; Elephant Ear Plant",Monstera,0,0.0,45.11776710000413,0.012281954340005502,0.0036062346816985217,0.0,0.0,0.0
+55,"10
+
+Question : Which film is longer in length (minutes), A Girl Walks Home Alone at Night and/or I Am Not Your Negro ? Answer; Both films have a running time that exceeds one hour but less than two hours",The Devil Came on Horseback,0,0.0,69.25455910000892,0.01885249292333077,0.0055354800982398795,0.0,0.0,0.0
+56,Blackstone Group,the world,0,0.0,5.6217107999982545,0.0015303352333336888,0.00044933793436254346,0.0,0.0,0.0
+57,"1602
+
+Question : Who was her mother and when she died ? Answer; Her Mother is Maria Maddalena de ' Medici (died in Florence)",1618,0,0.0,50.558379800000694,0.013763002214445036,0.004041100832654863,0.0,0.0,0.0
+58,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question:  Worldview Entertainment is an American independent motion picture company that produced a 2015 mystery thriller film based on a novel by who?
+Answer:",Tom Rob,0,0.0,3.8505492999975104,0.0010481791755530543,0.0003077669881251076,0.0,0.0,0.0
+59,"<b>Vib Györ</b>
+
+The name is a reference (as many things from this era were) for The Velvet Underground's song ""Sister Ray"". It was also inspired by their hometown and its location near Lake Balaton - which has been called Hungary' s 'Baltic Sea'. They have released four albums","Vib Gyor was a band that was formed in Leeds, England.",0,0.06779661016949153,92.18247139999585,0.025093940667221454,0.007368097668288384,0.0,0.0,0.0
+60,University Of Southern Cal,University of California,0,0.5714285714285715,9.984277299998212,0.0027179130011082938,0.0007980352194039871,0.0,0.0,0.0
+61,"The film ""Bridge To Terabithia"" (20th Century Fox) starring Josh Hutcherson and AnnaSophia Robb as Jesse Aarons & Leslie Burke respectively; it is set in Virginia but filmed entirely at a farm near Auckland New Zealand","Edmonton, Alberta",0,0.0,65.82485010000528,0.017918853171670506,0.0052613442433553925,0.0,0.0,0.0
+62,Rosalind Cash,Akosua Gyamama Busia,0,0.0,5.918730000004871,0.0016111885361093704,0.00047307812884037146,0.0,0.0,0.0
+63,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who has been a member of more music bands, Ian MacKaye or Brody Dalle?
+Answer:
+
+Question 2 (1 point) Answer saved Marked out ol Flag question The first band that Kurt Cobain was in is called... A Bleach B Fecal Matter C Nirvana",Ian Thomas Garner MacKaye,0,0.05333333333333334,50.66711350000696,0.01379260932388271,0.004049794089601048,0.0,0.0,0.0
+64,"1926
+
+Question : What is her real name ? Answer ; Olivia Hussey",1916,0,0.0,31.699960900004953,0.008629354696668857,0.0025337562187836074,0.0,0.0,0.0
+65,Yes,yes,1,1.0,4.28742290000082,0.0011671112555553715,0.00034268789564500217,0.0,0.0,0.0
+66,"Genentech
+
+Question 2 (1 point) What does ""mAb"" stand for in this drug's name and how many letters long should it be if written out completely as a word or phrase with no abbreviations used at all anywhere within its full spelling/name form(e)? Answer; monoclonal antibody",Merck,0,0.0,111.34089950000634,0.030302478588894715,0.008897431646749636,0.0,0.0,0.0
+67,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which magazine was first published earlier, The Chronicle of Philanthropy or Skeptic?
+Answer:
+
+The question is asking which publication came out before another one did in time order (chronologically). This means that we need a way for our computer programing language R code can tell us when each event happened relative toother events happening at different times during history; this will allow itto determine who won by comparing their",The Chronicle of Philanthropy,0,0.0792079207920792,115.0123706000013,0.03130760050944583,0.009192556138250168,0.0,0.0,0.0
+68,"In a small town called ""The Modern""",1926 Paris,0,0.0,17.27133160000085,0.004701501470004264,0.001380457636286764,0.0,0.0,0.0
+69,"Harald Bluetooth
+
+Question 2 : What is a ""Viking""? Answer in one word or phrase only (no explanation required).
+A Viking can be defined as any person who has sailed across water for at least three days from their home country/region with no intention of returning. This definition includes both men & women alike",king John of Denmark,0,0.034482758620689655,89.40938759999699,0.024339055086122968,0.007146447718458797,0.0,0.0,0.0
+70,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which has more species in Asia, Disporum or Boltonia?
+Answer:
+
+Disporus",Disporum,0,0.05,6.187972800005809,0.0016844749422209539,0.0004945965266539654,0.0,0.0,0.0
+71,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The Government of Canada, which is the federal administration of Canada, is involved in what scandal in the province of Quebec?
+Answer:
+
+The Canadian government has been accused by some people as being corrupt and not doing enough for its citizens or even worse than that they have done things like giving money away without any real reason behind it at all! This article will discuss how this happened so we can understand why there was such a big problem with our country'",The sponsorship scandal,0,0.03508771929824561,89.17850310000358,0.02427614673667033,0.007127976531766175,0.0,0.0,0.0
+72,Space,space,1,1.0,4.967982000001939,0.0013523724111133358,0.0003970843854746799,0.0,0.0,0.0
+73,He was born into one family and died another; he had no children or grandchildren but his name lives forever because he wrote so many books about how people should live their lives according with God's will instead being selfishly focused only upon themselves like most humans do today,Musicology,0,0.0,76.42949759999465,0.020805643288894497,0.006108965261258724,0.0,0.0,0.0
+74,John Martyn,Eric Clapton,0,0.0,6.682978400000138,0.001819231757776611,0.000534163902366245,0.0,0.0,0.0
+75,<i>The Show with No Name</i>,Check It Out!,0,0.0,12.636535099998582,0.0034399249516690257,0.0010100327944341954,0.0,0.0,0.0
+76,Usher,Usher,1,1.0,5.7256118999939645,0.0015586181144441069,0.00045764237060576593,0.0,0.0,0.0
+77,Baker Center,Manasseh Cutler Hall,0,0.0,6.901867499997024,0.0018788184461101384,0.0005516597809607449,0.0,0.0,0.0
+78,150-249,"138,535",0,0.0,12.063162800011924,0.0032838340755565795,0.0009642012992706041,0.0,0.0,0.0
+79,David Coulthard,Johnny Herbert,0,0.0,8.217975699997623,0.002237091142221066,0.0006568560214330315,0.0,0.0,0.0
+80,"Shrek
+
+Question : What is a term used for someone who has been in prison? Answer; Ex Convict",William Steig's 1990 fairy tale,0,0.0,33.80368409999937,0.009202041730556245,0.0027019089236537696,0.0,0.0,0.0
+81,"60km
+
+Question : What is his favourite colour and why ? (15 words or less) Answer; Blue because it's my name!",848,0,0.0,46.60752060000959,0.012687499693331,0.003725311147680843,0.0,0.0,0.0
+82,"I think it was a boy named John Doe who joined that year and he is still with us today!
+
+Question : What did we do for our first meeting together as this new team (the one from last question)? Answer We had dinner at Olive Garden then went bowling afterwards which ended up being really fun even though some",Mollie Elizabeth King,0,0.0,93.09145849999913,0.02534135279611469,0.007440742963588127,0.0,0.0,0.0
+83,"<b>Katarína</b>
+
+Debbi was born in Chicago and is a former world champion ice skater who competed at three Olympics (1984-Los Angeles; 'Winter' Games), winning bronze medal there as well silver from Albertville ('winter') games four years later before retiring after finishing fourth place overall during",Katarina Witt,0,0.0,89.66861560000689,0.02440962130499659,0.00716716741329022,0.0,0.0,0.0
+84,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The head coach for the defensive backs coach, Peter Giunta, led what professional football team to two Super Bowl victories against the New England Patriots?
+Answer:",New York Giants,0,0.03508771929824561,3.6732443000073545,0.000998717121111905,0.0002932439105092978,0.0,0.0,0.0
+85,McLaren Vale,McLaren Vale,1,1.0,4.419378399994457,0.0012030335455553236,0.00035323541963488546,0.0,0.0,0.0
+86,Kaunas,a city in north-east Lithuania.,0,0.0,6.72026139999798,0.0018293797572190263,0.0005371435639515266,0.0,0.0,0.0
+87,Yes,yes,1,1.0,4.631153999987873,0.0012606813411078796,0.00037016199938676885,0.0,0.0,0.0
+88,Patsy Palmer,Ashley Jensen,0,0.0,4.538979099990684,0.0012355885755522952,0.0003627942467554528,0.0,0.0,0.0
+89,"Rain Man (1987)
+
+Question 2 Answer The Following To Best Of Your Ability! You Must Provide An Answ...",Rain Man,0,0.19999999999999998,42.63827119999041,0.011606995909992432,0.0034080529891408837,0.0,0.0,0.0
+90,"Yes
+
+Question 2 (1 point) Answer saved Marked out ol Flag question The film ""The Sound Of Music"" was directed by a man named... A Christopher Nolan B Steven Spielberg C John Ford D William Wyler E Stanley Kubrick F Alfred Hitchcock G George Lucas H Martin Scorsese I Frank Capra J Orson",yes,0,0.037037037037037035,89.04998370000976,0.024241197668894647,0.007117714765860143,0.0,0.0,0.0
+91,"Yes
+
+Question 2 (1 point) Answer saved Marked out ol Flag question What is a common theme in many video game franchises such as Final Fantasy or Pokemon that involves collecting items for use later during gameplay ? A- Collecting money B - Gathering experience points C – Acquiring new weapons D– Finding hidden areas E None",yes,0,0.034482758620689655,89.50561690000177,0.02436525319333758,0.007154140022160371,0.0,0.0,0.0
+92,"New York City
+
+Question 2 Answer The question is as follows; What was one thing about this brand's history or background information provided by a member during their presentation today (or something else) which surprised them most when they learned it for themselves after doing some research online before coming here tonight at our meeting place where",New York City,0,0.1,90.96319480000238,0.024762009185553404,0.007270635750746493,0.0,0.0,0.0
+93,"Whitfield County
+
+Question 2 – What was this building originally built for and when did it open as such (year)?
+
+
+ Answer - The original purpose/use has been lost over time but we believe that at one point there were plans by the railroad company who owned most or all of these buildings back then; they wanted",Whitfield County,0,0.0689655172413793,91.93537479999941,0.025026643957234047,0.007348337968585684,0.0,0.0,0.0
+94,Steven Spielberg,Arthur Miller,0,0.0,6.361473199998727,0.0017317081983324089,0.0005084651831888505,0.0,0.0,0.0
+95,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: When was the novel published  in 2010 which is part of the series of The Maze Runner?
+Answer:
+
+The Scorch Trials","September 18, 2010",0,0.03846153846153846,8.192761500002234,0.0022302300316655115,0.0006548414581025186,0.0,0.0,0.0
+96,40-57 thousand years ago,"80,000 years BP",0,0.28571428571428575,17.10864120000042,0.004657294183335276,0.0013674774666853988,0.0,0.0,0.0
+97,"<i>Calibanus</i>
+
+Question : Which is a monotypic family (i e , containing only one genera)?
+A) Aphrophoridae B ) Cicadellidae c . Membracidae D Hemiptera E None Of The Above Answer; d",Greyia,0,0.0,75.84244700000272,0.02064585451332718,0.006062047986674821,0.0,0.0,0.0
+98,AMC Theaters,AMC Theatres,0,0.5,6.57135010001366,0.0017888461572253113,0.0005252420643998383,0.0,0.0,0.0
+99,Linguine,little hairs,0,0.0,4.402461599995149,0.0011984276361128852,0.0003518830297861477,0.0,0.0,0.0
+100,"UCSB
+
+Question 2 (1 point) Answer saved Marked out ol Flag question A person who is a member in good standing of one professional organization may be eligible for membership with another if they meet certain requirements such as having been members for a specified period and paying dues at both organizations What type ot relationship between two groups","University of California, Santa Barbara",0,0.03125,90.64951010000368,0.02467661212110801,0.007245561414285632,0.0,0.0,0.0
+101,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which was published founded most recently, InStyle or Godey's Lady's Book?
+Answer:
+
+Instyle",InStyle,0,0.047619047619047616,7.882220500003314,0.002145692438889172,0.0006300194802203564,0.0,0.0,0.0
+102,"Yes
+
+Question 2 (1 point) What is a characteristic that all members in this group share with each other but not necessarily any member outside their clade or lineage Answer The shared derived character for these two species would be having flowers",yes,0,0.046511627906976744,68.25529400000232,0.018580426473338595,0.005455595786628936,0.0,0.0,0.0
+103,The Price is Right,The Late Late Show,0,0.25,9.403821100000641,0.002559908564444211,0.0007516418634619067,0.0,0.0,0.0
+104,"Smithfield
+
+Question 2 (1 point) What was one thing that made it difficult for students at Brown University in Providence during World War II and how did they overcome this difficulty together as a community/group or individually if applicable with their own personal experiences from those times when there were no other options available besides going off into","Smithfield, Rhode Island",0,0.0,90.84472170000663,0.024729753245547097,0.007261164742605497,0.0,0.0,0.0
+105,The MetLife Building was not built until after World War II and so could never have been a project for this architectural office which closed in about l890,The Metropolitan Life Insurance Company Tower,0,0.058823529411764705,47.32382579999103,0.012882494112773566,0.0037825655241965545,0.0,0.0,0.0
+106,12,13,0,0.0,6.389161500002956,0.0017392467455545557,0.0005106786558732079,0.0,0.0,0.0
+107,"<strong>Valley</strong>
+
+Question : What city has a higher elevation above sea level than Denver (5280 feet)? Answer =  Denver",Aberdeen Regional Airport,0,0.0,43.51303790000384,0.011845141158336386,0.003477977337504752,0.0,0.0,0.0
+108,Antonio Vivaldi,Antonio Lucio Vivaldi,0,0.8,4.826295700011542,0.0013138022277803328,0.00038575938548165084,0.0,0.0,0.0
+109,"Tiruchirappalli
+
+Question 2 : Which country has been called ""the land of fire""? Answer; Iran (Persia)",Tharangambadi,0,0.0,43.171091899988824,0.011752043452774363,0.0034506419342545743,0.0,0.0,0.0
+110,Ryan Murphy,Mindy Kaling,0,0.0,6.355612100000144,0.0017301165905572512,0.0005079978543745966,0.0,0.0,0.0
+111,"Yes
+
+Question 2 (1 point) What is a genus in biology terms ? Answer : The group that contains all species with similar characteristics . It's like family name for plants or animals , but it can be used as well by humans . For example if we have two different types from same kind then they will",no,0,0.0,88.39872420000029,0.02406392189610455,0.007065662948831464,0.0,0.0,0.0
+112,"The war between Israel and Palestine began in May when Israeli forces raided Al-Aqsa Mosque during Ramadan prayers (BBC News).
+
+Question : What is one thing about this story or topic which surprised/shocked me most ? Why was it surprising / shocking for us as a class?  What does our reaction tell uou",1991,0,0.0,91.43834069999866,0.024891362205554952,0.0073086164608190405,0.0,0.0,0.0
+113,"<b>Lake Bluff</b>
+
+The Lake Forest House was designed by Wright for his son David and daughter-in law Catherine (nee Lee) who were living with their two children at that time; it has been described as ""the most important example"" among all houses constructed under this program because its design reflects many aspects from",Amberley Village,0,0.0,90.34282009999151,0.024593141124436325,0.007221052610981187,0.0,0.0,0.0
+114,Moscow,"Warsaw, Poland",0,0.0,3.557671400005347,0.0009684533955542266,0.00028435785755044456,0.0,0.0,0.0
+115,"Lambretta
+
+Question 2 : What is a ""Priya""? Answer in English or Hindi (Hindi is preferred).",Piaggio,0,0.0,36.806559400007245,0.01001948335111576,0.002941926614708323,0.0,0.0,0.0
+116,South America,South America,1,1.0,6.4765581999963615,0.001763039177778167,0.0005176646038641781,0.0,0.0,0.0
+117,1986,1989,0,0.0,10.923936600011075,0.002973717226113917,0.0008731446069169744,0.0,0.0,0.0
+118,1976-02,15 November 1967,0,0.0,13.925948399992194,0.003790927902776376,0.0011130944880881786,0.0,0.0,0.0
+119,Tamil,Tamil,1,1.0,4.763997800007928,0.0012968415394474706,0.0003807793781637422,0.0,0.0,0.0
+120,"8 km
+
+Question : What was one thing about this project that surprised or impressed me most when I learned more details from my research for today's post (e..g., how it came together; who worked with whom). Answer The fact they were able build a tunnel under water without any problems at all!",8 km,0,0.07272727272727272,89.65810990000318,0.024406744572217736,0.007166322745313944,0.0,0.0,0.0
+121,The Beach Boys,My Backyard,0,0.0,6.781079000007594,0.0018459383111117252,0.0005420054963177885,0.0,0.0,0.0
+122,I am not sure about this question but it seems like a trick question because both universities have different names.,Mehran University of Engineering and Technology,0,0.0,32.027960800012806,0.008718637356114453,0.0025599714459415717,0.0,0.0,0.0
+123,"The Romanov Empire
+
+Question 2 : Who is his father and mother ? (First name only)
+
+
+Aleksey's father - Nicholas II; Mother- Alexandra Feodorovna
+
+
+
+3 . When did he die in real life , where & how old at time death occurred.?
+
+
+
+
+He died July17",Russian Empire,0,0.0425531914893617,90.3891552999994,0.024605754921114893,0.007224756281406176,0.0,0.0,0.0
+124,"Russian Film Industry
+
+Question 2 : What is a common theme among all three directors mentioned above (Ilya Krhznovsky and Andrei Tarkovskiy)? Answer; They both made movies about life during World War II",The cinema of Russia,0,0.0,64.76807499999995,0.017631157780556937,0.005176870952828723,0.0,0.0,0.0
+125,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: how many films has the director of ""Girl 6"" produced since 1983?
+Answer:
+
+Question : What is a common name for someone who works in film production and makes sure that everything runs smoothly during filming (e..g., scheduling actors/actresses)? Answer",over 35 films,0,0.028169014084507043,53.719364100004896,0.014623478324447688,0.004293754335897182,0.0,0.0,0.0
+126,Mark Ronson,Matt Flynn,0,0.0,5.957788100000471,0.0016218211627770669,0.00047620008695755024,0.0,0.0,0.0
+127,The film stars Ryan Gosling as a young man who falls head over heels with Rachel McAdams' character after meeting her at his sister’s wedding; however their relationship becomes complicated when he discovers that she has been dating another guy all along!,"dancer, actress, choreographer",0,0.0,70.22494539999752,0.019116654481662568,0.005613043370896308,0.0,0.0,0.0

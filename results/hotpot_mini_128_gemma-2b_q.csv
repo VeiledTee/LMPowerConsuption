@@ -1,0 +1,372 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: A series of ministerial meetings and agreements between European countries and includes The Swedish higher education system is called what?
+Answer:
+
+The Scandinavian Higher Education System (SHES) consists mainly of three types of institutions in Sweden; universities, colleges/universities of applied sciences or polytechnics as they’re known here), and vocational schools for adults who want a career change but don’t have time because it takes too long at university level",Bologna Process,0,0.0,18.91830160000245,0.00514994156332824,0.0015121288811424357,0.0,0.0,0.0
+1,"10 miles from downtown
+
+Question: What is a good way for me and my family (including our dog)to get around in this area without having too much trouble with traffic or parking issues when we go out at night time after dark hours ? Answer : I would recommend taking public transportation such as buses , trains",107 mi southwest of Louisville,0,0.0,18.912342399999034,0.0051483174972210295,0.0015116520218935686,0.0,0.0,0.0
+2,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: where is a  football club which Aly Mohamed play for from 
+Answer:
+
+Answer this question in detail and explain it clearly with examples if possible",United Arab Emirates,0,0.0,4.590408199990634,0.0012495916988855848,0.00036690585209273404,0.0,0.0,0.0
+3,"Las Vegas
+
+Question 2 (1 point) Which is not a characteristic that makes it difficult for people with disabilities or special needs when they travel by air? A.) They may have difficulty communicating their disability and/or need assistance from staff B.) There can be long lines at security checkpoints C.) It's hard",Las Vegas,0,0.07407407407407407,18.94161680000252,0.005156285460556521,0.001513991579990553,0.0,0.0,0.0
+4,I believe that both writers lived for 80 years and were born in different decades (1934 vs. 2005). Therefore it is difficult at this point as we do not have any information about their life expectancy beyond these two facts alone; however if one was older than another then they would,Michel Butor,0,0.0,18.967605100013316,0.005163361349445041,0.001516069206661946,0.0,0.0,0.0
+5,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The German software corporation who has established Remote Function Call (RFC) has its headquarters in what city?
+Answer:
+
+The company is SAP AG and it was founded by Hasso Plattner in 1972 as a small consulting firm called HAGRA. It later became known for developing business applications that were used across many industries including manufacturing, retail banking etc., but most notably healthcare where they developed their first product called “",Walldorf,0,0.0,18.993456700001843,0.00517040050277784,0.001518136047017788,0.0,0.0,0.0
+6,"The correct option is London
+
+Explanation:Robert Lutien was born and raised in England but he moved with his family when they were young so that their children could have better education opportunities than those available at home . He studied architecture there before moving back again after graduating from school , where it became clear how much more interesting","City of Westminster, London",0,0.031746031746031744,19.03038889999152,0.0051804533805547785,0.0015210877789235148,0.0,0.0,0.0
+7,"The Prussian occupation was called the ""War of the Second Coalition.""
+
+Explanation:",War of 1870,0,0.13333333333333333,5.194608299992979,0.0014140681838876238,0.00041519953468738486,0.0,0.0,0.0
+8,The 2013 French Open,French Open,0,0.6666666666666666,2.899986300006276,0.0007894215594442761,0.00023179042417342222,0.0,0.0,0.0
+9,The correct option is A) H P Lovecraft,horror fiction,0,0.0,3.5862278999993578,0.0009762315855568482,0.0002866416942894339,0.0,0.0,0.0
+10,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The Stone Book series is set in what country? 
+Answer:
+
+The book was written by a British author named Robert Louis Stevenson and it takes place during World War I (1914-18). It's about two boys who go off into battle together but one dies while they were fighting for their lives against enemy soldiers from Germany or Austria-Hungary depending which side",North West England,0,0.0,18.92058160000306,0.005150561238332173,0.0015123108304828015,0.0,0.0,0.0
+11,"0
+
+I'm not sure how this question is supposed be answered but I think it should have been a multiple choice with options like ""0"", ""1"", and so forth...",two Grammy awards,0,0.0,11.645801399994525,0.003170226061667442,0.0009308436471849417,0.0,0.0,0.0
+12,The Punisher,Daredevil,0,0.0,1.4452812999952585,0.0003934183727742089,0.00011551573479592613,0.0,0.0,0.0
+13,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: What did the second First Lady to be born outside the United States or areas that would become part of the United States do before marrying?
+Answer:
+
+The Second First lady was a woman named Mary Todd Lincoln who married Abraham Lincoln in 1842 and had two children with him; Robert Todd and Edward Baker (who died at age three). She also served as President Lincoln’s Secretary of State from 9/17/61 until his assassination",fashion model,0,0.0,19.105517100004363,0.005200900459444125,0.0015270914622941658,0.0,0.0,0.0
+14,The last issue was published in 1987 and ended his professional skateboarding days at that time,"October 15, 2013",0,0.0,6.359082700000727,0.001731064126109656,0.0005082760703226966,0.0,0.0,0.0
+15,We should try not use fossil fuels,1896,0,0.0,19.025491100008367,0.00517912094222427,0.0015206965475945515,0.0,0.0,0.0
+16,"The Brit Awards were held at the O<sub>2</sub> Arena in London and was hosted by Jack Whitehall for his second time as host (2nd year). It took place from February 19th-21st with performances being given throughout each night's show including One Direction performing their hit ""Drag Me Down",Mercury Prize,0,0.0,19.111236600001575,0.005202460746108894,0.0015275495945855028,0.0,0.0,0.0
+17,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which one of Ricardo Rodríguez Saá's relatives would become governor from 1983 to 2001?
+Answer:
+
+Ricardo Rodríguez Sáa was a politician and lawyer who served as the President of Argentina from January 4, <b>1</b>995 until December 6,  2o02. He is known for his economic policies that included privatizing state-owned companies such as Aerolíneas Argentinas and Banco",Adolfo Rodríguez Saá,0,0.022988505747126436,19.04305320000276,0.005183900560561273,0.0015220999419514284,0.0,0.0,0.0
+18,"1950
+
+Explanation: I think it's either June or July because he was born around that time and his name starts with a ""J"" so if we look at all possible dates from those months then there will be one date where both conditions apply (the month AND day).","January 30, 1930",0,0.0,18.13506299999426,0.004936725196665955,0.0014495241657301052,0.0,0.0,0.0
+19,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The 1966 Football League Cup Final was contested with which team that is based in the West Midlands?
+Answer:
+
+The correct option for this question would be Birmingham City FC (Birmingham City).",West Bromwich Albion Football Club,0,0.06153846153846154,5.170931000000564,0.0014076229538913239,0.00041330708245211867,0.0,0.0,0.0
+20,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The major benefactor who donated money to build Archbold Gymnasium sold his oil company to whom?
+Answer:
+
+The Major Benefactor was John D. Rockefeller Jr., son of Standard Oil founder John Davison Rockefeller Sr.",John D Rockefeller's Standard Oil Company,0,0.1176470588235294,6.992775899998378,0.001903569561665386,0.000558927218117332,0.0,0.0,0.0
+21,"The director is David O Russell
+
+Question 2: What was this movie about? (Hint - it's not ""The Social Network"")
+Oliver and his wife have been married for years but they can no longer stand each other so he decides that she should leave him with their two children while he goes off into",Luca Guadagnino,0,0.0,18.93737250000413,0.005155130466663348,0.001513652450002002,0.0,0.0,0.0
+22,The interview was conducted with a person who is not from this country and has no ties or connections here in any way whatsoever,Palestinian,0,0.0,7.51145340000221,0.002044764250557232,0.0006003848859979944,0.0,0.0,0.0
+23,"The correct term for this fictional sea monster would be a Plesiosaur.
+
+Explanation:",Eucritta melanolimnetes,0,0.0,5.798879599999054,0.0015785639277762838,0.00046349887208769125,0.0,0.0,0.0
+24,"1205
+
+Explanation: The question is asking for a specific date and not just any time period in which he died (1198 or later).",1002,0,0.0,10.441641800003708,0.0028424261638897103,0.0008345948477432434,0.0,0.0,0.0
+25,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Did the board game San Marco or About Time come out first?
+Answer:
+
+The correct response is <strong>San Marco</strong> came before about time",San Marco,0,0.07547169811320754,4.583472099999199,0.0012477030272209958,0.0003663512992039485,0.0,0.0,0.0
+26,"The Battle of the Thames was fought in October 20th and November 4th at the end of September between British forces under General Sir Isaac Brock (the ""Other Magpies"") against American forces led by General William Hull during the War of <b>Secession</b> .",Battle of the Rosebud,0,0.1276595744680851,16.946220800004085,0.004613097038336126,0.001354500274887117,0.0,0.0,0.0
+27,"10
+
+Explanation: I think it's because there was no other information given and we were only told about its location so i just guessed",78.5 mi long,0,0.0,9.291683000003104,0.0025293822316644456,0.0007426787036155226,0.0,0.0,0.0
+28,"1850
+
+Explanation: The Prison was built in 2007 and closed down by that time so it is not possible for this question be asked at any other point than when they were still using it",1952,0,0.0,13.69960569999239,0.003729316917776547,0.0010950042343118491,0.0,0.0,0.0
+29,The film was directed by K Balachander in 1973 with Kamal Haasan playing the lead role along with Rajinikanth as his friend who is a thief but later becomes a police officer after being inspired from him (Kamal).,Ramanaidu Daggubati,0,0.0,15.373709399995278,0.004185021631666314,0.0012288085213453769,0.0,0.0,0.0
+30,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who starred as a divorced mother in an American sitcom produced by Danny Bonaduce's father?
+Answer:
+
+Question 2 (1 point) Which actor played ""The Man with No Name"" and was nominated for Best Actor at the 1969 Academy Awards? Answer:
+Clint Eastwood",Bonnie Franklin,0,0.0,11.960698299997603,0.003255947538330656,0.0009560132377526555,0.0,0.0,0.0
+31,"The Green Sky Blues Band was formed in 1996 by Dave Bruzza (guitar), Ben Kaufmann (bass), Mike Keneally (drums) & Scott Metzger (vocals). They were all from New York City at that time but moved out west after a few years together as musicians/songwriters for","Bell's Brewery, Inc.",0,0.0,19.027962000007392,0.005179788298884118,0.0015208924972508673,0.0,0.0,0.0
+32,"The design and construction was done in Houston Texas by a firm called General Dynamics Corporation (GD).
+
+Question 2) What were some problems that occurred during this project's development process ? Answer : Some issues included poor communication between GD employees at different locations as well lackluster management skills from top executives who did not understand","Vernier, Switzerland",0,0.0,18.972706999993534,0.005164748517779986,0.0015164765078471115,0.0,0.0,0.0
+33,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Stitch's Great Escape! replaced the theater-in-the-round attraction in which section of the Magic Kingdom theme park?
+Answer:
+
+Answer : <strong>B</strong>",Tomorrowland,0,0.0,2.5819349000084912,0.0007028403116677105,0.00020636838710399896,0.0,0.0,0.0
+34,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who was the brother of the architect of Hook and Ladder No. 4 located in Albany, NY?
+Answer:
+
+The correct response is William J. O’Brien (1850-1927). He served as a member of both Houses from 3rd District New York State Assembly for two terms between 6th January <b>1</b>883 – 1st December <strong>1</strong>8",Cuyler Reynolds,0,0.0,18.888619599994854,0.005141860237777291,0.001509756037564846,0.0,0.0,0.0
+35,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: What type of students attend the school adjacent to Pilgram Hospital?
+Answer:
+
+Question 2 (1 point) Which is a correct statement about how people in this country view their health care system compared with other countries around the world? A.) People believe that they have access and quality healthcare but it costs too much B.) They think there should be more government involvement C.) There isn’t",girls aged 11 to 18,0,0.020202020202020204,19.06142009999894,0.005188895494997349,0.0015235665575483873,0.0,0.0,0.0
+36,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Glenn Quagmire is voiced by the creator of what 2012 film?
+Answer:
+
+The correct response would be The Muppets (2)",Ted,0,0.0,4.069935399995302,0.0011079076066656045,0.00032530448531803587,0.0,0.0,0.0
+37,"He's a football player who plays for the San Francisco 49ers in the National Football League (NFL). His full name is Colson Samuel Kaepe...
+A student has been asked by her teacher how many times she can multiply two numbers together before they become too large or small so that their product will",an American football quarterback,0,0.03508771929824561,18.907611000002362,0.005147027306669527,0.0015112731953824106,0.0,0.0,0.0
+38,London Heathrow Airport (LHR) is a major international airport in England that serves as one of Europe's busiest airports for passenger traffic with over 70 million passengers passing through it annually making LHR second only to Paris' Charles de Gaulle Airport which has more than twice its capacity at around 150m,London,0,0.038461538461538464,18.93772220000392,0.00515522786777688,0.00151368104897444,0.0,0.0,0.0
+39,"The female has a single ovum that is released during each estrous cycle and fertilized by sperm from one male at any given time (ovulation).
+
+The correct option for this question would be <strong>B.</strong>",Concealed ovulation,0,0.0,13.49722859999747,0.0036742241438870323,0.0010788278615285537,0.0,0.0,0.0
+40,"Both were actors who played roles that required them both physically as well mentally (i.e., they had a dual role).",director and producer,0,0.0,8.186341599997832,0.0022284837149986643,0.0006543287035721831,0.0,0.0,0.0
+41,I believe it is red herring because they were trying something new and different with their magazines but then again i could be wrong,GameFan,0,0.0,7.813667399997939,0.002127033403886728,0.0006245408033510195,0.0,0.0,0.0
+42,"The area is called ""The Jewish Quarter"" or ""the Old City"".
+
+Question 2: What was a major reason for this quarter's development in medieval times and how did it come about (i.e., who built it)?
+A) It developed as part of the city walls that were constructed during",the medieval city of Halych,0,0.1509433962264151,19.228340999994543,0.0052343355666707786,0.0015369086982103036,0.0,0.0,0.0
+43,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Between the two film makers Fabián Bielinsky and Murdock MacQuarrie, who was born earlier?
+Answer:
+
+Fabián Bielinskiy (1920-21) is a Chilean filmmaker whose work includes films such as “The Last Days of the Dinosaurs” (23), which won the Academy Award for Best Documentary Feature in 56; ""The Great Silence"" (47); ""El",Murdock MacQuarrie,0,0.02469135802469136,19.20145560000674,0.005227017838330761,0.0015347600624964367,0.0,0.0,0.0
+44,A Title I program provides supplemental educational services and programs for students who qualify under federal guidelines established by the U.S. Department of Education's Office of Civil Rights. The purpose of these funds,"New York City, Long Island, and Westchester",0,0.05,19.010670800009393,0.005175084803336196,0.0015195114541122453,0.0,0.0,0.0
+45,A house refers to one's home or residence where they live and sleep at night. It can also be used as slang for someone who lives alone without any family members living with them such as roommates etc...,explosives,0,0.0,19.209461899998132,0.005229199954997278,0.0015354007768798694,0.0,0.0,0.0
+46,"The correct response is ""The winners in this case would be Germany and Italy.""",Juventus,0,0.0,5.223334599999362,0.0014218859183334441,0.00041749498248912404,0.0,0.0,0.0
+47,"A) Atheist B) Agnostic C) Christian D) Muslim E) None of these
+
+Explanation: The book was written in 2010 and it's about how atheists have been portrayed as evil people who hate religion but that isn't true because they don' t believe there exists any god",both a lauded intellectual and a controversial public figure,0,0.03636363636363637,19.945979800002533,0.005429690293886637,0.0015942688685070504,0.0,0.0,0.0
+48,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: In what basketball position does the brother of Saulius Kuzminskas play?
+Answer:
+
+Saulius is a point guard and his younger brother Jonas plays as power forward in Lithuania’s national team.",small forward,0,0.03333333333333333,7.442781899997499,0.0020260699800018402,0.0005948958632448062,0.0,0.0,0.0
+49,"1960
+
+Explanation: The book Nina is a story about two sisters who were separated at birth and raised by different families in Italy during World War II until they meet again as adults after many years apart from each other when one sister returns home for her mother's funeral only to find out she has been",1866,0,0.0,18.98608719999902,0.005168386376664825,0.001517544658119817,0.0,0.0,0.0
+50,"The correct response is <strong>Rob Zombie</strong>
+
+Explanation: I have checked all their releases and found that they both had only one album each but in total there were more than ten bands who made a single release so it was not possible for me find out which group did this many times as compared with other groups",Blonde Redhead,0,0.0,18.647450099990238,0.005076203737220526,0.0014904779371231656,0.0,0.0,0.0
+51,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who was the team president of the 2012 Cleveland Browns?
+Answer:
+
+The correct response is Mike Lombardi (2).",Mike Holmgren,0,0.041666666666666664,3.39403310000489,0.0009239113422227092,0.00027127939356405984,0.0,0.0,0.0
+52,Rock and Roll,two studio albums,0,0.0,9.268903599993791,0.0025231812494413233,0.0007408579675555635,0.0,0.0,0.0
+53,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who was the gunman of the hostage crisis which Chris Reason was awarded the Graham Perkin Australian Journalist of the Year Award for his coverage of?
+Answer:
+
+The man who shot and killed 26 people in a school shooting at Sandy Hook Elementary School is Adam Lanza. He had been diagnosed with schizophrenia as well as having Asperger’s syndrome (a form of autism).",Man Haron,0,0.021505376344086023,14.024852699993062,0.0038178554327761554,0.0011210009653384138,0.0,0.0,0.0
+54,"The Genus with More Species is Cerris
+
+Explanation: I chose this because they both have a lot in common and it would be hard for me not too choose them as being similar",Monstera,0,0.0,11.039735099999234,0.003005240544999429,0.0008824005024121147,0.0,0.0,0.0
+55,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: What documentary has more creators, The Devil Came on Horseback or My Best Fiend?
+Answer:
+
+The correct option is <strong>My Best Friend</strong> because it was created by a single person and not many people worked together in its creation like for example with “The devil came on horseback” which had multiple writers working behind this movie’s success story!",The Devil Came on Horseback,0,0.10989010989010987,15.78588860000309,0.004297225297779287,0.0012617538280082045,0.0,0.0,0.0
+56,"The correct option for this question would be <strong>United States</strong>
+
+Explanation: Hamilton Evan's was born into a wealthy family that owned several businesses including one called United Fruit Company (UFC). He grew up with his brother John who also worked at UFC as well but eventually left due t",the world,0,0.039215686274509796,17.52154000000155,0.004769705355558592,0.001400483701414808,0.0,0.0,0.0
+57,"1576
+
+Explanation: The question is asking for a specific date and not just any time period in which her father died (which would be difficult). We can assume that she was born around 20 years before his death because he had been dead since at least 34 years prior when she wrote",1618,0,0.0,18.92471610000939,0.005151686223890121,0.0015126411494062538,0.0,0.0,0.0
+58,"The correct option for this question would be ""Stephen King"". Stephen King was born in Portland, Maine and grew up there until he moved with his family at age nine when they settled near Bangor.[1] He attended Hampden Academy (now known as Hampden-Tibbetts School) from which he graduated in 6",Tom Rob,0,0.0,18.950713900005212,0.005158758487778849,0.0015147177117030683,0.0,0.0,0.0
+59,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which band formed in England, Of Montreal or Vib Gyor?
+Answer:
+
+Question 2 (1 point) What is a common theme between The Beatles and Nirvana that led them both into becoming successful bands during their time period? A.) Both were from Liverpool B.) They had similar musical styles C.) Their music was very popular D.) All answers above E.) None of these Answer:","Vib Gyor was a band that was formed in Leeds, England.",0,0.1372549019607843,18.926750900005572,0.005152241238891049,0.001512804113238377,0.0,0.0,0.0
+60,"The University of San Diego (USD)
+
+Explanation:",University of California,0,0.4,3.8428882000007434,0.0010460999255547194,0.0003071564775134949,0.0,0.0,0.0
+61,"The film is called ""Bridge to Terabithia"" and it's a movie about two kids who create their own world in which they can be free from all problems at home or school (or both). It stars AnnaSophia Robb as Jess Aarons and Josh Hutcherson as Leslie Burke; also starring is Paul","Edmonton, Alberta",0,0.0,19.00537980000081,0.005173641009445822,0.0015190875264980764,0.0,0.0,0.0
+62,"The correct response is ""Who Played the Role of Netie Haris in 'The Color Purple'?""
+
+Explanation: In this question we have been asked about who has acted as a character named Netti Harris and for that purpose there was only one person whose name matches with it which can be found out from IMDB (",Akosua Gyamama Busia,0,0.0,18.947785800002748,0.005157962590556255,0.0015144840198908593,0.0,0.0,0.0
+63,I think that it is hard for me because there were many members in both band but if we look at their career then they have played with different people and also had some time off from playing together so i will say 50/51% chance,Ian Thomas Garner MacKaye,0,0.0,15.467071699997177,0.004210440782220799,0.0012362721073326914,0.0,0.0,0.0
+64,"1960
+
+Explanation: This is because this movie came out that same year and it starred one of my favorite actresses at the time (and still do).",1916,0,0.0,10.428986500002793,0.0028389782344438973,0.0008335824646645147,0.0,0.0,0.0
+65,"Yes
+
+I'm not sure if this is a trick question or just something that I don't understand but it says ""Are these two places located within one country?"" so i answered yes because they were next to each other",yes,0,0.05,13.952574599999934,0.0037981803099995885,0.001115223944177179,0.0,0.0,0.0
+66,"The company that makes this drug in America and it's called Amgen Inc., which was founded by a man named Richard A. Schulze who started his career as a pharmacist before becoming one himself!",Merck,0,0.0,12.199925499997335,0.0033210701916680492,0.0009751345896587261,0.0,0.0,0.0
+67,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which magazine was first published earlier, The Chronicle of Philanthropy or Skeptic?
+Answer:
+
+The Chronical of Philanthrophy",The Chronicle of Philanthropy,0,0.163265306122449,3.1331724999909056,0.0008528997472228688,0.00025042892713161103,0.0,0.0,0.0
+68,"In New York City
+
+Explanation: I think it takes place there because they were talking about a movie that was being filmed and then when she said ""I'm going home"" which is where her apartment at least would be located",1926 Paris,0,0.0,14.00089900000603,0.003811334753890373,0.0011190863597556906,0.0,0.0,0.0
+69,"__________________________________
+
+The correct response is ""Harald Bluetooth."" Harald Bluetooth (c. 910 – c. 13 November 982) was a Danish king who reigned as King Harald I of Wessex from 4 June 876 until his death in 5 August 11 March",king John of Denmark,0,0.09090909090909091,18.944927499993355,0.005157183939442378,0.0015142553918912696,0.0,0.0,0.0
+70,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which has more species in Asia, Disporum or Boltonia?
+Answer:
+
+Explanation: The number of plant species is not a good indicator for biodiversity because it does not take into account how many individuals there may be per species and also whether they occur as individual plants (monocots) versus groups/clusters that can form colonies with other members from different genera within their family group such as orchids",Disporum,0,0.021052631578947368,18.96398029998818,0.005162372559445471,0.0015157788775587225,0.0,0.0,0.0
+71,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The Government of Canada, which is the federal administration of Canada, is involved in what scandal in the province of Quebec?
+Answer:
+
+The government has been accused by some people that they have not done enough for their citizens and this can be seen as a form of corruption or bribery because it involves money being given out without any real reason behind why these funds were needed at all (i.e., there was no clear purpose). This type o",The sponsorship scandal,0,0.03636363636363636,19.010993999996572,0.005175170708889669,0.0015195366777515545,0.0,0.0,0.0
+72,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Pedro Duque and Mark Shuttleworth both went where in their life times?
+Answer:
+
+Pedro Duque was a Spanish astronaut who flew aboard the International Space Station (ISS) for the first time as part of the European Space Agency’s Columbus mission. He is currently serving as the Director of Space Programs at the Spanish Space agency, Aenao.
+
+Mark Shuttleworths journey began when he left South Africa",space,0,0.021276595744680854,18.97939329998917,0.005166569099443182,0.0015170110681095037,0.0,0.0,0.0
+73,"The study that compares two or more musical works and determines how they differ from each other
+
+Explanation:",Musicology,0,0.0,6.354114600006142,0.00172971072555746,0.0005078786840538304,0.0,0.0,0.0
+74,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Besides the founder of Led Zeppelin, and Bert Jansch, what other to British musician was heavily influenced by Davey Graham?
+Answer:
+
+Answering this question is a bit tricky because there were so many musicians who played in bands with John Paul Jones (the bassist for Led Zep). However I think that if we look at some famous songs from his time as a member of The Blues Band or even just listening closely enough while watching videos online then it becomes",Eric Clapton,0,0.0,18.985363999992842,0.005168193503891558,0.0015174880267023036,0.0,0.0,0.0
+75,Both novels focus heavily upon social class differences between characters who live within their own worlds but have little contact with each other outside those world's boundaries.,Check It Out!,0,0.0,18.09542740001052,0.004925931588894067,0.0014463549402461084,0.0,0.0,0.0
+76,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: What is the name of the singer who's song was released as the lead single from the album ""Confessions"", and that had popular song stuck behind for eight consecutive weeks?
+Answer:
+
+The correct response would be Usher Raymond IV (born March 14, 2001), better known by his stage name Usher, a Grammy Award-winning American singer, songwriter, record producer, actor, dancer, television personality, entrepreneur, philanthropist, fashion designer, model, author, activist, photographer",Usher,0,0.020202020202020204,19.1451562000002,0.005211689834999965,0.0015302594451123892,0.0,0.0,0.0
+77,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The College of Arts and Sciences of Ohio University is located on the university's central quadrangle lawn, which sits aligned to the cardinal directions, with what building facing true north?
+Answer:
+
+The college faces east (toward campus).",Manasseh Cutler Hall,0,0.0,3.256112099988968,0.0008863666294420707,0.00026025549283981343,0.0,0.0,0.0
+78,"100,052 people
+
+Question: The largest town in Western Australia is located where and has how many residents (in thousands)?
+A) Perth - 2,304,608 B) Bunbury -  170 C) Albany -   129 D)","138,535",0,0.0,18.97995429999719,0.005166723825552213,0.0015170564988809514,0.0,0.0,0.0
+79,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which British racing driver has raced for 7 different teams and won the European Grand Prix in 1999?
+Answer:
+
+The correct response is Damon Hill (born March 23, 80). He drove a Williams car during his career with seven other Formula One team owners before winning the championship at the age of twenty-seven years old after driving for Jordan Racing from 4/15/96 until he retired due",Johnny Herbert,0,0.0,19.095134100003634,0.0051980802727788,0.0015262633974211163,0.0,0.0,0.0
+80,"The Incredibles
+
+Explanation: I think it's this one because they have a lot in common and both were made by Pixar",William Steig's 1990 fairy tale,0,0.0,8.103266100006294,0.0022058690677778533,0.0006476885775088232,0.0,0.0,0.0
+81,"105km
+
+Explanation: The distance between two points is given by the formula d=√(x2−x1)2+(y2​−y1​)​​ where x1​,y​1​​ are coordinates for point 2 and x2​, y2​​are coordinatesfor point",848,0,0.0,19.092709899996407,0.005197415710002113,0.0015260682681064233,0.0,0.0,0.0
+82,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The group formed during the summer of 2007 included what girl born in 1987?
+Answer:
+
+The correct response is A. Jessica Simpson",Mollie Elizabeth King,0,0.0,3.177926899996237,0.0008650811044454813,0.00025400562442833165,0.0,0.0,0.0
+83,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Who has won the most Olympic medals for figure skating, Debi Thomas or Katarina Witt?
+Answer:
+
+Debi was born in 1972 and is from California. She competed at three Winter Olympics (10 years apart) between 86-95 winning a total of four golds including two consecutive ones! Her first win came when she took home her very first medal ever as a junior skater",Katarina Witt,0,0.021505376344086023,19.003260400000727,0.005173068892779459,0.0015189195412648553,0.0,0.0,0.0
+84,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The head coach for the defensive backs coach, Peter Giunta, led what professional football team to two Super Bowl victories against the New England Patriots?
+Answer:
+
+The Pittsburgh Steelers",New York Giants,0,0.03333333333333333,1.727968300008797,0.00047037205333262026,0.00013811091989689663,0.0,0.0,0.0
+85,"The correct option is A) $10^2$
+
+Explanation: We have been given a number and we need to find its square root using long division method or by calculator as per our convenience .",McLaren Vale,0,0.0,12.553463400006876,0.003417310936665874,0.0010033928540029578,0.0,0.0,0.0
+86,"Vilnius means ""White City"" or ""City of White Stone"". It comes from a legend about how King Mindaugas built his castle here with white stone brought by merchants who came",a city in north-east Lithuania.,0,0.05714285714285715,19.009677100009867,0.005174810402222566,0.0015194308842953193,0.0,0.0,0.0
+87,"Yes
+
+Step 1
+Jelena Jankovic is a Serbian professional tennis player who has won two Grand Slam titles in singles (Wimbledon in 2034 and US Open in) as well as three WTA Tour Championships. She was ranked world No. 3 by the Women's Tennis Association (WTA",yes,0,0.042553191489361694,18.919697600009385,0.005150317781113618,0.001512239346430609,0.0,0.0,0.0
+88,"The actress was called Samantha Womack and she married a man named Mark Mynett (born March 20, 59) . He has been credited as playing ""Mark"" since his first appearance at Walford's Queen Vic pub during Christmas week that year until he left for good after episode # 3",Ashley Jensen,0,0.0,19.037543200000073,0.0051824011283341355,0.0015216596777759832,0.0,0.0,0.0
+89,"The Last Samurai (2003)
+
+Explanation: I think it is because she played a Japanese woman who fell for him and he had her killed by his enemy",Rain Man,0,0.0,10.48732359999849,0.00285486120555296,0.0008382460320151396,0.0,0.0,0.0
+90,No,yes,0,0.0,8.622058400011156,0.002347095560558794,0.0006891555836661711,0.0,0.0,0.0
+91,"Yes
+
+I'm not sure if this is a question or just some random stuff I found online... but it seems like there was something about ""Villa Palletti"" being in Italy (which would be fine) while also having 2013 as its release date which makes me think that maybe they were trying",yes,0,0.038461538461538464,19.03726490000554,0.0051823203294495915,0.0015216359535598187,0.0,0.0,0.0
+92,The headquarter is located at 100 East 63rd Street New York City NY,New York City,0,0.375,6.332878100001835,0.001723928453889918,0.0005061808900343093,0.0,0.0,0.0
+93,"<strong>Fannin</strong>
+
+The correct answers for this question can be found here",Whitfield County,0,0.0,5.211574300003122,0.001418686840558237,0.00041655566738478224,0.0,0.0,0.0
+94,"The movie was written by Robert Towne and directed by John Huston
+
+Question: What is a common name for one who has been baptized into Christianity but does not practice it regularly or at all (i.e., “lapsed”)?
+A) Catholic
+B) Protestant
+C) Orthodox
+D) None of the",Arthur Miller,0,0.0,19.025004600000102,0.00517898499666545,0.0015206566311793406,0.0,0.0,0.0
+95,I need help with this question please! Thank you so much for helping me out!! :),"September 18, 2010",0,0.0,5.8304094999912195,0.001587147369999083,0.00046601914745880127,0.0,0.0,0.0
+96,"10,00 years ago
+
+Explanation:","80,000 years BP",0,0.28571428571428575,3.78016110000317,0.001029024054998202,0.00030214265032310004,0.0,0.0,0.0
+97,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Between Greyia and Calibanus, which genus contains more species?
+Answer:
+
+Explanation: The number of genera is 1025 in total (1973-1876). There were only two new families discovered since then; one was a subfamily within the family Asteraceae called Cichorieae, with three genera that had been previously placed into the tribe C",Greyia,0,0.024999999999999998,18.97368580001057,0.005165017872224255,0.0015165555958580013,0.0,0.0,0.0
+98,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The Cineplex Odeon Theatres are now operated as which American movie theater chain majority-owned by Chinese conglomerate Dalian Wanda Group?
+Answer:
+
+Answer 1) AMC Entertainment Inc., a publicly traded company that operates over 700 theatres in North America and Europe under its own name and other well-known brands such as Loews, Carmike, Showcase Cinemas, United Artists, and others; or Answer 2) Regal Entertainment Group (REG),",AMC Theatres,0,0.04210526315789474,18.998729300001287,0.005171834776114379,0.0015185571792013213,0.0,0.0,0.0
+99,"The Italian word for ""tagliere"" means a cutting board or chopping block and it's used in many different ways throughout Italy (and other countries). In this case, we can use it as both nouns (""the knife"") AND adjectives (""a sharp knife""). So if someone says ""I need a sharp blade,""",little hairs,0,0.0,18.97703989999718,0.0051659266944456455,0.0015168224447750017,0.0,0.0,0.0
+100,"The university that is older than another one will be considered as a more established institution and hence it would have better facilities for students in terms of infrastructure like classrooms etc., which makes them feel comfortable while studying there; also they may offer scholarships/grants depending upon their financial status so this could help out financially too!","University of California, Santa Barbara",0,0.06451612903225806,18.625629500005743,0.005070265862777726,0.0014887344549249417,0.0,0.0,0.0
+101,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which was published founded most recently, InStyle or Godey's Lady's Book?
+Answer:
+
+InStyle is a more recent publication than Godeys Ladies book because it has been around since 1995 while Godeis ladies books first appeared in 2004",InStyle,0,0.030303030303030307,11.330329999997048,0.003084347753886282,0.0009056280077718203,0.0,0.0,0.0
+102,"No
+
+Explanation: Both these species belong to different families (Asteraceae and Ranunculaceae respectively).",yes,0,0.0,6.349366599999485,0.0017284165338886345,0.0005074986827322426,0.0,0.0,0.0
+103,A(n) _____________ would be considered ______ if they were found _______ at trial after their arrest; however it does,The Late Late Show,0,0.0,19.034472600003937,0.005181562968891134,0.0015214135769056761,0.0,0.0,0.0
+104,The University at Albany (UAlbany) in New York City represents the city where it's located and not a specific location within that area or state,"Smithfield, Rhode Island",0,0.0,9.266452600000775,0.002522514146109299,0.0007406620922815132,0.0,0.0,0.0
+105,The Met Life Building was built in 2006 and is located at 30 Rockefeller Plaza (34th Street between 5th and 6th Avenues). It has a height of approximately 780 feet with its spire reaching another 90-feet above that for a total elevation,The Metropolitan Life Insurance Company Tower,0,0.08333333333333333,19.01780119999603,0.005177021121111465,0.0015200799968801677,0.0,0.0,0.0
+106,"12
+
+Question: Which company owns and operates this publcation (GamesMaster)?
+A) Hachette
+B) Future Publishing
+C) News Group Newspapers Ltd
+D) Pearson Education Limited
+E) Reed Business Information
+F) Trinity Mirror plc
+G) The Telegraph Media Group
+H)",13,0,0.0,19.011061500001233,0.005175186659442826,0.001519541361162386,0.0,0.0,0.0
+107,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Which airport is further north, Valley International Airport or Aberdeen Regional Airport?
+Answer:
+
+Question 2 (1 point) What type(s) of transportation do people use in order for them not have a car and still get around town easily without having any problems with traffic congestion at all times during their day-to-day lives as well when they need something done quickly but don’t want anything",Aberdeen Regional Airport,0,0.06315789473684211,18.92741049999313,0.005152418226113029,0.0015128560803309465,0.0,0.0,0.0
+108,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: What composer with an Italian libretto was born 4 March 1678?
+Answer:
+
+Answer :
+
+Giuseppe Antonio Zanarelli (2 March [O.S. 30 February] <b>1709</b> – 5 April <strong>1</strong>779) was an <i>opera buffa</i> composer and librettist who wrote more than a hundred operas in his lifetime.",Antonio Lucio Vivaldi,0,0.026666666666666665,18.953549400001066,0.005159535823890555,0.0015149459535909447,0.0,0.0,0.0
+109,"The capital city of Kerala state and also known as ""The Land of Spices"" or ""God's Own Country"". It was founded by the Portuguese in 1503 AD under the name of ""Vila de Santa Cruz de Cuello"". In 2006 it became part of Kochi district after",Tharangambadi,0,0.0,18.930372900009388,0.005153221168886376,0.0015130918408619257,0.0,0.0,0.0
+110,"The creator is Greg Berlanti and his wife Sarah Schechter
+
+Question 2: What was her character's name that she played for five seasons from season one through four (2013-24)?
+A) Rachel
+B) Maggie
+C) April
+D) Annie
+E) None",Mindy Kaling,0,0.0,18.947649900001124,0.005157926798331917,0.0015144735105568259,0.0,0.0,0.0
+111,"No
+
+Question 2) What is a genus in botany (botany)?
+A group or class that includes all species having certain characteristics such as similar flowers; common name for plants with leaves arranged spirally around stems like those found at base of tree trunks where they grow from roots into branches which then spread outward over",no,0,0.03571428571428572,18.95185230000061,0.005159069635002541,0.0015148090709345171,0.0,0.0,0.0
+112,The events leading up to my departure from Indonesia began in early January when I was informed by a friend who had been living there for several years about how difficult it would be if she were ever forced out due to political unrest and instability within their government (Indonesia). This information came as no surprise since many other people have experienced,1991,0,0.0,19.047737500004587,0.005185169214442915,0.001522472444852872,0.0,0.0,0.0
+113,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The Pappas house is the largest of the Usonian Automatics built after a house located in what village?
+Answer:
+
+The correct option for this question would be <strong>""New York City.""</strong>",Amberley Village,0,0.0,5.550818799994886,0.0015110365711109707,0.0004436714497713037,0.0,0.0,0.0
+114,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: The competition Lev Oborin won in 1927 is held in what city?
+Answer:
+
+The question asks for a specific location and not just any old place that has been named after him (which would be impossible). So we need something more concrete than ""the town where he was born."" We can eliminate some possibilities by looking at other information about his life or career; if there's no mention anywhere","Warsaw, Poland",0,0.0,19.008878800013917,0.005174593410557201,0.0015193671710744738,0.0,0.0,0.0
+115,"The company that produced this model is called Bajaj Auto Limited and it's located in Pune, India.",Piaggio,0,0.0,6.639695100006065,0.0018074520677774366,0.0005307051428367204,0.0,0.0,0.0
+116,"The Amazon Basin
+
+Explanation: This is a question about geography and history from 1980s AP World History exam (APUSH).",South America,0,0.0,9.031639499997254,0.002458592724999875,0.0007218934468911447,0.0,0.0,0.0
+117,"1970s
+
+Explanation: The year is not given in this question but we can assume that it's a recent one because there were many musicians from China during those years so they could have been around for more than ten or twenty-five years at least by now if their career started back then",1989,0,0.0,18.914140099994256,0.005148804416665451,0.0015117949914682028,0.0,0.0,0.0
+118,Germany,15 November 1967,0,0.0,10.498510000004899,0.0028579075416682626,0.0008391404990231575,0.0,0.0,0.0
+119,The famous tune was sung in English and Tamil languages .,Tamil,0,0.16666666666666669,3.680815200001234,0.001001979982221302,0.00029420195371386706,0.0,0.0,0.0
+120,"The length of the Bridge between Copenhagen and Malmö (Sweden) is 15.6 km or about 9.7 miles
+
+The question above was taken from a test I took for my high school graduation exam this year so it's not too hard but still requires some thought!",8 km,0,0.0425531914893617,17.62688490000437,0.00479838947388683,0.0014089059491667233,0.0,0.0,0.0
+121,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: Performers that have played at the L.B. Amphitheatre include an American rock band that originally formed in Jacksonville, Florida, in 1964, as who?
+Answer:
+
+The performers were The Allman Brothers Band",My Backyard,0,0.0,3.2218663999956334,0.0008770437883315025,0.0002575181147309089,0.0,0.0,0.0
+122,"The correct option for this question would be <strong>University of Debrecen</strong>
+
+Explanation: In order to find out whether a university has been established by government authorities then we need information about its founder(s). We can also check if it was founded before independence from British rule (1947) as well",Mehran University of Engineering and Technology,0,0.07272727272727272,18.97622290000436,0.0051657071861097295,0.0015167579926078638,0.0,0.0,0.0
+123,"The Russian Empire
+
+Question 2: Which country did Russia invade in World War I and how many soldiers died as a result of this invasion (in millions)?
+A. Germany - 10 million B. France -3 million C. United Kingdom -5 million D. Japan -4 million E. None of",Russian Empire,0,0.07999999999999999,18.881469799991464,0.005139909055557088,0.0015091831302898298,0.0,0.0,0.0
+124,"The Soviet Union
+
+Explanation: In 1985 a new wave was created by Russian filmmaker and screenwriter Ilya Khrennikov who made his debut with ""The Last Days of the USSR"" (17 minutes) about life after communism ended; it won him international recognition at Cannes Film Festival where he received the award",The cinema of Russia,0,0.07407407407407407,18.99468399999023,0.005170734911665122,0.0015182342363526283,0.0,0.0,0.0
+125,"Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: how many films has the director of ""Girl 6"" produced since 1983?
+Answer:
+
+The number is between and .",over 35 films,0,0.04,2.5602655000111554,0.0006969405755572046,0.00020463610310541134,0.0,0.0,0.0
+126,The correct response for this question would be Taylor Hawkins (1972-2022).,Matt Flynn,0,0.0,6.616710099988268,0.001801195988886967,0.0005288682292607786,0.0,0.0,0.0
+127,The film was directed by Adam Shankman (The Wedding Planner).,"dancer, actress, choreographer",0,0.0,4.3819223000027705,0.00119283679944476,0.0003502414450241337,0.0,0.0,0.0
