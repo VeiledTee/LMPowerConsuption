@@ -137,7 +137,6 @@ def run_mode(
     for idx in range(start_idx, len(dataset)):
         try:
             sample = dataset[idx]
-            sample_id = sample.get("id", idx)
 
             # Initialize metrics
             retrieval_metrics = {
@@ -145,7 +144,6 @@ def run_mode(
                 "energy_consumed": 0.0,
                 "emissions": 0.0,
             }
-            context = ""
 
             context = ""
             if mode_tag == "q+r":
