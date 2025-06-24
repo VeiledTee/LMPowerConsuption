@@ -88,7 +88,7 @@ def main() -> None:
         summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv"), True, '128'),
         summarise("gemma-7b-it_q", _load(results_dir / "hotpot_mini_128_gemma-7b-it_q.csv"), False, '128'),
     ]
-    pd.DataFrame(summaries).to_csv('summaries.csv', index=False)
+    pd.DataFrame(summaries).to_csv(results_dir / 'summaries.csv', index=False)
     print(pd.DataFrame(summaries).to_markdown(index=False))
 
 
