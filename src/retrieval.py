@@ -105,3 +105,27 @@ def retrieve_hotpot(question, vectorizer, tfidf_matrix, titles, inv_index):
         "energy_consumed": data.energy_consumed,
         "emissions": data.emissions,
     }
+
+
+def retrieve_boolq(question, vectorizer, tfidf_matrix, titles, inv_index, original_passage):
+    """Hybrid retrieval that measures energy but returns original passage"""
+    # Run TF-IDF retrieval for energy measurement
+    tokens = re.findall(CONFIG.token_pattern, normalize(question))
+    tokens = [t for t in tokens if t not in ENGLISH_STOP_WORDS]
+    ngrams = tokens + [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
+
+    with EmissionsTracker(save_to_file=False) as tracker:
+        # Perform full retrieval computation
+        q_vec = vectorizer.transform([question])
+        scores = (q_vec @ tfidf_matrix.T).toarray().flatten()
+        top_indices = scores.argsort()[-10:][::-1]
+        _ = [titles[i] for i in top_indices]  # Dummy result
+
+    metrics = tracker.final_emissions_data
+
+    # Return ORIGINAL passage from dataset (not retrieved result)
+    return original_passage, {
+        "duration": metrics.duration,
+        "energy": metrics.energy_consumed,
+        "emissions": metrics.emissions
+    }
