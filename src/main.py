@@ -1,13 +1,12 @@
 import gc
+import json
 import time
 from pathlib import Path
 
 import pandas as pd
 import torch
-from datasets import load_dataset
+from datasets import Dataset, load_dataset
 from tqdm import tqdm
-import json
-from datasets import Dataset
 
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
@@ -28,7 +27,9 @@ def run() -> None:
     logger.info(f"Starting experiment with config:\n{CONFIG}")
     logger.info(f"Using device: {CONFIG.device}")
 
-    dataset_path = Path(data_dir / "hotpot_mini_129.jsonl")
+    # dataset_path = Path(data_dir / "hotpot_mini_128.jsonl")
+    dataset_path = Path(data_dir / "boolq_mini_128.jsonl")
+    # dataset_path = Path(data_dir / "hotpot_mini_129.jsonl")
 
     try:
         if dataset_path.exists():
