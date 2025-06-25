@@ -13,7 +13,7 @@ from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve
 from scorers import exact_match, f1_score
-from utils import convert_seconds, ensure_config_dirs, setup_logging
+from utils import convert_seconds, ensure_config_dirs, setup_logging, count_bools
 
 logger = setup_logging()
 ensure_config_dirs()
@@ -190,7 +190,7 @@ def run_mode(
             results.append(
                 {
                     "qid": idx,
-                    "pred": prediction,
+                    "pred": prediction if "hotpot" in CONFIG.dataset_name else count_bools(prediction),
                     "gold": gold_answer,
                     "em": em,
                     "f1": f1,
