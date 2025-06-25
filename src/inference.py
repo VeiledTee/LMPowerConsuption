@@ -9,10 +9,9 @@ from ollama import generate
 def inference_ollama(prompt, model_name):
     resp = generate(model=model_name, prompt=prompt)
     return resp.get("response") or resp["choices"][0]["text"]
-from typing import Tuple, Dict
 
 
-def load_model_and_tokenizer(model_name: str) -> Tuple[PreTrainedTokenizer, PreTrainedModel]:
+def load_model_and_tokenizer(model_name: str) -> tuple[PreTrainedTokenizer, PreTrainedModel]:
     """
     Load a Hugging Face tokenizer and causal language model for inference.
 
@@ -20,7 +19,7 @@ def load_model_and_tokenizer(model_name: str) -> Tuple[PreTrainedTokenizer, PreT
         model_name (str): The name or path of the model to load.
 
     Returns:
-        Tuple[PreTrainedTokenizer, PreTrainedModel]: Loaded tokenizer and model.
+        tuple[PreTrainedTokenizer, PreTrainedModel]: Loaded tokenizer and model.
     """
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     model = (
@@ -36,13 +35,7 @@ def load_model_and_tokenizer(model_name: str) -> Tuple[PreTrainedTokenizer, PreT
     return tokenizer, model
 
 
-def inference(
-    prompt: str,
-    model: PreTrainedModel,
-    tokenizer: PreTrainedTokenizer,
-    model_name: str,
-    run_tag: str,
-) -> Tuple[str, Dict[str, float]]:
+def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
     """
     Run inference with emissions tracking and return generated text with energy metrics.
 
@@ -52,16 +45,11 @@ def inference(
         tokenizer (PreTrainedTokenizer): Tokenizer associated with the model.
         model_name (str): Name of the model (for logging purposes).
         run_tag (str): Tag identifying the run (used in emissions log naming).
+        provider (str): The service providing the language model.
 
     Returns:
-        Tuple[str, Dict[str, float]]: Generated text and energy/emissions data.
+        tuple[str, dict[str, float]]: Generated text and energy/emissions data.
     """
-    try:
-        with EmissionsTracker(
-            project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
-            log_level="error",
-        ) as tracker:
-def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
     if provider == 'ollama':
         try:
             with EmissionsTracker(
