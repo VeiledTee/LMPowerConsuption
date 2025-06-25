@@ -16,7 +16,7 @@ class ExperimentConfig:
     max_new_tokens: int
     batch_size: int
     device: str
-    modes: dict[str, bool]
+    modes: dict[str, dict]
     wiki_dir: Path
     corpus_cache: Path
     tfidf_cache: Path
@@ -62,7 +62,7 @@ class ExperimentConfig:
 
 CONFIG = ExperimentConfig(
     model_types={
-        "distilbert/distilgpt2": "huggingface",
+        # "distilbert/distilgpt2": "huggingface",
         # "openai-community/gpt2-xl": "huggingface",
         # "google/gemma-7b": "huggingface",
         # "google/gemma-7b-it": "huggingface",
@@ -70,24 +70,38 @@ CONFIG = ExperimentConfig(
         # "google/gemma-2b-it": "huggingface",
         # "meta-llama/Llama-2-7b-hf": "huggingface",
         # "meta-llama/Llama-2-13b-hf": "huggingface",
+        "deepseek-r1:1.5b": 'ollama',
+        "deepseek-r1:8b": 'ollama',
+        "deepseek-r1:14b": 'ollama',
+        "deepseek-r1:32b": 'ollama',
     },
-    dataset_name="hotpotqa/hotpot_qa",
-    # dataset_name="google/boolq",
+    # dataset_name="hotpotqa/hotpot_qa",
+    dataset_name="google/boolq",
 
-    dataset_file="boolq_1.jsonl",  # for full dataset (above) run
-    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
+    # dataset_file="boolq_1.jsonl",  # for full dataset (above) run
+    dataset_file="boolq_mini_128.jsonl",  # for mini boolq
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
 
     config="fullwiki",
     split="validation",
     n_samples=None,
     max_new_tokens=64,
-    batch_size=32,
-    # device="cpu",
+    batch_size=8,
     device="cuda" if torch.cuda.is_available() else "cpu",
-    # modes={"q": False},
-    modes={"q+r": True},
-    # modes={"q": False, "q+r": True},
+    modes={
+        # "distilbert/distilgpt2": {"q": False, "q+r": True},
+        # "openai-community/gpt2-xl": {"q": False},
+        # "google/gemma-2b": {"q": False, "q+r": True},
+        # "google/gemma-2b-it": {"q": False, "q+r": True},
+        # "google/gemma-7b": {"q": False},
+        # "google/gemma-7b-it": {"q": False},
+        # "meta-llama/Llama-2-7b-hf": {"q": False, "q+r": True},
+        # "meta-llama/Llama-2-13b-hf": {"q": False},
+        "deepseek-r1:1.5b": {"q": False, "q+r": True},
+        "deepseek-r1:8b": {"q": False, "q+r": True},
+        "deepseek-r1:14b": {"q": False, "q+r": True},
+        "deepseek-r1:32b": {"q": False},
+    },
     wiki_dir=Path("data/hotpot_wiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
     tfidf_cache=Path("cache/tfidf.pkl"),
