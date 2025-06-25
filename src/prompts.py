@@ -2,6 +2,16 @@ from config import CONFIG
 
 
 def build_prompt(example: dict, include_passage: bool) -> str:
+    """
+    Construct a prompt for a given QA example using dataset-specific templates.
+
+    Args:
+        example (dict): A dictionary containing the question and (optionally) context.
+        include_passage (bool): Whether to include the context/passage in the prompt.
+
+    Returns:
+        str: The formatted prompt string.
+    """
     q = example["question"]
 
     # Determine dataset type
