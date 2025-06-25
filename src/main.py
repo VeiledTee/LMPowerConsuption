@@ -49,7 +49,9 @@ def run() -> None:
         if not CONFIG.retrieval_only:
             tokenizer, model = load_model_safely(model_name)
 
-        for mode_tag, include_passage in CONFIG.modes.items():
+        model_modes = CONFIG.modes.get(model_name, {})
+        logger.info(f"\n{'+' * 30}\nRunning modes: {model_modes}\n{'+' * 30}")
+        for mode_tag, include_passage in model_modes.items():
             run_model_mode(
                 model_name,
                 mode_tag,
@@ -136,7 +138,8 @@ def run_model_mode(
 ) -> None:
     """Run evaluation for a specific model and mode."""
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
-    csv_path = CONFIG.result_dir / f"{dataset_id}_{model_name.split('/')[-1]}_{mode_tag}.csv"
+    csv_path = CONFIG.result_dir / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
+    print(csv_path)
 
     wiki_data = load_wikipedia_if_needed(mode_tag)
     start_idx = get_resume_index(csv_path)
@@ -150,7 +153,7 @@ def run_model_mode(
 
     for idx in range(start_idx, len(dataset)):
         try:
-            result = process_sample(
+            result = process_current_sample(
                 idx,
                 dataset[idx],
                 mode_tag,
@@ -200,7 +203,7 @@ def get_resume_index(csv_path: Path) -> int:
         return 0
 
 
-def process_sample(
+def process_current_sample(
         idx: int,
         sample: dict,
         mode_tag: str,
@@ -218,16 +221,15 @@ def process_sample(
         "energy_consumed": 0.0,
         "emissions": 0.0,
     }
-    context = ""
-
-    # Retrieve context if needed
-    if mode_tag == "q+r":
-        context, retrieval_metrics = retrieve_context(sample, wiki_data)
 
     # Build and process prompt
     sample_for_prompt = sample.copy()
-    if context:
-        sample_for_prompt["context"] = context
+
+    # Retrieve context if needed
+    if mode_tag == "q+r":
+        retrieved_context, retrieval_metrics = retrieve_context(sample, wiki_data)  # Rename variable
+        sample_for_prompt["retrieved_context"] = retrieved_context  # New key
+
     prompt = build_prompt(sample_for_prompt, include_passage)
 
     # Generate prediction
@@ -329,7 +331,7 @@ def generate_prediction(
         )
         prediction = full_output.split("Answer: ")[-1].strip()
         inference_metrics.update(i_metrics)
-
+    print(f"Predicted: {prediction}")
     return prediction, inference_metrics
 
 

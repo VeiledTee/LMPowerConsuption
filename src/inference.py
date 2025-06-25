@@ -7,7 +7,12 @@ from ollama import generate
 
 
 def inference_ollama(prompt, model_name):
-    resp = generate(model=model_name, prompt=prompt)
+    resp = generate(model=model_name, prompt=prompt, options={
+            "temperature": 0.0,
+            "max_tokens": 50,
+            "top_p": 0.9,
+            "stop": ["</s>", "\n\n\n"],
+        })
     return resp.get("response") or resp["choices"][0]["text"]
 
 
