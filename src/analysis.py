@@ -22,6 +22,12 @@ RESULT_COLS = {
 }
 
 
+def _load(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise FileNotFoundError(path)
+    return pd.read_csv(path)
+
+
 def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
     """Average the inference + retrieval columns."""
     return df[c1] + df[c2]
@@ -34,13 +40,15 @@ def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def summarise(model_key: str, df: pd.DataFrame, context_used: bool, dataset_version) -> dict:
+def summarise(model_key: str, path: Path, context_used: bool, dataset_version: str | int, model_name: str | None = None) -> dict:
     """Return one-row summary dict for a single model run, using display names."""
+    df = _load(path)
     df = add_combined_cols(df)
-    display_name = MODEL_DISPLAY_NAMES.get(model_key, model_key)
+    display_name = model_name if model_name else MODEL_DISPLAY_NAMES.get(model_key, model_key)
     return {
         "model": display_name,
         "context_used": context_used,
+        "dataset": str(path).split('\\')[-1].split('_')[0],
         "dataset_version": str(dataset_version),
         "f1": df["f1"].mean(),
         "em": df["em"].mean(),
@@ -57,47 +65,39 @@ def summarise(model_key: str, df: pd.DataFrame, context_used: bool, dataset_vers
     }
 
 
-def _load(path: Path) -> pd.DataFrame:
-    if not path.exists():
-        raise FileNotFoundError(path)
-    return pd.read_csv(path)
-
-
 def main() -> None:
     project_dir = Path(__file__).resolve().parents[1]
     results_dir = project_dir / "results"
 
     summaries = [
-        summarise("distilgpt2_q", _load(results_dir / "hotpot_distilgpt2_q.csv"), False, 'full'),
-        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_distilgpt2_q+r.csv"), True, 'full'),
-        summarise("gpt2-xl_q", _load(results_dir / "hotpot_gpt2-xl_q.csv"), False, 'full'),
+        summarise("distilgpt2_q", results_dir / "hotpot_distilgpt2_q.csv", False, 'full'),
+        summarise("distilgpt2_q+r", results_dir / "hotpot_distilgpt2_q+r.csv", True, 'full'),
+        summarise("gpt2-xl_q", results_dir / "hotpot_gpt2-xl_q.csv", False, 'full'),
 
-        summarise("distilgpt2_q", _load(results_dir / "hotpot_mini_128_distilgpt2_q.csv"), False, '128'),
-        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_128_distilgpt2_q+r.csv"), True, '128'),
-        summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_128_gpt2-xl_q.csv"), False, '128'),
+        summarise("distilgpt2_q", results_dir / "hotpot_mini_128_distilgpt2_q.csv", False, '128'),
+        summarise("distilgpt2_q+r", results_dir / "hotpot_mini_128_distilgpt2_q+r.csv", True, '128'),
+        summarise("gpt2-xl_q", results_dir / "hotpot_mini_128_gpt2-xl_q.csv", False, '128'),
 
-        summarise("distilgpt2_q", _load(results_dir / "hotpot_mini_512_distilgpt2_q.csv"), False, '512'),
-        summarise("distilgpt2_q+r", _load(results_dir / "hotpot_mini_512_distilgpt2_q+r.csv"), True, '512'),
-        summarise("gpt2-xl_q", _load(results_dir / "hotpot_mini_512_gpt2-xl_q.csv"), False, '512'),
+        summarise("gemma-2b_q", results_dir / "hotpot_mini_128_gemma-2b_q.csv", False, '128'),
+        summarise("gemma-2b_q+r", results_dir / "hotpot_mini_128_gemma-2b_q+r.csv", True, '128'),
+        summarise("gemma-7b_q", results_dir / "hotpot_mini_128_gemma-7b_q.csv", False, '128'),
 
-        summarise("gemma-2b_q", _load(results_dir / "hotpot_mini_128_gemma-2b_q.csv"), False, '128'),
-        summarise("gemma-2b_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b_q+r.csv"), True, '128'),
-        summarise("gemma-7b_q", _load(results_dir / "hotpot_mini_128_gemma-7b_q.csv"), False, '128'),
+        summarise("gemma-2b-it_q", results_dir / "hotpot_mini_128_gemma-2b-it_q.csv", False, '128'),
+        summarise("gemma-2b-it_q+r", results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv", True, '128'),
+        summarise("gemma-7b-it_q", results_dir / "hotpot_mini_128_gemma-7b-it_q.csv", False, '128'),
 
-        summarise("gemma-2b-it_q", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q.csv"), False, '128'),
-        summarise("gemma-2b-it_q+r", _load(results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv"), True, '128'),
-        summarise("gemma-7b-it_q", _load(results_dir / "hotpot_mini_128_gemma-7b-it_q.csv"), False, '128'),
-
-        summarise("gemma-2b-it_q", _load(results_dir / "boolq_128_gemma-2b-it_q.csv"), False, '128'),
-        summarise("gemma-2b-it_q+r", _load(results_dir / "boolq_128_gemma-2b-it_q+r.csv"), True, '128'),
-        summarise("gemma-7b-it_q", _load(results_dir / "boolq_128_gemma-7b-it_q.csv"), False, '128'),
-        summarise("gemma-7b-it_q", _load(results_dir / "boolq_128_gemma-7b-it_q_simplified.csv"), False, '128'),
+        summarise("gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, '128'),
+        summarise("gemma-2b-it_q+r", results_dir / "boolq_128_gemma-2b-it_q+r.csv", True, '128'),
+        summarise("gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q.csv", False, '128'),
+        summarise("gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q_simplified.csv", False, '128', model_name='Gemma 7B-IT (Simplified)'),
     ]
 
     df_summary = pd.DataFrame(summaries)
 
     df_summary.to_csv(results_dir / 'boolq_summaries.csv', index=False, float_format='%.6f')
     print(df_summary.to_markdown(index=False, floatfmt=".6f"))
+    with open(results_dir / 'boolq_summaries.md', 'w') as f:
+        f.write(df_summary.to_markdown(index=False, floatfmt=[".6f"] * len(df_summary.columns)))
 
 
 if __name__ == "__main__":
