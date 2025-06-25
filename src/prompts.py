@@ -23,14 +23,18 @@ def build_prompt(example: dict, include_passage: bool) -> str:
     if include_passage:
         # Handle different context formats per dataset
         if dataset_type == "hotpot":
-            context = "\n".join(
-                f"{title}: {' '.join(s.strip() for s in sents)}"
-                for title, sents in zip(
-                    example["context"]["title"], example["context"]["sentences"]
+            # Check if we're using retrieved context
+            if "retrieved_context" in example:
+                context = example["retrieved_context"]
+            else:
+                context = "\n".join(
+                    f"{title}: {' '.join(s.strip() for s in sents)}"
+                    for title, sents in zip(
+                        example["context"]["title"], example["context"]["sentences"]
+                    )
                 )
-            )
         else:  # boolq
-            context = example["context"]
+            context = example.get("retrieved_context", example.get("context", ""))
 
         return templates["with_context"].format(context=context, question=q)
     else:
