@@ -87,7 +87,7 @@ def retrieve_hotpot(question, vectorizer, tfidf_matrix, titles, inv_index):
         counter.update(inv_index.get(ng, []))
     cand_ids = [doc_id for doc_id, _ in counter.most_common(5000)]
 
-    # Only measure core retrieval operations
+    # Measure core retrieval operations
     with EmissionsTracker(save_to_file=False, log_level="error") as tracker:
         q_vec = vectorizer.transform([question])
 
