@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 import torch
+from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
 from tqdm import tqdm
 
@@ -169,7 +170,6 @@ def run_mode(
             if context:
                 sample_for_prompt["context"] = context
             prompt = build_prompt(sample_for_prompt, include_passage)
-
             # Generate prediction
             prediction: str = ""
             inference_metrics: dict = {
@@ -178,14 +178,27 @@ def run_mode(
                 "emissions": 0.0,
             }
             if model and tokenizer:
-                full_output, inference_metrics = inference(
+                full_output, i_metrics = inference(
                     prompt, model, tokenizer, model_name, mode_tag, provider
                 )
-                prediction = full_output.split("Answer: ")[-1].strip()
+                prediction: str = full_output.split("Answer: ")[-1].strip()
+                inference_metrics.update(i_metrics)
             # Convert gold answer to string for BoolQ
             gold_answer = sample["answer"]
             if not isinstance(gold_answer, str):
                 gold_answer = str(gold_answer)
+
+            if "boolq" in CONFIG.dataset_name:
+                with EmissionsTracker(
+                        project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
+                        log_level="error",
+                ) as tracker:
+                    prediction = count_bools(prediction)
+                inference_metrics.update({
+                    "duration": float(tracker.final_emissions_data.duration),
+                    "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
+                    "emissions": float(tracker.final_emissions_data.emissions),
+                })
 
             # Calculate scores
             em: float = exact_match(prediction, gold_answer)
@@ -195,7 +208,7 @@ def run_mode(
             results.append(
                 {
                     "qid": idx,
-                    "pred": prediction if "hotpot" in CONFIG.dataset_name else count_bools(prediction),
+                    "pred": prediction,
                     "gold": gold_answer,
                     "em": em,
                     "f1": f1,
