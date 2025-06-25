@@ -59,7 +59,7 @@ def run() -> None:
         logger.error(f"Dataset loading failed: {str(e)}")
         return
 
-    for model_name, provider in CONFIG.model_candidates:
+    for model_name, provider in CONFIG.model_types.items():
         model_start = time.time()
         logger.info(f"\n{'=' * 60}\nRunning model: {model_name}\n{'=' * 60}")
 
@@ -103,15 +103,13 @@ def run_mode(
     """Run evaluation for a specific model and mode."""
     # Determine dataset identifier for CSV naming
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
-    csv_path: Path = (
-        CONFIG.result_dir / f"{dataset_id}_{model_name.split('/')[-1]}_{mode_tag}.csv"
-    )
+    csv_path: Path = (CONFIG.result_dir / f"{dataset_id}_{model_name.split('/')[-1]}_{mode_tag}.csv")
     # csv_path: Path = CONFIG.result_dir / f"{dataset_id}_128_{model_name.split('/')[-1]}_{mode_tag}.csv"
     # csv_path: Path = CONFIG.result_dir / f"{dataset_id}_512_{model_name.split('/')[-1]}_{mode_tag}.csv"
 
     # Load Wikipedia only for HotpotQA in retrieval mode
     wiki_data: tuple | None = None
-    if mode_tag == "q+r" and "hotpot" in CONFIG.dataset_name:
+    if mode_tag == "q+r":
         try:
             wiki_data = load_wiki()
             logger.info("Loaded Wikipedia corpus and indexes")
@@ -151,12 +149,19 @@ def run_mode(
                 if "hotpot" in CONFIG.dataset_name and wiki_data:
                     # HotpotQA: Retrieve passages
                     docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
-                    context, ret_metrics = retrieve_hotpot(
+                    _, ret_metrics = retrieve_hotpot(
                         sample["question"], vectorizer, tfidf_matrix, titles, inv_index
                     )
                     retrieval_metrics.update(ret_metrics)
+                    # Hotpot provided sentences
+                    context = ' '.join(sent for section in sample['context']['sentences'] for sent in section)
                 elif "boolq" in CONFIG.dataset_name:
-                    # BoolQ: Use provided passage
+                    docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+                    _, ret_metrics = retrieve_hotpot(
+                        sample["question"], vectorizer, tfidf_matrix, titles, inv_index
+                    )
+                    retrieval_metrics.update(ret_metrics)
+                    # BoolQ passage
                     context = sample.get("passage", "")
 
             # Build prompt with context
@@ -177,7 +182,6 @@ def run_mode(
                     prompt, model, tokenizer, model_name, mode_tag, provider
                 )
                 prediction = full_output.split("Answer: ")[-1].strip()
-
             # Convert gold answer to string for BoolQ
             gold_answer = sample["answer"]
             if not isinstance(gold_answer, str):
