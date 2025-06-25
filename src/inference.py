@@ -1,11 +1,21 @@
 import torch
 from codecarbon import EmissionsTracker
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
 
 from config import CONFIG
+from typing import Tuple, Dict
 
 
-def load_model_and_tokenizer(model_name):
+def load_model_and_tokenizer(model_name: str) -> Tuple[PreTrainedTokenizer, PreTrainedModel]:
+    """
+    Load a Hugging Face tokenizer and causal language model for inference.
+
+    Args:
+        model_name (str): The name or path of the model to load.
+
+    Returns:
+        Tuple[PreTrainedTokenizer, PreTrainedModel]: Loaded tokenizer and model.
+    """
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     model = (
         AutoModelForCausalLM.from_pretrained(
@@ -20,7 +30,26 @@ def load_model_and_tokenizer(model_name):
     return tokenizer, model
 
 
-def inference(prompt, model, tokenizer, model_name, run_tag):
+def inference(
+    prompt: str,
+    model: PreTrainedModel,
+    tokenizer: PreTrainedTokenizer,
+    model_name: str,
+    run_tag: str,
+) -> Tuple[str, Dict[str, float]]:
+    """
+    Run inference with emissions tracking and return generated text with energy metrics.
+
+    Args:
+        prompt (str): Input prompt for the model.
+        model (PreTrainedModel): Loaded model for inference.
+        tokenizer (PreTrainedTokenizer): Tokenizer associated with the model.
+        model_name (str): Name of the model (for logging purposes).
+        run_tag (str): Tag identifying the run (used in emissions log naming).
+
+    Returns:
+        Tuple[str, Dict[str, float]]: Generated text and energy/emissions data.
+    """
     try:
         with EmissionsTracker(
             project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
@@ -41,12 +70,9 @@ def inference(prompt, model, tokenizer, model_name, run_tag):
                 ).to(CONFIG.device)
 
                 if inputs.input_ids.shape[1] > model_max_ctx:
-                    print(
-                        f"Truncating from {inputs.input_ids.shape[1]} to {model_max_ctx}"
-                    )
+                    print(f"Truncating from {inputs.input_ids.shape[1]} to {model_max_ctx}")
                     inputs = {k: v[:, -model_max_ctx:] for k, v in inputs.items()}
 
-                # Determine appropriate pad_token_id
                 if tokenizer.pad_token_id is None:
                     tokenizer.pad_token_id = tokenizer.eos_token_id
 
