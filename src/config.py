@@ -9,6 +9,7 @@ import torch
 class ExperimentConfig:
     model_types: dict[str, str]
     dataset_name: str
+    dataset_file: str
     config: str
     split: str
     n_samples: Optional[int]
@@ -72,6 +73,11 @@ CONFIG = ExperimentConfig(
     },
     dataset_name="hotpotqa/hotpot_qa",
     # dataset_name="google/boolq",
+
+    dataset_file="boolq_1.jsonl",  # for full dataset (above) run
+    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
+    # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
+
     config="fullwiki",
     split="validation",
     n_samples=None,
@@ -81,7 +87,8 @@ CONFIG = ExperimentConfig(
     device="cuda" if torch.cuda.is_available() else "cpu",
     # modes={"q": False},
     modes={"q+r": True},
-    wiki_dir=Path("data/enwiki-processed"),
+    # modes={"q": False, "q+r": True},
+    wiki_dir=Path("data/hotpot_wiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
     tfidf_cache=Path("cache/tfidf.pkl"),
     index_cache=Path("cache/index.pkl"),
