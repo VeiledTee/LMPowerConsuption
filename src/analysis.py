@@ -1,6 +1,6 @@
 from pathlib import Path
-import pandas as pd
 
+import pandas as pd
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -40,15 +40,23 @@ def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def summarise(model_key: str, path: Path, context_used: bool, dataset_version: str | int, model_name: str | None = None) -> dict:
+def summarise(
+    model_key: str,
+    path: Path,
+    context_used: bool,
+    dataset_version: str | int,
+    model_name: str | None = None,
+) -> dict:
     """Return one-row summary dict for a single model run, using display names."""
     df = _load(path)
     df = add_combined_cols(df)
-    display_name = model_name if model_name else MODEL_DISPLAY_NAMES.get(model_key, model_key)
+    display_name = (
+        model_name if model_name else MODEL_DISPLAY_NAMES.get(model_key, model_key)
+    )
     return {
         "model": display_name,
         "context_used": context_used,
-        "dataset": "BoolQ" if 'boolq' in str(path) else "HotpotQA",
+        "dataset": "BoolQ" if "boolq" in str(path) else "HotpotQA",
         "dataset_version": str(dataset_version),
         "f1": df["f1"].mean(),
         "em": df["em"].mean(),
@@ -70,38 +78,98 @@ def main() -> None:
     results_dir = project_dir / "results"
 
     summaries = [
-        summarise("distilgpt2_q", results_dir / "hotpot_distilgpt2_q.csv", False, 'full'),
-        summarise("distilgpt2_q+r", results_dir / "hotpot_distilgpt2_q+r.csv", True, 'full'),
-        summarise("gpt2-xl_q", results_dir / "hotpot_gpt2-xl_q.csv", False, 'full'),
-
-        summarise("distilgpt2_q", results_dir / "hotpot_mini_128_distilgpt2_q.csv", False, '128'),
-        summarise("distilgpt2_q+r", results_dir / "hotpot_mini_128_distilgpt2_q+r.csv", True, '128'),
-        summarise("gpt2-xl_q", results_dir / "hotpot_mini_128_gpt2-xl_q.csv", False, '128'),
-
-        summarise("gemma-2b_q", results_dir / "hotpot_mini_128_gemma-2b_q.csv", False, '128'),
-        summarise("gemma-2b_q+r", results_dir / "hotpot_mini_128_gemma-2b_q+r.csv", True, '128'),
-        summarise("gemma-7b_q", results_dir / "hotpot_mini_128_gemma-7b_q.csv", False, '128'),
-
-        summarise("gemma-2b-it_q", results_dir / "hotpot_mini_128_gemma-2b-it_q.csv", False, '128'),
-        summarise("gemma-2b-it_q+r", results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv", True, '128'),
-        summarise("gemma-7b-it_q", results_dir / "hotpot_mini_128_gemma-7b-it_q.csv", False, '128'),
-
-        summarise("distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, '128'),
-        summarise("distilgpt2_q+r", results_dir / "boolq_128_distilgpt2_q+r.csv", True, '128'),
-        summarise("gpt2-xl_q", results_dir / "boolq_128_gpt2-xl_q.csv", False, '128'),
-
-        summarise("gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, '128'),
-        summarise("gemma-2b-it_q+r", results_dir / "boolq_128_gemma-2b-it_q+r.csv", True, '128'),
-        summarise("gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q.csv", False, '128'),
-        summarise("gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q_simplified.csv", False, '128', model_name='Gemma 7B-IT (Simplified)'),
+        summarise(
+            "distilgpt2_q", results_dir / "hotpot_distilgpt2_q.csv", False, "full"
+        ),
+        summarise(
+            "distilgpt2_q+r", results_dir / "hotpot_distilgpt2_q+r.csv", True, "full"
+        ),
+        summarise("gpt2-xl_q", results_dir / "hotpot_gpt2-xl_q.csv", False, "full"),
+        summarise(
+            "distilgpt2_q",
+            results_dir / "hotpot_mini_128_distilgpt2_q.csv",
+            False,
+            "128",
+        ),
+        summarise(
+            "distilgpt2_q+r",
+            results_dir / "hotpot_mini_128_distilgpt2_q+r.csv",
+            True,
+            "128",
+        ),
+        summarise(
+            "gpt2-xl_q", results_dir / "hotpot_mini_128_gpt2-xl_q.csv", False, "128"
+        ),
+        summarise(
+            "gemma-2b_q", results_dir / "hotpot_mini_128_gemma-2b_q.csv", False, "128"
+        ),
+        summarise(
+            "gemma-2b_q+r",
+            results_dir / "hotpot_mini_128_gemma-2b_q+r.csv",
+            True,
+            "128",
+        ),
+        summarise(
+            "gemma-7b_q", results_dir / "hotpot_mini_128_gemma-7b_q.csv", False, "128"
+        ),
+        summarise(
+            "gemma-2b-it_q",
+            results_dir / "hotpot_mini_128_gemma-2b-it_q.csv",
+            False,
+            "128",
+        ),
+        summarise(
+            "gemma-2b-it_q+r",
+            results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv",
+            True,
+            "128",
+        ),
+        summarise(
+            "gemma-7b-it_q",
+            results_dir / "hotpot_mini_128_gemma-7b-it_q.csv",
+            False,
+            "128",
+        ),
+        summarise(
+            "distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, "128"
+        ),
+        summarise(
+            "distilgpt2_q+r", results_dir / "boolq_128_distilgpt2_q+r.csv", True, "128"
+        ),
+        summarise("gpt2-xl_q", results_dir / "boolq_128_gpt2-xl_q.csv", False, "128"),
+        summarise(
+            "gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, "128"
+        ),
+        summarise(
+            "gemma-2b-it_q+r",
+            results_dir / "boolq_128_gemma-2b-it_q+r.csv",
+            True,
+            "128",
+        ),
+        summarise(
+            "gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q.csv", False, "128"
+        ),
+        summarise(
+            "gemma-7b-it_q",
+            results_dir / "boolq_128_gemma-7b-it_q_simplified.csv",
+            False,
+            "128",
+            model_name="Gemma 7B-IT (Simplified)",
+        ),
     ]
 
     df_summary = pd.DataFrame(summaries)
 
-    df_summary.to_csv(results_dir / 'boolq_summaries.csv', index=False, float_format='%.6f')
+    df_summary.to_csv(
+        results_dir / "boolq_summaries.csv", index=False, float_format="%.6f"
+    )
     print(df_summary.to_markdown(index=False, floatfmt=".6f"))
-    with open(results_dir / 'boolq_summaries.md', 'w') as f:
-        f.write(df_summary.to_markdown(index=False, floatfmt=[".6f"] * len(df_summary.columns)))
+    with open(results_dir / "boolq_summaries.md", "w") as f:
+        f.write(
+            df_summary.to_markdown(
+                index=False, floatfmt=[".6f"] * len(df_summary.columns)
+            )
+        )
 
 
 if __name__ == "__main__":

@@ -107,7 +107,9 @@ def retrieve_hotpot(question, vectorizer, tfidf_matrix, titles, inv_index):
     }
 
 
-def retrieve_boolq(question, vectorizer, tfidf_matrix, titles, inv_index, original_passage):
+def retrieve_boolq(
+    question, vectorizer, tfidf_matrix, titles, inv_index, original_passage
+):
     """Hybrid retrieval that measures energy but returns original passage"""
     # Run TF-IDF retrieval for energy measurement
     tokens = re.findall(CONFIG.token_pattern, normalize(question))
@@ -127,5 +129,5 @@ def retrieve_boolq(question, vectorizer, tfidf_matrix, titles, inv_index, origin
     return original_passage, {
         "duration": metrics.duration,
         "energy": metrics.energy_consumed,
-        "emissions": metrics.emissions
+        "emissions": metrics.emissions,
     }
