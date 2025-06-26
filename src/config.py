@@ -70,7 +70,7 @@ CONFIG = ExperimentConfig(
         # "google/gemma-2b-it": "huggingface",
         # "meta-llama/Llama-2-7b-hf": "huggingface",
         # "meta-llama/Llama-2-13b-hf": "huggingface",
-        "deepseek-r1:1.5b": 'ollama',
+        'deepseek-r1:1.5b': 'ollama',
         "deepseek-r1:8b": 'ollama',
         "deepseek-r1:14b": 'ollama',
         "deepseek-r1:32b": 'ollama',
