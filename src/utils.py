@@ -2,7 +2,7 @@ import logging
 import os
 import re
 from pathlib import Path
-from typing import Tuple, Dict
+from typing import Dict, Tuple
 
 from config import CONFIG
 

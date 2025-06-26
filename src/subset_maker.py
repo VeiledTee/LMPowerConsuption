@@ -69,7 +69,9 @@ else:  # bool q
     )
 
 # Save to hotpot_mini.jsonl
-output_path = CONFIG.data_dir / f"{CONFIG.dataset_name.split('/')[-1]}_mini_{n_total}.jsonl"
+output_path = (
+    CONFIG.data_dir / f"{CONFIG.dataset_name.split('/')[-1]}_mini_{n_total}.jsonl"
+)
 with open(output_path, "w", encoding="utf-8") as f:
     for example in final_subset:
         json.dump(example, f)

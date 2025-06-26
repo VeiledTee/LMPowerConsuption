@@ -32,30 +32,30 @@ class ExperimentConfig:
     prompt_templates: dict[str, str] = field(
         default_factory=lambda: {
             "hotpot": {
-                    "with_context": (
-                        "Answer the following to the best of your ability. You must provide an answer. "
-                        "If you are unsure, make an educated guess based on what you know and the context provided. "
-                        "Context: {context}\nQuestion: {question}\nAnswer:"
-                    ),
-                    "without_context": (
-                        "Answer the following to the best of your ability. You must provide an answer. "
-                        "If you are unsure, make an educated guess based on what you know. "
-                        "Question: {question}\nAnswer:"
-                    ),
-                },
-                "boolq": {
-                    "with_context": (
-                        "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\n"
-                        "Passage: {context}\n"
-                        "Question: {question}\n"
-                        "Answer:"
-                    ),
-                    "without_context": (
-                        "Answer the following question with only one word. It must be 'True' or 'False'.\n"
-                        "Question: {question}\n"
-                        "Answer:"
-                    ),
-                },
+                "with_context": (
+                    "Answer the following to the best of your ability. You must provide an answer. "
+                    "If you are unsure, make an educated guess based on what you know and the context provided. "
+                    "Context: {context}\nQuestion: {question}\nAnswer:"
+                ),
+                "without_context": (
+                    "Answer the following to the best of your ability. You must provide an answer. "
+                    "If you are unsure, make an educated guess based on what you know. "
+                    "Question: {question}\nAnswer:"
+                ),
+            },
+            "boolq": {
+                "with_context": (
+                    "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\n"
+                    "Passage: {context}\n"
+                    "Question: {question}\n"
+                    "Answer:"
+                ),
+                "without_context": (
+                    "Answer the following question with only one word. It must be 'True' or 'False'.\n"
+                    "Question: {question}\n"
+                    "Answer:"
+                ),
+            },
         }
     )
 
@@ -70,18 +70,16 @@ CONFIG = ExperimentConfig(
         # "google/gemma-2b-it": "huggingface",
         # "meta-llama/Llama-2-7b-hf": "huggingface",
         # "meta-llama/Llama-2-13b-hf": "huggingface",
-        'deepseek-r1:1.5b': 'ollama',
-        "deepseek-r1:8b": 'ollama',
-        "deepseek-r1:14b": 'ollama',
-        "deepseek-r1:32b": 'ollama',
+        "deepseek-r1:1.5b": "ollama",
+        "deepseek-r1:8b": "ollama",
+        "deepseek-r1:14b": "ollama",
+        "deepseek-r1:32b": "ollama",
     },
     # dataset_name="hotpotqa/hotpot_qa",
     dataset_name="google/boolq",
-
     # dataset_file="boolq_1.jsonl",  # for full dataset (above) run
     dataset_file="boolq_mini_128.jsonl",  # for mini boolq
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
-
     config="fullwiki",
     split="validation",
     n_samples=None,

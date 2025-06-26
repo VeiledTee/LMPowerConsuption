@@ -1,22 +1,29 @@
 import torch
 from codecarbon import EmissionsTracker
-from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
+from ollama import generate
+from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
+                          PreTrainedTokenizer)
 
 from config import CONFIG
-from ollama import generate
 
 
 def inference_ollama(prompt, model_name):
-    resp = generate(model=model_name, prompt=prompt, options={
+    resp = generate(
+        model=model_name,
+        prompt=prompt,
+        options={
             "temperature": 0.0,
             "max_tokens": 50,
             "top_p": 0.9,
             "stop": ["</s>", "\n\n\n"],
-        })
+        },
+    )
     return resp.get("response") or resp["choices"][0]["text"]
 
 
-def load_model_and_tokenizer(model_name: str) -> tuple[PreTrainedTokenizer, PreTrainedModel]:
+def load_model_and_tokenizer(
+    model_name: str,
+) -> tuple[PreTrainedTokenizer, PreTrainedModel]:
     """
     Load a Hugging Face tokenizer and causal language model for inference.
 
@@ -55,11 +62,11 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
     Returns:
         tuple[str, dict[str, float]]: Generated text and energy/emissions data.
     """
-    if provider == 'ollama':
+    if provider == "ollama":
         try:
             with EmissionsTracker(
-                    project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
-                    log_level="error",
+                project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
+                log_level="error",
             ) as tracker:
                 text = inference_ollama(prompt, model_name)
             return text, {
@@ -70,7 +77,7 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
         except Exception as e:
             print(f"Error during {provider} inference: {str(e)}")
             raise
-    elif provider == 'huggingface':
+    elif provider == "huggingface":
         try:
             with torch.inference_mode():
                 model_max_ctx = getattr(
@@ -87,7 +94,9 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
                 ).to(CONFIG.device)
 
                 if inputs.input_ids.shape[1] > model_max_ctx:
-                    print(f"Truncating from {inputs.input_ids.shape[1]} to {model_max_ctx}")
+                    print(
+                        f"Truncating from {inputs.input_ids.shape[1]} to {model_max_ctx}"
+                    )
                     inputs = {k: v[:, -model_max_ctx:] for k, v in inputs.items()}
 
                 if tokenizer.pad_token_id is None:
@@ -116,5 +125,7 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
             print(f"Error during {provider} inference: {str(e)}")
             raise
     else:
-        print(f"Error during inference: Provider in CONFIG.model_types must be either 'ollama' or 'huggingface'.")
+        print(
+            f"Error during inference: Provider in CONFIG.model_types must be either 'ollama' or 'huggingface'."
+        )
         raise EnvironmentError
