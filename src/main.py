@@ -1,5 +1,6 @@
 import gc
 import json
+import logging
 import time
 from pathlib import Path
 
@@ -14,13 +15,11 @@ from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve_hotpot
 from scorers import exact_match, f1_score
-from utils import (
-    convert_seconds,
-    ensure_config_dirs,
-    setup_logging,
-    count_bools
-)
+from utils import (convert_seconds, count_bools, ensure_config_dirs,
+                   setup_logging)
 
+# Supress ollama http logs
+logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = setup_logging()
 ensure_config_dirs()
 
@@ -62,7 +61,7 @@ def run() -> None:
                 dataset,
                 tokenizer,
                 model,
-                provider
+                provider,
             )
 
         cleanup_resources(model, tokenizer)
@@ -71,7 +70,9 @@ def run() -> None:
         logger.info(f"Completed {model_name} in {format_time(model_time)}")
 
     total_time = time.time() - start_time
-    logger.info(f"\n{'=' * 60}\nExperiment completed in {format_time(total_time)}\n{'=' * 60}")
+    logger.info(
+        f"\n{'=' * 60}\nExperiment completed in {format_time(total_time)}\n{'=' * 60}"
+    )
 
 
 def load_config_dataset(data_dir: Path) -> Dataset:
@@ -131,26 +132,27 @@ def format_time(seconds: float) -> str:
 
 
 def run_model_mode(
-        model_name: str,
-        mode_tag: str,
-        include_passage: bool,
-        dataset: Dataset,
-        tokenizer: any,
-        model: any,
-        provider: str,
+    model_name: str,
+    mode_tag: str,
+    include_passage: bool,
+    dataset: Dataset,
+    tokenizer: any,
+    model: any,
+    provider: str,
 ) -> None:
     """Run evaluation for a specific model and mode."""
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
-    csv_path = CONFIG.result_dir / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
+    csv_path = (
+        CONFIG.result_dir
+        / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
+    )
 
     wiki_data = load_wikipedia_if_needed(mode_tag)
     start_idx = get_resume_index(csv_path)
     results = []
 
     pbar = tqdm(
-        total=len(dataset) - start_idx,
-        desc=f"{model_name} ({mode_tag})",
-        unit="sample"
+        total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})", unit="sample"
     )
 
     for idx in range(start_idx, len(dataset)):
@@ -164,7 +166,7 @@ def run_model_mode(
                 model,
                 tokenizer,
                 model_name,
-                provider
+                provider,
             )
             if result:
                 results.append(result)
@@ -206,15 +208,15 @@ def get_resume_index(csv_path: Path) -> int:
 
 
 def process_current_sample(
-        idx: int,
-        sample: dict,
-        mode_tag: str,
-        include_passage: bool,
-        wiki_data: tuple | None,
-        model: any,
-        tokenizer: any,
-        model_name: str,
-        provider: str,
+    idx: int,
+    sample: dict,
+    mode_tag: str,
+    include_passage: bool,
+    wiki_data: tuple | None,
+    model: any,
+    tokenizer: any,
+    model_name: str,
+    provider: str,
 ) -> dict | None:
     """Process a single sample and return results."""
     # Initialize metrics
@@ -229,7 +231,9 @@ def process_current_sample(
 
     # Retrieve context if needed
     if mode_tag == "q+r":
-        retrieved_context, retrieval_metrics = retrieve_context(sample, wiki_data)  # Rename variable
+        retrieved_context, retrieval_metrics = retrieve_context(
+            sample, wiki_data
+        )  # Rename variable
         sample_for_prompt["retrieved_context"] = retrieved_context  # New key
 
     prompt = build_prompt(sample_for_prompt, include_passage)
@@ -284,26 +288,17 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
     if "hotpot" in CONFIG.dataset_name:
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
         _, ret_metrics = retrieve_hotpot(
-            sample["question"],
-            vectorizer,
-            tfidf_matrix,
-            titles,
-            inv_index
+            sample["question"], vectorizer, tfidf_matrix, titles, inv_index
         )
         retrieval_metrics.update(ret_metrics)
         # Extract context from sample
-        context = ' '.join(
-            sent for section in sample['context']['sentences']
-            for sent in section
+        context = " ".join(
+            sent for section in sample["context"]["sentences"] for sent in section
         )
     elif "boolq" in CONFIG.dataset_name:
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
         _, ret_metrics = retrieve_hotpot(
-            sample["question"],
-            vectorizer,
-            tfidf_matrix,
-            titles,
-            inv_index
+            sample["question"], vectorizer, tfidf_matrix, titles, inv_index
         )
         retrieval_metrics.update(ret_metrics)
         context = sample.get("passage", "")
@@ -312,12 +307,12 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
 
 
 def generate_prediction(
-        prompt: str,
-        model: any,
-        tokenizer: any,
-        model_name: str,
-        mode_tag: str,
-        provider: str,
+    prompt: str,
+    model: any,
+    tokenizer: any,
+    model_name: str,
+    mode_tag: str,
+    provider: str,
 ) -> tuple[str, dict]:
     """Generate model prediction with metrics."""
     inference_metrics = {
@@ -337,14 +332,12 @@ def generate_prediction(
 
 
 def process_boolq_prediction(
-        prediction: str,
-        model_name: str,
-        inference_metrics: dict
+    prediction: str, model_name: str, inference_metrics: dict
 ) -> tuple[str, dict]:
     """Process BoolQ prediction and measure emissions."""
     with EmissionsTracker(
-            project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
-            log_level="error",
+        project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
+        log_level="error",
     ) as tracker:
         processed_pred = count_bools(prediction)
 
@@ -379,12 +372,7 @@ def save_results(results: list[dict], csv_path: Path) -> None:
         return
 
     df = pd.DataFrame(results)
-    df.to_csv(
-        csv_path,
-        mode="a",
-        header=not csv_path.exists(),
-        index=False
-    )
+    df.to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
 
 
 if __name__ == "__main__":
