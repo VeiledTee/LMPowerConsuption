@@ -46,8 +46,11 @@ def run() -> None:
         logger.info(f"\n{'=' * 60}\nRunning model: {model_name}\n{'=' * 60}")
 
         tokenizer, model = None, None
-        if not CONFIG.retrieval_only:
+        if not CONFIG.retrieval_only and provider != "ollama":
             tokenizer, model = load_model_safely(model_name)
+        elif not CONFIG.retrieval_only and provider == "ollama":
+            tokenizer = True
+            model = model_name
 
         model_modes = CONFIG.modes.get(model_name, {})
         logger.info(f"\n{'+' * 30}\nRunning modes: {model_modes}\n{'+' * 30}")
@@ -139,7 +142,6 @@ def run_model_mode(
     """Run evaluation for a specific model and mode."""
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
     csv_path = CONFIG.result_dir / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
-    print(csv_path)
 
     wiki_data = load_wikipedia_if_needed(mode_tag)
     start_idx = get_resume_index(csv_path)
@@ -331,7 +333,6 @@ def generate_prediction(
         )
         prediction = full_output.split("Answer: ")[-1].strip()
         inference_metrics.update(i_metrics)
-    print(f"Predicted: {prediction}")
     return prediction, inference_metrics
 
 
