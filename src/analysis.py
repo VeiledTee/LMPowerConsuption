@@ -48,7 +48,7 @@ def summarise(model_key: str, path: Path, context_used: bool, dataset_version: s
     return {
         "model": display_name,
         "context_used": context_used,
-        "dataset": str(path).split('\\')[-1].split('_')[0],
+        "dataset": "BoolQ" if 'boolq' in str(path) else "HotpotQA",
         "dataset_version": str(dataset_version),
         "f1": df["f1"].mean(),
         "em": df["em"].mean(),
@@ -85,6 +85,10 @@ def main() -> None:
         summarise("gemma-2b-it_q", results_dir / "hotpot_mini_128_gemma-2b-it_q.csv", False, '128'),
         summarise("gemma-2b-it_q+r", results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv", True, '128'),
         summarise("gemma-7b-it_q", results_dir / "hotpot_mini_128_gemma-7b-it_q.csv", False, '128'),
+
+        summarise("distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, '128'),
+        summarise("distilgpt2_q+r", results_dir / "boolq_128_distilgpt2_q+r.csv", True, '128'),
+        summarise("gpt2-xl_q", results_dir / "boolq_128_gpt2-xl_q.csv", False, '128'),
 
         summarise("gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, '128'),
         summarise("gemma-2b-it_q+r", results_dir / "boolq_128_gemma-2b-it_q+r.csv", True, '128'),
