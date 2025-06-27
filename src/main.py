@@ -20,6 +20,8 @@ from utils import (convert_seconds, count_bools, ensure_config_dirs,
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
+# Supress codecarbon warnings
+logging.getLogger("codecarbon").setLevel(logging.ERROR)
 logger = setup_logging()
 ensure_config_dirs()
 
