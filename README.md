@@ -1,96 +1,70 @@
-# Energy-Efficient QA System
+# LM‑PowerConsumption ⚡
 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Lightweight framework to evaluate the **accuracy ↔️ energy trade-off** of small and large language models (SLMs/LLMs) on QA benchmarks, with focus on environmental impact and performance.
 
-This project evaluates the energy consumption of large language models on the HotpotQA benchmark, comparing different configurations and retrieval approaches.
+## 🔍 Features
 
-## 📋 Features
+* Tracks energy usage and CO₂ emissions using CodeCarbon
+* Supports multiple LLMs (e.g., Gemma, Llama‑2)
+* Two evaluation modes: **with retrieval** (Wikipedia-based) and **direct generation**
+* Computes common QA metrics: **Exact Match (EM)** and **F1**, alongside energy (kWh), emissions (kg CO₂), and runtime
+* Resume support for long-running experiments ([github.com][1])
 
-- Energy consumption tracking with CodeCarbon
-- Support for multiple LLMs (Gemma, Llama-2)
-- Two evaluation modes: with and without retrieval
-- Wikipedia-based document retrieval system
-- Comprehensive metrics: EM, F1, energy, emissions
-- Resume functionality for long-running experiments
+## 📁 Project Structure
 
-## 🚀 Getting Started
-
-### Prerequisites
-- Python 3.10+
-- PyTorch (with CUDA if available)
-
-### Installation
-```bash
-git clone https://github.com/VeiledTee/LMPowerConsuption.git
-cd LMPowerConsuption
-pip install -r requirements.txt
+```
+.
+├── config.py        # Experiment configuration (models, batch_size, modes, file paths)
+├── experiment.py    # Orchestrates experiment workflow
+├── inference.py     # Loads models & generates answers
+├── retrieval.py     # Implements Wikipedia document retrieval
+├── scorers.py       # Calculates EM & F1 metrics
+├── prompts.py       # Prompt templates for QA generation
+├── utils.py         # Helper functions
+├── requirements.txt # Python dependencies
+├── results/         # CSV outputs saved here
+└── data/            # QA benchmark & Wikipedia resources
 ```
 
-### Configuration
-Edit `config.py` to:
-- Select models (`model_candidates`)
-- Adjust experiment parameters (`batch_size`, `max_new_tokens`)
-- Set paths (`wiki_dir`, `energy_dir`)
-- Choose modes (`modes`)
+## 🚀 Quick Start
 
-### Running the Experiment
-```bash
-python main.py
-```
+1. **Clone & install**:
 
-### Expected Output
-```
-2023-10-15 14:30:00 - energy_eval - INFO - Starting experiment with config:...
-2023-10-15 14:30:01 - energy_eval - INFO - Loaded dataset with 1000 samples
-2023-10-15 14:30:05 - energy_eval - INFO - Running model: google/gemma-2b-it
-2023-10-15 14:30:10 - energy_eval - INFO - Starting q mode for google/gemma-2b-it
-100%|████████████████████████| 1000/1000 [15:20<00:00, 1.08s/sample]
-2023-10-15 14:45:30 - energy_eval - INFO - Completed q mode for google/gemma-2b-it
-...
-```
+   ```bash
+   git clone https://github.com/VeiledTee/LMPowerConsuption.git
+   cd LMPowerConsuption
+   pip install -r requirements.txt
+   ```
+2. **Configure** experiments in `config.py` (e.g., choose `model_candidates`, `modes`, paths, etc.)
+3. **Run** the experiment:
 
-Results will be saved in CSV format to `results/energy/`.
+   ```bash
+   python experiment.py
+   ```
+4. **Analyze results**:
 
-## 🧩 Project Structure
-```
-energy-efficient-qa/
-├── config.py             # Experiment configuration
-├── main.py               # Main orchestration script
-├── inference.py          # Model loading and generation
-├── prompts.py            # Prompt engineering
-├── retrieval.py          # Wikipedia retrieval system
-├── scorers.py            # Evaluation metrics (EM, F1)
-├── utils.py              # Utility functions
-├── requirements.txt      # Dependencies
-├── README.md             # This document
-└── results/              # Output directory (auto-created)
-    └── energy/           # Energy and performance results
-```
+   ```python
+   import pandas as pd
+   df = pd.read_csv("results/energy/*.csv")
+   print(df[["f1", "inference_energy"]].mean())
+   ```
+5. **Run and analyze**
+    ```bash
+    chmod +x run_all.sh  # (one-time) make the script executable
+    ./run_experiment.sh          # run the main pipeline and summary analysis
+    ```
 
-## 📊 Results Analysis
-Results include:
-- Question ID and text
-- Model predictions and gold answers
-- Exact Match and F1 scores
-- Energy consumption (kWh)
-- CO2 emissions (kg)
-- Processing duration (seconds)
+   Review EM, F1, total energy, emissions, and runtime ([github.com][1])
 
-Use Pandas for analysis:
-```python
-import pandas as pd
+## 🎯 Use Cases
 
-df = pd.read_csv("results/energy/hotpot_gemma-2b-it_q+r.csv")
-mean_f1 = df["f1"].mean()
-total_energy = df["inference_energy"].sum()
-print(f"Average F1: {mean_f1:.2f}, Total Energy: {total_energy:.4f} kWh")
-```
+* Compare **model accuracy vs. energy footprint**
+* Study **environmental cost** of retrieval‑augmented generation
+* Facilitate reproducible energy‑aware NLP research
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📌 Requirements
 
-## 🙏 Acknowledgments
-- HotpotQA dataset providers
-- Hugging Face Transformers library
-- CodeCarbon for emissions tracking
+* Python 3.11+
+* PyTorch (with GPU/CUDA support recommended)
+* `CodeCarbon` for energy tracking
+* Access to required QA dataset & local Wikipedia index
