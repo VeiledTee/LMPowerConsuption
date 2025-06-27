@@ -14,7 +14,6 @@ from utils import normalize, strip_links
 
 def load_wiki():
     if CONFIG.corpus_cache.exists():
-        print(CONFIG.corpus_cache)
         docs, titles = joblib.load(CONFIG.corpus_cache)
         if not docs:
             raise ValueError("Corpus cache loaded, but no documents found in it.")
