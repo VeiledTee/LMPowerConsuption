@@ -1,0 +1,3 @@
+| model         | context_used   | dataset   |   dataset_version |       f1 |       em |   total_energy_kWh |   inference_energy_kWh |   retrieval_energy_kWh |   total_emissions_kg |   inference_emissions_kg |   retrieval_emissions_kg |   total_time_s |
+|:--------------|:---------------|:----------|------------------:|---------:|---------:|-------------------:|-----------------------:|-----------------------:|---------------------:|-------------------------:|-------------------------:|---------------:|
+| smollm-135m_q | False          | BoolQ     |               128 | 0.666667 | 0.666667 |           0.000037 |               0.000037 |               0.000000 |             0.000011 |                 0.000011 |                 0.000000 |       4.182534 |
