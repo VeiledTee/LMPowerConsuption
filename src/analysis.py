@@ -13,6 +13,13 @@ MODEL_DISPLAY_NAMES = {
     "gemma-2b-it_q": "Gemma 2B-IT (Base)",
     "gemma-2b-it_q+r": "Gemma 2B-IT (Context)",
     "gemma-7b-it_q": "Gemma 7B-IT (Base)",
+    "deepseek-r1-1.5b_q": "DeepSeek-r1 1.5B (Base)",
+    "deepseek-r1-1.5b_q+r": "DeepSeek-r1 1.5B (RAG)",
+    "deepseek-r1-8b_q": "DeepSeek-r1 8B (Base)",
+    "deepseek-r1-8b_q+r": "DeepSeek-r1 8B (RAG)",
+    "deepseek-r1-14b_q": "DeepSeek-r1 14B (Base)",
+    "deepseek-r1-14b_q+r": "DeepSeek-r1 14B (RAG)",
+    "deepseek-r1-32b_q": "DeepSeek-r1 32B (Base)",
 }
 
 RESULT_COLS = {
@@ -78,58 +85,58 @@ def main() -> None:
     results_dir = project_dir / "results"
 
     summaries = [
-        summarise(
-            "distilgpt2_q", results_dir / "hotpot_distilgpt2_q.csv", False, "full"
-        ),
-        summarise(
-            "distilgpt2_q+r", results_dir / "hotpot_distilgpt2_q+r.csv", True, "full"
-        ),
-        summarise("gpt2-xl_q", results_dir / "hotpot_gpt2-xl_q.csv", False, "full"),
-        summarise(
-            "distilgpt2_q",
-            results_dir / "hotpot_mini_128_distilgpt2_q.csv",
-            False,
-            "128",
-        ),
-        summarise(
-            "distilgpt2_q+r",
-            results_dir / "hotpot_mini_128_distilgpt2_q+r.csv",
-            True,
-            "128",
-        ),
-        summarise(
-            "gpt2-xl_q", results_dir / "hotpot_mini_128_gpt2-xl_q.csv", False, "128"
-        ),
-        summarise(
-            "gemma-2b_q", results_dir / "hotpot_mini_128_gemma-2b_q.csv", False, "128"
-        ),
-        summarise(
-            "gemma-2b_q+r",
-            results_dir / "hotpot_mini_128_gemma-2b_q+r.csv",
-            True,
-            "128",
-        ),
-        summarise(
-            "gemma-7b_q", results_dir / "hotpot_mini_128_gemma-7b_q.csv", False, "128"
-        ),
-        summarise(
-            "gemma-2b-it_q",
-            results_dir / "hotpot_mini_128_gemma-2b-it_q.csv",
-            False,
-            "128",
-        ),
-        summarise(
-            "gemma-2b-it_q+r",
-            results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv",
-            True,
-            "128",
-        ),
-        summarise(
-            "gemma-7b-it_q",
-            results_dir / "hotpot_mini_128_gemma-7b-it_q.csv",
-            False,
-            "128",
-        ),
+        # summarise(
+        #     "distilgpt2_q", results_dir / "hotpot_distilgpt2_q.csv", False, "full"
+        # ),
+        # summarise(
+        #     "distilgpt2_q+r", results_dir / "hotpot_distilgpt2_q+r.csv", True, "full"
+        # ),
+        # summarise("gpt2-xl_q", results_dir / "hotpot_gpt2-xl_q.csv", False, "full"),
+        # summarise(
+        #     "distilgpt2_q",
+        #     results_dir / "hotpot_mini_128_distilgpt2_q.csv",
+        #     False,
+        #     "128",
+        # ),
+        # summarise(
+        #     "distilgpt2_q+r",
+        #     results_dir / "hotpot_mini_128_distilgpt2_q+r.csv",
+        #     True,
+        #     "128",
+        # ),
+        # summarise(
+        #     "gpt2-xl_q", results_dir / "hotpot_mini_128_gpt2-xl_q.csv", False, "128"
+        # ),
+        # summarise(
+        #     "gemma-2b_q", results_dir / "hotpot_mini_128_gemma-2b_q.csv", False, "128"
+        # ),
+        # summarise(
+        #     "gemma-2b_q+r",
+        #     results_dir / "hotpot_mini_128_gemma-2b_q+r.csv",
+        #     True,
+        #     "128",
+        # ),
+        # summarise(
+        #     "gemma-7b_q", results_dir / "hotpot_mini_128_gemma-7b_q.csv", False, "128"
+        # ),
+        # summarise(
+        #     "gemma-2b-it_q",
+        #     results_dir / "hotpot_mini_128_gemma-2b-it_q.csv",
+        #     False,
+        #     "128",
+        # ),
+        # summarise(
+        #     "gemma-2b-it_q+r",
+        #     results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv",
+        #     True,
+        #     "128",
+        # ),
+        # summarise(
+        #     "gemma-7b-it_q",
+        #     results_dir / "hotpot_mini_128_gemma-7b-it_q.csv",
+        #     False,
+        #     "128",
+        # ),
         summarise(
             "distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, "128"
         ),
@@ -156,21 +163,60 @@ def main() -> None:
             "128",
             model_name="Gemma 7B-IT (Simplified)",
         ),
+
+        summarise(
+            "deepseek-r1-1.5_q",
+            results_dir / "boolq_128_deepseek-r1-1.5b_q.csv",
+            False,
+            "128",
+        ),
+        summarise(
+            "deepseek-r1-1.5_q+r",
+            results_dir / "boolq_128_deepseek-r1-1.5b_q+r.csv",
+            True,
+            "128",
+        ),
+        summarise(
+            "deepseek-r1-8_q",
+            results_dir / "boolq_128_deepseek-r1-8b_q.csv",
+            False,
+            "128",
+        ),
+        summarise(
+            "deepseek-r1-8_q+r",
+            results_dir / "boolq_128_deepseek-r1-8b_q+r.csv",
+            True,
+            "128",
+        ),
+        summarise(
+            "deepseek-r1-14_q",
+            results_dir / "boolq_128_deepseek-r1-14b_q.csv",
+            False,
+            "128",
+        ),
+        summarise(
+            "deepseek-r1-14_q+r",
+            results_dir / "boolq_128_deepseek-r1-14b_q+r.csv",
+            True,
+            "128",
+        ),
     ]
 
     df_summary = pd.DataFrame(summaries)
 
+    save_path = str(results_dir / "boolq_summaries")
     df_summary.to_csv(
-        results_dir / "boolq_summaries.csv", index=False, float_format="%.6f"
+        save_path + ".csv", index=False, float_format="%.6f"
     )
     print(df_summary.to_markdown(index=False, floatfmt=".6f"))
-    with open(results_dir / "boolq_summaries.md", "w") as f:
+    with open(save_path + ".md", "w") as f:
         f.write(
             df_summary.to_markdown(
                 index=False, floatfmt=[".6f"] * len(df_summary.columns)
             )
         )
 
+    print(f"\nSaved analysis to {save_path}.csv and {save_path}.md")
 
 if __name__ == "__main__":
     main()
