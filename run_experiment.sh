@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Activate venv (relative to current dir)
-source .venv/bin/activate
+# Activate venv
+source venv/bin/activate
 
 # 1) Run main experiment
 python experiment.py || { echo "experiment.py failed"; exit 1; }
