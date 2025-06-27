@@ -1,13 +1,14 @@
 from pathlib import Path
-
 import pandas as pd
 import os
-import argparse
 import smtplib
 import mimetypes
 from email.message import EmailMessage
 
 from src.config import CONFIG
+
+# Optional filter: set to a substring to include only matching files (e.g. "deepseek"); set to None to include all
+FILTER_SUBSTRING: str | None = "deepseek"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -43,12 +44,10 @@ def _load(path: Path) -> pd.DataFrame:
 
 
 def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
-    """Average the inference + retrieval columns."""
     return df[c1] + df[c2]
 
 
 def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
-    """Add combined energy, emissions, and time by summing inference + retrieval."""
     for new_name, (c1, c2) in RESULT_COLS.items():
         df[f"combined_{new_name}"] = _combined(df, c1, c2)
     return df
@@ -61,28 +60,22 @@ def summarise(
     dataset_version: str | int,
     model_name: str | None = None,
 ) -> dict:
-    """Return one-row summary dict for a single model run, using display names."""
     df = _load(path)
     df = add_combined_cols(df)
-    display_name = (
-        model_name if model_name else MODEL_DISPLAY_NAMES.get(model_key, model_key)
-    )
+    display_name = model_name or MODEL_DISPLAY_NAMES.get(model_key, model_key)
     return {
         "model": display_name,
         "context_used": context_used,
-        "dataset": "BoolQ" if "boolq" in str(path) else "HotpotQA",
+        "dataset": "BoolQ" if "boolq" in path.name.lower() else "HotpotQA",
         "dataset_version": str(dataset_version),
         "f1": df["f1"].mean(),
         "em": df["em"].mean(),
-        # Energy
         "total_energy_kWh": df["combined_energy"].mean(),
         "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
         "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
-        # Emissions
         "total_emissions_kg": df["combined_emissions"].mean(),
         "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-        # Time
         "total_time_s": df["combined_time"].mean(),
     }
 
@@ -94,19 +87,17 @@ def send_email_with_attachment(from_addr: str, to_addr: str, subject: str, body:
     msg['To'] = to_addr
     msg.set_content(body)
 
-    # Attach CSV
     with open(attachment_path, 'rb') as f:
         data = f.read()
     maintype, subtype = (mimetypes.guess_type(attachment_path)[0] or 'application/octet-stream').split('/', 1)
     msg.add_attachment(data, maintype=maintype, subtype=subtype, filename=os.path.basename(attachment_path))
 
-    # Send via SMTP
     smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_user = CONFIG.from_email
     smtp_pass = ""
     if not (smtp_user and smtp_pass):
-        raise RuntimeError("SMTP_USERNAME and SMTP_PASSWORD must be set in environment")
+        raise RuntimeError("SMTP_USERNAME and SMTP_PASSWORD must be set")
 
     with smtplib.SMTP(smtp_server, smtp_port) as server:
         server.starttls()
@@ -118,145 +109,45 @@ def main() -> None:
     project_dir = Path(__file__).resolve().parents[1]
     results_dir = project_dir / "results"
 
-    summaries = [
-        # summarise(
-        #     "distilgpt2_q", results_dir / "hotpot_distilgpt2_q.csv", False, "full"
-        # ),
-        # summarise(
-        #     "distilgpt2_q+r", results_dir / "hotpot_distilgpt2_q+r.csv", True, "full"
-        # ),
-        # summarise("gpt2-xl_q", results_dir / "hotpot_gpt2-xl_q.csv", False, "full"),
-        # summarise(
-        #     "distilgpt2_q",
-        #     results_dir / "hotpot_mini_128_distilgpt2_q.csv",
-        #     False,
-        #     "128",
-        # ),
-        # summarise(
-        #     "distilgpt2_q+r",
-        #     results_dir / "hotpot_mini_128_distilgpt2_q+r.csv",
-        #     True,
-        #     "128",
-        # ),
-        # summarise(
-        #     "gpt2-xl_q", results_dir / "hotpot_mini_128_gpt2-xl_q.csv", False, "128"
-        # ),
-        # summarise(
-        #     "gemma-2b_q", results_dir / "hotpot_mini_128_gemma-2b_q.csv", False, "128"
-        # ),
-        # summarise(
-        #     "gemma-2b_q+r",
-        #     results_dir / "hotpot_mini_128_gemma-2b_q+r.csv",
-        #     True,
-        #     "128",
-        # ),
-        # summarise(
-        #     "gemma-7b_q", results_dir / "hotpot_mini_128_gemma-7b_q.csv", False, "128"
-        # ),
-        # summarise(
-        #     "gemma-2b-it_q",
-        #     results_dir / "hotpot_mini_128_gemma-2b-it_q.csv",
-        #     False,
-        #     "128",
-        # ),
-        # summarise(
-        #     "gemma-2b-it_q+r",
-        #     results_dir / "hotpot_mini_128_gemma-2b-it_q+r.csv",
-        #     True,
-        #     "128",
-        # ),
-        # summarise(
-        #     "gemma-7b-it_q",
-        #     results_dir / "hotpot_mini_128_gemma-7b-it_q.csv",
-        #     False,
-        #     "128",
-        # ),
-        # summarise(
-        #     "distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, "128"
-        # ),
-        # summarise(
-        #     "distilgpt2_q+r", results_dir / "boolq_128_distilgpt2_q+r.csv", True, "128"
-        # ),
-        # summarise("gpt2-xl_q", results_dir / "boolq_128_gpt2-xl_q.csv", False, "128"),
-        # summarise(
-        #     "gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, "128"
-        # ),
-        # summarise(
-        #     "gemma-2b-it_q+r",
-        #     results_dir / "boolq_128_gemma-2b-it_q+r.csv",
-        #     True,
-        #     "128",
-        # ),
-        # summarise(
-        #     "gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q.csv", False, "128"
-        # ),
-        # summarise(
-        #     "gemma-7b-it_q",
-        #     results_dir / "boolq_128_gemma-7b-it_q_simplified.csv",
-        #     False,
-        #     "128",
-        #     model_name="Gemma 7B-IT (Simplified)",
-        # ),
+    files = sorted(results_dir.glob("*.csv"))
+    if FILTER_SUBSTRING:
+        files = [f for f in files if FILTER_SUBSTRING in f.name]
 
-        summarise(
-            "deepseek-r1-1.5b_q",
-            results_dir / "boolq_128_deepseek-r1-1.5b_q.csv",
-            False,
-            "128",
-        ),
-        summarise(
-            "deepseek-r1-1.5b_q+r",
-            results_dir / "boolq_128_deepseek-r1-1.5b_q+r.csv",
-            True,
-            "128",
-        ),
-        summarise(
-            "deepseek-r1-8b_q",
-            results_dir / "boolq_128_deepseek-r1-8b_q.csv",
-            False,
-            "128",
-        ),
-        summarise(
-            "deepseek-r1-8b_q+r",
-            results_dir / "boolq_128_deepseek-r1-8b_q+r.csv",
-            True,
-            "128",
-        ),
-        summarise(
-            "deepseek-r1-14b_q",
-            results_dir / "boolq_128_deepseek-r1-14b_q.csv",
-            False,
-            "128",
-        ),
-        summarise(
-            "deepseek-r1-14b_q+r",
-            results_dir / "boolq_128_deepseek-r1-14b_q+r.csv",
-            True,
-            "128",
-        ),
-    ]
+    summaries = []
+    for csv_path in files:
+        name = csv_path.stem
+        parts = name.split('_', 2)
+        model_key = parts[2]
+        context_used = model_key.endswith('q+r')
+        dataset_version = parts[1]
+        summaries.append(
+            summarise(
+                model_key=model_key,
+                path=csv_path,
+                context_used=context_used,
+                dataset_version=dataset_version,
+            )
+        )
 
     df_summary = pd.DataFrame(summaries)
+    out_csv = results_dir / "summary_results.csv"
+    out_md = results_dir / "summary_results.md"
+    df_summary.to_csv(out_csv, index=False, float_format="%.6f")
+    print(df_summary.to_markdown(index=False, floatfmt=[".6f"] * len(df_summary.columns)))
+    with open(out_md, 'w') as f:
+        f.write(df_summary.to_markdown(index=False, floatfmt=[".6f"] * len(df_summary.columns)))
 
-    save_csv = results_dir / "boolq_summaries.csv"
-    save_md = results_dir / "boolq_summaries.md"
-    df_summary.to_csv(save_csv, index=False, float_format="%.6f")
-    df_summary.to_markdown(save_md.open("w"), index=False, floatfmt=[".6f"] * len(df_summary.columns))
-
-    print(f"Saved analysis to {save_csv} and {save_md}")
+    print(f"Saved summary to {out_csv} and {out_md}")
 
     if CONFIG.email_results:
-        print(f"Emailing results to {CONFIG.to_email}…")
         send_email_with_attachment(
             from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
             to_addr=CONFIG.to_email,
-            subject="LMPowerConsumption Summary Results",
-            body="Please find attached the CSV summary of results.",
-            attachment_path=str(save_csv),
+            subject="Batch Analysis Summary",
+            body="See attached summary CSV.",
+            attachment_path=str(out_csv),
         )
         print("Email sent.")
-
-    print(f"\nSaved analysis to {save_csv} and {save_md}")
 
 if __name__ == "__main__":
     main()
