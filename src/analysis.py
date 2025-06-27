@@ -1,6 +1,13 @@
 from pathlib import Path
 
 import pandas as pd
+import os
+import argparse
+import smtplib
+import mimetypes
+from email.message import EmailMessage
+
+from src.config import CONFIG
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -80,6 +87,33 @@ def summarise(
     }
 
 
+def send_email_with_attachment(from_addr: str, to_addr: str, subject: str, body: str, attachment_path: str):
+    msg = EmailMessage()
+    msg['Subject'] = subject
+    msg['From'] = from_addr
+    msg['To'] = to_addr
+    msg.set_content(body)
+
+    # Attach CSV
+    with open(attachment_path, 'rb') as f:
+        data = f.read()
+    maintype, subtype = (mimetypes.guess_type(attachment_path)[0] or 'application/octet-stream').split('/', 1)
+    msg.add_attachment(data, maintype=maintype, subtype=subtype, filename=os.path.basename(attachment_path))
+
+    # Send via SMTP
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user = CONFIG.from_email
+    smtp_pass = ""
+    if not (smtp_user and smtp_pass):
+        raise RuntimeError("SMTP_USERNAME and SMTP_PASSWORD must be set in environment")
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_pass)
+        server.send_message(msg)
+
+
 def main() -> None:
     project_dir = Path(__file__).resolve().parents[1]
     results_dir = project_dir / "results"
@@ -137,32 +171,32 @@ def main() -> None:
         #     False,
         #     "128",
         # ),
-        summarise(
-            "distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, "128"
-        ),
-        summarise(
-            "distilgpt2_q+r", results_dir / "boolq_128_distilgpt2_q+r.csv", True, "128"
-        ),
-        summarise("gpt2-xl_q", results_dir / "boolq_128_gpt2-xl_q.csv", False, "128"),
-        summarise(
-            "gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, "128"
-        ),
-        summarise(
-            "gemma-2b-it_q+r",
-            results_dir / "boolq_128_gemma-2b-it_q+r.csv",
-            True,
-            "128",
-        ),
-        summarise(
-            "gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q.csv", False, "128"
-        ),
-        summarise(
-            "gemma-7b-it_q",
-            results_dir / "boolq_128_gemma-7b-it_q_simplified.csv",
-            False,
-            "128",
-            model_name="Gemma 7B-IT (Simplified)",
-        ),
+        # summarise(
+        #     "distilgpt2_q", results_dir / "boolq_128_distilgpt2_q.csv", False, "128"
+        # ),
+        # summarise(
+        #     "distilgpt2_q+r", results_dir / "boolq_128_distilgpt2_q+r.csv", True, "128"
+        # ),
+        # summarise("gpt2-xl_q", results_dir / "boolq_128_gpt2-xl_q.csv", False, "128"),
+        # summarise(
+        #     "gemma-2b-it_q", results_dir / "boolq_128_gemma-2b-it_q.csv", False, "128"
+        # ),
+        # summarise(
+        #     "gemma-2b-it_q+r",
+        #     results_dir / "boolq_128_gemma-2b-it_q+r.csv",
+        #     True,
+        #     "128",
+        # ),
+        # summarise(
+        #     "gemma-7b-it_q", results_dir / "boolq_128_gemma-7b-it_q.csv", False, "128"
+        # ),
+        # summarise(
+        #     "gemma-7b-it_q",
+        #     results_dir / "boolq_128_gemma-7b-it_q_simplified.csv",
+        #     False,
+        #     "128",
+        #     model_name="Gemma 7B-IT (Simplified)",
+        # ),
 
         summarise(
             "deepseek-r1-1.5b_q",
@@ -204,19 +238,25 @@ def main() -> None:
 
     df_summary = pd.DataFrame(summaries)
 
-    save_path = str(results_dir / "boolq_summaries")
-    df_summary.to_csv(
-        save_path + ".csv", index=False, float_format="%.6f"
-    )
-    print(df_summary.to_markdown(index=False, floatfmt=".6f"))
-    with open(save_path + ".md", "w") as f:
-        f.write(
-            df_summary.to_markdown(
-                index=False, floatfmt=[".6f"] * len(df_summary.columns)
-            )
-        )
+    save_csv = results_dir / "boolq_summaries.csv"
+    save_md = results_dir / "boolq_summaries.md"
+    df_summary.to_csv(save_csv, index=False, float_format="%.6f")
+    df_summary.to_markdown(save_md.open("w"), index=False, floatfmt=[".6f"] * len(df_summary.columns))
 
-    print(f"\nSaved analysis to {save_path}.csv and {save_path}.md")
+    print(f"Saved analysis to {save_csv} and {save_md}")
+
+    if CONFIG.email_results:
+        print(f"Emailing results to {CONFIG.to_email}…")
+        send_email_with_attachment(
+            from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+            to_addr=CONFIG.to_email,
+            subject="LMPowerConsumption Summary Results",
+            body="Please find attached the CSV summary of results.",
+            attachment_path=str(save_csv),
+        )
+        print("Email sent.")
+
+    print(f"\nSaved analysis to {save_csv} and {save_md}")
 
 if __name__ == "__main__":
     main()
