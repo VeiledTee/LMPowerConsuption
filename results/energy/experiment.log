@@ -1,0 +1,303 @@
+2025-06-27 12:46:21,029 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'deepseek-r1:1.5b': {'q': False, 'q+r': True}, 'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:46:21,030 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:46:21,030 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:46:21,052 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:46:21,052 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:46:21,052 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-06-27 12:46:21,171 - energy_eval - INFO - Completed smollm:135m in 0h 0m 0s
+2025-06-27 12:46:21,171 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 0m 0s
+============================================================
+2025-06-27 12:48:30,037 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {False, 'q'}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:48:30,037 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:48:30,038 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:48:30,043 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:48:30,043 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:48:30,043 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {False, 'q'}
+++++++++++++++++++++++++++++++
+2025-06-27 12:48:30,043 - energy_eval - ERROR - Critical error: 'set' object has no attribute 'items'
+Traceback (most recent call last):
+  File "/home/s72kw/Documents/LMPowerConsuption/src/experiment.py", line 382, in <module>
+    run()
+  File "/home/s72kw/Documents/LMPowerConsuption/src/experiment.py", line 58, in run
+    for mode_tag, include_passage in model_modes.items():
+                                     ^^^^^^^^^^^^^^^^^
+AttributeError: 'set' object has no attribute 'items'
+2025-06-27 12:49:22,504 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {False, 'q'}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:49:22,504 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:49:22,504 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:49:22,510 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:49:22,510 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:49:22,510 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {False, 'q'}
+++++++++++++++++++++++++++++++
+2025-06-27 12:49:22,510 - energy_eval - ERROR - Critical error: 'set' object has no attribute 'items'
+Traceback (most recent call last):
+  File "/home/s72kw/Documents/LMPowerConsuption/src/experiment.py", line 382, in <module>
+    run()
+  File "/home/s72kw/Documents/LMPowerConsuption/src/experiment.py", line 58, in run
+    for mode_tag, include_passage in model_modes.items():
+                                     ^^^^^^^^^^^^^^^^^
+AttributeError: 'set' object has no attribute 'items'
+2025-06-27 12:51:31,622 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {'q': False}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:51:31,622 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:51:31,622 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:51:31,628 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:51:31,628 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:51:31,628 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-06-27 12:53:09,159 - energy_eval - WARNING - Experiment interrupted by user
+2025-06-27 12:53:49,271 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:53:49,272 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:53:49,272 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:53:49,277 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:53:49,277 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:53:49,277 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-06-27 12:54:33,492 - energy_eval - WARNING - Experiment interrupted by user
+2025-06-27 12:55:11,275 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:55:11,275 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:55:11,275 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:55:11,280 - energy_eval - ERROR - Dataset loading failed: Expecting value: line 2 column 1 (char 1)
+2025-06-27 12:58:42,403 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:58:42,404 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:58:42,404 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:58:42,547 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:58:42,547 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:58:42,547 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-06-27 12:58:53,576 - energy_eval - ERROR - Error processing sample 0: name 'CONGFIG' is not defined
+2025-06-27 12:58:59,299 - energy_eval - WARNING - Experiment interrupted by user
+2025-06-27 12:59:17,900 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 12:59:17,900 - energy_eval - INFO - Using device: cpu
+2025-06-27 12:59:17,900 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 12:59:17,905 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 12:59:17,905 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 12:59:17,905 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-06-27 13:01:21,759 - energy_eval - INFO - Completed q mode for smollm:135m
+2025-06-27 13:04:20,952 - energy_eval - WARNING - Experiment interrupted by user
+2025-06-27 13:10:45,364 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'smollm:135m': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=8, device='cpu', modes={'smollm:135m': {'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 13:10:45,364 - energy_eval - INFO - Using device: cpu
+2025-06-27 13:10:45,364 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 13:10:45,369 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 13:10:45,369 - energy_eval - INFO - 
+============================================================
+Running model: smollm:135m
+============================================================
+2025-06-27 13:10:45,369 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q+r': True}
+++++++++++++++++++++++++++++++
+2025-06-27 13:16:47,863 - energy_eval - INFO - Loaded Wikipedia corpus and indexes
+2025-06-27 13:24:00,698 - energy_eval - WARNING - Experiment interrupted by user
+2025-06-27 13:25:51,871 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cpu', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results/energy'), result_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/results'), data_dir=PosixPath('/home/s72kw/Documents/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.com', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer the following question with only one word. It must be 'True' or 'False'.\nQuestion: {question}\nAnswer:"}})
+2025-06-27 13:25:51,872 - energy_eval - INFO - Using device: cpu
+2025-06-27 13:25:51,872 - energy_eval - INFO - Loading dataset from /home/s72kw/Documents/LMPowerConsuption/data/boolq_mini_128.jsonl
+2025-06-27 13:25:51,916 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-06-27 13:25:51,916 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-06-27 13:25:51,916 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-06-27 15:49:05,510 - energy_eval - INFO - Completed q mode for deepseek-r1:8b
+2025-06-27 15:55:02,228 - energy_eval - INFO - Loaded Wikipedia corpus and indexes
+2025-06-28 05:20:14,777 - energy_eval - INFO - Completed q+r mode for deepseek-r1:8b
+2025-06-28 05:26:23,032 - energy_eval - INFO - Completed deepseek-r1:8b in 16h 0m 31s
+2025-06-28 05:26:23,077 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:14b
+============================================================
+2025-06-28 05:26:23,077 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-06-28 09:59:30,872 - energy_eval - INFO - Completed q mode for deepseek-r1:14b
+2025-06-28 10:05:48,801 - energy_eval - INFO - Loaded Wikipedia corpus and indexes
+2025-06-28 10:06:03,808 - energy_eval - ERROR - Error processing sample 0: model requires more system memory (10.5 GiB) than is available (9.7 GiB) (status code: 500)
+2025-06-28 10:06:14,453 - energy_eval - ERROR - Error processing sample 1: model requires more system memory (10.5 GiB) than is available (9.7 GiB) (status code: 500)
+2025-06-28 10:06:25,040 - energy_eval - ERROR - Error processing sample 2: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:06:35,597 - energy_eval - ERROR - Error processing sample 3: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:06:46,246 - energy_eval - ERROR - Error processing sample 4: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:06:56,821 - energy_eval - ERROR - Error processing sample 5: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:07:07,397 - energy_eval - ERROR - Error processing sample 6: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:07:17,976 - energy_eval - ERROR - Error processing sample 7: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:07:28,597 - energy_eval - ERROR - Error processing sample 8: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:07:39,198 - energy_eval - ERROR - Error processing sample 9: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:07:49,790 - energy_eval - ERROR - Error processing sample 10: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:08:00,453 - energy_eval - ERROR - Error processing sample 11: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:08:11,027 - energy_eval - ERROR - Error processing sample 12: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:08:21,625 - energy_eval - ERROR - Error processing sample 13: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:08:32,242 - energy_eval - ERROR - Error processing sample 14: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:08:42,825 - energy_eval - ERROR - Error processing sample 15: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:08:53,453 - energy_eval - ERROR - Error processing sample 16: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:09:04,034 - energy_eval - ERROR - Error processing sample 17: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:09:14,617 - energy_eval - ERROR - Error processing sample 18: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:09:25,246 - energy_eval - ERROR - Error processing sample 19: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:09:35,812 - energy_eval - ERROR - Error processing sample 20: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:09:46,403 - energy_eval - ERROR - Error processing sample 21: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:09:56,987 - energy_eval - ERROR - Error processing sample 22: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:10:07,591 - energy_eval - ERROR - Error processing sample 23: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:10:18,167 - energy_eval - ERROR - Error processing sample 24: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:10:28,791 - energy_eval - ERROR - Error processing sample 25: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:10:39,369 - energy_eval - ERROR - Error processing sample 26: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:10:49,985 - energy_eval - ERROR - Error processing sample 27: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:11:00,617 - energy_eval - ERROR - Error processing sample 28: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:11:11,233 - energy_eval - ERROR - Error processing sample 29: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:11:21,811 - energy_eval - ERROR - Error processing sample 30: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:11:32,428 - energy_eval - ERROR - Error processing sample 31: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:11:43,042 - energy_eval - ERROR - Error processing sample 32: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:11:53,656 - energy_eval - ERROR - Error processing sample 33: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:12:04,235 - energy_eval - ERROR - Error processing sample 34: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:12:15,038 - energy_eval - ERROR - Error processing sample 35: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:12:25,605 - energy_eval - ERROR - Error processing sample 36: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:12:36,194 - energy_eval - ERROR - Error processing sample 37: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:12:46,820 - energy_eval - ERROR - Error processing sample 38: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:12:57,406 - energy_eval - ERROR - Error processing sample 39: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:13:07,998 - energy_eval - ERROR - Error processing sample 40: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:13:18,558 - energy_eval - ERROR - Error processing sample 41: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:13:29,203 - energy_eval - ERROR - Error processing sample 42: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:13:39,812 - energy_eval - ERROR - Error processing sample 43: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:13:50,393 - energy_eval - ERROR - Error processing sample 44: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:14:00,973 - energy_eval - ERROR - Error processing sample 45: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:14:11,577 - energy_eval - ERROR - Error processing sample 46: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:14:22,160 - energy_eval - ERROR - Error processing sample 47: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:14:32,753 - energy_eval - ERROR - Error processing sample 48: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:14:43,335 - energy_eval - ERROR - Error processing sample 49: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:14:53,926 - energy_eval - ERROR - Error processing sample 50: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:15:04,519 - energy_eval - ERROR - Error processing sample 51: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:15:15,125 - energy_eval - ERROR - Error processing sample 52: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:15:25,706 - energy_eval - ERROR - Error processing sample 53: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:15:36,285 - energy_eval - ERROR - Error processing sample 54: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:15:46,878 - energy_eval - ERROR - Error processing sample 55: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:15:57,464 - energy_eval - ERROR - Error processing sample 56: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:16:08,063 - energy_eval - ERROR - Error processing sample 57: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:16:18,660 - energy_eval - ERROR - Error processing sample 58: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:16:29,432 - energy_eval - ERROR - Error processing sample 59: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:16:40,030 - energy_eval - ERROR - Error processing sample 60: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:16:50,649 - energy_eval - ERROR - Error processing sample 61: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:17:01,260 - energy_eval - ERROR - Error processing sample 62: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:17:11,840 - energy_eval - ERROR - Error processing sample 63: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:17:22,428 - energy_eval - ERROR - Error processing sample 64: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:17:33,018 - energy_eval - ERROR - Error processing sample 65: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:17:43,606 - energy_eval - ERROR - Error processing sample 66: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:17:54,188 - energy_eval - ERROR - Error processing sample 67: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:18:04,815 - energy_eval - ERROR - Error processing sample 68: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:18:15,410 - energy_eval - ERROR - Error processing sample 69: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:18:25,995 - energy_eval - ERROR - Error processing sample 70: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:18:36,605 - energy_eval - ERROR - Error processing sample 71: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:18:47,398 - energy_eval - ERROR - Error processing sample 72: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:18:57,978 - energy_eval - ERROR - Error processing sample 73: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:19:08,553 - energy_eval - ERROR - Error processing sample 74: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:19:19,174 - energy_eval - ERROR - Error processing sample 75: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:19:29,752 - energy_eval - ERROR - Error processing sample 76: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:19:40,327 - energy_eval - ERROR - Error processing sample 77: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:19:50,907 - energy_eval - ERROR - Error processing sample 78: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:20:01,488 - energy_eval - ERROR - Error processing sample 79: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:20:12,062 - energy_eval - ERROR - Error processing sample 80: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:20:22,657 - energy_eval - ERROR - Error processing sample 81: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:20:33,272 - energy_eval - ERROR - Error processing sample 82: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:20:44,020 - energy_eval - ERROR - Error processing sample 83: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:20:54,594 - energy_eval - ERROR - Error processing sample 84: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:21:05,215 - energy_eval - ERROR - Error processing sample 85: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:21:15,790 - energy_eval - ERROR - Error processing sample 86: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:21:26,392 - energy_eval - ERROR - Error processing sample 87: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:21:36,970 - energy_eval - ERROR - Error processing sample 88: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:21:47,598 - energy_eval - ERROR - Error processing sample 89: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:21:58,178 - energy_eval - ERROR - Error processing sample 90: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:22:08,763 - energy_eval - ERROR - Error processing sample 91: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:22:19,324 - energy_eval - ERROR - Error processing sample 92: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:22:29,965 - energy_eval - ERROR - Error processing sample 93: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:22:40,546 - energy_eval - ERROR - Error processing sample 94: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:22:51,308 - energy_eval - ERROR - Error processing sample 95: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:23:01,900 - energy_eval - ERROR - Error processing sample 96: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:23:12,516 - energy_eval - ERROR - Error processing sample 97: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:23:23,104 - energy_eval - ERROR - Error processing sample 98: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:23:33,703 - energy_eval - ERROR - Error processing sample 99: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:23:44,298 - energy_eval - ERROR - Error processing sample 100: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:23:54,863 - energy_eval - ERROR - Error processing sample 101: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:24:05,458 - energy_eval - ERROR - Error processing sample 102: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:24:16,087 - energy_eval - ERROR - Error processing sample 103: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:24:26,680 - energy_eval - ERROR - Error processing sample 104: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:24:37,275 - energy_eval - ERROR - Error processing sample 105: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:24:47,853 - energy_eval - ERROR - Error processing sample 106: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:24:58,497 - energy_eval - ERROR - Error processing sample 107: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:25:09,315 - energy_eval - ERROR - Error processing sample 108: model requires more system memory (10.5 GiB) than is available (9.8 GiB) (status code: 500)
+2025-06-28 10:25:19,870 - energy_eval - ERROR - Error processing sample 109: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:25:30,449 - energy_eval - ERROR - Error processing sample 110: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:25:41,017 - energy_eval - ERROR - Error processing sample 111: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:25:51,592 - energy_eval - ERROR - Error processing sample 112: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:26:02,191 - energy_eval - ERROR - Error processing sample 113: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:26:13,097 - energy_eval - ERROR - Error processing sample 114: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:26:23,802 - energy_eval - ERROR - Error processing sample 115: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:26:34,395 - energy_eval - ERROR - Error processing sample 116: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:26:45,037 - energy_eval - ERROR - Error processing sample 117: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:26:55,610 - energy_eval - ERROR - Error processing sample 118: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:27:06,177 - energy_eval - ERROR - Error processing sample 119: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:27:16,760 - energy_eval - ERROR - Error processing sample 120: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:27:27,340 - energy_eval - ERROR - Error processing sample 121: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:27:37,948 - energy_eval - ERROR - Error processing sample 122: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:27:48,539 - energy_eval - ERROR - Error processing sample 123: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:27:59,122 - energy_eval - ERROR - Error processing sample 124: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:28:09,704 - energy_eval - ERROR - Error processing sample 125: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:28:20,331 - energy_eval - ERROR - Error processing sample 126: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:28:30,905 - energy_eval - ERROR - Error processing sample 127: model requires more system memory (10.5 GiB) than is available (9.9 GiB) (status code: 500)
+2025-06-28 10:28:30,905 - energy_eval - INFO - Completed q+r mode for deepseek-r1:14b
+2025-06-28 10:28:36,626 - energy_eval - INFO - Completed deepseek-r1:14b in 5h 2m 13s
+2025-06-28 10:28:36,626 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-06-28 10:28:36,626 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++

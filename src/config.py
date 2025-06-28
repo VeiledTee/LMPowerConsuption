@@ -88,7 +88,7 @@ CONFIG = ExperimentConfig(
     split="validation",
     n_samples=None,
     max_new_tokens=64,
-    batch_size=8,
+    batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
     modes={
         # "distilbert/distilgpt2": {"q": False, "q+r": True},

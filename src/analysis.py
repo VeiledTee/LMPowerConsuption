@@ -5,10 +5,10 @@ import smtplib
 import mimetypes
 from email.message import EmailMessage
 
-from src.config import CONFIG
+from config import CONFIG
 
 # Optional filter: set to a substring to include only matching files (e.g. "deepseek"); set to None to include all
-FILTER_SUBSTRING: str | None = "smol"
+FILTER_SUBSTRING: str | None = "128_smol"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -40,7 +40,8 @@ RESULT_COLS = {
 def _load(path: Path) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(path)
-    return pd.read_csv(path)
+    df = pd.read_csv(path)
+    return df
 
 
 def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
