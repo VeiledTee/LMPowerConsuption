@@ -8,7 +8,7 @@ from email.message import EmailMessage
 from config import CONFIG
 
 # Optional filter: set to a substring to include only matching files (e.g. "deepseek"); set to None to include all
-FILTER_SUBSTRING: str | None = "128_smol"
+FILTER_SUBSTRING: str | None = "128_deepseek"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
