@@ -7,6 +7,8 @@ from email.message import EmailMessage
 
 from config import CONFIG
 from utils import convert_seconds
+import re
+
 
 # Optional filter: set to a substring to include only matching files (e.g. "deepseek"); set to None to include all
 FILTER_SUBSTRING: str | None = "128_deepseek"
@@ -38,6 +40,11 @@ RESULT_COLS = {
     "emissions": ("inference_emissions (kg)", "retrieval_emissions (kg)"),
     "time": ("inference_duration (s)", "retrieval_duration (s)"),
 }
+
+
+def extract_model_size(display_name: str) -> float:
+    match = re.search(r'(\d+(\.\d+)?)B', display_name, re.IGNORECASE)
+    return float(match.group(1)) if match else 0.0
 
 
 def _load(path: Path) -> pd.DataFrame:
@@ -140,6 +147,10 @@ def main() -> None:
         )
 
     df_summary = pd.DataFrame(summaries)
+    df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
+    df_summary = df_summary.sort_values(by="model_size_b")
+    df_summary.drop(columns=["model_size_b"], inplace=True)
+
     out_csv = results_dir / "summary_results.csv"
     out_md = results_dir / "summary_results.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
