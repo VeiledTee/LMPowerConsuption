@@ -48,13 +48,15 @@ class ExperimentConfig:
             },
             "boolq": {
                 "with_context": (
-                    "Read the following passage carefully and answer the question with only one word. It must be 'True' or 'False'.\n\n"
+                    "Read this passage, then answer ONLY with 'True' or 'False'. "
+                    "No explanations. No punctuation. Just one word.\n\n"
                     "Passage: {context}\n"
                     "Question: {question}\n"
                     "Answer:"
                 ),
                 "without_context": (
-                    "Answer the following question with only one word. It must be 'True' or 'False'.\n"
+                    "Answer ONLY with 'True' or 'False'. "
+                    "No explanations. No punctuation. Just one word.\n"
                     "Question: {question}\n"
                     "Answer:"
                 ),
@@ -74,6 +76,7 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-7b-hf": "huggingface",
         # "meta-llama/Llama-2-13b-hf": "huggingface",
         #"deepseek-r1:1.5b": "ollama",
+        "deepseek-r1:7b": "ollama",
         "deepseek-r1:8b": "ollama",
         "deepseek-r1:14b": "ollama",
         "deepseek-r1:32b": "ollama",
@@ -100,6 +103,7 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-7b-hf": {"q": False, "q+r": True},
         # "meta-llama/Llama-2-13b-hf": {"q": False},
         #"deepseek-r1:1.5b": {"q": False, "q+r": True},
+        "deepseek-r1:7b": {"q": False, "q+r": True},
         "deepseek-r1:8b": {"q": False, "q+r": True},
         "deepseek-r1:14b": {"q": False, "q+r": True},
         "deepseek-r1:32b": {"q": False},
