@@ -6,6 +6,7 @@ import mimetypes
 from email.message import EmailMessage
 
 from config import CONFIG
+from utils import convert_seconds
 
 # Optional filter: set to a substring to include only matching files (e.g. "deepseek"); set to None to include all
 FILTER_SUBSTRING: str | None = "128_deepseek"
@@ -23,6 +24,8 @@ MODEL_DISPLAY_NAMES = {
     "gemma-7b-it_q": "Gemma 7B-IT (Base)",
     "deepseek-r1-1.5b_q": "DeepSeek-r1 1.5B (Base)",
     "deepseek-r1-1.5b_q+r": "DeepSeek-r1 1.5B (RAG)",
+    "deepseek-r1-7b_q": "DeepSeek-r1 7B (Base)",
+    "deepseek-r1-7b_q+r": "DeepSeek-r1 7B (RAG)",
     "deepseek-r1-8b_q": "DeepSeek-r1 8B (Base)",
     "deepseek-r1-8b_q+r": "DeepSeek-r1 8B (RAG)",
     "deepseek-r1-14b_q": "DeepSeek-r1 14B (Base)",
@@ -55,15 +58,19 @@ def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarise(
-    model_key: str,
-    path: Path,
-    context_used: bool,
-    dataset_version: str | int,
-    model_name: str | None = None,
+        model_key: str,
+        path: Path,
+        context_used: bool,
+        dataset_version: str | int,
+        model_name: str | None = None,
 ) -> dict:
     df = _load(path)
     df = add_combined_cols(df)
     display_name = model_name or MODEL_DISPLAY_NAMES.get(model_key, model_key)
+
+    # NEW: Calculate total time for entire file
+    total_time_seconds = df["combined_time"].sum()
+
     return {
         "model": display_name,
         "context_used": context_used,
@@ -77,7 +84,8 @@ def summarise(
         "total_emissions_kg": df["combined_emissions"].mean(),
         "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-        "total_time_s": df["combined_time"].mean(),
+        "total_time_s": df["combined_time"].mean(),  # Average per question
+        "total_time": convert_seconds(total_time_seconds)
     }
 
 
@@ -134,9 +142,11 @@ def main() -> None:
     out_csv = results_dir / "summary_results.csv"
     out_md = results_dir / "summary_results.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
-    print(df_summary.to_markdown(index=False, floatfmt=[".6f"] * len(df_summary.columns)))
+
+    # UPDATED: Use simpler floatfmt specification
+    print(df_summary.to_markdown(index=False, floatfmt=".6f"))
     with open(out_md, 'w') as f:
-        f.write(df_summary.to_markdown(index=False, floatfmt=[".6f"] * len(df_summary.columns)))
+        f.write(df_summary.to_markdown(index=False, floatfmt=".6f"))
 
     print(f"Saved summary to {out_csv} and {out_md}")
 
@@ -149,6 +159,7 @@ def main() -> None:
             attachment_path=str(out_csv),
         )
         print("Email sent.")
+
 
 if __name__ == "__main__":
     main()
