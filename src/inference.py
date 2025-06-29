@@ -15,7 +15,9 @@ def inference_ollama(prompt, model_name):
             "temperature": 0.0,
             "top_p": 0.9,
             "stop": ["</s>", "\n\n\n"],
+            "num_predict": 10,
         },
+        think=False,
     )
     return resp.get("response") or resp["choices"][0]["text"]
 
@@ -68,6 +70,8 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
                 log_level="error",
             ) as tracker:
                 text = inference_ollama(prompt, model_name)
+            # print(f"\nInference: {tracker.final_emissions_data.duration}s\n")
+            # print(f"PROMPT: {prompt}\nOUTPUT: {text}")
             return text, {
                 "duration": float(tracker.final_emissions_data.duration),
                 "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
@@ -115,6 +119,7 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
                     )
 
             text = tokenizer.batch_decode(tokens, skip_special_tokens=True)[0]
+            print(f"Inference: {tracker.final_emissions_data.duration}s")
             return text, {
                 "duration": float(tracker.final_emissions_data.duration),
                 "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
