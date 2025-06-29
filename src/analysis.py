@@ -70,6 +70,7 @@ def summarise(
 
     # NEW: Calculate total time for entire file
     total_time_seconds = df["combined_time"].sum()
+    hours, minutes, seconds = convert_seconds(total_time_seconds)
 
     return {
         "model": display_name,
@@ -85,7 +86,7 @@ def summarise(
         "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
         "total_time_s": df["combined_time"].mean(),  # Average per question
-        "total_time": convert_seconds(total_time_seconds)
+        "total_time": f"{hours}:{minutes}:{seconds}"
     }
 
 
