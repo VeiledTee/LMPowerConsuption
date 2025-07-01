@@ -191,7 +191,8 @@ def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
     try:
         t0 = time.time()
         wiki_data = load_wiki()
-        logger.info(f"Loaded Wikipedia corpus and indexes in {convert_seconds(time.time() - t0)}")
+        hours, minutes, seconds = convert_seconds(time.time() - t0)
+        logger.info(f"Loaded Wikipedia corpus and indexes in {hours}:{minutes}:{seconds}")
         return wiki_data
     except Exception as e:
         logger.error(f"Wikipedia loading failed: {str(e)}")
