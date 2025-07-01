@@ -82,10 +82,10 @@ CONFIG = ExperimentConfig(
         "deepseek-r1:32b": "ollama",
         #"smollm:135m": "ollama",
     },
-    # dataset_name="hotpotqa/hotpot_qa",
-    dataset_name="google/boolq",
-    # dataset_file="boolq_1.jsonl",  # for full dataset (above) run
-    dataset_file="boolq_mini_128.jsonl",  # for mini boolq
+    dataset_name="hotpotqa/hotpot_qa",
+    # dataset_name="google/boolq",
+    dataset_file="boolq_1.jsonl",  # for full dataset (above) run
+    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
     config="fullwiki",
     split="validation",
