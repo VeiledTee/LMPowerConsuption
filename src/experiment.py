@@ -156,7 +156,7 @@ def run_model_mode(
     pbar = tqdm(
         total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})", unit="sample"
     )
-
+    t0 = time.time()
     for idx in range(start_idx, len(dataset)):
         try:
             result = process_current_sample(
@@ -179,7 +179,8 @@ def run_model_mode(
 
     save_results(results, csv_path)
     pbar.close()
-    logger.info(f"Completed {mode_tag} mode for {model_name}")
+    hours, minutes, seconds = convert_seconds(time.time() - t0)
+    logger.info(f"Completed {mode_tag} mode for {model_name} in {hours}:{minutes}:{seconds}")
 
 
 def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
