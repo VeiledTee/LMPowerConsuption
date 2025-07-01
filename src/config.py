@@ -122,5 +122,5 @@ CONFIG = ExperimentConfig(
     retrieval_only=False,
     email_results=True,
     from_email="eheavey626@gmail.com",
-    to_email="s72kw@unb.com",
+    to_email="s72kw@unb.ca",
 )
