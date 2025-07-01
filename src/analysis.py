@@ -10,8 +10,8 @@ from utils import convert_seconds
 import re
 
 
-# Optional filter: set to a substring to include only matching files (e.g. "deepseek"); set to None to include all
-FILTER_SUBSTRING: str | None = "128_deepseek"
+# Optional filter: set to a substring to include only matching files - set to None to include all
+FILTER_SUBSTRING: str | None = "deepseek"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -69,13 +69,11 @@ def summarise(
         path: Path,
         context_used: bool,
         dataset_version: str | int,
-        model_name: str | None = None,
 ) -> dict:
     df = _load(path)
     df = add_combined_cols(df)
-    display_name = model_name or MODEL_DISPLAY_NAMES.get(model_key, model_key)
+    display_name = MODEL_DISPLAY_NAMES[f"{model_key}_q+r"] if context_used else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
 
-    # NEW: Calculate total time for entire file
     total_time_seconds = df["combined_time"].sum()
     hours, minutes, seconds = convert_seconds(total_time_seconds)
 
@@ -92,7 +90,7 @@ def summarise(
         "total_emissions_kg": df["combined_emissions"].mean(),
         "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-        "total_time_s": df["combined_time"].mean(),  # Average per question
+        "avg_time_s": df["combined_time"].mean(),  # Average per question
         "total_time": f"{hours}:{minutes}:{seconds}"
     }
 
@@ -133,10 +131,10 @@ def main() -> None:
     summaries = []
     for csv_path in files:
         name = csv_path.stem
-        parts = name.split('_', 2)
-        model_key = parts[2]
-        context_used = model_key.endswith('q+r')
-        dataset_version = parts[1]
+        parts = name.split('_')
+        model_key = parts[1] if len(parts) == 3 else parts[2]
+        context_used = 'q+r' in name
+        dataset_version = 'full' if len(parts) == 3 else parts[1]
         summaries.append(
             summarise(
                 model_key=model_key,
@@ -148,14 +146,15 @@ def main() -> None:
 
     df_summary = pd.DataFrame(summaries)
     df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
-    df_summary = df_summary.sort_values(by="model_size_b")
+    df_summary["is_rag"] = df_summary["context_used"].astype(int)  # Base = 0, RAG = 1
+    df_summary = df_summary.sort_values(by=["dataset_version", "model_size_b", "is_rag"])
+    df_summary.drop(columns=["is_rag"], inplace=True)
     df_summary.drop(columns=["model_size_b"], inplace=True)
 
     out_csv = results_dir / "summary_results.csv"
     out_md = results_dir / "summary_results.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
 
-    # UPDATED: Use simpler floatfmt specification
     print(df_summary.to_markdown(index=False, floatfmt=".6f"))
     with open(out_md, 'w') as f:
         f.write(df_summary.to_markdown(index=False, floatfmt=".6f"))
