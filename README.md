@@ -25,7 +25,8 @@ Lightweight framework to evaluate the **accuracy ↔️ energy trade-off** of sm
 │   └── utils.py          # Helper functions
 ├── requirements.txt      # Python dependencies
 ├── results/              # CSV outputs saved here
-└── data/                 # Subset benchmarks
+├── data/                 # Subset benchmarks
+└── run_experiment.sh     # Full workflow: setup venv, experiment execution, analysis, and results versioning
 ```
 
 ## 🚀 Quick Start
