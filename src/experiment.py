@@ -180,7 +180,7 @@ def run_model_mode(
     save_results(results, csv_path)
     pbar.close()
     hours, minutes, seconds = convert_seconds(time.time() - t0)
-    logger.info(f"Completed {mode_tag} mode for {model_name} in {hours}h {minutes}m {seconds}s")
+    logger.info(f"Completed {mode_tag} mode for {model_name} in {hours}:{minutes:02}:{seconds:02}")
 
 
 def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
@@ -192,7 +192,7 @@ def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
         t0 = time.time()
         wiki_data = load_wiki()
         hours, minutes, seconds = convert_seconds(time.time() - t0)
-        logger.info(f"Loaded Wikipedia corpus and indexes in {hours}h {minutes}m {seconds}s")
+        logger.info(f"Loaded Wikipedia corpus and indexes in {hours}:{minutes:02}:{seconds:02}")
         return wiki_data
     except Exception as e:
         logger.error(f"Wikipedia loading failed: {str(e)}")
