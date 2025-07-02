@@ -147,17 +147,24 @@ def main() -> None:
     df_summary = pd.DataFrame(summaries)
     df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
     df_summary["is_rag"] = df_summary["context_used"].astype(int)  # Base = 0, RAG = 1
-    df_summary = df_summary.sort_values(by=["dataset_version", "model_size_b", "is_rag"])
-    df_summary.drop(columns=["is_rag"], inplace=True)
-    df_summary.drop(columns=["model_size_b"], inplace=True)
+    df_summary = df_summary.sort_values(by=["dataset", "dataset_version", "model_size_b", "is_rag"])
+    df_summary.drop(columns=["is_rag", "model_size_b"], inplace=True)
 
     out_csv = results_dir / "summary_results.csv"
     out_md = results_dir / "summary_results.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
 
-    print(df_summary.to_markdown(index=False, floatfmt=".6f"))
+    def insert_blank_lines(df: pd.DataFrame) -> str:
+        output = ""
+        grouped = df.groupby(["dataset", "dataset_version"], sort=False)
+        for (_, _), group in grouped:
+            output += group.to_markdown(index=False, floatfmt=".6f") + "\n\n"
+        return output
+
+    markdown_with_splits = insert_blank_lines(df_summary)
+    print(markdown_with_splits)
     with open(out_md, 'w') as f:
-        f.write(df_summary.to_markdown(index=False, floatfmt=".6f"))
+        f.write(markdown_with_splits)
 
     print(f"Saved summary to {out_csv} and {out_md}")
 
