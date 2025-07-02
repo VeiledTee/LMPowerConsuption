@@ -156,7 +156,7 @@ def run_model_mode(
     pbar = tqdm(
         total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})", unit="sample"
     )
-
+    t0 = time.time()
     for idx in range(start_idx, len(dataset)):
         try:
             result = process_current_sample(
@@ -179,7 +179,8 @@ def run_model_mode(
 
     save_results(results, csv_path)
     pbar.close()
-    logger.info(f"Completed {mode_tag} mode for {model_name}")
+    hours, minutes, seconds = convert_seconds(time.time() - t0)
+    logger.info(f"Completed {mode_tag} mode for {model_name} in {hours}h {minutes}m {seconds}s")
 
 
 def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
@@ -190,7 +191,8 @@ def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
     try:
         t0 = time.time()
         wiki_data = load_wiki()
-        logger.info(f"Loaded Wikipedia corpus and indexes in {convert_seconds(time.time() - t0)}")
+        hours, minutes, seconds = convert_seconds(time.time() - t0)
+        logger.info(f"Loaded Wikipedia corpus and indexes in {hours}h {minutes}m {seconds}s")
         return wiki_data
     except Exception as e:
         logger.error(f"Wikipedia loading failed: {str(e)}")
