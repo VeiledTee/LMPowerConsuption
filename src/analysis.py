@@ -91,7 +91,7 @@ def summarise(
         "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
         "avg_time_s": df["combined_time"].mean(),  # Average per question
-        "total_time": f"{hours}:{minutes}:{seconds}"
+        "total_time": f"{hours}:{minutes:02}:{seconds:02}",
     }
 
 
