@@ -11,7 +11,7 @@ import re
 
 
 # Optional filter: set to a substring to include only matching files - set to None to include all
-FILTER_SUBSTRING: str | None = "deepseek"
+FILTER_SUBSTRING: str | None = "boolq"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -33,6 +33,14 @@ MODEL_DISPLAY_NAMES = {
     "deepseek-r1-14b_q": "DeepSeek-r1 14B (Base)",
     "deepseek-r1-14b_q+r": "DeepSeek-r1 14B (RAG)",
     "deepseek-r1-32b_q": "DeepSeek-r1 32B (Base)",
+    "gemma3-1b_q": "Gemma3 1B (Base)",
+    "gemma3-1b_q+r": "Gemma3 1B (RAG)",
+    "gemma3-4b_q": "Gemma3 4B (Base)",
+    "gemma3-4b_q+r": "Gemma3 4B (RAG)",
+    "gemma3-12b_q": "Gemma3 12B (Base)",
+    "gemma3-12b_q+r": "Gemma3 12B (RAG)",
+    "gemma3-27b_q": "Gemma3 27B (Base)",
+    "gemma3-27b_q+r": "Gemma3 27B (RAG)",
 }
 
 RESULT_COLS = {
@@ -40,6 +48,21 @@ RESULT_COLS = {
     "emissions": ("inference_emissions (kg)", "retrieval_emissions (kg)"),
     "time": ("inference_duration (s)", "retrieval_duration (s)"),
 }
+
+
+def extract_model_family(name: str) -> str:
+    if "Gemma3" in name:
+        return "Gemma3"
+    elif "Gemma" in name:
+        return "Gemma"
+    elif "DeepSeek" in name:
+        return "DeepSeek"
+    elif "GPT2" in name:
+        return "GPT2"
+    elif "DistilGPT2" in name:
+        return "DistilGPT2"
+    else:
+        return "Other"
 
 
 def extract_model_size(display_name: str) -> float:
@@ -72,27 +95,30 @@ def summarise(
 ) -> dict:
     df = _load(path)
     df = add_combined_cols(df)
-    display_name = MODEL_DISPLAY_NAMES[f"{model_key}_q+r"] if context_used else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
+    try:
+        display_name = MODEL_DISPLAY_NAMES[f"{model_key}_q+r"] if context_used else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
 
-    total_time_seconds = df["combined_time"].sum()
-    hours, minutes, seconds = convert_seconds(total_time_seconds)
+        total_time_seconds = df["combined_time"].sum()
+        hours, minutes, seconds = convert_seconds(total_time_seconds)
 
-    return {
-        "model": display_name,
-        "context_used": context_used,
-        "dataset": "BoolQ" if "boolq" in path.name.lower() else "HotpotQA",
-        "dataset_version": str(dataset_version),
-        "f1": df["f1"].mean(),
-        "em": df["em"].mean(),
-        "total_energy_kWh": df["combined_energy"].mean(),
-        "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
-        "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
-        "total_emissions_kg": df["combined_emissions"].mean(),
-        "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
-        "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-        "avg_time_s": df["combined_time"].mean(),  # Average per question
-        "total_time": f"{hours}:{minutes:02}:{seconds:02}",
-    }
+        return {
+            "model": display_name,
+            "context_used": context_used,
+            "dataset": "BoolQ" if "boolq" in path.name.lower() else "HotpotQA",
+            "dataset_version": str(dataset_version),
+            "f1": df["f1"].mean(),
+            "em": df["em"].mean(),
+            "total_energy_kWh": df["combined_energy"].mean(),
+            "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
+            "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
+            "total_emissions_kg": df["combined_emissions"].mean(),
+            "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
+            "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
+            "avg_time_s": df["combined_time"].mean(),  # Average per question
+            "total_time": f"{hours}:{minutes:02}:{seconds:02}",
+        }
+    except KeyError:
+        return {}
 
 
 def send_email_with_attachment(from_addr: str, to_addr: str, subject: str, body: str, attachment_path: str):
@@ -135,14 +161,18 @@ def main() -> None:
         model_key = parts[1] if len(parts) == 3 else parts[2]
         context_used = 'q+r' in name
         dataset_version = 'full' if len(parts) == 3 else parts[1]
-        summaries.append(
-            summarise(
+        cur_summary = summarise(
                 model_key=model_key,
                 path=csv_path,
                 context_used=context_used,
                 dataset_version=dataset_version,
             )
-        )
+        if cur_summary != {}:
+            summaries.append(
+                cur_summary
+            )
+        else:
+            continue
 
     df_summary = pd.DataFrame(summaries)
     df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
@@ -155,10 +185,12 @@ def main() -> None:
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
 
     def insert_blank_lines(df: pd.DataFrame) -> str:
+        df["model_family"] = df["model"].apply(extract_model_family)
         output = ""
-        grouped = df.groupby(["dataset", "dataset_version"], sort=False)
-        for (_, _), group in grouped:
-            output += group.to_markdown(index=False, floatfmt=".6f") + "\n\n"
+        grouped = df.groupby(["model_family", "dataset", "dataset_version"], sort=False)
+        for (family, _, _), group in grouped:
+            output += f"### {family}\n\n"
+            output += group.drop(columns=["model_family"]).to_markdown(index=False, floatfmt=".6f") + "\n\n"
         return output
 
     markdown_with_splits = insert_blank_lines(df_summary)
