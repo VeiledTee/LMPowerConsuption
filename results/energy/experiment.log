@@ -647,3 +647,27 @@ Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
 2025-07-02 13:22:34,900 - energy_eval - INFO - Completed q mode for gemma3:1b in 4h 33m 42s
 2025-07-02 13:26:37,786 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0h 4m 2s
+2025-07-02 19:53:03,111 - energy_eval - INFO - Completed q+r mode for gemma3:1b in 6h 26m 25s
+2025-07-02 19:53:33,124 - energy_eval - INFO - Completed gemma3:1b in 11h 4m 40s
+2025-07-02 19:53:33,124 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-07-02 19:53:33,124 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-03 01:09:48,209 - energy_eval - INFO - Completed q mode for gemma3:4b in 5h 16m 15s
+2025-07-03 01:13:32,556 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0h 3m 44s
+2025-07-03 09:08:38,572 - energy_eval - INFO - Completed q+r mode for gemma3:4b in 7h 55m 6s
+2025-07-03 09:08:53,813 - energy_eval - INFO - Completed gemma3:4b in 13h 15m 20s
+2025-07-03 09:08:53,813 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-07-03 09:08:53,813 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-03 15:27:30,365 - energy_eval - INFO - Completed q mode for gemma3:12b in 6h 18m 36s
+2025-07-03 15:31:29,506 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0h 3m 59s
