@@ -1,0 +1,6 @@
+model,context_used,dataset,dataset_version,f1,em,total_energy_kWh,inference_energy_kWh,retrieval_energy_kWh,total_emissions_kg,inference_emissions_kg,retrieval_emissions_kg,avg_time_s,total_time
+Gemma3 1B (Base),False,BoolQ,full,0.518349,0.518349,0.000031,0.000031,0.000000,0.000009,0.000009,0.000000,0.114070,0:06:13
+Gemma3 1B (RAG),True,BoolQ,full,0.670948,0.670948,0.000116,0.000109,0.000008,0.000034,0.000032,0.000002,0.427030,0:23:16
+Gemma3 4B (Base),False,BoolQ,full,0.627523,0.627523,0.000088,0.000088,0.000000,0.000026,0.000026,0.000000,0.324581,0:17:41
+Gemma3 4B (RAG),True,BoolQ,full,0.822324,0.822324,0.000420,0.000412,0.000008,0.000123,0.000121,0.000002,1.542701,1:24:04
+Gemma3 12B (Base),False,BoolQ,full,0.703976,0.703976,0.000238,0.000238,0.000000,0.000070,0.000070,0.000000,0.874645,0:47:40
