@@ -83,7 +83,7 @@ CONFIG = ExperimentConfig(
         "gemma3:1b": "ollama",
         "gemma3:4b": "ollama",
         "gemma3:12b": "ollama",
-        "gemma3:272b": "ollama",
+        "gemma3:27b": "ollama",
         #"smollm:135m": "ollama",
     },
     # dataset_name="hotpotqa/hotpot_qa",
