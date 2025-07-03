@@ -11,7 +11,8 @@ import re
 
 
 # Optional filter: set to a substring to include only matching files - set to None to include all
-FILTER_SUBSTRING: str | None = "boolq"
+FILTER_SUBSTRING: str | None = "gemma3"
+out_filename: str = f"{FILTER_SUBSTRING}_summary"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -180,8 +181,8 @@ def main() -> None:
     df_summary = df_summary.sort_values(by=["dataset", "dataset_version", "model_size_b", "is_rag"])
     df_summary.drop(columns=["is_rag", "model_size_b"], inplace=True)
 
-    out_csv = results_dir / "summary_results.csv"
-    out_md = results_dir / "summary_results.md"
+    out_csv = results_dir / f"{out_filename}.csv"
+    out_md = results_dir / f"{out_filename}.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
 
     def insert_blank_lines(df: pd.DataFrame) -> str:
