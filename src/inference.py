@@ -70,8 +70,7 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
                 log_level="error",
             ) as tracker:
                 text = inference_ollama(prompt, model_name)
-            # print(f"\nInference: {tracker.final_emissions_data.duration}s\n")
-            # print(f"PROMPT: {prompt}\nOUTPUT: {text}")
+
             return text, {
                 "duration": float(tracker.final_emissions_data.duration),
                 "energy_consumed": float(tracker.final_emissions_data.energy_consumed),
