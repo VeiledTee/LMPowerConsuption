@@ -109,14 +109,25 @@ def load_config_dataset(data_dir: Path) -> Dataset:
 
 
 def load_model_safely(model_name: str):
-    """Load model with error handling."""
+    """Load model with fallback to CPU on CUDA OOM."""
     try:
         tokenizer, model = load_model_and_tokenizer(model_name)
         logger.info(f"Loaded model: {model_name}")
         return tokenizer, model
-    except Exception as e:
-        logger.error(f"Model loading failed: {str(e)}")
-        return None, None
+    except RuntimeError as e:
+        if "CUDA out of memory" in str(e):
+            logger.warning(f"CUDA OOM — retrying on CPU for model: {model_name}")
+            torch.cuda.empty_cache()
+            CONFIG.device = "cpu"  # switch device in config
+            try:
+                tokenizer, model = load_model_and_tokenizer(model_name)
+                return tokenizer, model
+            except Exception as inner_e:
+                logger.error(f"Fallback to CPU failed: {str(inner_e)}")
+        else:
+            logger.error(f"Model loading failed: {str(e)}")
+    return None, None
+
 
 
 def cleanup_resources(model, tokenizer) -> None:
@@ -322,7 +333,7 @@ def generate_prediction(
     mode_tag: str,
     provider: str,
 ) -> tuple[str, dict]:
-    """Generate model prediction with metrics."""
+    """Generate model prediction with metrics and fallback on CUDA OOM."""
     inference_metrics = {
         "duration": 0.0,
         "energy_consumed": 0.0,
@@ -330,12 +341,30 @@ def generate_prediction(
     }
     prediction = ""
 
-    if model and tokenizer:
-        full_output, i_metrics = inference(
-            prompt, model, tokenizer, model_name, mode_tag, provider
-        )
-        prediction = full_output.split("Answer: ")[-1].strip()
-        inference_metrics.update(i_metrics)
+    try:
+        if model and tokenizer:
+            full_output, i_metrics = inference(
+                prompt, model, tokenizer, model_name, mode_tag, provider
+            )
+            prediction = full_output.split("Answer: ")[-1].strip()
+            inference_metrics.update(i_metrics)
+    except RuntimeError as e:
+        if "CUDA out of memory" in str(e):
+            logger.warning(f"CUDA OOM during inference — retrying on CPU for {model_name}")
+            torch.cuda.empty_cache()
+            from inference import load_model_and_tokenizer  # ensure it's imported if not already
+
+            CONFIG.device = "cpu"
+            tokenizer, model = load_model_and_tokenizer(model_name)
+
+            full_output, i_metrics = inference(
+                prompt, model, tokenizer, model_name, mode_tag, provider
+            )
+            prediction = full_output.split("Answer: ")[-1].strip()
+            inference_metrics.update(i_metrics)
+        else:
+            logger.error(f"Inference failed: {str(e)}")
+
     return prediction, inference_metrics
 
 
@@ -388,6 +417,6 @@ if __name__ == "__main__":
         run()
     except KeyboardInterrupt:
         logger.warning("Experiment interrupted by user")
-    except Exception as e:
-        logger.exception(f"Critical error: {str(e)}")
+    except Exception as error:
+        logger.exception(f"Critical error: {str(error)}")
         raise
