@@ -919,3 +919,28 @@ Running model: deepseek-r1:1.5b
 Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
 2025-07-05 08:25:00,333 - energy_eval - INFO - Completed q mode for deepseek-r1:1.5b in 0:00:00
+2025-07-05 08:28:42,812 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0:03:42
+2025-07-05 08:49:06,891 - energy_eval - INFO - Completed q+r mode for deepseek-r1:1.5b in 0:20:24
+2025-07-05 08:49:12,136 - energy_eval - INFO - Completed deepseek-r1:1.5b in 0h 24m 11s
+2025-07-05 08:49:12,137 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:7b
+============================================================
+2025-07-05 08:49:12,137 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-05 09:01:14,694 - energy_eval - INFO - Completed q mode for deepseek-r1:7b in 0:12:02
+2025-07-05 09:05:01,448 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0:03:46
+2025-07-05 09:27:03,564 - energy_eval - INFO - Completed q+r mode for deepseek-r1:7b in 0:22:02
+2025-07-05 09:27:07,712 - energy_eval - INFO - Completed deepseek-r1:7b in 0h 37m 55s
+2025-07-05 09:27:07,712 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-05 09:27:07,712 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-05 09:39:07,055 - energy_eval - INFO - Completed q mode for deepseek-r1:8b in 0:11:59
+2025-07-05 09:41:10,111 - energy_eval - WARNING - Experiment interrupted by user
