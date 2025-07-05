@@ -17,11 +17,14 @@ from retrieval import load_wiki, retrieve_hotpot
 from scorers import exact_match, f1_score
 from utils import (convert_seconds, count_bools, ensure_config_dirs,
                    setup_logging)
+import warnings
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
 # Supress codecarbon warnings
 logging.getLogger("codecarbon").setLevel(logging.ERROR)
+warnings.filterwarnings("ignore", category=pd.errors.DtypeWarning)
+
 logger = setup_logging()
 ensure_config_dirs()
 
