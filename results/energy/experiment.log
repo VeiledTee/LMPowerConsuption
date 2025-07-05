@@ -887,3 +887,21 @@ Running model: deepseek-r1:1.5b
 ++++++++++++++++++++++++++++++
 Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
+2025-07-05 08:15:18,624 - energy_eval - INFO - Completed q mode for deepseek-r1:1.5b in 0:04:28
+2025-07-05 08:20:17,640 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0:04:59
+2025-07-05 08:22:09,384 - energy_eval - ERROR - Error processing sample 10: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:22:19,017 - energy_eval - ERROR - Error processing sample 11: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:22:28,825 - energy_eval - ERROR - Error processing sample 12: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:22:38,595 - energy_eval - ERROR - Error processing sample 13: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:22:48,439 - energy_eval - ERROR - Error processing sample 14: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:22:58,176 - energy_eval - ERROR - Error processing sample 15: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:23:07,974 - energy_eval - ERROR - Error processing sample 16: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:23:17,719 - energy_eval - ERROR - Error processing sample 17: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:23:27,586 - energy_eval - ERROR - Error processing sample 18: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:23:37,375 - energy_eval - ERROR - Error processing sample 19: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:23:47,235 - energy_eval - ERROR - Error processing sample 20: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:23:56,934 - energy_eval - ERROR - Error processing sample 21: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:24:06,760 - energy_eval - ERROR - Error processing sample 22: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:24:16,453 - energy_eval - ERROR - Error processing sample 23: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:24:26,112 - energy_eval - ERROR - Error processing sample 24: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-05 08:24:41,510 - energy_eval - WARNING - Experiment interrupted by user
