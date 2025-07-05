@@ -12,7 +12,7 @@ import re
 
 # Optional filter: set to a substring to include only matching files - set to None to include all
 FILTER_SUBSTRING: str | None = "_gemma3"
-out_filename: str = f"{FILTER_SUBSTRING.split('_')[-1]}_summary"
+out_filename: str = f"{FILTER_SUBSTRING.split('_')[-1]}_summary_gpu"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
