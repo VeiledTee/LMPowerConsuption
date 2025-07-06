@@ -1,0 +1,129 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,"The Swedish higher education system is known as the """,Bologna Process,0,0.0,3.685853099996166,0.001078545029188848,0.0003166830279905295,0.0,0.0,0.0
+1,"Randal Malone was born in Covington, Kentucky",107 mi southwest of Louisville,0,0.0,0.3134072000029846,8.820031580695498e-05,2.5897428780024344e-05,0.0,0.0,0.0
+2,Aly Mohamed plays for Al Shabab FC,United Arab Emirates,0,0.0,0.34879709999950137,0.00010212274201029427,2.998533977838488e-05,0.0,0.0,0.0
+3,Thomas Tull is a film producer who was involved,Las Vegas,0,0.0,0.3006007000003592,8.459141237325531e-05,2.4837780423971035e-05,0.0,0.0,0.0
+4,Ann-Marie MacDonald was born in 19,Michel Butor,0,0.0,0.32988110000587767,9.700960766316178e-05,2.848401825378419e-05,0.0,0.0,0.0
+5,The German software corporation that has established Remote Function Call,Walldorf,0,0.0,0.3106453000000329,8.777434773487033e-05,2.5772355783307177e-05,0.0,0.0,0.0
+6,The question asks about Robert Lutyens joining the,"City of Westminster, London",0,0.0,0.33357360000081826,9.433980077110018e-05,2.770010797850906e-05,0.0,0.0,0.0
+7,The conflict in question involves the occupation of a specific,War of 1870,0,0.15384615384615383,0.3227287999980035,9.070654133380807e-05,2.6633308198306866e-05,0.0,0.0,0.0
+8,Francesca Schiavone and Olga,French Open,0,0.0,0.31694360000255983,9.347665099719959e-05,2.7446669432495122e-05,0.0,0.0,0.0
+9,The original serialized story of *The Bride of Frank,horror fiction,0,0.0,0.32334160000027623,9.08425685404122e-05,2.667324858698854e-05,0.0,0.0,0.0
+10,The **Stone Book** series by Alan Dean Foster,North West England,0,0.0,0.3156724000000395,9.25497877491668e-05,2.7174523298604994e-05,0.0,0.0,0.0
+11,The album *Love Actually* is not a standard,two Grammy awards,0,0.0,0.32072150000021793,9.347033565495012e-05,2.7444815117976737e-05,0.0,0.0,0.0
+12,Jessica Jones is part of Marvel's Netflix series lineup,Daredevil,0,0.0,0.27186499999515945,8.14002466134506e-05,2.390078845026114e-05,0.0,0.0,0.0
+13,"The question asks about the ""second First Lady to",fashion model,0,0.0,0.36640880000049947,0.00010669384183079465,3.1327508805385757e-05,0.0,0.0,0.0
+14,The end of Riley Hawk's amateur career occurred before,"October 15, 2013",0,0.0,0.41518200000427896,0.00011721661859522182,3.4417212729137e-05,0.0,0.0,0.0
+15,Sinimole Paulose is not widely recognized as,1896,0,0.0,0.33757179999520304,9.518242668511424e-05,2.794752029667064e-05,0.0,0.0,0.0
+16,"""Hold On"" is a song by American rapper",Mercury Prize,0,0.0,0.3567332999955397,0.00010430618425165339,3.0626443377885094e-05,0.0,0.0,0.0
+17,Ricardo Rodríguez Saá was a,Adolfo Rodríguez Saá,0,0.5,0.2922563000029186,8.713770675665273e-05,2.5585424883559362e-05,0.0,0.0,0.0
+18,The actor who portrayed Lex Luthor in *Super,"January 30, 1930",0,0.0,0.34300059999804944,0.00010054282256920489,2.952144289967822e-05,0.0,0.0,0.0
+19,The 1966 Football League Cup Final,West Bromwich Albion Football Club,0,0.1818181818181818,0.2885278999892762,8.092790151846549e-05,2.3762098204709817e-05,0.0,0.0,0.0
+20,The question asks about a major benefactor who donated,John D Rockefeller's Standard Oil Company,0,0.0,0.3268420999957016,9.181169415459178e-05,2.695780382176848e-05,0.0,0.0,0.0
+21,Armie Hammer stars as Oliver in the film *,Luca Guadagnino,0,0.0,0.31834019999951124,9.371222136292251e-05,2.75158377423042e-05,0.0,0.0,0.0
+22,"The term ""Persona Non Grata"" refers to",Palestinian,0,0.0,0.2841794999985723,7.962938253054007e-05,2.338082629313401e-05,0.0,0.0,0.0
+23,The question asks for the scientific name of the true,Eucritta melanolimnetes,0,0.0,0.32669309999619145,9.18151430224914e-05,2.695881648039657e-05,0.0,0.0,0.0
+24,The user is asking about a historical figure and their,1002,0,0.0,0.32812569999077823,9.644917038466171e-05,2.8319462329320238e-05,0.0,0.0,0.0
+25,"Okay, let's tackle this question about which board",San Marco,0,0.0,0.3243046999996295,9.108614574225724e-05,2.6744767868745148e-05,0.0,0.0,0.0
+26,The question asks about a specific detail related to the,Battle of the Rosebud,0,0.14285714285714288,0.31338969999342225,8.812323242000326e-05,2.5874795510455618e-05,0.0,0.0,0.0
+27,The question asks about the length of the river overlooked,78.5 mi long,0,0.0,0.3503266000043368,0.00010262594994027195,3.0133091987760902e-05,0.0,0.0,0.0
+28,The Pennsylvania State Correctional Institution at Graterford,1952,0,0.0,0.29955120000522584,8.403503326978442e-05,2.4674416063254143e-05,0.0,0.0,0.0
+29,"The film ""Bangalore Naatkal"" (",Ramanaidu Daggubati,0,0.0,0.2958558999962406,8.305091827659449e-05,2.4385459638162967e-05,0.0,0.0,0.0
+30,"The question asks: ""Who starred as a divorced",Bonnie Franklin,0,0.0,0.3195149999955902,9.401789690021563e-05,2.760559037396337e-05,0.0,0.0,0.0
+31,Greysky Bluegrass is a bluegrass band,"Bell's Brewery, Inc.",0,0.0,0.30146659999445546,8.463935054417808e-05,2.4851856058008833e-05,0.0,0.0,0.0
+32,The company that designed the Glomar Challenger was,"Vernier, Switzerland",0,0.0,0.3120282000018051,8.815421829482525e-05,2.5883893601307648e-05,0.0,0.0,0.0
+33,"The question is about ""Stitch's Great Escape",Tomorrowland,0,0.0,0.3511750000034226,0.0001027210114081934,3.0161003992073997e-05,0.0,0.0,0.0
+34,The architect of Hook and Ladder Fire Engine House,Cuyler Reynolds,0,0.0,0.4484751999989385,0.00012721845760139635,3.735395860087059e-05,0.0,0.0,0.0
+35,The question asks about the type of students attending a,girls aged 11 to 18,0,0.0,0.30357410000578966,8.516739777430993e-05,2.5006901597355423e-05,0.0,0.0,0.0
+36,Glenn Quagmire is a character from,Ted,0,0.0,0.32208329999411944,9.506578496298556e-05,2.7913271885381293e-05,0.0,0.0,0.0
+37,Colin Kaepernick is a former American football quarterback who,an American football quarterback,0,0.46153846153846156,0.2968540000001667,8.39913294010044e-05,2.4661583707510437e-05,0.0,0.0,0.0
+38,British Airways and EasyJet are both major airlines based,London,0,0.0,0.3300860000017565,9.678602459413781e-05,2.841836966110635e-05,0.0,0.0,0.0
+39,The animal formerly known as the pygmy chimpan,Concealed ovulation,0,0.0,0.3167814000044018,8.908991633852878e-05,2.615863381311661e-05,0.0,0.0,0.0
+40,Sylvan Simon was a prominent figure in the,director and producer,0,0.0,0.3107245999999577,8.729302899362565e-05,2.563103069044518e-05,0.0,0.0,0.0
+41,The company that published a magazine which was described as,GameFan,0,0.0,0.3252336000005016,9.568036754661357e-05,2.8093725986291605e-05,0.0,0.0,0.0
+42,The organization **Kolel Chibat Y,the medieval city of Halych,0,0.20000000000000004,0.3005149000091478,8.479931088818963e-05,2.4898823708620587e-05,0.0,0.0,0.0
+43,Fabián Bielinsky was born on **,Murdock MacQuarrie,0,0.0,0.3100358999945456,8.784637690084564e-05,2.5793505029529977e-05,0.0,0.0,0.0
+44,Cardinal Hayes High School is part of the **,"New York City, Long Island, and Westchester",0,0.0,0.3329970999911893,9.780438477634902e-05,2.8717381178808284e-05,0.0,0.0,0.0
+45,"The name ""ICI House"" refers to a building",explosives,0,0.0,0.3028816000005463,8.510697508914679e-05,2.4989160252878436e-05,0.0,0.0,0.0
+46,The user is asking about a specific event related to,Juventus,0,0.0,0.3518917000037618,9.91089261570674e-05,2.9100421388910174e-05,0.0,0.0,0.0
+47,"The book ""God Is Not Great"" was written",both a lauded intellectual and a controversial public figure,0,0.0,0.3502761999989161,9.858541830121224e-05,2.8946708703317687e-05,0.0,0.0,0.0
+48,The brother of Saulius Kuzminskas,small forward,0,0.0,0.3139586000033887,9.279531379755342e-05,2.7246614801833286e-05,0.0,0.0,0.0
+49,The novel *Nina* by Lourenço,1866,0,0.0,0.31841870000062045,9.0176446300163e-05,2.6477661381684185e-05,0.0,0.0,0.0
+50,Blonde Redhead and White Zombie (formed by,Blonde Redhead,0,0.4444444444444445,0.35333660000469536,0.00010315192798199655,3.028752997078619e-05,0.0,0.0,0.0
+51,The team president of the 2012,Mike Holmgren,0,0.0,0.32477039999503177,9.110392850347614e-05,2.6749989253589016e-05,0.0,0.0,0.0
+52,The group that released the debut album *The C,two studio albums,0,0.0,0.3183957000001101,8.937984620670967e-05,2.62437631921185e-05,0.0,0.0,0.0
+53,The Graham Perkin Australian Journalist of the Year,Man Haron,0,0.0,0.31579469999996945,9.314699535536107e-05,2.7349875748387103e-05,0.0,0.0,0.0
+54,The genus *Cercis* contains approximately,Monstera,0,0.0,0.34812239999882877,9.79703038365919e-05,2.8766098431196508e-05,0.0,0.0,0.0
+55,"The documentary ""My Best Fiend"" (2",The Devil Came on Horseback,0,0.1818181818181818,0.33276370000385214,9.405600349698365e-05,2.7616779255395598e-05,0.0,0.0,0.0
+56,"Hamilton Evans ""Tony"" James serves as the Chief",the world,0,0.2,0.3466384999919683,9.749267988930777e-05,2.8625858205917753e-05,0.0,0.0,0.0
+57,Francesca Caccini was born in,1618,0,0.0,0.33785149999312125,9.910918815369151e-05,2.9100498316513564e-05,0.0,0.0,0.0
+58,Worldview Entertainment is known for producing films with Christian,Tom Rob,0,0.0,0.286573600009433,8.026512196701595e-05,2.3567492481663557e-05,0.0,0.0,0.0
+59,The band **Of Montreal** was formed in England,"Vib Gyor was a band that was formed in Leeds, England.",0,0.4210526315789474,0.3166949000005843,9.317884740377272e-05,2.735922816563971e-05,0.0,0.0,0.0
+60,Jonas Tilly was a notable figure in the,University of California,0,0.0,0.2970634999946924,8.339449162639284e-05,2.4486339847895907e-05,0.0,0.0,0.0
+61,The telefilm adaptation of Katherine Paterson's,"Edmonton, Alberta",0,0.0,0.32198540000536013,9.049953799578146e-05,2.6572527756029256e-05,0.0,0.0,0.0
+62,The character Netty Harris does not appear in the,Akosua Gyamama Busia,0,0.0,0.34695360000478104,9.651778695901846e-05,2.8339609568378e-05,0.0,0.0,0.0
+63,Ian MacKaye and Brody Dalle have,Ian Thomas Garner MacKaye,0,0.4,0.2928013000055216,8.205651592758542e-05,2.4093482633584934e-05,0.0,0.0,0.0
+64,The film *Lady in a Cage* (1,1916,0,0.0,0.3108284000045387,8.711439724102552e-05,2.557858072982443e-05,0.0,0.0,0.0
+65,"The query asks whether two specific mountains, Trivor",yes,0,0.0,0.30857120000291616,9.081330617029884e-05,2.6664656552606214e-05,0.0,0.0,0.0
+66,The drug Romosozumab (brand name,Merck,0,0.0,0.28096370000275783,7.863709745478049e-05,2.308947096357703e-05,0.0,0.0,0.0
+67,The **Chronicle of Philanthropy** was,The Chronicle of Philanthropy,0,0.4444444444444445,0.2928673999995226,8.211918262601962e-05,2.4111882866562907e-05,0.0,0.0,0.0
+68,The story primarily takes place at a remote beach house,1926 Paris,0,0.0,0.33929030000581406,9.930361238897026e-05,2.915758527521859e-05,0.0,0.0,0.0
+69,"The individual referred to as the ""King of Denmark",king John of Denmark,0,0.30769230769230765,0.2844745999900624,7.965628748198803e-05,2.3388726140856534e-05,0.0,0.0,0.0
+70,Disporum and Boltonia are both genera of,Disporum,0,0.25,0.3224360999884084,9.059532908753066e-05,2.660065399292126e-05,0.0,0.0,0.0
+71,The Government of Canada has been involved in various issues,The sponsorship scandal,0,0.15384615384615383,0.33637829999497626,9.870078475458465e-05,2.89805826694422e-05,0.0,0.0,0.0
+72,Pedro Duque and Mark Shuttleworth both visited,space,0,0.0,0.28569349998724647,8.001955973477185e-05,2.3495390354109677e-05,0.0,0.0,0.0
+73,Ciril Cvetko's brother is Ivan,Musicology,0,0.0,0.30696279999392573,8.674838446626442e-05,2.547111184289095e-05,0.0,0.0,0.0
+74,The question asks about British musicians heavily influenced by Dave,Eric Clapton,0,0.0,0.3418325999955414,0.0001002176253423078,2.9425958297996502e-05,0.0,0.0,0.0
+75,The American sketch comedy television series that stars John C,Check It Out!,0,0.0,0.32246009999653324,9.066781302794822e-05,2.6621936770284185e-05,0.0,0.0,0.0
+76,The singer whose song was released as the lead single,Usher,0,0.0,0.3195425999874715,8.980740132526652e-05,2.6369302178357455e-05,0.0,0.0,0.0
+77,The College of Arts and Sciences at Ohio University is,Manasseh Cutler Hall,0,0.0,0.3532819000101881,0.00010354810670129182,3.0403856200156693e-05,0.0,0.0,0.0
+78,The estimated population for the city that includes Para Hills,"138,535",0,0.0,0.3113751000055345,8.766099750238712e-05,2.5739073821150055e-05,0.0,0.0,0.0
+79,The question asks which British racing driver has raced for,Johnny Herbert,0,0.0,0.31228709999413695,8.839504119596413e-05,2.5954604163665422e-05,0.0,0.0,0.0
+80,The user is asking about an American computer-animated,William Steig's 1990 fairy tale,0,0.0,0.335551399999531,9.839746970032316e-05,2.8891523124203852e-05,0.0,0.0,0.0
+81,Matthew Butturini is not widely known for being,848,0,0.0,0.3012983000080567,8.457018220573621e-05,2.4831546809654766e-05,0.0,0.0,0.0
+82,The question asks about a group that formed in the,Mollie Elizabeth King,0,0.0,0.32920670000021346,9.24495113174245e-05,2.7145080073537128e-05,0.0,0.0,0.0
+83,Debi Thomas and Katarina Witt have both,Katarina Witt,0,0.4444444444444445,0.32966590000432916,9.689170588382084e-05,2.8449399863752537e-05,0.0,0.0,0.0
+84,Peter Giunta served as a defensive backs coach for,New York Giants,0,0.0,0.2822345000022324,7.917068757592709e-05,2.3246144009854593e-05,0.0,0.0,0.0
+85,Mawson is an electoral district in South Australia,McLaren Vale,0,0.0,0.33699610001349356,9.509752007555183e-05,2.792258996786197e-05,0.0,0.0,0.0
+86,The user asked about the location of the city where,a city in north-east Lithuania.,0,0.13333333333333333,0.32312739999906626,9.085684580963625e-05,2.6677440687204057e-05,0.0,0.0,0.0
+87,"Yes, both Jelena Janković",yes,0,0.0,0.30946760000369977,9.131626526666994e-05,2.6812335699311817e-05,0.0,0.0,0.0
+88,The actor who played Derrick Banning in *East,Ashley Jensen,0,0.0,0.302185600012308,8.475465772113161e-05,2.488571261935625e-05,0.0,0.0,0.0
+89,Valerie Golino appeared in *Days of Thunder,Rain Man,0,0.0,0.33478350000223145,9.834667148845273e-05,2.88766077232551e-05,0.0,0.0,0.0
+90,"Yes, **Robert Wise** had more Academy Award",yes,0,0.0,0.31413130000873934,8.866824045641854e-05,2.6034821091752832e-05,0.0,0.0,0.0
+91,"Yes, both ""Villa Paletti""",yes,0,0.0,0.29868559999158606,8.460936223990484e-05,2.484305087441006e-05,0.0,0.0,0.0
+92,"The company that owns Bumble is Match Group,",New York City,0,0.0,0.29283639999630395,8.648914446335654e-05,2.5394993640242624e-05,0.0,0.0,0.0
+93,WDAL is a country music radio station that was,Whitfield County,0,0.0,0.3134200999920722,9.239947313177919e-05,2.713038783193714e-05,0.0,0.0,0.0
+94,The 1996 American historical drama film,Arthur Miller,0,0.0,0.29898960000718944,8.392387940981227e-05,2.464177900128994e-05,0.0,0.0,0.0
+95,"The novel *The Maze Runner*, written by Stephen","September 18, 2010",0,0.0,0.3254028999945149,9.570894253273702e-05,2.8102116190581146e-05,0.0,0.0,0.0
+96,The mulga apple (*Santalum acumin,"80,000 years BP",0,0.0,0.2961848999984795,8.3190316083498e-05,2.442638970449376e-05,0.0,0.0,0.0
+97,The genus **Greyia** is part of the,Greyia,0,0.0,0.2932022000022698,8.222620041862952e-05,2.414330549398724e-05,0.0,0.0,0.0
+98,The Cineplex Odeon Theatres,AMC Theatres,0,0.3333333333333333,0.3382850000052713,9.935512819603869e-05,2.917271137689288e-05,0.0,0.0,0.0
+99,The English translation for a noodle similar to **,little hairs,0,0.0,0.33775940000487026,9.499070981198052e-05,2.789122827523643e-05,0.0,0.0,0.0
+100,"The University of California, Santa Barbara (UCSB","University of California, Santa Barbara",0,0.8333333333333333,0.3140791000041645,8.818057452661068e-05,2.5891632333639026e-05,0.0,0.0,0.0
+101,Godey's Lady's Book was first published,InStyle,0,0.0,0.3341987000021618,9.813100367140273e-05,2.8813283211533168e-05,0.0,0.0,0.0
+102,"Yes, both **Parodia** and **Th",yes,0,0.0,0.28803619999962393,8.072883033985767e-05,2.370364680776204e-05,0.0,0.0,0.0
+103,"The question asks about ""For One Night Only""",The Late Late Show,0,0.16666666666666666,0.3477945000049658,9.842603482802533e-05,2.8899910433857917e-05,0.0,0.0,0.0
+104,The university that represents the Bryant Bulldogs is Bryant University,"Smithfield, Rhode Island",0,0.0,0.32309420000819955,9.08910675144596e-05,2.6687488884370758e-05,0.0,0.0,0.0
+105,"The **Metropolitan Life Insurance Company Tower**, often",The Metropolitan Life Insurance Company Tower,0,0.6153846153846153,0.32261939998716116,9.513848887838441e-05,2.793461925192805e-05,0.0,0.0,0.0
+106,GamesMaster is part of the magazine group and its,13,0,0.0,0.29853579998598434,8.374325546967305e-05,2.458874409338824e-05,0.0,0.0,0.0
+107,Valley International Airport (VLY) is located,Aberdeen Regional Airport,0,0.2222222222222222,0.32442799999262206,9.539171082328587e-05,2.800897042883288e-05,0.0,0.0,0.0
+108,The question asks for a composer who worked with an,Antonio Lucio Vivaldi,0,0.0,0.31333630000881385,8.829970596743241e-05,2.5926611777600373e-05,0.0,0.0,0.0
+109,Thirukkalacherry is a village located,Tharangambadi,0,0.0,0.31717049999861047,8.976206123180124e-05,2.6355989393356022e-05,0.0,0.0,0.0
+110,The question is about Anna Camp and her recurring role,Mindy Kaling,0,0.0,0.36518799999612384,0.0001067089704437636,3.1331950877654084e-05,0.0,0.0,0.0
+111,"Yes, both **Cyperus** and **",no,0,0.0,0.27098400000249967,7.586153238714558e-05,2.2274507910375237e-05,0.0,0.0,0.0
+112,The user is asking about a specific historical event involving,1991,0,0.0,0.3303460000024643,9.278472639276584e-05,2.7243506121791236e-05,0.0,0.0,0.0
+113,The question asks about the Pappas House being,Amberley Village,0,0.0,0.3029377999919234,8.94228618381495e-05,2.6256393467208204e-05,0.0,0.0,0.0
+114,The question asks about the city where Lev Obor,"Warsaw, Poland",0,0.0,0.32642730000952724,9.180979585130227e-05,2.6957246440836304e-05,0.0,0.0,0.0
+115,The Bajaj Priya is a motorcycle that,Piaggio,0,0.0,0.3128151999990223,8.853346841744567e-05,2.599524924613181e-05,0.0,0.0,0.0
+116,The region associated with the indigenous language that includes the,South America,0,0.0,0.2976879999914672,8.794763903182579e-05,2.5823237676189788e-05,0.0,0.0,0.0
+117,The user is asking about the birth date of a,1989,0,0.0,0.30229140000301413,8.495252839289783e-05,2.49438115227767e-05,0.0,0.0,0.0
+118,The query asks for the birthdate of a specific,15 November 1967,0,0.0,0.3262493999936851,9.177738253203895e-05,2.6947729222904983e-05,0.0,0.0,0.0
+119,The question asks about the language of a notable song,Tamil,0,0.0,0.3239054000005126,9.532101366027758e-05,2.7988212286107357e-05,0.0,0.0,0.0
+120,"The bridge connecting Copenhagen, Denmark, and Malmö",8 km,0,0.0,0.2768958999949973,7.764505530609933e-05,2.2798186962412187e-05,0.0,0.0,0.0
+121,The American rock band that has performed at the L,My Backyard,0,0.0,0.3007161999994423,8.461477513566362e-05,2.484464021205726e-05,0.0,0.0,0.0
+122,Mehran University of Engineering and Technology (SUM,Mehran University of Engineering and Technology,0,0.923076923076923,0.3501781000086339,0.0001021234400405885,2.9985544734451826e-05,0.0,0.0,0.0
+123,Aleksei Gen was not a widely recognized historical,Russian Empire,0,0.0,0.2763498999993317,8.261768108558775e-05,2.425825227845791e-05,0.0,0.0,0.0
+124,Ilya Khrzhanovsky was a prominent,The cinema of Russia,0,0.0,0.32997599999362137,9.280727032629173e-05,2.725012548485776e-05,0.0,0.0,0.0
+125,The director of *Girl 6* is **,over 35 films,0,0.0,0.3223257000063313,9.492681924212205e-05,2.787246868840857e-05,0.0,0.0,0.0
+126,"The band that performed the song ""What Lovers",Matt Flynn,0,0.0,0.3290387000015471,9.244063189789384e-05,2.7142472893134206e-05,0.0,0.0,0.0
+127,"The film in question appears to be ""He's","dancer, actress, choreographer",0,0.0,0.30873120001342613,8.72663977457834e-05,2.5623211207736896e-05,0.0,0.0,0.0

@@ -1,0 +1,129 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,"The term ""Swedish Higher Education System"" refers",Bologna Process,0,0.0,4.940141200000653,0.0013861434540394142,0.00040700025902914056,0.0,0.0,0.0
+1,Randal Malone was born in 198,107 mi southwest of Louisville,0,0.0,0.2783029999991413,7.880042914314518e-05,2.3137428510307403e-05,0.0,0.0,0.0
+2,"I am sorry, I cannot answer that question.",United Arab Emirates,0,0.0,0.34863269999914337,9.769381072606075e-05,2.868491436090565e-05,0.0,0.0,0.0
+3,Thomas Tull is not associated with producing The Hang,Las Vegas,0,0.0,0.30571880000206875,8.55908353858618e-05,2.5131231598757567e-05,0.0,0.0,0.0
+4,"I am sorry, I cannot answer that question.",Michel Butor,0,0.0,0.3254966999957105,9.119122444924137e-05,2.677562114070366e-05,0.0,0.0,0.0
+5,The German software corporation that has established Remote Function Call,Walldorf,0,0.0,0.33271500000410015,9.309443886790643e-05,2.7334444081523642e-05,0.0,0.0,0.0
+6,"I am sorry, I cannot answer that question.","City of Westminster, London",0,0.0,0.3081347999977879,8.623296981899618e-05,2.5319775489980092e-05,0.0,0.0,0.0
+7,The Prussians were a Germanic people who,War of 1870,0,0.0,0.3183190999989165,8.906848155063259e-05,2.615234011804446e-05,0.0,0.0,0.0
+8,Francesca Schiavone and Olga,French Open,0,0.0,0.3205911999975797,8.984947610924098e-05,2.6381656201259123e-05,0.0,0.0,0.0
+9,The question refers to a specific piece of information about,horror fiction,0,0.0,0.32851579999987734,9.197913719487018e-05,2.7006968546074135e-05,0.0,0.0,0.0
+10,The Stone Book series is a collection of books that,North West England,0,0.0,0.3183318000010331,8.914256166157652e-05,2.6174091563939347e-05,0.0,0.0,0.0
+11,"I am sorry, I cannot answer that question.",two Grammy awards,0,0.0,0.31741459999466315,8.849411491557408e-05,2.598369424768719e-05,0.0,0.0,0.0
+12,"I am sorry, I cannot answer your question.",Daredevil,0,0.0,0.3360063000000082,9.41137122776545e-05,2.7633723741633906e-05,0.0,0.0,0.0
+13,The question posed is a bit confusing because it refers,fashion model,0,0.0,0.35489769999549026,9.955404529229208e-05,2.9231117532088813e-05,0.0,0.0,0.0
+14,"I am sorry, I cannot answer that question.","October 15, 2013",0,0.0,0.32143669999641133,9.008864111071666e-05,2.6451879970139353e-05,0.0,0.0,0.0
+15,"I am sorry, I cannot answer that question.",1896,0,0.0,0.3312124000003678,9.286550342789277e-05,2.7267223922517025e-05,0.0,0.0,0.0
+16,"I am sorry, I cannot answer that question.",Mercury Prize,0,0.0,0.17148550000274554,4.773430932243691e-05,1.4015776074397938e-05,0.0,0.0,0.0
+17,"I am sorry, I cannot answer that question.",Adolfo Rodríguez Saá,0,0.0,0.3441573000018252,9.644110079637558e-05,2.831709293204527e-05,0.0,0.0,0.0
+18,"I am sorry, I cannot answer that question.","January 30, 1930",0,0.0,0.22498520000226563,6.193400111296414e-05,1.818509795810119e-05,0.0,0.0,0.0
+19,"I am sorry, I cannot answer that question.",West Bromwich Albion Football Club,0,0.0,0.2582232000058866,7.185749585578311e-05,2.1098840340992244e-05,0.0,0.0,0.0
+20,"I am sorry, I cannot answer that question.",John D Rockefeller's Standard Oil Company,0,0.0,0.2593163000055938,7.37047320974597e-05,2.1641226936448483e-05,0.0,0.0,0.0
+21,"I am sorry, I cannot answer that question.",Luca Guadagnino,0,0.0,0.30566459999681683,8.54011880252829e-05,2.5075547228821054e-05,0.0,0.0,0.0
+22,"I am sorry, I cannot answer that question.",Palestinian,0,0.0,0.31858980000106385,8.88693435468162e-05,2.6093869099839505e-05,0.0,0.0,0.0
+23,"I am sorry, I cannot answer that question.",Eucritta melanolimnetes,0,0.0,0.3089500999994925,8.633886639208568e-05,2.5350868904267137e-05,0.0,0.0,0.0
+24,"I am sorry, I cannot answer that question.",1002,0,0.0,0.28074110000306973,7.845088678487268e-05,2.303479567678358e-05,0.0,0.0,0.0
+25,"I am sorry, I cannot answer that question.",San Marco,0,0.0,0.28372079999826383,7.930331626490665e-05,2.3285086523785652e-05,0.0,0.0,0.0
+26,"I am sorry, I cannot answer that question.",Battle of the Rosebud,0,0.0,0.35473349999665515,9.954135981106659e-05,2.9227392813604852e-05,0.0,0.0,0.0
+27,"I am sorry, I cannot answer that question.",78.5 mi long,0,0.0,0.33378580000135116,0.00010065718022412997,2.9555020661807268e-05,0.0,0.0,0.0
+28,William Penn was a significant figure in the history of,1952,0,0.0,0.1285305999990669,3.859238218535613e-05,1.1331518033157995e-05,0.0,0.0,0.0
+29,"I am sorry, I cannot answer that question.",Ramanaidu Daggubati,0,0.0,0.39527349999843864,0.0001104337757547553,3.242563041131917e-05,0.0,0.0,0.0
+30,"I am sorry, I cannot answer that question.",Bonnie Franklin,0,0.0,0.36892790000274545,0.00010304623226496078,3.025649553197218e-05,0.0,0.0,0.0
+31,"I am sorry, I cannot answer that question.","Bell's Brewery, Inc.",0,0.0,0.34393049999926006,9.65179136753156e-05,2.8339646774891952e-05,0.0,0.0,0.0
+32,"I am sorry, I cannot answer that question.","Vernier, Switzerland",0,0.0,0.22207409999828087,6.203551643008503e-05,1.821490494542507e-05,0.0,0.0,0.0
+33,"I am sorry, I cannot answer that question.",Tomorrowland,0,0.0,0.06893549999949755,1.857207111162198e-05,5.453142480390657e-06,0.0,0.0,0.0
+34,"I am sorry, I cannot answer that question.",Cuyler Reynolds,0,0.0,0.3593352000025334,0.00010265462682487149,3.014151211154113e-05,0.0,0.0,0.0
+35,"I am sorry, I cannot answer that question.",girls aged 11 to 18,0,0.0,0.2187733999962802,6.727974639749996e-05,1.9754718843421204e-05,0.0,0.0,0.0
+36,"I am sorry, I cannot answer that question.",Ted,0,0.0,0.38998710000305437,0.00011119812697458173,3.2650059667578354e-05,0.0,0.0,0.0
+37,Colin Kaepernick is a former American football player who,an American football quarterback,0,0.30769230769230765,0.12411219999921741,4.1752427650371315e-05,1.2259372447545665e-05,0.0,0.0,0.0
+38,Both British Airways and EasyJet are based in London,London,0,0.19999999999999998,0.1319803000005777,3.9970923518451896e-05,1.1736286152949152e-05,0.0,0.0,0.0
+39,The pygmy chimpanzee is a species that,Concealed ovulation,0,0.0,0.1418846000015037,4.7452008340389305e-05,1.3932886693444812e-05,0.0,0.0,0.0
+40,"I am sorry, I cannot answer that question.",director and producer,0,0.0,0.1455227999977069,4.3788336844645745e-05,1.2857157306691953e-05,0.0,0.0,0.0
+41,"I am sorry, I cannot answer that question.",GameFan,0,0.0,0.14650199999596225,4.4315043147956716e-05,1.3011809122314027e-05,0.0,0.0,0.0
+42,"The name ""Kolel Chibas""",the medieval city of Halych,0,0.22222222222222224,0.14420329999848036,4.2824327479437395e-05,1.257410430795438e-05,0.0,0.0,0.0
+43,"I am sorry, I cannot answer that question.",Murdock MacQuarrie,0,0.0,0.13603319999674568,4.551240305689363e-05,1.3363378645416629e-05,0.0,0.0,0.0
+44,"I am sorry, I cannot answer that question.","New York City, Long Island, and Westchester",0,0.0,0.1405388999992283,4.675695341774543e-05,1.372880425686066e-05,0.0,0.0,0.0
+45,"The name ""ICI House"" is a well-known",explosives,0,0.0,0.13738980000198353,4.622136888077423e-05,1.3571545609031643e-05,0.0,0.0,0.0
+46,"I am sorry, I cannot answer that question.",Juventus,0,0.0,0.13131090000388213,4.201794436278522e-05,1.2337333621343446e-05,0.0,0.0,0.0
+47,"I am sorry, I cannot answer that question.",both a lauded intellectual and a controversial public figure,0,0.0,0.13021850000222912,4.3287886989909954e-05,1.2710214924996176e-05,0.0,0.0,0.0
+48,"I am sorry, I cannot answer that question.",small forward,0,0.0,0.08704600000055507,2.5309510891454817e-05,7.431393524749901e-06,0.0,0.0,0.0
+49,"I am sorry, I cannot answer that question.",1866,0,0.0,0.1647283000056632,4.7049457179253225e-05,1.3814689383940216e-05,0.0,0.0,0.0
+50,"I am sorry, I cannot answer that question.",Blonde Redhead,0,0.0,0.28378150000207825,7.999083778259789e-05,2.3486956997561656e-05,0.0,0.0,0.0
+51,The 2012 Cleveland Browns were a,Mike Holmgren,0,0.0,0.36632299999473616,0.00010289048053597998,3.0210763617389533e-05,0.0,0.0,0.0
+52,"I am sorry, I cannot answer that question.",two studio albums,0,0.0,0.0772819999983767,2.0845800000016523e-05,6.12075609847748e-06,0.0,0.0,0.0
+53,"I am sorry, I cannot answer that question.",Man Haron,0,0.0,0.2651772999961395,7.591988326085144e-05,2.2291640928349426e-05,0.0,0.0,0.0
+54,The question about which genus has more species between *,Monstera,0,0.0,0.23137440000573406,6.462638091963362e-05,1.897563610588524e-05,0.0,0.0,0.0
+55,"I am sorry, I cannot answer that question.",The Devil Came on Horseback,0,0.0,0.3323117999971146,9.319318186475706e-05,2.7363437058533637e-05,0.0,0.0,0.0
+56,"I am sorry, I cannot answer that question.",the world,0,0.0,0.3324974999995902,9.299483103244505e-05,2.730519717009036e-05,0.0,0.0,0.0
+57,Francesca Caccini was an Italian fashion,1618,0,0.0,0.3341881000014837,9.350581664114455e-05,2.74552330660828e-05,0.0,0.0,0.0
+58,"I am sorry, I cannot answer that question.",Tom Rob,0,0.0,0.27439569999842206,7.67809057090026e-05,2.254445484772134e-05,0.0,0.0,0.0
+59,"I am sorry, I cannot answer that question.","Vib Gyor was a band that was formed in Leeds, England.",0,0.10526315789473685,0.06819059999543242,2.093912815960851e-05,6.148159167775942e-06,0.0,0.0,0.0
+60,Jonas Tilly is a notable figure in the,University of California,0,0.0,0.2757411000056891,7.722828248660801e-05,2.2675813881188195e-05,0.0,0.0,0.0
+61,"I am sorry, I cannot answer that question.","Edmonton, Alberta",0,0.0,0.06366459999844665,1.9115681584577368e-05,5.612757708279982e-06,0.0,0.0,0.0
+62,"I am sorry, I cannot answer that question.",Akosua Gyamama Busia,0,0.0,0.06170060000295052,1.6599409444905984e-05,4.873928397612586e-06,0.0,0.0,0.0
+63,"I am sorry, I cannot answer that question.",Ian Thomas Garner MacKaye,0,0.0,0.28745640000124695,8.054523034122669e-05,2.3649738067809625e-05,0.0,0.0,0.0
+64,"I am sorry, I cannot answer that question.",1916,0,0.0,0.37453459999960614,0.00010491444539672499,3.080504137427578e-05,0.0,0.0,0.0
+65,"I am sorry, I cannot answer that question.",yes,0,0.0,0.29736460000276566,8.302572128201488e-05,2.4378061281744107e-05,0.0,0.0,0.0
+66,Robatumumab is a monoclonal antibody,Merck,0,0.0,0.07827649999671848,2.2827732053661258e-05,6.7026921577366294e-06,0.0,0.0,0.0
+67,"I am sorry, I cannot answer that question.",The Chronicle of Philanthropy,0,0.0,0.31997080000292044,8.934016250662023e-05,2.6232111240678285e-05,0.0,0.0,0.0
+68,"I am sorry, I cannot answer that question.",1926 Paris,0,0.0,0.0654283999974723,1.7115053333165834e-05,5.025332060398692e-06,0.0,0.0,0.0
+69,"I am sorry, I cannot answer that question.",king John of Denmark,0,0.0,0.06395640000118874,1.920656326187232e-05,5.639442440002558e-06,0.0,0.0,0.0
+70,"I am sorry, I cannot answer that question.",Disporum,0,0.0,0.41352710000501247,0.00011602062969069576,3.406604576115863e-05,0.0,0.0,0.0
+71,"The Government of Canada, as the federal government of",The sponsorship scandal,0,0.16666666666666666,0.261962600001425,7.413394631293108e-05,2.1767253067702624e-05,0.0,0.0,0.0
+72,"I am sorry, I cannot answer that question.",space,0,0.0,0.31004870000469964,8.659865304207701e-05,2.5427147613754718e-05,0.0,0.0,0.0
+73,"I am sorry, I cannot answer that question.",Musicology,0,0.0,0.28733590000047116,8.027715300192275e-05,2.3571025041233195e-05,0.0,0.0,0.0
+74,"I am sorry, I cannot answer that question.",Eric Clapton,0,0.0,0.24445569999807049,6.796477018718702e-05,1.9955855932826546e-05,0.0,0.0,0.0
+75,"I am sorry, I cannot answer that question.",Check It Out!,0,0.0,0.25369940000382485,7.07832604346809e-05,2.0783422702671494e-05,0.0,0.0,0.0
+76,"I am sorry, I cannot answer that question.",Usher,0,0.0,0.2992359999989276,8.293674699068249e-05,2.4351936597813528e-05,0.0,0.0,0.0
+77,The exact orientation of the College of Arts and Sciences,Manasseh Cutler Hall,0,0.0,0.27855429999908665,7.746087064625954e-05,2.274410655389059e-05,0.0,0.0,0.0
+78,"I am sorry, I cannot answer that question.","138,535",0,0.0,0.3462069999950472,9.696711904000176e-05,2.8471542719176622e-05,0.0,0.0,0.0
+79,"I am sorry, I cannot answer that question.",Johnny Herbert,0,0.0,0.32842640000308165,9.262666385044821e-05,2.719709570483287e-05,0.0,0.0,0.0
+80,"I am sorry, I cannot answer that question.",William Steig's 1990 fairy tale,0,0.0,0.4176032000032137,0.00011632925250802873,3.415666377492249e-05,0.0,0.0,0.0
+81,The question about Matthew Butturini's location relative,848,0,0.0,0.334537899994757,9.341954612265328e-05,2.742990226552951e-05,0.0,0.0,0.0
+82,"I am sorry, I cannot answer that question.",Mollie Elizabeth King,0,0.0,0.33791690000361996,9.573966260886453e-05,2.8111136237463635e-05,0.0,0.0,0.0
+83,"I am sorry, I cannot answer that question.",Katarina Witt,0,0.0,0.3900054000041564,0.00010926866725401967,3.20835305657263e-05,0.0,0.0,0.0
+84,"I am sorry, I cannot answer that question.",New York Giants,0,0.0,0.3191473000042606,8.932350433176737e-05,2.622722005754691e-05,0.0,0.0,0.0
+85,"I am sorry, I cannot answer that question.",McLaren Vale,0,0.0,0.37744300000485964,0.00010573281422862372,3.104533131367096e-05,0.0,0.0,0.0
+86,"I am sorry, I cannot answer that question.",a city in north-east Lithuania.,0,0.0,0.06459320000431035,1.9195089127645577e-05,5.636073397939264e-06,0.0,0.0,0.0
+87,"I am sorry, I cannot answer that question.",yes,0,0.0,0.25993490000109887,7.232178918153447e-05,2.123516642130927e-05,0.0,0.0,0.0
+88,"I am sorry, I cannot answer that question.",Ashley Jensen,0,0.0,0.34704219999548513,9.723755460444962e-05,2.8550948169211554e-05,0.0,0.0,0.0
+89,"I am sorry, I cannot answer that question.",Rain Man,0,0.0,0.3555925999971805,9.897857158187935e-05,2.906214660161268e-05,0.0,0.0,0.0
+90,"I am sorry, I cannot answer that question.",yes,0,0.0,0.40137549999781186,0.00011221302182884936,3.2948053693644376e-05,0.0,0.0,0.0
+91,"I am sorry, I cannot answer that question.",yes,0,0.0,0.3452341999945929,9.633919482714837e-05,2.8287171241219384e-05,0.0,0.0,0.0
+92,The company that owns Bumble and Bumble is,New York City,0,0.0,0.3655323999992106,0.00010118449625615764,2.970985150633498e-05,0.0,0.0,0.0
+93,"I am sorry, I cannot answer that question.",Whitfield County,0,0.0,0.25176330000249436,7.097145772616555e-05,2.0838681302464768e-05,0.0,0.0,0.0
+94,"I am sorry, I cannot answer that question.",Arthur Miller,0,0.0,0.06885529999999562,1.8516868334821385e-05,5.4369338084876905e-06,0.0,0.0,0.0
+95,"I am sorry, I cannot answer that question.","September 18, 2010",0,0.0,0.31900700000551296,8.936889774859263e-05,2.6240548499384773e-05,0.0,0.0,0.0
+96,"The mulga apple, also known as mulg","80,000 years BP",0,0.0,0.3230297000045539,9.049036888594907e-05,2.656983551658898e-05,0.0,0.0,0.0
+97,"I am sorry, I cannot answer that question.",Greyia,0,0.0,0.32531460000609513,9.184992947085198e-05,2.6969030497893967e-05,0.0,0.0,0.0
+98,The Cineplex Odeon Theatrices,AMC Theatres,0,0.0,0.4063979999991716,0.00011383392751828888,3.342398497878027e-05,0.0,0.0,0.0
+99,"I am sorry, I cannot answer your question.",little hairs,0,0.0,0.35682310000265716,0.00010030814772622714,2.945253753378609e-05,0.0,0.0,0.0
+100,The University of California at Santa Barbara is a public,"University of California, Santa Barbara",0,0.5333333333333333,0.32110670000110986,9.067293174323786e-05,2.662343973048842e-05,0.0,0.0,0.0
+101,"I am sorry, I cannot answer that question.",InStyle,0,0.0,0.36166729999968084,0.0001015553938536829,2.9818754677811323e-05,0.0,0.0,0.0
+102,"I am sorry, I cannot answer that question.",yes,0,0.0,0.36201079999591457,0.00010160245374144788,2.983257242983e-05,0.0,0.0,0.0
+103,"I am sorry, I cannot answer that question.",The Late Late Show,0,0.0,0.29157239999767626,8.222406466874518e-05,2.4142678393845755e-05,0.0,0.0,0.0
+104,"I am sorry, I cannot answer that question.","Smithfield, Rhode Island",0,0.0,0.36389469999994617,0.00010245829733243138,3.0083865730103965e-05,0.0,0.0,0.0
+105,"I am sorry, I cannot answer that question.",The Metropolitan Life Insurance Company Tower,0,0.0,0.06849199999851407,2.0741851834877053e-05,6.090234776882605e-06,0.0,0.0,0.0
+106,"I am sorry, I cannot answer that question.",13,0,0.0,0.4117906000028597,0.00011481527923292613,3.3712130048392016e-05,0.0,0.0,0.0
+107,"I am sorry, I cannot answer that question.",Aberdeen Regional Airport,0,0.0,0.3289766000016243,9.194673488269263e-05,2.6997454560049834e-05,0.0,0.0,0.0
+108,"I am sorry, I cannot answer that question.",Antonio Lucio Vivaldi,0,0.0,0.33674210000026505,9.437135065272731e-05,2.770937167337207e-05,0.0,0.0,0.0
+109,"I am sorry, I cannot answer that question.",Tharangambadi,0,0.0,0.29833900000085123,8.34822931048856e-05,2.4512120169828358e-05,0.0,0.0,0.0
+110,"I am sorry, I cannot answer that question.",Mindy Kaling,0,0.0,0.3395736999955261,9.588409680261365e-05,2.8153545090672333e-05,0.0,0.0,0.0
+111,"I am sorry, I cannot answer that question.",no,0,0.0,0.3581705000033253,0.0001005438748188392,2.9521751861836845e-05,0.0,0.0,0.0
+112,"I am sorry, I cannot answer that question.",1991,0,0.0,0.3569828999970923,9.950600607564897e-05,2.9217012228946973e-05,0.0,0.0,0.0
+113,"I am sorry, I cannot answer that question.",Amberley Village,0,0.0,0.29845539999951143,8.432785374063344e-05,2.476039418271738e-05,0.0,0.0,0.0
+114,"I am sorry, I cannot answer that question.","Warsaw, Poland",0,0.0,0.3584813999987091,0.00010099999290748282,2.9655677524209563e-05,0.0,0.0,0.0
+115,The BajajPriya is a luxury sedan,Piaggio,0,0.0,0.3268076999956975,9.150172775436133e-05,2.686679130440133e-05,0.0,0.0,0.0
+116,The question refers to a specific region and its indigenous,South America,0,0.0,0.32681059999595163,9.154863738971939e-05,2.688056493921961e-05,0.0,0.0,0.0
+117,"I am sorry, I cannot answer that question.",1989,0,0.0,0.37964910000300733,0.0001059680966456332,3.1114415075808855e-05,0.0,0.0,0.0
+118,"I am sorry, I cannot answer that question.",15 November 1967,0,0.0,0.33470150000357535,9.380008011395894e-05,2.754163488063472e-05,0.0,0.0,0.0
+119,"I am sorry, I cannot answer that question.",Tamil,0,0.0,0.31768149999697926,8.972778276853612e-05,2.6345924530742148e-05,0.0,0.0,0.0
+120,"I am sorry, I cannot answer that question.",8 km,0,0.0,0.38669049999589333,0.0001074508656360434,3.154978658185225e-05,0.0,0.0,0.0
+121,"I am sorry, I cannot answer that question.",My Backyard,0,0.0,0.3016550999964238,8.460419715852019e-05,2.4841534300165646e-05,0.0,0.0,0.0
+122,Mehran University of Engineering and Technology (M,Mehran University of Engineering and Technology,0,0.923076923076923,0.24163879999832716,6.765145057371195e-05,1.986385884300756e-05,0.0,0.0,0.0
+123,"I am sorry, I cannot answer that question.",Russian Empire,0,0.0,0.2970564999995986,8.338981996496826e-05,2.448496815191137e-05,0.0,0.0,0.0
+124,Ilya Khrzhanovsky is a Russian,The cinema of Russia,0,0.0,0.36717160000262083,0.00010347506743154251,3.0382410366667637e-05,0.0,0.0,0.0
+125,"I am sorry, I cannot answer that question.",over 35 films,0,0.0,0.3291672999985167,9.236329459391057e-05,2.711976506829683e-05,0.0,0.0,0.0
+126,"I am sorry, I cannot answer that question.",Matt Flynn,0,0.0,0.32074379999539815,9.061853404311873e-05,2.6607467445675793e-05,0.0,0.0,0.0
+127,"I am sorry, I cannot answer that question.","dancer, actress, choreographer",0,0.0,0.3475916999959736,9.748941143358273e-05,2.8624898520018838e-05,0.0,0.0,0.0
