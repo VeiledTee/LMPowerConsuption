@@ -1,0 +1,17 @@
+qid,pred,gold,em,f1,inference_duration (s),inference_energy_consumed (kWh),inference_emissions (kg),retrieval_duration (s),retrieval_energy_consumed (kWh),retrieval_emissions (kg)
+0,Scott Derrickson and Ed Wood were both American baseball,yes,0,0.0,2.9464489000092726,0.0008360428273334712,0.00024547938836531305,0.0,0.0,0.0
+1,"I am sorry, I cannot answer that question.",Chief of Protocol,0,0.0,0.25801550000323914,7.253409911934905e-05,2.1297504990548397e-05,0.0,0.0,0.0
+2,"I am sorry, I cannot answer that question.",Animorphs,0,0.0,0.35391380000510253,9.897034506580968e-05,2.9059731127109295e-05,0.0,0.0,0.0
+3,"I am sorry, I cannot answer that question.",no,0,0.0,0.30092869998770766,8.485274528851415e-05,2.4914513148779015e-05,0.0,0.0,0.0
+4,"I am sorry, I cannot answer that question.","Greenwich Village, New York City",0,0.0,0.31816679998883046,8.905715989335227e-05,2.614901584635216e-05,0.0,0.0,0.0
+5,"I am sorry, I cannot answer that question.",YG Entertainment,0,0.0,0.3067497000156436,8.591507931278103e-05,2.5226436291937178e-05,0.0,0.0,0.0
+6,"I am sorry, I cannot answer that question.",Eenasul Fateh,0,0.0,0.26248850001138635,7.406560280862125e-05,2.174718600763319e-05,0.0,0.0,0.0
+7,"I am sorry, I cannot answer that question.","3,677 seated",0,0.0,0.32291040002019145,9.035781389451972e-05,2.6530914641776107e-05,0.0,0.0,0.0
+8,"I am sorry, I cannot answer that question.",Terry Richardson,0,0.0,0.32373720000032336,9.074137058073811e-05,2.6643534782345485e-05,0.0,0.0,0.0
+9,"I am sorry, I cannot answer that question.",yes,0,0.0,0.32475510000949726,9.169072509233651e-05,2.6922284814317317e-05,0.0,0.0,0.0
+10,The University of Kansas (KU) is the,Kansas Song,0,0.22222222222222224,0.34518110001226887,9.676943572619886e-05,2.841349882791194e-05,0.0,0.0,0.0
+11,"I am sorry, I cannot answer that question.",David Weissman,0,0.0,0.311196700000437,8.727578005978297e-05,2.5625966048310567e-05,0.0,0.0,0.0
+12,"I am sorry, I cannot answer that question.",1999,0,0.0,0.3039023999881465,8.579472167949219e-05,2.5191096812619983e-05,0.0,0.0,0.0
+13,"I am sorry, I cannot answer that question.",no,0,0.0,0.34007810000912286,9.53185795879232e-05,2.7987497592346157e-05,0.0,0.0,0.0
+14,"I am sorry, I cannot answer that question.",from 1986 to 2013,0,0.0,0.3142924999992829,8.80713305065235e-05,2.5859556039988973e-05,0.0,0.0,0.0
+15,"I am sorry, I cannot answer that question.","9,984",0,0.0,0.314179899985902,8.860051828362585e-05,2.6014936467410154e-05,0.0,0.0,0.0
