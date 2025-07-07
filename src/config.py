@@ -75,19 +75,19 @@ CONFIG = ExperimentConfig(
         # "google/gemma-2b-it": "huggingface",
         # "meta-llama/Llama-2-7b-hf": "huggingface",
         # "meta-llama/Llama-2-13b-hf": "huggingface",
-        # "deepseek-r1:1.5b": "ollama",
-        # "deepseek-r1:7b": "ollama",
-        # "deepseek-r1:8b": "ollama",
-        # "deepseek-r1:14b": "ollama",
-        # "deepseek-r1:32b": "ollama",
-        "gemma3:1b": "ollama",
-        "gemma3:4b": "ollama",
-        "gemma3:12b": "ollama",
-        "gemma3:27b": "ollama",
+        # "deepseek-r1:1.5b": "ollama",  # doesn't pass baseline
+        # "deepseek-r1:7b": "ollama",  # near identical to 8b
+        "deepseek-r1:8b": "ollama",
+        "deepseek-r1:14b": "ollama",
+        "deepseek-r1:32b": "ollama",
+        # "gemma3:1b": "ollama",  # doesn't pass baseline
+        # "gemma3:4b": "ollama",
+        # "gemma3:12b": "ollama",
+        # "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
     },
-    dataset_name="hotpotqa/hotpot_qa",
-    # dataset_name="google/boolq",
+    # dataset_name="hotpotqa/hotpot_qa",
+    dataset_name="google/boolq",
     dataset_file="boolq_1.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
