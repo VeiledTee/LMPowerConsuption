@@ -1066,3 +1066,4 @@ Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
 2025-07-07 07:28:32,448 - energy_eval - INFO - Completed q mode for gemma3:1b in 11:55:26
 2025-07-07 07:32:21,634 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0:03:49
+2025-07-07 08:33:36,503 - energy_eval - WARNING - Experiment interrupted by user
