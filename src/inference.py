@@ -17,7 +17,6 @@ def inference_ollama(prompt, model_name):
             "stop": ["</s>", "\n\n\n"],
             "num_predict": 10,
         },
-        think=False,
     )
     return resp.get("response") or resp["choices"][0]["text"]
 
