@@ -1,23 +1,19 @@
 import logging
 import os
-import re
 from pathlib import Path
 from typing import Dict, Tuple
-
 from config import CONFIG
+import re
+import string
 
 
 def normalize(text: str) -> str:
-    """
-    Normalize text by collapsing whitespace, stripping, and lowercasing.
+    def remove_articles(s): return re.sub(r'\b(a|an|the)\b', ' ', s)
+    def remove_punc(s): return ''.join(ch for ch in s if ch not in string.punctuation)
+    def white_space_fix(s): return ' '.join(s.split())
+    def lower(s): return s.lower()
 
-    Args:
-        text (str): Input text string.
-
-    Returns:
-        str: Normalized string.
-    """
-    return re.sub(r"\s+", " ", text).strip().lower()
+    return white_space_fix(remove_articles(remove_punc(lower(text))))
 
 
 def strip_links(text: str) -> str:
