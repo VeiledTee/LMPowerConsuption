@@ -1104,3 +1104,15 @@ Running model: deepseek-r1:32b
 ++++++++++++++++++++++++++++++
 Running modes: {'q': False}
 ++++++++++++++++++++++++++++++
+2025-07-08 00:59:26,238 - energy_eval - INFO - Completed q mode for deepseek-r1:32b in 10:37:09
+2025-07-08 00:59:26,363 - energy_eval - INFO - Completed deepseek-r1:32b in 10h 37m 9s
+2025-07-08 00:59:26,363 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-08 00:59:26,363 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-08 11:43:10,638 - energy_eval - INFO - Completed q mode for deepseek-r1:8b in 10:43:44
+2025-07-08 11:47:16,390 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0:04:05
