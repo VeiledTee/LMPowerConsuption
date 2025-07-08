@@ -62,7 +62,6 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
     Returns:
         tuple[str, dict[str, float]]: Generated text and energy/emissions data.
     """
-    print(prompt)
     if provider == "ollama":
         try:
             with EmissionsTracker(
