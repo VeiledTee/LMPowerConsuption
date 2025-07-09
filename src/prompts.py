@@ -35,7 +35,6 @@ def build_prompt(example: dict, include_passage: bool) -> str:
                 )
         else:  # boolq
             context = example.get("retrieved_context", example.get("context", ""))
-        print(templates["with_context"].format(context=context, question=q))
         return templates["with_context"].format(context=context, question=q)
     else:
         return templates["without_context"].format(question=q)
