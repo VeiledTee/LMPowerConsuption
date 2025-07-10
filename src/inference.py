@@ -1,8 +1,12 @@
 import torch
 from codecarbon import EmissionsTracker
 from ollama import generate
-from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
-                          PreTrainedTokenizer)
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    PreTrainedModel,
+    PreTrainedTokenizer,
+)
 
 from config import CONFIG
 
@@ -46,7 +50,14 @@ def load_model_and_tokenizer(
     return tokenizer, model
 
 
-def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
+def inference(
+    prompt: str,
+    model_name: str,
+    run_tag: str,
+    provider: str,
+    model: PreTrainedModel | None = None,
+    tokenizer: PreTrainedTokenizer | None = None,
+):
     """
     Run inference with emissions tracking and return generated text with energy metrics.
 
@@ -64,6 +75,7 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
     if provider == "ollama":
         try:
             with EmissionsTracker(
+                output_dir="emissions",
                 project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
                 log_level="error",
             ) as tracker:
@@ -102,6 +114,7 @@ def inference(prompt, model, tokenizer, model_name, run_tag, provider: str):
                 if tokenizer.pad_token_id is None:
                     tokenizer.pad_token_id = tokenizer.eos_token_id
                 with EmissionsTracker(
+                    output_dir="emissions",
                     project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
                     log_level="error",
                 ) as tracker:
