@@ -1,14 +1,14 @@
-from pathlib import Path
-import pandas as pd
-import os
-import smtplib
 import mimetypes
+import os
+import re
+import smtplib
 from email.message import EmailMessage
+from pathlib import Path
+
+import pandas as pd
 
 from config import CONFIG
 from utils import convert_seconds
-import re
-
 
 # Optional filter: set to a substring to include only matching files - set to None to include all
 FILTER_SUBSTRING: str | None = "_deepseek"
