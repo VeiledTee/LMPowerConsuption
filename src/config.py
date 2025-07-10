@@ -87,18 +87,7 @@ CONFIG = ExperimentConfig(
         # "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
     },
-    # dataset_name="hotpotqa/hotpot_qa",
-    dataset_name="google/boolq",
-    # dataset_file="boolq_1.jsonl",  # for full dataset (above) run
-    dataset_file="boolq_mini_128.jsonl",  # for mini boolq
-    # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
-    config="fullwiki",
-    split="validation",
-    n_samples=None,
-    max_new_tokens=64,
-    batch_size=4,
-    device="cuda" if torch.cuda.is_available() else "cpu",
-    modes={
+modes={
         # "distilbert/distilgpt2": {"q": False, "q+r": True},
         # "openai-community/gpt2-xl": {"q": False},
         # "google/gemma-2b": {"q": False, "q+r": True},
@@ -118,6 +107,17 @@ CONFIG = ExperimentConfig(
         # "gemma3:27b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
+    # dataset_name="hotpotqa/hotpot_qa",
+    dataset_name="google/boolq",
+    dataset_file="boolq_1.jsonl",  # for full dataset (above) run
+    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
+    # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
+    config="fullwiki",
+    split="validation",
+    n_samples=None,
+    max_new_tokens=64,
+    batch_size=4,
+    device="cuda" if torch.cuda.is_available() else "cpu",
     wiki_dir=Path("data/hotpot_wiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
     tfidf_cache=Path("cache/tfidf.pkl"),
