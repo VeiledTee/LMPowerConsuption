@@ -1193,3 +1193,236 @@ Running modes: {'q': False, 'q+r': True}
 2025-07-08 20:49:27,362 - energy_eval - INFO - Completed q mode for deepseek-r1:8b in 0:00:00
 2025-07-08 20:53:05,686 - energy_eval - INFO - Loaded Wikipedia corpus and indexes in 0:03:38
 2025-07-08 20:57:44,940 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-10 08:43:54,385 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results/energy'), result_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results'), data_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read this passage, then answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\nQuestion: {question}\nAnswer:"}})
+2025-07-10 08:43:54,386 - energy_eval - INFO - Using device: cuda
+2025-07-10 08:43:54,386 - energy_eval - INFO - Loading dataset from /home/penguins/Documents/LMPowerConsumption/data/boolq_mini_128.jsonl
+2025-07-10 08:43:54,390 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-10 08:43:54,390 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-10 08:43:54,390 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-10 08:44:09,156 - energy_eval - INFO - [deepseek-r1:8b | q | QID 0] Prediction: <think>
+Okay, user is asking if the World | Gold: True
+2025-07-10 08:44:18,600 - energy_eval - INFO - [deepseek-r1:8b | q | QID 1] Prediction: <think>
+Okay, user wants a yes/no answer | Gold: True
+2025-07-10 08:44:27,498 - energy_eval - INFO - [deepseek-r1:8b | q | QID 2] Prediction: <think>
+Okay, the question is "does Air | Gold: False
+2025-07-10 08:44:36,349 - energy_eval - INFO - [deepseek-r1:8b | q | QID 3] Prediction: <think>
+Okay, the user is asking if there | Gold: True
+2025-07-10 08:44:45,394 - energy_eval - INFO - [deepseek-r1:8b | q | QID 4] Prediction: <think>
+Hmm, the user wants me to answer | Gold: True
+2025-07-10 08:44:54,465 - energy_eval - INFO - [deepseek-r1:8b | q | QID 5] Prediction: <think>
+Okay, the user is asking whether Hope | Gold: True
+2025-07-10 08:44:58,677 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-10 08:45:03,427 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=None, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results/energy'), result_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results'), data_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read this passage, then answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\nQuestion: {question}\nAnswer:"}})
+2025-07-10 08:45:03,427 - energy_eval - INFO - Using device: cuda
+2025-07-10 08:45:03,427 - energy_eval - INFO - Loading dataset from /home/penguins/Documents/LMPowerConsumption/data/boolq_mini_128.jsonl
+2025-07-10 08:45:03,431 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-10 08:45:03,431 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-10 08:45:03,431 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-10 08:45:07,555 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-10 08:46:37,179 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=None, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results/energy'), result_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results'), data_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read this passage, then answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\nQuestion: {question}\nAnswer:"}})
+2025-07-10 08:46:37,179 - energy_eval - INFO - Using device: cuda
+2025-07-10 08:46:37,179 - energy_eval - INFO - Loading dataset from /home/penguins/Documents/LMPowerConsumption/data/boolq_mini_128.jsonl
+2025-07-10 08:46:37,183 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-10 08:46:37,183 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-10 08:46:37,183 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-10 08:46:46,814 - energy_eval - INFO - [deepseek-r1:8b | q | QID 0] Prediction: <think>
+Okay, user is asking if the World | Gold: True
+2025-07-10 08:46:54,553 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-10 08:48:09,781 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=100, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results/energy'), result_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results'), data_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read this passage, then answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\nQuestion: {question}\nAnswer:"}})
+2025-07-10 08:48:09,781 - energy_eval - INFO - Using device: cuda
+2025-07-10 08:48:09,781 - energy_eval - INFO - Loading dataset from /home/penguins/Documents/LMPowerConsumption/data/boolq_mini_128.jsonl
+2025-07-10 08:48:09,789 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-10 08:48:09,789 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-10 08:48:09,789 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-10 08:48:18,313 - energy_eval - INFO - Full output: <think>
+Okay, user is asking if the World
+2025-07-10 08:48:18,314 - energy_eval - INFO - [deepseek-r1:8b | q | QID 0] Prediction: <think>
+Okay, user is asking if the World | Gold: True
+2025-07-10 08:48:19,651 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-10 08:50:01,069 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=100, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results/energy'), result_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results'), data_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read this passage, then answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\nQuestion: {question}\nAnswer:"}})
+2025-07-10 08:50:01,069 - energy_eval - INFO - Using device: cuda
+2025-07-10 08:50:01,069 - energy_eval - INFO - Loading dataset from /home/penguins/Documents/LMPowerConsumption/data/boolq_mini_128.jsonl
+2025-07-10 08:50:01,072 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-10 08:50:01,072 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-10 08:50:01,072 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-10 08:50:49,616 - energy_eval - INFO - Full output: <think>
+Okay, user is asking if the World Cup has ever been won on penalties and wants a strict yes/no answer without explanation or punctuation. 
+
+Hmm, this seems like a straightforward fact-check question about football history. The phrasing "has the world cup been won on penalties" suggests they're looking for confirmation whether penalty shootouts have determined any World Cup final winners.
+
+I recall that before 1966, games were decided by extra time without penalties - just sudden death in the second half of extra time. But since then... Brazil vs Italy 1970 was a classic shootout win but wasn't official penalties yet. Then England beating Germany in 1966 via goal difference after extra time. 
+
+Wait no, that's not what they're asking. They want to know if the final has ever been won purely on penalty kicks without any other method. The first true penalty shootout winner was West Germany beating Brazil in 1974 - but wait, that wasn't a full-time penalty shootout either. 
+
+Actually looking deeper... Argentina vs England 1986 had extra time then penalties after goalless draw. That's the first official final decided by penalties according to FIFA rules at the time. And yes, it counts as being won on penalties.
+
+But user just wants one word answer - no explanations needed. So "True" is correct here because there was indeed a World Cup final (1986) that went all the way to penalties after extra time.
+</think>
+True
+2025-07-10 08:50:49,616 - energy_eval - INFO - [deepseek-r1:8b | q | QID 0] Prediction: <think>
+Okay, user is asking if the World Cup has ever been won on penalties and wants a strict yes/no answer without explanation or punctuation. 
+
+Hmm, this seems like a straightforward fact-check question about football history. The phrasing "has the world cup been won on penalties" suggests they're looking for confirmation whether penalty shootouts have determined any World Cup final winners.
+
+I recall that before 1966, games were decided by extra time without penalties - just sudden death in the second half of extra time. But since then... Brazil vs Italy 1970 was a classic shootout win but wasn't official penalties yet. Then England beating Germany in 1966 via goal difference after extra time. 
+
+Wait no, that's not what they're asking. They want to know if the final has ever been won purely on penalty kicks without any other method. The first true penalty shootout winner was West Germany beating Brazil in 1974 - but wait, that wasn't a full-time penalty shootout either. 
+
+Actually looking deeper... Argentina vs England 1986 had extra time then penalties after goalless draw. That's the first official final decided by penalties according to FIFA rules at the time. And yes, it counts as being won on penalties.
+
+But user just wants one word answer - no explanations needed. So "True" is correct here because there was indeed a World Cup final (1986) that went all the way to penalties after extra time.
+</think>
+True | Gold: True
+2025-07-10 08:51:34,124 - energy_eval - INFO - Full output: <think>
+Okay, user wants a yes/no answer about whether anyone has climbed Everest's North Face without explanation or extra words. 
+
+Hmm, this seems like a straightforward factual question from someone who either needs quick confirmation for research or just testing basic knowledge. The phrasing is very rigid - "Answer ONLY with 'True' or 'False'" suggests they might be scripting something or want pure data extraction.
+
+Wait no, actually the user didn't ask if it's possible but directly asked if anyone has done it. That's an important distinction. 
+
+I know for sure that yes, people have climbed the North Face of Everest - Reinhold Messner and Ang Rita were among the first pioneers who did it in 1986-87 season. But since user insists on one-word answer only, I shouldn't mention details.
+
+User seems to value precision over context here. Maybe they're building a database or creating multiple-choice tests where brevity matters. The no-punctuation rule makes me think this could be feeding into some automated system.
+
+But the question itself is interesting - it's not asking about feasibility but actual achievement. That shows user understands mountaineering terminology well enough to specify "North Face" versus just general climbing questions.
+
+Alright, keeping it simple then. Just need to confirm that yes, people have climbed it.
+</think>
+True
+2025-07-10 08:51:34,124 - energy_eval - INFO - [deepseek-r1:8b | q | QID 1] Prediction: <think>
+Okay, user wants a yes/no answer about whether anyone has climbed Everest's North Face without explanation or extra words. 
+
+Hmm, this seems like a straightforward factual question from someone who either needs quick confirmation for research or just testing basic knowledge. The phrasing is very rigid - "Answer ONLY with 'True' or 'False'" suggests they might be scripting something or want pure data extraction.
+
+Wait no, actually the user didn't ask if it's possible but directly asked if anyone has done it. That's an important distinction. 
+
+I know for sure that yes, people have climbed the North Face of Everest - Reinhold Messner and Ang Rita were among the first pioneers who did it in 1986-87 season. But since user insists on one-word answer only, I shouldn't mention details.
+
+User seems to value precision over context here. Maybe they're building a database or creating multiple-choice tests where brevity matters. The no-punctuation rule makes me think this could be feeding into some automated system.
+
+But the question itself is interesting - it's not asking about feasibility but actual achievement. That shows user understands mountaineering terminology well enough to specify "North Face" versus just general climbing questions.
+
+Alright, keeping it simple then. Just need to confirm that yes, people have climbed it.
+</think>
+True | Gold: True
+2025-07-10 08:51:52,829 - energy_eval - INFO - Full output: <think>
+Okay, the question is "does Air Force One fly with fighter escort?" I need to recall what I know about Air Force One and its security measures.
+
+Air Force One is a heavily protected aircraft, so it's common for there to be an escort. The US Navy provides aerial refueling and protection during flights. So yes, fighter escorts are part of that security detail.
+</think>
+True
+2025-07-10 08:51:52,830 - energy_eval - INFO - [deepseek-r1:8b | q | QID 2] Prediction: <think>
+Okay, the question is "does Air Force One fly with fighter escort?" I need to recall what I know about Air Force One and its security measures.
+
+Air Force One is a heavily protected aircraft, so it's common for there to be an escort. The US Navy provides aerial refueling and protection during flights. So yes, fighter escorts are part of that security detail.
+</think>
+True | Gold: False
+2025-07-10 08:52:33,799 - energy_eval - INFO - Full output: <think>
+Okay, the user is asking if there's been a Duke of Sussex before and wants me to answer only with "True" or "False". 
+
+Hmm, I need to recall what historical titles exist in British peerage. The Duke of Sussex is an English title created by royal decree. It was first granted to Henry Fitzalan-Howard in 1867 as part of his earldom.
+
+Wait, let me double-check that. Yes, the Duke of Sussex title dates back to Charles I creating it for his son Prince William in 1629. But after that initial creation, did anyone else hold this title? 
+
+I remember Henry Fitzalan-Howard was indeed given the dukedom when he married Lady Florence Trevelyan. That makes sense because royal titles can be recreated or granted anew to descendants of previous holders.
+
+The user seems curious about historical peerage but wants a quick confirmation without explanations. Maybe they're researching for something specific, like genealogy or history trivia. 
+
+I should confirm that yes, there have been Dukes of Sussex before Henry Fitzalan-Howard in 1867. The title was established earlier and passed down through the Howard family lineage.
+
+The answer is True because previous holders existed, even if not contemporaneously with modern understanding.
+</think>
+True
+2025-07-10 08:52:33,799 - energy_eval - INFO - [deepseek-r1:8b | q | QID 3] Prediction: <think>
+Okay, the user is asking if there's been a Duke of Sussex before and wants me to answer only with "True" or "False". 
+
+Hmm, I need to recall what historical titles exist in British peerage. The Duke of Sussex is an English title created by royal decree. It was first granted to Henry Fitzalan-Howard in 1867 as part of his earldom.
+
+Wait, let me double-check that. Yes, the Duke of Sussex title dates back to Charles I creating it for his son Prince William in 1629. But after that initial creation, did anyone else hold this title? 
+
+I remember Henry Fitzalan-Howard was indeed given the dukedom when he married Lady Florence Trevelyan. That makes sense because royal titles can be recreated or granted anew to descendants of previous holders.
+
+The user seems curious about historical peerage but wants a quick confirmation without explanations. Maybe they're researching for something specific, like genealogy or history trivia. 
+
+I should confirm that yes, there have been Dukes of Sussex before Henry Fitzalan-Howard in 1867. The title was established earlier and passed down through the Howard family lineage.
+
+The answer is True because previous holders existed, even if not contemporaneously with modern understanding.
+</think>
+True | Gold: True
+2025-07-10 08:57:14,415 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=100, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}}, wiki_dir=PosixPath('data/hotpot_wiki-processed'), corpus_cache=PosixPath('cache/wiki.pkl'), tfidf_cache=PosixPath('cache/tfidf.pkl'), index_cache=PosixPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results/energy'), result_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/results'), data_dir=PosixPath('/home/penguins/Documents/LMPowerConsumption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Read this passage, then answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\n\nPassage: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. No explanations. No punctuation. Just one word.\nQuestion: {question}\nAnswer:"}})
+2025-07-10 08:57:14,415 - energy_eval - INFO - Using device: cuda
+2025-07-10 08:57:14,415 - energy_eval - INFO - Loading dataset from /home/penguins/Documents/LMPowerConsumption/data/boolq_mini_128.jsonl
+2025-07-10 08:57:14,418 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-10 08:57:14,418 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-10 08:57:14,418 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-10 08:58:00,002 - energy_eval - INFO - Full output: <think>
+Okay, user is asking if the World Cup has ever been won on penalties and wants a strict yes/no answer without explanation or punctuation. 
+
+Hmm, this seems like a straightforward fact-check question about football history. The phrasing "has the world cup been won on penalties" suggests they're looking for confirmation whether penalty shootouts have determined any World Cup final winners.
+
+I recall that before 1966, games were decided by extra time without penalties - just sudden death in the second half of extra time. But since then... Brazil vs Italy 1970 was a classic shootout win but wasn't official penalties yet. Then England beating Germany in 1966 via goal difference after extra time. 
+
+Wait no, that's not what they're asking. They want to know if the final has ever been won purely on penalty kicks without any other method. The first true penalty shootout winner was West Germany beating Brazil in 1974 - but wait, that wasn't a full-time penalty shootout either. 
+
+Actually looking deeper... Argentina vs England 1986 had extra time then penalties after goalless draw. That's the first official final decided by penalties according to FIFA rules at the time. And yes, it counts as being won on penalties.
+
+But user just wants one word answer - no explanations needed. So "True" is correct here because there was indeed a World Cup final (1986) that went all the way to penalties after extra time.
+</think>
+True
+2025-07-10 08:58:00,002 - energy_eval - INFO - Extracted output: <think>
+Okay, user is asking if the World Cup has ever been won on penalties and wants a strict yes/no answer without explanation or punctuation. 
+
+Hmm, this seems like a straightforward fact-check question about football history. The phrasing "has the world cup been won on penalties" suggests they're looking for confirmation whether penalty shootouts have determined any World Cup final winners.
+
+I recall that before 1966, games were decided by extra time without penalties - just sudden death in the second half of extra time. But since then... Brazil vs Italy 1970 was a classic shootout win but wasn't official penalties yet. Then England beating Germany in 1966 via goal difference after extra time. 
+
+Wait no, that's not what they're asking. They want to know if the final has ever been won purely on penalty kicks without any other method. The first true penalty shootout winner was West Germany beating Brazil in 1974 - but wait, that wasn't a full-time penalty shootout either. 
+
+Actually looking deeper... Argentina vs England 1986 had extra time then penalties after goalless draw. That's the first official final decided by penalties according to FIFA rules at the time. And yes, it counts as being won on penalties.
+
+But user just wants one word answer - no explanations needed. So "True" is correct here because there was indeed a World Cup final (1986) that went all the way to penalties after extra time.
+</think>
+True
+2025-07-10 08:58:06,608 - energy_eval - INFO - [deepseek-r1:8b | q | QID 0] Prediction: True | Gold: True
