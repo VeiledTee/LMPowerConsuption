@@ -5,8 +5,7 @@ from collections import Counter, defaultdict
 
 import joblib
 from codecarbon import EmissionsTracker
-from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS,
-                                             HashingVectorizer)
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, HashingVectorizer
 
 from config import CONFIG
 from utils import normalize, strip_links
@@ -82,7 +81,7 @@ def retrieve_hotpot(question, vectorizer, tfidf_matrix, titles, inv_index):
     ngrams = tokens + [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
 
     # Measure core retrieval operations
-    with EmissionsTracker(save_to_file=False, log_level="error") as tracker:
+    with EmissionsTracker(save_to_file=False) as tracker:
         counter = Counter()
         for ng in ngrams:
             counter.update(inv_index.get(ng, []))
