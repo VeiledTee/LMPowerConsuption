@@ -1,23 +1,27 @@
+from tqdm.asyncio import tqdm_asyncio
 import gc
 import json
 import logging
-import time
 from pathlib import Path
 
 import pandas as pd
 import torch
 from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
+import time
 
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve_hotpot
 from scorers import exact_match, f1_score
-from utils import (convert_seconds, count_bools, ensure_config_dirs,
-                   setup_logging)
+from utils import convert_seconds, count_bools, ensure_config_dirs, setup_logging
 import warnings
+import aiohttp
+import asyncio
+
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -27,6 +31,10 @@ warnings.filterwarnings("ignore", category=pd.errors.DtypeWarning)
 
 logger = setup_logging()
 ensure_config_dirs()
+
+CONCURRENCY = 8
+PROMPT_BUFFER = []
+RESULT_BUFFER = []
 
 
 def run() -> None:
@@ -38,12 +46,21 @@ def run() -> None:
     logger.info(f"Starting experiment with config:\n{CONFIG}")
     logger.info(f"Using device: {CONFIG.device}")
 
+    # Load dataset
     try:
         dataset = load_config_dataset(data_dir)
         logger.info(f"Loaded dataset with {len(dataset)} samples")
     except Exception as e:
         logger.error(f"Dataset loading failed: {str(e)}")
         return
+
+    # Preload Wikipedia if needed
+    wiki_data = None
+    if any("q+r" in modes for modes in CONFIG.modes.values()):
+        t0 = time.time()
+        wiki_data = load_wiki()
+        h, m, s = convert_seconds(time.time() - t0)
+        logger.info(f"Loaded wiki in {h}h{m}m{s}s")
 
     for model_name, provider in CONFIG.model_types.items():
         model_start_time = time.time()
@@ -67,6 +84,7 @@ def run() -> None:
                 tokenizer,
                 model,
                 provider,
+                wiki_data,
             )
 
         cleanup_resources(model, tokenizer)
@@ -129,7 +147,6 @@ def load_model_safely(model_name: str):
     return None, None
 
 
-
 def cleanup_resources(model, tokenizer) -> None:
     """Release model resources and clean memory."""
     if model:
@@ -151,50 +168,194 @@ def run_model_mode(
     model_name: str,
     mode_tag: str,
     include_passage: bool,
-    dataset: Dataset,
+    dataset,
     tokenizer: any,
     model: any,
     provider: str,
+    wiki_data: tuple,
 ) -> None:
-    """Run evaluation for a specific model and mode."""
+    """Run evaluation for a specific model and mode, with concurrent inference and batched writes."""
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
     csv_path = (
         CONFIG.result_dir
-        / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
+        / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_"
+        f"{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
     )
-
-    wiki_data = load_wikipedia_if_needed(mode_tag)
     start_idx = get_resume_index(csv_path)
-    results = []
+    overall_t0 = time.time()
 
-    pbar = tqdm(
-        total=len(dataset) - start_idx, desc=f"{model_name} ({mode_tag})", unit="sample"
-    )
-    t0 = time.time()
+    # Pre-build prompts + metadata
+    prompt_t0 = time.time()
+    jobs = []
+    total_ret = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
     for idx in range(start_idx, len(dataset)):
-        try:
-            result = process_current_sample(
-                idx,
-                dataset[idx],
-                mode_tag,
-                include_passage,
-                wiki_data,
-                model,
-                tokenizer,
-                model_name,
-                provider,
-            )
-            if result:
-                results.append(result)
-                manage_batch_saving(results, csv_path)
-        except Exception as e:
-            logger.error(f"Error processing sample {idx}: {str(e)}")
-        pbar.update(1)
+        sample = dataset[idx]
+        ret_metrics = None
+        if mode_tag == "q+r":
+            ctx, ret_metrics = retrieve_context(sample, wiki_data)
+            sample = {**sample, "retrieved_context": ctx}
+            if ret_metrics:
+                for k in total_ret:
+                    total_ret[k] += ret_metrics.get(k, 0.0)
+        prompt = build_prompt(sample, include_passage)
+        jobs.append((idx, sample, prompt, ret_metrics))
 
-    save_results(results, csv_path)
-    pbar.close()
-    hours, minutes, seconds = convert_seconds(time.time() - t0)
-    logger.info(f"Completed {mode_tag} mode for {model_name} in {hours}:{minutes:02}:{seconds:02}")
+    logger.info(
+        f"Built {len(jobs)} prompts in {format_time(time.time() - prompt_t0)} "
+        f"(+ retrieval: {format_time(total_ret['duration'])}, "
+        f"{total_ret['energy_consumed']:.4f} kWh, {total_ret['emissions']:.4f} kg)"
+    )
+
+    result_buffer = []
+
+    if provider == "ollama":
+
+        async def async_process():
+            result_buffer = []
+            task_to_job = {}  # Map tasks to their job info
+
+            async with aiohttp.ClientSession():
+                tasks = []
+                for idx, sample, prompt, ret_metrics in jobs:
+                    task = asyncio.create_task(
+                        generate_async(prompt, model_name, mode_tag, "ollama")
+                    )
+
+                    # Store job info in dictionary keyed by task object
+                    task_to_job[task] = (idx, sample, ret_metrics)
+                    tasks.append(task)
+
+                # Create a list to track completed tasks
+                completed_tasks = []
+
+                # Wrap the as_completed iterator in tqdm
+                for completed_task in tqdm_asyncio.as_completed(
+                    tasks, total=len(tasks), desc=f"{model_name} ({mode_tag})"
+                ):
+                    # Await the completed task to get its result
+                    resp = await completed_task
+                    # Get the original task object from the completed_task
+                    # (completed_task is a future, but we need the original task)
+                    original_task = next(
+                        t for t in tasks if t.done() and t not in completed_tasks
+                    )
+                    completed_tasks.append(original_task)
+
+                    # Retrieve job info using the original task
+                    idx, sample, ret_metrics = task_to_job[original_task]
+
+                    full_output = resp[0]
+                    pred = extract_prediction(full_output)
+
+                    inf_metrics = resp[1]
+
+                    if "boolq" in CONFIG.dataset_name:
+                        pred, inf_metrics = process_boolq_prediction(
+                            pred, model_name, inf_metrics
+                        )
+
+                    em = exact_match(pred, sample["answer"])
+                    f1 = f1_score(pred, sample["answer"])
+
+                    row = {
+                        "qid": idx,
+                        "original_pred": full_output,
+                        "pred": pred,
+                        "gold": sample["answer"],
+                        "em": em,
+                        "f1": f1,
+                        "inference_duration (s)": inf_metrics["duration"],
+                        "inference_energy_consumed (kWh)": inf_metrics[
+                            "energy_consumed"
+                        ],
+                        "inference_emissions (kg)": inf_metrics["emissions"],
+                        "retrieval_duration (s)": (
+                            ret_metrics.get("duration") if ret_metrics else 0.0
+                        ),
+                        "retrieval_energy_consumed (kWh)": (
+                            ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                        ),
+                        "retrieval_emissions (kg)": (
+                            ret_metrics.get("emissions") if ret_metrics else 0.0
+                        ),
+                    }
+
+                    result_buffer.append(row)
+
+                    if len(result_buffer) >= CONFIG.batch_size:
+                        save_results(result_buffer, csv_path)
+                        result_buffer.clear()
+
+            if result_buffer:
+                save_results(result_buffer, csv_path)
+
+        asyncio.run(async_process())
+    else:
+        with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
+            future_to_job = {
+                executor.submit(
+                    generate_prediction,
+                    prompt,
+                    model,
+                    tokenizer,
+                    model_name,
+                    mode_tag,
+                    provider,
+                ): (idx, sample, ret_metrics)
+                for idx, sample, prompt, ret_metrics in jobs
+            }
+
+            for fut in tqdm(
+                as_completed(future_to_job),
+                total=len(future_to_job),
+                desc=f"{model_name} ({mode_tag})",
+            ):
+                idx, sample, ret_metrics = future_to_job[fut]
+                try:
+                    pred, inf_metrics = fut.result()
+                    if "boolq" in CONFIG.dataset_name:
+                        pred, inf_metrics = process_boolq_prediction(
+                            pred, model_name, inf_metrics
+                        )
+
+                    em = exact_match(pred, sample["answer"])
+                    f1 = f1_score(pred, sample["answer"])
+                    row = {
+                        "qid": idx,
+                        "original_pred": pred,
+                        "pred": pred,
+                        "gold": sample["answer"],
+                        "em": em,
+                        "f1": f1,
+                        "inference_duration (s)": inf_metrics["duration"],
+                        "inference_energy_consumed (kWh)": inf_metrics[
+                            "energy_consumed"
+                        ],
+                        "inference_emissions (kg)": inf_metrics["emissions"],
+                        "retrieval_duration (s)": (
+                            ret_metrics.get("duration") if ret_metrics else 0.0
+                        ),
+                        "retrieval_energy_consumed (kWh)": (
+                            ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                        ),
+                        "retrieval_emissions (kg)": (
+                            ret_metrics.get("emissions") if ret_metrics else 0.0
+                        ),
+                    }
+                    result_buffer.append(row)
+                except Exception as e:
+                    logger.error(f"Inference failed for idx={idx}: {e}")
+
+                if len(result_buffer) >= CONFIG.batch_size:
+                    save_results(result_buffer, csv_path)
+                    result_buffer.clear()
+
+    if result_buffer:
+        save_results(result_buffer, csv_path)
+
+    logger.info(
+        f"Completed {mode_tag} for {model_name} in {format_time(time.time() - overall_t0)}"
+    )
 
 
 def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
@@ -206,7 +367,9 @@ def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
         t0 = time.time()
         wiki_data = load_wiki()
         hours, minutes, seconds = convert_seconds(time.time() - t0)
-        logger.info(f"Loaded Wikipedia corpus and indexes in {hours}:{minutes:02}:{seconds:02}")
+        logger.info(
+            f"Loaded Wikipedia corpus and indexes in {hours}:{minutes:02}:{seconds:02}"
+        )
         return wiki_data
     except Exception as e:
         logger.error(f"Wikipedia loading failed: {str(e)}")
@@ -250,10 +413,8 @@ def process_current_sample(
 
     # Retrieve context if needed
     if mode_tag == "q+r":
-        retrieved_context, retrieval_metrics = retrieve_context(
-            sample, wiki_data
-        )  # Rename variable
-        sample_for_prompt["retrieved_context"] = retrieved_context  # New key
+        retrieved_context, retrieval_metrics = retrieve_context(sample, wiki_data)
+        sample_for_prompt["retrieved_context"] = retrieved_context
 
     prompt = build_prompt(sample_for_prompt, include_passage)
 
@@ -334,10 +495,11 @@ def extract_prediction(full_output: str) -> str:
         full_output = full_output.split("Answer:")[-1].strip()
     # Fallback is taking the last line of output
     else:
-        lines = [line.strip() for line in full_output.strip().splitlines() if line.strip()]
+        lines = [
+            line.strip() for line in full_output.strip().splitlines() if line.strip()
+        ]
         return lines[-1]
     return full_output.strip()
-
 
 
 def generate_prediction(
@@ -354,33 +516,30 @@ def generate_prediction(
         "energy_consumed": 0.0,
         "emissions": 0.0,
     }
-    prediction = ""
+    full_output = ""
 
     try:
         if model and tokenizer:
             full_output, i_metrics = inference(
                 prompt, model, tokenizer, model_name, mode_tag, provider
             )
-            prediction = extract_prediction(full_output)
             inference_metrics.update(i_metrics)
     except RuntimeError as e:
         if "CUDA out of memory" in str(e):
-            logger.warning(f"CUDA OOM during inference — retrying on CPU for {model_name}")
+            logger.warning(
+                f"CUDA OOM during inference — retrying on CPU for {model_name}"
+            )
             torch.cuda.empty_cache()
-            from inference import load_model_and_tokenizer  # ensure it's imported if not already
-
             CONFIG.device = "cpu"
-            tokenizer, model = load_model_and_tokenizer(model_name)
 
             full_output, i_metrics = inference(
                 prompt, model, tokenizer, model_name, mode_tag, provider
             )
-            prediction = extract_prediction(full_output)
             inference_metrics.update(i_metrics)
         else:
             logger.error(f"Inference failed: {str(e)}")
 
-    return prediction, inference_metrics
+    return full_output, inference_metrics
 
 
 def process_boolq_prediction(
@@ -388,10 +547,11 @@ def process_boolq_prediction(
 ) -> tuple[str, dict]:
     """Process BoolQ prediction and measure emissions."""
     with EmissionsTracker(
+        output_dir="emissions",
         project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
         log_level="error",
     ) as tracker:
-        processed_pred = count_bools(prediction)
+        processed_pred = extract_prediction(count_bools(prediction))
 
     new_metrics = {
         "duration": float(tracker.final_emissions_data.duration),
@@ -406,18 +566,6 @@ def process_boolq_prediction(
     return processed_pred, result
 
 
-def manage_batch_saving(results: list[dict], csv_path: Path) -> None:
-    """Save results if batch size reached and clear resources."""
-    if len(results) < CONFIG.batch_size:
-        return
-
-    save_results(results, csv_path)
-    results.clear()
-
-    if CONFIG.device == "cuda":
-        torch.cuda.empty_cache()
-
-
 def save_results(results: list[dict], csv_path: Path) -> None:
     """Save results to CSV file."""
     if not results:
@@ -425,6 +573,24 @@ def save_results(results: list[dict], csv_path: Path) -> None:
 
     df = pd.DataFrame(results)
     df.to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
+
+
+async def generate_async(prompt, model_name, run_tag, provider):
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(
+        None, inference, prompt, model_name, run_tag, provider
+    )
+
+
+async def run_async_inference(jobs, model_name):
+    async with aiohttp.ClientSession():
+        tasks = [
+            generate_async(prompt, model, tokenizer, model_name, run_tag, provider)
+            for prompt, model, tokenizer, model_name, run_tag, provider in jobs
+        ]
+        return await tqdm_asyncio.gather(
+            *tasks, desc=f"{model_name} (async)", total=len(tasks)
+        )
 
 
 if __name__ == "__main__":
