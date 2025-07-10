@@ -8,10 +8,17 @@ import string
 
 
 def normalize(text: str) -> str:
-    def remove_articles(s): return re.sub(r'\b(a|an|the)\b', ' ', s)
-    def remove_punc(s): return ''.join(ch for ch in s if ch not in string.punctuation)
-    def white_space_fix(s): return ' '.join(s.split())
-    def lower(s): return s.lower()
+    def remove_articles(s):
+        return re.sub(r"\b(a|an|the)\b", " ", s)
+
+    def remove_punc(s):
+        return "".join(ch for ch in s if ch not in string.punctuation)
+
+    def white_space_fix(s):
+        return " ".join(s.split())
+
+    def lower(s):
+        return str(s).lower()
 
     return white_space_fix(remove_articles(remove_punc(lower(text))))
 
@@ -96,6 +103,7 @@ def ensure_config_dirs() -> None:
         CONFIG.index_cache.parent,
         CONFIG.energy_dir,
         CONFIG.result_dir,
+        CONFIG.emissions_dir,
     ]
     for d in dirs_to_check:
         d.mkdir(parents=True, exist_ok=True)
