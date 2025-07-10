@@ -1,27 +1,27 @@
-from tqdm.asyncio import tqdm_asyncio
+import asyncio
 import gc
 import json
 import logging
+import time
+import warnings
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import aiohttp
 import pandas as pd
 import torch
 from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
-import time
+from tqdm.asyncio import tqdm_asyncio
 
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve_hotpot
 from scorers import exact_match, f1_score
-from utils import convert_seconds, count_bools, ensure_config_dirs, setup_logging
-import warnings
-import aiohttp
-import asyncio
-
+from utils import (convert_seconds, count_bools, ensure_config_dirs,
+                   setup_logging)
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)

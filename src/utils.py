@@ -1,10 +1,11 @@
 import logging
 import os
-from pathlib import Path
-from typing import Dict, Tuple
-from config import CONFIG
 import re
 import string
+from pathlib import Path
+from typing import Dict, Tuple
+
+from config import CONFIG
 
 
 def normalize(text: str) -> str:
