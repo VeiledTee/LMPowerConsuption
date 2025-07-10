@@ -27,6 +27,7 @@ class ExperimentConfig:
     energy_dir: Path
     result_dir: Path
     data_dir: Path
+    emissions_dir: Path
     retrieval_only: bool
     email_results: bool
     from_email: str
@@ -77,7 +78,7 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": "huggingface",
         # "deepseek-r1:1.5b": "ollama",  # doesn't pass baseline
         # "deepseek-r1:7b": "ollama",  # near identical to 8b
-        "deepseek-r1:32b": "ollama",
+        # "deepseek-r1:32b": "ollama",
         "deepseek-r1:8b": "ollama",
         "deepseek-r1:14b": "ollama",
         # "gemma3:1b": "ollama",  # doesn't pass baseline
@@ -88,8 +89,8 @@ CONFIG = ExperimentConfig(
     },
     # dataset_name="hotpotqa/hotpot_qa",
     dataset_name="google/boolq",
-    dataset_file="boolq_1.jsonl",  # for full dataset (above) run
-    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
+    # dataset_file="boolq_1.jsonl",  # for full dataset (above) run
+    dataset_file="boolq_mini_128.jsonl",  # for mini boolq
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
     config="fullwiki",
     split="validation",
@@ -108,7 +109,7 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": {"q": False},
         # "deepseek-r1:1.5b": {"q": False, "q+r": True},
         # "deepseek-r1:7b": {"q": False, "q+r": True},
-        "deepseek-r1:32b": {"q": False},
+        # "deepseek-r1:32b": {"q": False},
         "deepseek-r1:8b": {"q": False, "q+r": True},
         "deepseek-r1:14b": {"q": False, "q+r": True},
         # "gemma3:1b": {"q": False, "q+r": True},
@@ -127,6 +128,7 @@ CONFIG = ExperimentConfig(
     energy_dir=Path(__file__).resolve().parent.parent / "results" / "energy",
     result_dir=Path(__file__).resolve().parent.parent / "results",
     data_dir=Path(__file__).resolve().parent.parent / "data",
+    emissions_dir=Path("emissions"),
     retrieval_only=False,
     email_results=True,
     from_email="eheavey626@gmail.com",
