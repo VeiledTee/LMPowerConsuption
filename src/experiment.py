@@ -325,6 +325,21 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
     return context, retrieval_metrics
 
 
+def extract_prediction(full_output: str) -> str:
+    # If model uses <think>...True, extract the last line or the final word
+    if "<think>" in full_output:
+        full_output = full_output.split("</think>")[-1].strip()
+    # If model doesn't think and prepends reply with "Answer:" split on that instead
+    elif "Answer: " in full_output:
+        full_output = full_output.split("Answer:")[-1].strip()
+    # Fallback is taking the last line of output
+    else:
+        lines = [line.strip() for line in full_output.strip().splitlines() if line.strip()]
+        return lines[-1]
+    return full_output.strip()
+
+
+
 def generate_prediction(
     prompt: str,
     model: any,
@@ -346,7 +361,7 @@ def generate_prediction(
             full_output, i_metrics = inference(
                 prompt, model, tokenizer, model_name, mode_tag, provider
             )
-            prediction = full_output.split("Answer: ")[-1].strip()
+            prediction = extract_prediction(full_output)
             inference_metrics.update(i_metrics)
     except RuntimeError as e:
         if "CUDA out of memory" in str(e):
@@ -360,7 +375,7 @@ def generate_prediction(
             full_output, i_metrics = inference(
                 prompt, model, tokenizer, model_name, mode_tag, provider
             )
-            prediction = full_output.split("Answer: ")[-1].strip()
+            prediction = extract_prediction(full_output)
             inference_metrics.update(i_metrics)
         else:
             logger.error(f"Inference failed: {str(e)}")
