@@ -1,4 +1,3 @@
-import asyncio
 import gc
 import json
 import logging
@@ -7,13 +6,11 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-import aiohttp
 import pandas as pd
 import torch
 from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
 from tqdm import tqdm
-from tqdm.asyncio import tqdm_asyncio
 
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
@@ -184,9 +181,10 @@ def run_model_mode(
     """Run evaluation for a specific model and mode, with concurrent inference and batched writes."""
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
     csv_path = (
-        CONFIG.result_dir
-        / f"{dataset_id}{'_128' if 'mini' in CONFIG.dataset_file else ''}_"
-        f"{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}.csv"
+            CONFIG.result_dir
+            / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
+              f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
+              f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}.csv"
     )
     start_idx = get_resume_index(csv_path)
     overall_t0 = time.time()
@@ -216,92 +214,8 @@ def run_model_mode(
     result_buffer = []
 
     if provider == "ollama":
-
-        # async def async_process():
-        #     result_buffer = []
-        #     task_to_job = {}  # Map tasks to their job info
-        #
-        #     async with aiohttp.ClientSession():
-        #         tasks = []
-        #         for idx, sample, prompt, ret_metrics in jobs:
-        #             task = asyncio.create_task(
-        #                 generate_async(prompt, model_name, mode_tag, "ollama")
-        #             )
-        #
-        #             # Store job info in dictionary keyed by task object
-        #             task_to_job[task] = (idx, sample, ret_metrics)
-        #             tasks.append(task)
-        #
-        #         # Create a list to track completed tasks
-        #         completed_tasks = []
-        #
-        #         # Wrap the as_completed iterator in tqdm
-        #         for completed_task in tqdm_asyncio.as_completed(
-        #             tasks, total=len(tasks), desc=f"{model_name} ({mode_tag})"
-        #         ):
-        #             # Await the completed task to get its result
-        #             resp = await completed_task
-        #             # Get the original task object from the completed_task
-        #             # (completed_task is a future, but we need the original task)
-        #             original_task = next(
-        #                 t for t in tasks if t.done() and t not in completed_tasks
-        #             )
-        #             completed_tasks.append(original_task)
-        #
-        #             # Retrieve job info using the original task
-        #             idx, sample, ret_metrics = task_to_job[original_task]
-        #
-        #             full_output = resp[0]
-        #             pred = extract_prediction(full_output)
-        #
-        #             inf_metrics = resp[1]
-        #
-        #             if "boolq" in CONFIG.dataset_name:
-        #                 pred, inf_metrics = process_boolq_prediction(
-        #                     pred, model_name, inf_metrics
-        #                 )
-        #
-        #             em = exact_match(pred, sample["answer"])
-        #             f1 = f1_score(pred, sample["answer"])
-        #
-        #             row = {
-        #                 "qid": idx,
-        #                 "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ' '),
-        #                 "pred": pred,
-        #                 "gold": sample["answer"],
-        #                 "em": em,
-        #                 "f1": f1,
-        #                 "inference_duration (s)": inf_metrics["duration"],
-        #                 "inference_energy_consumed (kWh)": inf_metrics[
-        #                     "energy_consumed"
-        #                 ],
-        #                 "inference_emissions (kg)": inf_metrics["emissions"],
-        #                 "retrieval_duration (s)": (
-        #                     ret_metrics.get("duration") if ret_metrics else 0.0
-        #                 ),
-        #                 "retrieval_energy_consumed (kWh)": (
-        #                     ret_metrics.get("energy_consumed") if ret_metrics else 0.0
-        #                 ),
-        #                 "retrieval_emissions (kg)": (
-        #                     ret_metrics.get("emissions") if ret_metrics else 0.0
-        #                 ),
-        #             }
-        #
-        #             result_buffer.append(row)
-        #
-        #             if len(result_buffer) >= CONFIG.batch_size:
-        #                 save_results(result_buffer, csv_path)
-        #                 result_buffer.clear()
-        #
-        #     if result_buffer:
-        #         save_results(result_buffer, csv_path)
-        #
-        # asyncio.run(async_process())
-
-        result_buffer = []
-
         for idx, sample, prompt, ret_metrics in tqdm(
-            jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
+                jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
             full_output, inf_metrics = inference(
                 prompt, model_name, mode_tag, provider
@@ -363,9 +277,9 @@ def run_model_mode(
             }
 
             for fut in tqdm(
-                as_completed(future_to_job),
-                total=len(future_to_job),
-                desc=f"{model_name} ({mode_tag})",
+                    as_completed(future_to_job),
+                    total=len(future_to_job),
+                    desc=f"{model_name} ({mode_tag})",
             ):
                 idx, sample, ret_metrics = future_to_job[fut]
                 try:
@@ -630,24 +544,6 @@ def save_results(results: list[dict], csv_path: Path) -> None:
 
     df = pd.DataFrame(results)
     df.to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
-
-
-async def generate_async(prompt, model_name, run_tag, provider):
-    loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(
-        None, inference, prompt, model_name, run_tag, provider
-    )
-
-
-async def run_async_inference(jobs, model_name):
-    async with aiohttp.ClientSession():
-        tasks = [
-            generate_async(prompt, model, tokenizer, model_name, run_tag, provider)
-            for prompt, model, tokenizer, model_name, run_tag, provider in jobs
-        ]
-        return await tqdm_asyncio.gather(
-            *tasks, desc=f"{model_name} (async)", total=len(tasks)
-        )
 
 
 if __name__ == "__main__":
