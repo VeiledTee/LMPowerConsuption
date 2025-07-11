@@ -71,7 +71,7 @@ def inference(
     if provider == "ollama":
         try:
             with EmissionsTracker(
-                output_dir="emissions",
+                save_to_file=False,
                 project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
                 log_level="error",
             ) as tracker:
@@ -109,20 +109,20 @@ def inference(
 
                 if tokenizer.pad_token_id is None:
                     tokenizer.pad_token_id = tokenizer.eos_token_id
-                with EmissionsTracker(
-                    output_dir="emissions",
+            with EmissionsTracker(
+                    save_to_file=False,
                     project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
                     log_level="error",
-                ) as tracker:
-                    tokens = model.generate(
-                        **inputs,
-                        max_new_tokens=CONFIG.max_new_tokens,
-                        do_sample=False,
-                        no_repeat_ngram_size=2,
-                        repetition_penalty=1.5,
-                        eos_token_id=tokenizer.eos_token_id,
-                        pad_token_id=tokenizer.pad_token_id,
-                    )
+            ) as tracker:
+                tokens = model.generate(
+                    **inputs,
+                    max_new_tokens=CONFIG.max_new_tokens,
+                    do_sample=False,
+                    no_repeat_ngram_size=2,
+                    repetition_penalty=1.5,
+                    eos_token_id=tokenizer.eos_token_id,
+                    pad_token_id=tokenizer.pad_token_id,
+                )
 
             text = tokenizer.batch_decode(tokens, skip_special_tokens=True)[0]
             print(f"Inference: {tracker.final_emissions_data.duration}s")

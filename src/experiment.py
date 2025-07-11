@@ -554,7 +554,7 @@ def process_boolq_prediction(
 ) -> tuple[str, dict]:
     """Process BoolQ prediction and measure emissions."""
     with EmissionsTracker(
-        output_dir="emissions",
+        save_to_file=False,
         project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
         log_level="error",
     ) as tracker:

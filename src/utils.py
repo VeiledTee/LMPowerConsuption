@@ -104,7 +104,6 @@ def ensure_config_dirs() -> None:
         CONFIG.index_cache.parent,
         CONFIG.energy_dir,
         CONFIG.result_dir,
-        CONFIG.emissions_dir,
     ]
     for d in dirs_to_check:
         d.mkdir(parents=True, exist_ok=True)
