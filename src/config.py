@@ -110,11 +110,13 @@ CONFIG = ExperimentConfig(
     },
     # dataset_name="hotpotqa/hotpot_qa",
     dataset_name="google/boolq",
-    dataset_file="full.jsonl",  # for full dataset (above) run
-    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq
-    # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot
+    # dataset_file="full.jsonl",  # for full dataset (above) run
+    dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
+    # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
+    # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
+    # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
     config="fullwiki",
-    split="validation",
+    split="train",
     n_samples=None,
     max_new_tokens=64,
     batch_size=4,
