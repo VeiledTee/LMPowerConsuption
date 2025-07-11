@@ -3531,3 +3531,34 @@ Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
 2025-07-11 16:25:42,198 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q_128_dev_think.csv
 2025-07-11 16:25:42,206 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 16:42:22,297 - energy_eval - ERROR - Critical error: list index out of range
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 553, in <module>
+    run()
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 83, in run
+    run_model_mode(
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 226, in run_model_mode
+    pred = extract_prediction(full_output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 474, in extract_prediction
+    return lines[-1]
+           ~~~~~^^^^
+IndexError: list index out of range
+2025-07-11 16:45:18,397 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_dev_128.jsonl', config='fullwiki', split='train', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 16:45:18,397 - energy_eval - INFO - Using device: cuda
+2025-07-11 16:45:18,397 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_dev_128.jsonl
+2025-07-11 16:45:18,400 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 16:45:18,400 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 16:48:54,793 - energy_eval - INFO - Loaded wiki in 0h3m36s
+2025-07-11 16:48:54,793 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-11 16:48:54,793 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 16:48:54,793 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q_128_dev_think.csv
+2025-07-11 16:48:54,797 - energy_eval - INFO - Built 76 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 16:54:04,582 - energy_eval - WARNING - Experiment interrupted by user
