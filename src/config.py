@@ -49,15 +49,17 @@ class ExperimentConfig:
             },
             "boolq": {
                 "with_context": (
-                    "Read this passage, then answer ONLY with 'True' or 'False'. "
-                    "No explanations. No punctuation. Just one word.\n\n"
-                    "Passage: {context}\n"
+                    "Using the provided context, answer the question ONLY with 'True' or 'False'. "
+                    "Be thorough in your analysis of the context but answer with just one word. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Context: {context}\n"
                     "Question: {question}\n"
                     "Answer:"
                 ),
                 "without_context": (
                     "Answer ONLY with 'True' or 'False'. "
-                    "No explanations. No punctuation. Just one word.\n"
+                    "Be thorough in your analysis but answer with just one word. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
                     "Question: {question}\n"
                     "Answer:"
                 ),
@@ -78,9 +80,9 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": "huggingface",
         # "deepseek-r1:1.5b": "ollama",  # doesn't pass baseline
         # "deepseek-r1:7b": "ollama",  # near identical to 8b
-        # "deepseek-r1:32b": "ollama",
         "deepseek-r1:8b": "ollama",
         "deepseek-r1:14b": "ollama",
+        "deepseek-r1:32b": "ollama",
         # "gemma3:1b": "ollama",  # doesn't pass baseline
         # "gemma3:4b": "ollama",
         # "gemma3:12b": "ollama",
@@ -98,9 +100,9 @@ modes={
         # "meta-llama/Llama-2-13b-hf": {"q": False},
         # "deepseek-r1:1.5b": {"q": False, "q+r": True},
         # "deepseek-r1:7b": {"q": False, "q+r": True},
-        # "deepseek-r1:32b": {"q": False},
         "deepseek-r1:8b": {"q": False, "q+r": True},
         "deepseek-r1:14b": {"q": False, "q+r": True},
+        "deepseek-r1:32b": {"q": False},
         # "gemma3:1b": {"q": False, "q+r": True},
         # "gemma3:4b": {"q": False, "q+r": True},
         # "gemma3:12b": {"q": False, "q+r": True},
