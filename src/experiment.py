@@ -266,7 +266,7 @@ def run_model_mode(
 
                     row = {
                         "qid": idx,
-                        "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ''),
+                        "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ' '),
                         "pred": pred,
                         "gold": sample["answer"],
                         "em": em,
