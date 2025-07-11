@@ -2962,3 +2962,453 @@ ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ol
 2025-07-11 00:04:47,271 - energy_eval - INFO - Using device: cuda
 2025-07-11 00:04:49,360 - energy_eval - INFO - Loaded dataset with 3270 samples
 2025-07-11 00:04:49,360 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 00:08:38,835 - energy_eval - INFO - Loaded wiki in 0h3m49s
+2025-07-11 00:08:38,835 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-11 00:08:38,835 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 00:08:38,902 - energy_eval - INFO - Built 3253 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 00:16:52,045 - __main__ - INFO - Starting run: deepseek-mini
+2025-07-11 00:16:52,045 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 00:16:52,046 - energy_eval - INFO - Using device: cuda
+2025-07-11 00:16:52,046 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 00:16:52,050 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 00:16:52,050 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 00:17:27,727 - __main__ - INFO - Starting run: deepseek-mini
+2025-07-11 00:17:27,728 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 00:17:27,728 - energy_eval - INFO - Using device: cuda
+2025-07-11 00:17:27,728 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 00:17:27,731 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 00:17:27,731 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 00:19:46,441 - __main__ - INFO - Starting run: deepseek-mini
+2025-07-11 00:19:46,441 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 00:19:46,441 - energy_eval - INFO - Using device: cuda
+2025-07-11 00:19:46,441 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 00:19:46,441 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 00:19:46,441 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 00:23:24,967 - energy_eval - INFO - Loaded wiki in 0h3m38s
+2025-07-11 00:23:24,967 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-11 00:23:24,967 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 00:23:24,967 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 00:34:11,430 - energy_eval - INFO - Completed q for deepseek-r1:8b in 0h 10m 46s
+2025-07-11 00:43:51,359 - energy_eval - INFO - Built 128 prompts in 0h 9m 39s (+ retrieval: 0h 0m 3s, 0.0009 kWh, 0.0003 kg)
+2025-07-11 00:53:49,359 - energy_eval - INFO - Completed q+r for deepseek-r1:8b in 0h 19m 37s
+2025-07-11 00:53:55,123 - energy_eval - INFO - Completed deepseek-r1:8b in 0h 30m 30s
+2025-07-11 00:53:55,123 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:14b
+============================================================
+2025-07-11 00:53:55,123 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 00:53:55,123 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 01:04:01,077 - energy_eval - INFO - Completed q for deepseek-r1:14b in 0h 10m 5s
+2025-07-11 01:13:42,014 - energy_eval - INFO - Built 128 prompts in 0h 9m 40s (+ retrieval: 0h 0m 3s, 0.0009 kWh, 0.0003 kg)
+2025-07-11 01:23:42,431 - energy_eval - INFO - Completed q+r for deepseek-r1:14b in 0h 19m 41s
+2025-07-11 01:23:47,188 - energy_eval - INFO - Completed deepseek-r1:14b in 0h 29m 52s
+2025-07-11 01:23:47,188 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-07-11 01:23:47,188 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-07-11 01:23:47,204 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 01:38:16,056 - energy_eval - INFO - Completed q for deepseek-r1:32b in 0h 14m 28s
+2025-07-11 01:38:20,767 - energy_eval - INFO - Completed deepseek-r1:32b in 0h 14m 33s
+2025-07-11 01:38:20,767 - energy_eval - INFO - 
+============================================================
+Experiment completed in 1h 18m 34s
+============================================================
+2025-07-11 01:38:24,544 - __main__ - INFO - Starting run: deepseek-full
+2025-07-11 01:38:24,544 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 01:38:24,544 - energy_eval - INFO - Using device: cuda
+2025-07-11 01:38:26,433 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-11 01:38:26,449 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 01:41:57,949 - energy_eval - INFO - Loaded wiki in 0h3m31s
+2025-07-11 01:41:57,949 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-11 01:41:57,949 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 01:41:58,013 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 02:05:54,750 - __main__ - ERROR - Run deepseek-full failed: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\run_multiple.py", line 11, in safe_run
+    run()
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 86, in run
+    run_model_mode(
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 299, in run_model_mode
+    asyncio.run(async_process())
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 260, in async_process
+    pred, inf_metrics = process_boolq_prediction(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 564, in process_boolq_prediction
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,463 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-709' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-710' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-711' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-712' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-713' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-714' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-715' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-716' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-717' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-718' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-719' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-720' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-721' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-722' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-723' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 02:05:58,467 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-724' coro=<generate_async() done, defined at C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py:585> exception=AttributeError("'EmissionsTracker' object has no attribute 'final_emissions_data'")>
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 587, in generate_async
+    return await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 81, in inference
+    "duration": float(tracker.final_emissions_data.duration),
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'EmissionsTracker' object has no attribute 'final_emissions_data'
+2025-07-11 07:03:04,258 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_1.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 07:03:04,258 - energy_eval - INFO - Using device: cuda
+2025-07-11 07:03:07,021 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-11 07:03:07,021 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 07:03:26,647 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-11 07:03:46,025 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_1.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 07:03:46,025 - energy_eval - INFO - Using device: cuda
+2025-07-11 07:03:47,983 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-11 07:03:47,983 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 07:06:56,319 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-11 07:07:05,741 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 07:07:05,741 - energy_eval - INFO - Using device: cuda
+2025-07-11 07:07:05,741 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 07:07:05,756 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 07:07:05,756 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 07:10:41,044 - energy_eval - INFO - Loaded wiki in 0h3m35s
+2025-07-11 07:10:41,044 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-07-11 07:10:41,044 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 07:10:41,047 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 07:20:31,964 - energy_eval - INFO - Completed q for gemma3:4b in 0h 9m 50s
+2025-07-11 07:30:12,970 - energy_eval - INFO - Built 128 prompts in 0h 9m 41s (+ retrieval: 0h 0m 3s, 0.0009 kWh, 0.0003 kg)
+2025-07-11 07:35:04,320 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 07:35:04,321 - energy_eval - INFO - Using device: cuda
+2025-07-11 07:35:04,321 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 07:35:04,324 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 07:35:04,324 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 07:35:40,836 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-11 07:35:46,851 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), emissions_dir=WindowsPath('emissions'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 07:35:46,851 - energy_eval - INFO - Using device: cuda
+2025-07-11 07:35:46,851 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 07:35:46,855 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 07:35:46,855 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 07:39:27,791 - energy_eval - INFO - Loaded wiki in 0h3m40s
+2025-07-11 07:39:27,792 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-07-11 07:39:27,792 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 07:39:27,794 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 07:39:27,804 - energy_eval - INFO - Completed q for gemma3:4b in 0h 0m 0s
+2025-07-11 07:48:46,607 - energy_eval - INFO - Built 124 prompts in 0h 9m 18s (+ retrieval: 0h 0m 3s, 0.0009 kWh, 0.0003 kg)
+2025-07-11 07:58:13,006 - energy_eval - INFO - Completed q+r for gemma3:4b in 0h 18m 45s
+2025-07-11 07:58:19,101 - energy_eval - INFO - Completed gemma3:4b in 0h 18m 51s
+2025-07-11 07:58:19,101 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-07-11 07:58:19,101 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 07:58:19,104 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 08:02:21,036 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='boolq_mini_128.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 08:02:21,036 - energy_eval - INFO - Using device: cuda
+2025-07-11 08:02:21,036 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\boolq_mini_128.jsonl
+2025-07-11 08:02:21,040 - energy_eval - INFO - Loaded dataset with 128 samples
+2025-07-11 08:02:21,040 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 08:06:05,811 - energy_eval - INFO - Loaded wiki in 0h3m44s
+2025-07-11 08:06:05,811 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-07-11 08:06:05,811 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 08:06:05,818 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 08:06:05,819 - energy_eval - INFO - Completed q for gemma3:4b in 0h 0m 0s
+2025-07-11 08:06:05,821 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 08:06:05,821 - energy_eval - INFO - Completed q+r for gemma3:4b in 0h 0m 0s
+2025-07-11 08:06:11,108 - energy_eval - INFO - Completed gemma3:4b in 0h 0m 5s
+2025-07-11 08:06:11,108 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-07-11 08:06:11,109 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 08:06:11,112 - energy_eval - INFO - Built 80 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 08:12:23,705 - energy_eval - INFO - Completed q for gemma3:12b in 0h 6m 12s
+2025-07-11 08:22:02,726 - energy_eval - INFO - Built 128 prompts in 0h 9m 39s (+ retrieval: 0h 0m 3s, 0.0009 kWh, 0.0003 kg)
+2025-07-11 08:31:51,008 - energy_eval - INFO - Completed q+r for gemma3:12b in 0h 19m 27s
+2025-07-11 08:31:56,460 - energy_eval - INFO - Completed gemma3:12b in 0h 25m 45s
+2025-07-11 08:31:56,460 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:27b
+============================================================
+2025-07-11 08:31:56,460 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-07-11 08:31:56,463 - energy_eval - INFO - Built 128 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-11 08:41:49,698 - energy_eval - INFO - Completed q for gemma3:27b in 0h 9m 53s
+2025-07-11 08:41:54,390 - energy_eval - INFO - Completed gemma3:27b in 0h 9m 57s
+2025-07-11 08:41:54,390 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 39m 33s
+============================================================
+2025-07-11 08:56:45,563 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-11 08:56:45,563 - energy_eval - INFO - Using device: cuda
+2025-07-11 08:56:47,896 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-11 08:56:47,896 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-11 09:00:34,595 - energy_eval - INFO - Loaded wiki in 0h3m46s
+2025-07-11 09:00:34,595 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-11 09:00:34,595 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-11 09:00:34,661 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
