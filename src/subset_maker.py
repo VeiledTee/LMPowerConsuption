@@ -60,7 +60,7 @@ def main():
         dataset = load_dataset(CONFIG.dataset_name, split=CONFIG.split, trust_remote_code=True)
         subset = process_boolq(dataset)
 
-    output_path = CONFIG.data_dir / f"{CONFIG.dataset_name.split('/')[-1]}_mini_{N_SAMPLES}.jsonl"
+    output_path = CONFIG.data_dir / f"{CONFIG.dataset_name.split('/')[-1]}_mini_dev_{N_SAMPLES}.jsonl"
     save_jsonl(subset, output_path)
 
 if __name__ == "__main__":
