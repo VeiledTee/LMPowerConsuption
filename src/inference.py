@@ -1,3 +1,5 @@
+import logging
+
 import torch
 from codecarbon import EmissionsTracker
 from ollama import generate
@@ -5,6 +7,14 @@ from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
                           PreTrainedTokenizer)
 
 from config import CONFIG
+
+logger = logging.getLogger("codecarbon")
+logger.setLevel(logging.ERROR)
+logger.propagate = False
+
+# Remove existing handlers
+for handler in logger.handlers:
+    logger.removeHandler(handler)
 
 
 def inference_ollama(prompt, model_name):

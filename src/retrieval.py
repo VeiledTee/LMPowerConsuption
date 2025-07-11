@@ -10,6 +10,10 @@ from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS,
 
 from config import CONFIG
 from utils import normalize, strip_links
+import logging
+logger = logging.getLogger("codecarbon")
+logger.setLevel(logging.ERROR)
+logger.propagate = False
 
 
 def load_wiki():
