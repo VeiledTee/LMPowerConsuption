@@ -28,8 +28,15 @@ def inference_ollama(prompt, model_name):
             "stop": ["</s>", "\n\n\n"],
             "num_thread": os.cpu_count()
         },
+        think=CONFIG.think,
     )
-    return resp.get("response") or resp["choices"][0]["text"]
+    print(resp)
+
+    if "response" in resp:
+        return resp["response"]
+    if "choices" in resp and len(resp["choices"]) > 0:
+        return resp["choices"][0]["text"]
+    raise ValueError(f"Invalid Ollama response for prompt: {prompt[:200]}...\nResponse: {resp}")
 
 
 def load_model_and_tokenizer(

@@ -184,8 +184,10 @@ def run_model_mode(
             CONFIG.result_dir
             / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
               f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
-              f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}.csv"
+              f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
+              f"{'_think' if CONFIG.think == True else ''}.csv"
     )
+    logger.info(f"Saving results to: {csv_path}")
     start_idx = get_resume_index(csv_path)
     overall_t0 = time.time()
 
