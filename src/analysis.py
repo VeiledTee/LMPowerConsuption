@@ -11,7 +11,7 @@ from config import CONFIG
 from utils import convert_seconds
 
 # Optional filter: set to a substring to include only matching files - set to None to include all
-FILTER_SUBSTRING: str | None = "_deepseek"
+FILTER_SUBSTRING: str | None = "_gemma3"
 out_filename: str = f"{FILTER_SUBSTRING.split('_')[-1]}_summary"
 
 # Mapping from internal model keys to display names
@@ -159,9 +159,14 @@ def main() -> None:
     for csv_path in files:
         name = csv_path.stem
         parts = name.split('_')
-        model_key = parts[1] if len(parts) == 3 else parts[2]
+        model_key = parts[1]
         context_used = 'q+r' in name
-        dataset_version = 'full' if len(parts) == 3 else parts[1]
+        if len(parts) == 3:
+            dataset_version = 'full'
+        elif "dev" in name:
+            dataset_version = f'dev ({parts[2]})'
+        else:
+            dataset_version = parts[2]
         cur_summary = summarise(
                 model_key=model_key,
                 path=csv_path,
