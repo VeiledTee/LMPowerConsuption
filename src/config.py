@@ -5,7 +5,7 @@ from typing import Optional
 import torch
 
 
-@dataclass(frozen=True)
+@dataclass
 class ExperimentConfig:
     model_types: dict[str, str]
     dataset_name: str
