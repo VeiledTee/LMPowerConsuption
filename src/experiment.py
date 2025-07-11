@@ -25,9 +25,15 @@ from utils import (convert_seconds, count_bools, ensure_config_dirs,
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
-# Supress codecarbon warnings
-logging.getLogger("codecarbon").setLevel(logging.ERROR)
 warnings.filterwarnings("ignore", category=pd.errors.DtypeWarning)
+# Supress codecarbon warnings
+logger = logging.getLogger("codecarbon")
+logger.setLevel(logging.ERROR)
+logger.propagate = False
+
+# Remove existing handlers
+for handler in logger.handlers:
+    logger.removeHandler(handler)
 
 logger = setup_logging()
 ensure_config_dirs()
@@ -57,6 +63,7 @@ def run() -> None:
     # Preload Wikipedia if needed
     wiki_data = None
     if any("q+r" in modes for modes in CONFIG.modes.values()):
+        logger.info(f"Retrieval mode requested - loading wiki")
         t0 = time.time()
         wiki_data = load_wiki()
         h, m, s = convert_seconds(time.time() - t0)
@@ -259,7 +266,7 @@ def run_model_mode(
 
                     row = {
                         "qid": idx,
-                        "original_pred": full_output,
+                        "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ''),
                         "pred": pred,
                         "gold": sample["answer"],
                         "em": em,
