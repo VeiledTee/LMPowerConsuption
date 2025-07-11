@@ -14,9 +14,9 @@ def safe_run(tag):
 
 
 # First config
-CONFIG.dataset_file = "boolq_mini_128.jsonl"
-safe_run("deepseek-mini")
+CONFIG.think = True
+safe_run("deepseek-big-think")
 
 # Second config
-CONFIG.dataset_file = "boolq_full.jsonl"
-safe_run("deepseek-full")
+CONFIG.think = False
+safe_run("deepseek-smooth-brain")
