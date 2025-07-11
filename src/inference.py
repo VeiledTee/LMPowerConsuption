@@ -1,4 +1,5 @@
 import logging
+import os
 
 import torch
 from codecarbon import EmissionsTracker
@@ -25,6 +26,7 @@ def inference_ollama(prompt, model_name):
             "temperature": 0.0,
             "top_p": 0.9,
             "stop": ["</s>", "\n\n\n"],
+            "num_thread": os.cpu_count()
         },
     )
     return resp.get("response") or resp["choices"][0]["text"]
