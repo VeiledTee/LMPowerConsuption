@@ -1,10 +1,13 @@
 import gc
 import json
 import logging
+import os
 import time
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+import smtplib
+from email.message import EmailMessage
 
 import pandas as pd
 import torch
@@ -216,6 +219,8 @@ def run_model_mode(
     result_buffer = []
 
     if provider == "ollama":
+        _ = inference("Ready?", model_name, mode_tag, provider)
+
         for idx, sample, prompt, ret_metrics in tqdm(
                 jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
@@ -466,12 +471,7 @@ def extract_prediction(full_output: str) -> str:
     # If model doesn't think and prepends reply with "Answer:" split on that instead
     elif "Answer: " in full_output:
         full_output = full_output.split("Answer:")[-1].strip()
-    # Fallback is taking the last line of output
-    else:
-        lines = [
-            line.strip() for line in full_output.strip().splitlines() if line.strip()
-        ]
-        return lines[-1]
+    # Fallback is taking the original output
     return full_output.strip()
 
 
@@ -548,11 +548,43 @@ def save_results(results: list[dict], csv_path: Path) -> None:
     df.to_csv(csv_path, mode="a", header=not csv_path.exists(), index=False)
 
 
+def send_email(from_addr: str, to_addr: str, subject: str, body: str):
+    msg = EmailMessage()
+    msg['Subject'] = subject
+    msg['From'] = from_addr
+    msg['To'] = to_addr
+    msg.set_content(body)
+
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user = CONFIG.from_email
+    smtp_pass = ""
+    if not (smtp_user and smtp_pass):
+        raise RuntimeError("SMTP_USERNAME and SMTP_PASSWORD must be set")
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_pass)
+        server.send_message(msg)
+
+
 if __name__ == "__main__":
     try:
         run()
+        send_email(
+            from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+            to_addr=CONFIG.to_email,
+            subject="Completed experiment.py with no issues.",
+            body="No errors",
+        )
     except KeyboardInterrupt:
         logger.warning("Experiment interrupted by user")
     except Exception as error:
         logger.exception(f"Critical error: {str(error)}")
+        send_email(
+            from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+            to_addr=CONFIG.to_email,
+            subject="Script Error",
+            body=f"The script crashed with:\n\n{error}",
+        )
         raise
