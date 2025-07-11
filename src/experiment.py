@@ -217,86 +217,136 @@ def run_model_mode(
 
     if provider == "ollama":
 
-        async def async_process():
-            result_buffer = []
-            task_to_job = {}  # Map tasks to their job info
+        # async def async_process():
+        #     result_buffer = []
+        #     task_to_job = {}  # Map tasks to their job info
+        #
+        #     async with aiohttp.ClientSession():
+        #         tasks = []
+        #         for idx, sample, prompt, ret_metrics in jobs:
+        #             task = asyncio.create_task(
+        #                 generate_async(prompt, model_name, mode_tag, "ollama")
+        #             )
+        #
+        #             # Store job info in dictionary keyed by task object
+        #             task_to_job[task] = (idx, sample, ret_metrics)
+        #             tasks.append(task)
+        #
+        #         # Create a list to track completed tasks
+        #         completed_tasks = []
+        #
+        #         # Wrap the as_completed iterator in tqdm
+        #         for completed_task in tqdm_asyncio.as_completed(
+        #             tasks, total=len(tasks), desc=f"{model_name} ({mode_tag})"
+        #         ):
+        #             # Await the completed task to get its result
+        #             resp = await completed_task
+        #             # Get the original task object from the completed_task
+        #             # (completed_task is a future, but we need the original task)
+        #             original_task = next(
+        #                 t for t in tasks if t.done() and t not in completed_tasks
+        #             )
+        #             completed_tasks.append(original_task)
+        #
+        #             # Retrieve job info using the original task
+        #             idx, sample, ret_metrics = task_to_job[original_task]
+        #
+        #             full_output = resp[0]
+        #             pred = extract_prediction(full_output)
+        #
+        #             inf_metrics = resp[1]
+        #
+        #             if "boolq" in CONFIG.dataset_name:
+        #                 pred, inf_metrics = process_boolq_prediction(
+        #                     pred, model_name, inf_metrics
+        #                 )
+        #
+        #             em = exact_match(pred, sample["answer"])
+        #             f1 = f1_score(pred, sample["answer"])
+        #
+        #             row = {
+        #                 "qid": idx,
+        #                 "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ' '),
+        #                 "pred": pred,
+        #                 "gold": sample["answer"],
+        #                 "em": em,
+        #                 "f1": f1,
+        #                 "inference_duration (s)": inf_metrics["duration"],
+        #                 "inference_energy_consumed (kWh)": inf_metrics[
+        #                     "energy_consumed"
+        #                 ],
+        #                 "inference_emissions (kg)": inf_metrics["emissions"],
+        #                 "retrieval_duration (s)": (
+        #                     ret_metrics.get("duration") if ret_metrics else 0.0
+        #                 ),
+        #                 "retrieval_energy_consumed (kWh)": (
+        #                     ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+        #                 ),
+        #                 "retrieval_emissions (kg)": (
+        #                     ret_metrics.get("emissions") if ret_metrics else 0.0
+        #                 ),
+        #             }
+        #
+        #             result_buffer.append(row)
+        #
+        #             if len(result_buffer) >= CONFIG.batch_size:
+        #                 save_results(result_buffer, csv_path)
+        #                 result_buffer.clear()
+        #
+        #     if result_buffer:
+        #         save_results(result_buffer, csv_path)
+        #
+        # asyncio.run(async_process())
 
-            async with aiohttp.ClientSession():
-                tasks = []
-                for idx, sample, prompt, ret_metrics in jobs:
-                    task = asyncio.create_task(
-                        generate_async(prompt, model_name, mode_tag, "ollama")
-                    )
+        result_buffer = []
 
-                    # Store job info in dictionary keyed by task object
-                    task_to_job[task] = (idx, sample, ret_metrics)
-                    tasks.append(task)
+        for idx, sample, prompt, ret_metrics in tqdm(
+            jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
+        ):
+            full_output, inf_metrics = inference(
+                prompt, model_name, mode_tag, provider
+            )
 
-                # Create a list to track completed tasks
-                completed_tasks = []
+            pred = extract_prediction(full_output)
 
-                # Wrap the as_completed iterator in tqdm
-                for completed_task in tqdm_asyncio.as_completed(
-                    tasks, total=len(tasks), desc=f"{model_name} ({mode_tag})"
-                ):
-                    # Await the completed task to get its result
-                    resp = await completed_task
-                    # Get the original task object from the completed_task
-                    # (completed_task is a future, but we need the original task)
-                    original_task = next(
-                        t for t in tasks if t.done() and t not in completed_tasks
-                    )
-                    completed_tasks.append(original_task)
+            if "boolq" in CONFIG.dataset_name:
+                pred, inf_metrics = process_boolq_prediction(
+                    pred, model_name, inf_metrics
+                )
 
-                    # Retrieve job info using the original task
-                    idx, sample, ret_metrics = task_to_job[original_task]
+            em = exact_match(pred, sample["answer"])
+            f1 = f1_score(pred, sample["answer"])
 
-                    full_output = resp[0]
-                    pred = extract_prediction(full_output)
+            row = {
+                "qid": idx,
+                "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ' '),
+                "pred": pred,
+                "gold": sample["answer"],
+                "em": em,
+                "f1": f1,
+                "inference_duration (s)": inf_metrics["duration"],
+                "inference_energy_consumed (kWh)": inf_metrics["energy_consumed"],
+                "inference_emissions (kg)": inf_metrics["emissions"],
+                "retrieval_duration (s)": (
+                    ret_metrics.get("duration") if ret_metrics else 0.0
+                ),
+                "retrieval_energy_consumed (kWh)": (
+                    ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                ),
+                "retrieval_emissions (kg)": (
+                    ret_metrics.get("emissions") if ret_metrics else 0.0
+                ),
+            }
 
-                    inf_metrics = resp[1]
+            result_buffer.append(row)
 
-                    if "boolq" in CONFIG.dataset_name:
-                        pred, inf_metrics = process_boolq_prediction(
-                            pred, model_name, inf_metrics
-                        )
-
-                    em = exact_match(pred, sample["answer"])
-                    f1 = f1_score(pred, sample["answer"])
-
-                    row = {
-                        "qid": idx,
-                        "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ' '),
-                        "pred": pred,
-                        "gold": sample["answer"],
-                        "em": em,
-                        "f1": f1,
-                        "inference_duration (s)": inf_metrics["duration"],
-                        "inference_energy_consumed (kWh)": inf_metrics[
-                            "energy_consumed"
-                        ],
-                        "inference_emissions (kg)": inf_metrics["emissions"],
-                        "retrieval_duration (s)": (
-                            ret_metrics.get("duration") if ret_metrics else 0.0
-                        ),
-                        "retrieval_energy_consumed (kWh)": (
-                            ret_metrics.get("energy_consumed") if ret_metrics else 0.0
-                        ),
-                        "retrieval_emissions (kg)": (
-                            ret_metrics.get("emissions") if ret_metrics else 0.0
-                        ),
-                    }
-
-                    result_buffer.append(row)
-
-                    if len(result_buffer) >= CONFIG.batch_size:
-                        save_results(result_buffer, csv_path)
-                        result_buffer.clear()
-
-            if result_buffer:
+            if len(result_buffer) >= CONFIG.batch_size:
                 save_results(result_buffer, csv_path)
+                result_buffer.clear()
 
-        asyncio.run(async_process())
+        if result_buffer:
+            save_results(result_buffer, csv_path)
+
     else:
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
             future_to_job = {
