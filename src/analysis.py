@@ -98,6 +98,7 @@ def summarise(
     df = add_combined_cols(df)
     try:
         display_name = MODEL_DISPLAY_NAMES[f"{model_key}_q+r"] if context_used else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
+        display_name = display_name + " Think" if 'think' in str(path) else display_name
 
         total_time_seconds = df["combined_time"].sum()
         hours, minutes, seconds = convert_seconds(total_time_seconds)
