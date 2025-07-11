@@ -30,7 +30,6 @@ def inference_ollama(prompt, model_name):
         },
         think=CONFIG.think,
     )
-    print(resp)
 
     if "response" in resp:
         return resp["response"]
