@@ -17,6 +17,7 @@ class ExperimentConfig:
     batch_size: int
     device: str
     modes: dict[str, dict]
+    think: bool
     wiki_dir: Path
     corpus_cache: Path
     tfidf_cache: Path
@@ -121,6 +122,7 @@ CONFIG = ExperimentConfig(
     max_new_tokens=64,
     batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
+    think=True,
     wiki_dir=Path("data/hotpot_wiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
     tfidf_cache=Path("cache/tfidf.pkl"),
