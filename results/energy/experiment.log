@@ -3706,3 +3706,218 @@ ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ol
 2025-07-12 07:13:01,337 - energy_eval - INFO - Using device: cuda
 2025-07-12 07:13:04,054 - energy_eval - INFO - Loaded dataset with 9427 samples
 2025-07-12 07:13:04,054 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-12 07:16:47,929 - energy_eval - INFO - Loaded wiki in 0h3m43s
+2025-07-12 07:16:47,930 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-12 07:16:47,930 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-12 07:16:47,930 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q_think.csv
+2025-07-12 07:16:48,110 - energy_eval - INFO - Built 9427 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-12 08:08:54,862 - energy_eval - WARNING - Experiment interrupted by user
+2025-07-12 08:09:20,382 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-12 08:09:20,382 - energy_eval - INFO - Using device: cuda
+2025-07-12 08:09:23,049 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-12 08:09:23,049 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-12 08:12:58,345 - energy_eval - INFO - Loaded wiki in 0h3m35s
+2025-07-12 08:12:58,345 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-12 08:12:58,345 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-12 08:12:58,345 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q_think.csv
+2025-07-12 08:12:58,410 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-12 15:01:35,415 - energy_eval - INFO - Completed q for deepseek-r1:8b in 6h 48m 37s
+2025-07-12 15:01:35,415 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q+r_think.csv
+2025-07-12 16:33:54,190 - energy_eval - INFO - Built 3270 prompts in 1h 32m 18s (+ retrieval: 0h 1m 47s, 0.0284 kWh, 0.0083 kg)
+2025-07-12 22:08:31,348 - energy_eval - INFO - Completed q+r for deepseek-r1:8b in 7h 6m 55s
+2025-07-12 22:08:55,350 - energy_eval - INFO - Completed deepseek-r1:8b in 13h 55m 57s
+2025-07-12 22:08:55,350 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:14b
+============================================================
+2025-07-12 22:08:55,351 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-12 22:08:55,351 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-14b_q_think.csv
+2025-07-12 22:08:55,432 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 06:18:13,185 - energy_eval - INFO - Completed q for deepseek-r1:14b in 8h 9m 17s
+2025-07-13 06:18:13,185 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-14b_q+r_think.csv
+2025-07-13 07:43:07,638 - energy_eval - INFO - Built 3270 prompts in 1h 24m 54s (+ retrieval: 0h 1m 36s, 0.0238 kWh, 0.0070 kg)
+2025-07-13 14:45:50,952 - energy_eval - INFO - Completed q+r for deepseek-r1:14b in 8h 27m 37s
+2025-07-13 14:46:13,281 - energy_eval - INFO - Completed deepseek-r1:14b in 16h 37m 17s
+2025-07-13 14:46:13,281 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-07-13 14:46:13,281 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-07-13 14:46:13,281 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-32b_q_think.csv
+2025-07-13 14:46:13,355 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 17:30:19,438 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-13 17:30:19,438 - energy_eval - INFO - Using device: cuda
+2025-07-13 17:30:22,130 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-13 17:30:22,131 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-13 17:34:05,457 - energy_eval - INFO - Loaded wiki in 0h3m43s
+2025-07-13 17:34:05,457 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-13 17:34:05,457 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-13 17:34:05,458 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q_think.csv
+2025-07-13 17:34:05,482 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 17:34:17,679 - energy_eval - INFO - Completed q for deepseek-r1:8b in 0h 0m 12s
+2025-07-13 17:34:17,679 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q+r_think.csv
+2025-07-13 17:34:17,700 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 17:34:20,625 - energy_eval - INFO - Completed q+r for deepseek-r1:8b in 0h 0m 2s
+2025-07-13 17:34:26,428 - energy_eval - INFO - Completed deepseek-r1:8b in 0h 0m 20s
+2025-07-13 17:34:26,428 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:14b
+============================================================
+2025-07-13 17:34:26,428 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-13 17:34:26,428 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-14b_q_think.csv
+2025-07-13 17:34:26,444 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 17:34:34,354 - energy_eval - INFO - Completed q for deepseek-r1:14b in 0h 0m 7s
+2025-07-13 17:34:34,354 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-14b_q+r_think.csv
+2025-07-13 17:34:34,372 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 17:34:36,187 - energy_eval - INFO - Completed q+r for deepseek-r1:14b in 0h 0m 1s
+2025-07-13 17:34:41,369 - energy_eval - INFO - Completed deepseek-r1:14b in 0h 0m 14s
+2025-07-13 17:34:41,369 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-07-13 17:34:41,370 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-07-13 17:34:41,370 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-32b_q_think.csv
+2025-07-13 17:34:41,481 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 21:56:53,045 - __main__ - INFO - Starting run: deepseek-big-think
+2025-07-13 21:56:53,045 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama', 'deepseek-r1:14b': 'ollama', 'deepseek-r1:32b': 'ollama'}, dataset_name='google/boolq', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q': False, 'q+r': True}, 'deepseek-r1:14b': {'q': False, 'q+r': True}, 'deepseek-r1:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-13 21:56:53,045 - energy_eval - INFO - Using device: cuda
+2025-07-13 21:56:58,515 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-13 21:56:58,515 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-13 22:00:50,064 - energy_eval - INFO - Loaded wiki in 0h3m51s
+2025-07-13 22:00:50,064 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-07-13 22:00:50,064 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-13 22:00:50,064 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q_think.csv
+2025-07-13 22:00:50,072 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 22:01:01,367 - energy_eval - INFO - Completed q for deepseek-r1:8b in 0h 0m 11s
+2025-07-13 22:01:01,367 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-8b_q+r_think.csv
+2025-07-13 22:01:01,374 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 22:01:07,432 - energy_eval - INFO - Completed q+r for deepseek-r1:8b in 0h 0m 6s
+2025-07-13 22:01:12,908 - energy_eval - INFO - Completed deepseek-r1:8b in 0h 0m 22s
+2025-07-13 22:01:12,908 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:14b
+============================================================
+2025-07-13 22:01:12,908 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-13 22:01:12,908 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-14b_q_think.csv
+2025-07-13 22:01:12,908 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 22:01:23,481 - energy_eval - INFO - Completed q for deepseek-r1:14b in 0h 0m 10s
+2025-07-13 22:01:23,481 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-14b_q+r_think.csv
+2025-07-13 22:01:23,494 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-13 22:01:28,496 - energy_eval - INFO - Completed q+r for deepseek-r1:14b in 0h 0m 5s
+2025-07-13 22:01:33,506 - energy_eval - INFO - Completed deepseek-r1:14b in 0h 0m 20s
+2025-07-13 22:01:33,506 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-07-13 22:01:33,506 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-07-13 22:01:33,506 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_deepseek-r1-32b_q_think.csv
+2025-07-13 22:01:33,621 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-14 15:49:13,179 - energy_eval - INFO - Completed q for deepseek-r1:32b in 17h 47m 39s
+2025-07-14 15:49:22,947 - energy_eval - INFO - Completed deepseek-r1:32b in 17h 47m 49s
+2025-07-14 15:49:22,947 - energy_eval - INFO - 
+============================================================
+Experiment completed in 17h 52m 29s
+============================================================
+2025-07-14 15:49:28,514 - __main__ - INFO - Starting run: gemma3-big
+2025-07-14 15:49:28,514 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-14 15:49:28,514 - energy_eval - INFO - Using device: cuda
+2025-07-14 15:49:30,611 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-14 15:49:30,611 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-14 15:53:05,833 - energy_eval - INFO - Loaded wiki in 0h3m35s
+2025-07-14 15:53:05,833 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-07-14 15:53:05,833 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-14 15:53:05,833 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-4b_q_think.csv
+2025-07-14 15:53:05,897 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-14 15:53:10,487 - __main__ - ERROR - Run gemma3-big failed: registry.ollama.ai/library/gemma3:4b does not support thinking (status code: 400)
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\run_multiple.py", line 11, in safe_run
+    run()
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 86, in run
+    run_model_mode(
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 222, in run_model_mode
+    _ = inference("Ready?", model_name, mode_tag, provider)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 96, in inference
+    text = inference_ollama(prompt, model_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\inference.py", line 22, in inference_ollama
+    resp = generate(
+           ^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\venv\Lib\site-packages\ollama\_client.py", line 247, in generate
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\venv\Lib\site-packages\ollama\_client.py", line 180, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\venv\Lib\site-packages\ollama\_client.py", line 124, in _request_raw
+    raise ResponseError(e.response.text, e.response.status_code) from None
+ollama._types.ResponseError: registry.ollama.ai/library/gemma3:4b does not support thinking (status code: 400)
+2025-07-14 16:16:54,861 - __main__ - INFO - Starting run: gemma3-big
+2025-07-14 16:16:54,861 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='google/boolq', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False, 'q+r': True}, 'gemma3:12b': {'q': False, 'q+r': True}, 'gemma3:27b': {'q': False}}, think=False, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know and the context provided. Context: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer the following to the best of your ability. You must provide an answer. If you are unsure, make an educated guess based on what you know. Question: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-07-14 16:16:54,861 - energy_eval - INFO - Using device: cuda
+2025-07-14 16:16:57,676 - energy_eval - INFO - Loaded dataset with 3270 samples
+2025-07-14 16:16:57,676 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-07-14 16:21:26,113 - energy_eval - INFO - Loaded wiki in 0h4m28s
+2025-07-14 16:21:26,113 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-07-14 16:21:26,113 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-14 16:21:26,113 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-4b_q.csv
+2025-07-14 16:21:26,225 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
