@@ -153,7 +153,7 @@ def main(filter_substring: str | None = None) -> None:
     if filter_substring:
         files = [f for f in files if filter_substring in f.name]
 
-    out_filename: str = f"{filter_substring.split('_')[-1]}{'_' if filter_substring else ''}summary"
+    out_filename: str = f"{filter_substring.split('_')[-1] if filter_substring else ''}{'_' if filter_substring else ''}summary"
 
     summaries = []
     for csv_path in files:
@@ -161,12 +161,17 @@ def main(filter_substring: str | None = None) -> None:
         parts = name.split('_')
         model_key = parts[1]
         context_used = 'q+r' in name
+        dataset_version = ""
+
         if len(parts) == 3:
-            dataset_version = 'full'
-        elif "dev" in name:
-            dataset_version = f'dev ({parts[3]})'
+            dataset_version += "full"
+        elif "think" in name and len(parts) == 4:
+            dataset_version += "full"
+        elif "128" in name or "dev" in name:
+            dataset_version = f"dev ({parts[3]})"
         else:
-            dataset_version = parts[3]
+            dataset_version = "full"
+
         cur_summary = summarise(
                 model_key=model_key,
                 path=csv_path,
