@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 from dotenv import load_dotenv
 import torch
+import os
 
 load_dotenv()
 
