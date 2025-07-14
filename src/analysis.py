@@ -135,7 +135,7 @@ def send_email_with_attachment(from_addr: str, to_addr: str, subject: str, body:
     smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_user = CONFIG.from_email
-    smtp_pass = ""
+    smtp_pass = CONFIG.smtp_password
     if not (smtp_user and smtp_pass):
         raise RuntimeError("SMTP_USERNAME and SMTP_PASSWORD must be set")
 
