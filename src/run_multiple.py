@@ -17,7 +17,7 @@ def safe_run(tag):
 # # First config
 # CONFIG.think = True
 # safe_run("deepseek-big-think")
-main('deepseek')
+main('_deepseek')
 
 # Second config
 CONFIG.model_types={"gemma3:4b": "ollama","gemma3:12b": "ollama","gemma3:27b": "ollama",}
@@ -25,4 +25,4 @@ CONFIG.modes={"gemma3:4b": {"q": False, "q+r": True},"gemma3:12b": {"q": False, 
 CONFIG.think = False
 safe_run("gemma3-big")
 
-main('gemma3')
+main('_gemma3')
