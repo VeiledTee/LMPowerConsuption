@@ -10,9 +10,6 @@ import pandas as pd
 from config import CONFIG
 from utils import convert_seconds
 
-# Optional filter: set to a substring to include only matching files - set to None to include all
-FILTER_SUBSTRING: str | None = "_deepseek"
-out_filename: str = f"{FILTER_SUBSTRING.split('_')[-1]}_summary"
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -148,13 +145,15 @@ def send_email_with_attachment(from_addr: str, to_addr: str, subject: str, body:
         server.send_message(msg)
 
 
-def main() -> None:
+def main(filter_substring: str | None = None) -> None:
     project_dir = Path(__file__).resolve().parents[1]
     results_dir = project_dir / "results"
 
     files = sorted(results_dir.glob("*.csv"))
-    if FILTER_SUBSTRING:
-        files = [f for f in files if FILTER_SUBSTRING in f.name]
+    if filter_substring:
+        files = [f for f in files if filter_substring in f.name]
+
+    out_filename: str = f"{filter_substring.split('_')[-1]}{'_' if filter_substring else ''}summary"
 
     summaries = []
     for csv_path in files:
