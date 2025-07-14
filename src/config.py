@@ -1,8 +1,10 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
-
+from dotenv import load_dotenv
 import torch
+
+load_dotenv()
 
 
 @dataclass
@@ -32,6 +34,7 @@ class ExperimentConfig:
     email_results: bool
     from_email: str
     to_email: str
+    smtp_password: str
     log_level: str = "INFO"
     prompt_templates: dict[str, str] = field(
         default_factory=lambda: {
@@ -137,4 +140,5 @@ CONFIG = ExperimentConfig(
     email_results=True,
     from_email="eheavey626@gmail.com",
     to_email="s72kw@unb.ca",
+    smtp_password=str(os.getenv("SMTP_PASSWORD")),
 )
