@@ -3921,3 +3921,39 @@ Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
 2025-07-14 16:21:26,113 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-4b_q.csv
 2025-07-14 16:21:26,225 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-15 00:46:14,629 - energy_eval - INFO - Completed q for gemma3:4b in 8h 24m 48s
+2025-07-15 00:46:14,629 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-4b_q+r.csv
+2025-07-15 05:05:21,327 - energy_eval - INFO - Built 3270 prompts in 4h 19m 6s (+ retrieval: 0h 1m 29s, 0.0229 kWh, 0.0043 kg)
+2025-07-15 13:57:18,204 - energy_eval - INFO - Completed q+r for gemma3:4b in 13h 11m 3s
+2025-07-15 13:57:42,801 - energy_eval - INFO - Completed gemma3:4b in 21h 36m 16s
+2025-07-15 13:57:42,801 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-07-15 13:57:42,802 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-07-15 13:57:42,802 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-12b_q.csv
+2025-07-15 13:57:42,879 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-15 22:31:24,269 - energy_eval - INFO - Completed q for gemma3:12b in 8h 33m 41s
+2025-07-15 22:31:24,270 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-12b_q+r.csv
+2025-07-16 02:39:04,312 - energy_eval - INFO - Built 3270 prompts in 4h 7m 40s (+ retrieval: 0h 1m 35s, 0.0245 kWh, 0.0072 kg)
+2025-07-16 11:15:00,039 - energy_eval - INFO - Completed q+r for gemma3:12b in 12h 43m 35s
+2025-07-16 11:15:19,858 - energy_eval - INFO - Completed gemma3:12b in 21h 17m 37s
+2025-07-16 11:15:19,858 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:27b
+============================================================
+2025-07-16 11:15:19,858 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-07-16 11:15:19,858 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\boolq_gemma3-27b_q.csv
+2025-07-16 11:15:19,946 - energy_eval - INFO - Built 3270 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-07-16 19:47:56,150 - energy_eval - INFO - Completed q for gemma3:27b in 8h 32m 36s
+2025-07-16 19:48:01,934 - energy_eval - INFO - Completed gemma3:27b in 8h 32m 42s
+2025-07-16 19:48:01,934 - energy_eval - INFO - 
+============================================================
+Experiment completed in 51h 31m 7s
+============================================================
