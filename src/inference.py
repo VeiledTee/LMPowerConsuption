@@ -4,8 +4,12 @@ import os
 import torch
 from codecarbon import EmissionsTracker
 from ollama import generate
-from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
-                          PreTrainedTokenizer)
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    PreTrainedModel,
+    PreTrainedTokenizer,
+)
 
 from config import CONFIG
 
@@ -26,7 +30,7 @@ def inference_ollama(prompt, model_name):
             "temperature": 0.0,
             "top_p": 0.9,
             "stop": ["</s>", "\n\n\n"],
-            "num_thread": os.cpu_count()
+            "num_thread": os.cpu_count(),
         },
         think=CONFIG.think,
     )
@@ -35,7 +39,9 @@ def inference_ollama(prompt, model_name):
         return resp["response"]
     if "choices" in resp and len(resp["choices"]) > 0:
         return resp["choices"][0]["text"]
-    raise ValueError(f"Invalid Ollama response for prompt: {prompt[:200]}...\nResponse: {resp}")
+    raise ValueError(
+        f"Invalid Ollama response for prompt: {prompt[:200]}...\nResponse: {resp}"
+    )
 
 
 def load_model_and_tokenizer(
@@ -128,9 +134,9 @@ def inference(
                 if tokenizer.pad_token_id is None:
                     tokenizer.pad_token_id = tokenizer.eos_token_id
             with EmissionsTracker(
-                    save_to_file=False,
-                    project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
-                    log_level="error",
+                save_to_file=False,
+                project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_{run_tag}",
+                log_level="error",
             ) as tracker:
                 tokens = model.generate(
                     **inputs,

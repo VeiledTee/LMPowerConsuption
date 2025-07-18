@@ -64,7 +64,7 @@ def extract_model_family(name: str) -> str:
 
 
 def extract_model_size(display_name: str) -> float:
-    match = re.search(r'(\d+(\.\d+)?)B', display_name, re.IGNORECASE)
+    match = re.search(r"(\d+(\.\d+)?)B", display_name, re.IGNORECASE)
     return float(match.group(1)) if match else 0.0
 
 
@@ -86,16 +86,20 @@ def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarise(
-        model_key: str,
-        path: Path,
-        context_used: bool,
-        dataset_version: str | int,
+    model_key: str,
+    path: Path,
+    context_used: bool,
+    dataset_version: str | int,
 ) -> dict:
     df = _load(path)
     df = add_combined_cols(df)
     try:
-        display_name = MODEL_DISPLAY_NAMES[f"{model_key}_q+r"] if context_used else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
-        display_name = display_name + " Think" if 'think' in str(path) else display_name
+        display_name = (
+            MODEL_DISPLAY_NAMES[f"{model_key}_q+r"]
+            if context_used
+            else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
+        )
+        display_name = display_name + " Think" if "think" in str(path) else display_name
 
         total_time_seconds = df["combined_time"].sum()
         hours, minutes, seconds = convert_seconds(total_time_seconds)
@@ -120,17 +124,26 @@ def summarise(
         return {}
 
 
-def send_email_with_attachment(from_addr: str, to_addr: str, subject: str, body: str, attachment_path: str):
+def send_email_with_attachment(
+    from_addr: str, to_addr: str, subject: str, body: str, attachment_path: str
+):
     msg = EmailMessage()
-    msg['Subject'] = subject
-    msg['From'] = from_addr
-    msg['To'] = to_addr
+    msg["Subject"] = subject
+    msg["From"] = from_addr
+    msg["To"] = to_addr
     msg.set_content(body)
 
-    with open(attachment_path, 'rb') as f:
+    with open(attachment_path, "rb") as f:
         data = f.read()
-    maintype, subtype = (mimetypes.guess_type(attachment_path)[0] or 'application/octet-stream').split('/', 1)
-    msg.add_attachment(data, maintype=maintype, subtype=subtype, filename=os.path.basename(attachment_path))
+    maintype, subtype = (
+        mimetypes.guess_type(attachment_path)[0] or "application/octet-stream"
+    ).split("/", 1)
+    msg.add_attachment(
+        data,
+        maintype=maintype,
+        subtype=subtype,
+        filename=os.path.basename(attachment_path),
+    )
 
     smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
@@ -153,14 +166,16 @@ def main(filter_substring: str | None = None) -> None:
     if filter_substring:
         files = [f for f in files if filter_substring in f.name]
 
-    out_filename: str = f"{filter_substring.split('_')[-1] if filter_substring else ''}{'_' if filter_substring else ''}summary"
+    out_filename: str = (
+        f"{filter_substring.split('_')[-1] if filter_substring else ''}{'_' if filter_substring else ''}summary"
+    )
 
     summaries = []
     for csv_path in files:
         name = csv_path.stem
-        parts = name.split('_')
+        parts = name.split("_")
         model_key = parts[1]
-        context_used = 'q+r' in name
+        context_used = "q+r" in name
         dataset_version = ""
 
         if len(parts) == 3:
@@ -173,22 +188,22 @@ def main(filter_substring: str | None = None) -> None:
             dataset_version = "full"
 
         cur_summary = summarise(
-                model_key=model_key,
-                path=csv_path,
-                context_used=context_used,
-                dataset_version=dataset_version,
-            )
+            model_key=model_key,
+            path=csv_path,
+            context_used=context_used,
+            dataset_version=dataset_version,
+        )
         if cur_summary != {}:
-            summaries.append(
-                cur_summary
-            )
+            summaries.append(cur_summary)
         else:
             continue
 
     df_summary = pd.DataFrame(summaries)
     df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
     df_summary["is_rag"] = df_summary["context_used"].astype(int)  # Base = 0, RAG = 1
-    df_summary = df_summary.sort_values(by=["dataset", "dataset_version", "model_size_b", "is_rag"])
+    df_summary = df_summary.sort_values(
+        by=["dataset", "dataset_version", "model_size_b", "is_rag"]
+    )
     df_summary.drop(columns=["is_rag", "model_size_b"], inplace=True)
 
     out_csv = results_dir / f"{out_filename}.csv"
@@ -201,12 +216,17 @@ def main(filter_substring: str | None = None) -> None:
         grouped = df.groupby(["model_family", "dataset", "dataset_version"], sort=False)
         for (family, _, _), group in grouped:
             output += f"### {family}\n\n"
-            output += group.drop(columns=["model_family"]).to_markdown(index=False, floatfmt=".6f") + "\n\n"
+            output += (
+                group.drop(columns=["model_family"]).to_markdown(
+                    index=False, floatfmt=".6f"
+                )
+                + "\n\n"
+            )
         return output
 
     markdown_with_splits = insert_blank_lines(df_summary)
     print(markdown_with_splits)
-    with open(out_md, 'w') as f:
+    with open(out_md, "w") as f:
         f.write(markdown_with_splits)
 
     print(f"Saved summary to {out_csv} and {out_md}")
