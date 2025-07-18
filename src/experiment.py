@@ -19,9 +19,7 @@ from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve_hotpot
-from scorers import exact_match, f1_score
-from utils import (convert_seconds, count_bools, ensure_config_dirs,
-                   setup_logging)
+from utils import convert_seconds, count_bools, ensure_config_dirs, setup_logging
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -181,14 +179,19 @@ def run_model_mode(
     provider: str,
     wiki_data: tuple,
 ) -> None:
+    if "hotpot" in CONFIG.dataset_name:
+        from hotpot_scorers import exact_match, f1_score  # use Hotpot-style
+    else:
+        from scorers import exact_match, f1_score  # use general BoolQ-style
+
     """Run evaluation for a specific model and mode, with concurrent inference and batched writes."""
     dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
     csv_path = (
-            CONFIG.result_dir
-            / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
-              f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
-              f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-              f"{'_think' if CONFIG.think == True else ''}.csv"
+        CONFIG.result_dir
+        / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
+        f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
+        f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
+        f"{'_think' if CONFIG.think == True else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
     start_idx = get_resume_index(csv_path)
@@ -222,11 +225,9 @@ def run_model_mode(
         _ = inference("Ready?", model_name, mode_tag, provider)
 
         for idx, sample, prompt, ret_metrics in tqdm(
-                jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
+            jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
-            full_output, inf_metrics = inference(
-                prompt, model_name, mode_tag, provider
-            )
+            full_output, inf_metrics = inference(prompt, model_name, mode_tag, provider)
 
             pred = extract_prediction(full_output)
 
@@ -240,7 +241,9 @@ def run_model_mode(
 
             row = {
                 "qid": idx,
-                "original_pred": full_output.replace(',', ' ').replace('  ', ' ').replace('\n', ' '),
+                "original_pred": full_output.replace(",", " ")
+                .replace("  ", " ")
+                .replace("\n", " "),
                 "pred": pred,
                 "gold": sample["answer"],
                 "em": em,
@@ -284,9 +287,9 @@ def run_model_mode(
             }
 
             for fut in tqdm(
-                    as_completed(future_to_job),
-                    total=len(future_to_job),
-                    desc=f"{model_name} ({mode_tag})",
+                as_completed(future_to_job),
+                total=len(future_to_job),
+                desc=f"{model_name} ({mode_tag})",
             ):
                 idx, sample, ret_metrics = future_to_job[fut]
                 try:
@@ -336,24 +339,6 @@ def run_model_mode(
     )
 
 
-def load_wikipedia_if_needed(mode_tag: str) -> tuple | None:
-    """Load Wikipedia data for retrieval mode."""
-    if mode_tag != "q+r":
-        return None
-
-    try:
-        t0 = time.time()
-        wiki_data = load_wiki()
-        hours, minutes, seconds = convert_seconds(time.time() - t0)
-        logger.info(
-            f"Loaded Wikipedia corpus and indexes in {hours}:{minutes:02}:{seconds:02}"
-        )
-        return wiki_data
-    except Exception as e:
-        logger.error(f"Wikipedia loading failed: {str(e)}")
-        return None
-
-
 def get_resume_index(csv_path: Path) -> int:
     """Get resume index from existing results file."""
     if not csv_path.exists():
@@ -365,70 +350,6 @@ def get_resume_index(csv_path: Path) -> int:
     except Exception as e:
         logger.warning(f"Couldn't read existing CSV: {str(e)}")
         return 0
-
-
-def process_current_sample(
-    idx: int,
-    sample: dict,
-    mode_tag: str,
-    include_passage: bool,
-    wiki_data: tuple | None,
-    model: any,
-    tokenizer: any,
-    model_name: str,
-    provider: str,
-) -> dict | None:
-    """Process a single sample and return results."""
-    # Initialize metrics
-    retrieval_metrics = {
-        "duration": 0.0,
-        "energy_consumed": 0.0,
-        "emissions": 0.0,
-    }
-
-    # Build and process prompt
-    sample_for_prompt = sample.copy()
-
-    # Retrieve context if needed
-    if mode_tag == "q+r":
-        retrieved_context, retrieval_metrics = retrieve_context(sample, wiki_data)
-        sample_for_prompt["retrieved_context"] = retrieved_context
-
-    prompt = build_prompt(sample_for_prompt, include_passage)
-
-    # Generate prediction
-    prediction, inference_metrics = generate_prediction(
-        prompt, model, tokenizer, model_name, mode_tag, provider
-    )
-
-    # Process BoolQ special case
-    if "boolq" in CONFIG.dataset_name:
-        prediction, inference_metrics = process_boolq_prediction(
-            prediction, model_name, inference_metrics
-        )
-
-    # Prepare gold answer
-    gold_answer = sample["answer"]
-    if not isinstance(gold_answer, str):
-        gold_answer = str(gold_answer)
-
-    # Calculate scores
-    em = exact_match(prediction, gold_answer)
-    f1 = f1_score(prediction, gold_answer)
-
-    return {
-        "qid": idx,
-        "pred": prediction,
-        "gold": gold_answer,
-        "em": em,
-        "f1": f1,
-        "inference_duration (s)": inference_metrics["duration"],
-        "inference_energy_consumed (kWh)": inference_metrics["energy_consumed"],
-        "inference_emissions (kg)": inference_metrics["emissions"],
-        "retrieval_duration (s)": retrieval_metrics["duration"],
-        "retrieval_energy_consumed (kWh)": retrieval_metrics["energy_consumed"],
-        "retrieval_emissions (kg)": retrieval_metrics["emissions"],
-    }
 
 
 def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
@@ -550,9 +471,9 @@ def save_results(results: list[dict], csv_path: Path) -> None:
 
 def send_email(from_addr: str, to_addr: str, subject: str, body: str):
     msg = EmailMessage()
-    msg['Subject'] = subject
-    msg['From'] = from_addr
-    msg['To'] = to_addr
+    msg["Subject"] = subject
+    msg["From"] = from_addr
+    msg["To"] = to_addr
     msg.set_content(body)
 
     smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
