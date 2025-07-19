@@ -14,9 +14,9 @@ def safe_run(tag):
         logger.exception(f"Run {tag} failed: {e}")
 
 
-# # First config
-# CONFIG.think = True
-# safe_run("deepseek-big-think")
+# First config
+CONFIG.think = True
+safe_run("deepseek-big-think")
 main("_deepseek")
 
 # Second config
