@@ -372,7 +372,7 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         retrieval_metrics.update(ret_metrics)
         # Extract context from sample
         context = " ".join(
-            sent for section in sample["context"]["sentences"] for sent in section
+            sent for section in sample["passage"] for sent in section
         )
     elif "boolq" in CONFIG.dataset_name:
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
