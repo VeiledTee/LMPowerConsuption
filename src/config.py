@@ -41,14 +41,19 @@ class ExperimentConfig:
         default_factory=lambda: {
             "hotpot": {
                 "with_context": (
-                    "Answer the following to the best of your ability. You must provide an answer. "
-                    "If you are unsure, make an educated guess based on what you know and the context provided. "
-                    "Context: {context}\nQuestion: {question}\nAnswer:"
+                    "Using the provided context, answer the question with as few words as possible. "
+                    "Be thorough in your analysis of the context but answer in as few words as possible. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Context: {context}\n"
+                    "Question: {question}\n"
+                    "Answer:"
                 ),
                 "without_context": (
-                    "Answer the following to the best of your ability. You must provide an answer. "
-                    "If you are unsure, make an educated guess based on what you know. "
-                    "Question: {question}\nAnswer:"
+                    "Answer with as few words as possible. "
+                    "Be thorough in your analysis but answer in as few words as possible. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Question: {question}\n"
+                    "Answer:"
                 ),
             },
             "boolq": {
@@ -113,15 +118,15 @@ CONFIG = ExperimentConfig(
         # "gemma3:27b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
-    # dataset_name="hotpotqa/hotpot_qa",
-    dataset_name="google/boolq",
-    dataset_file="full.jsonl",  # for full dataset (above) run
+    dataset_name="hotpotqa/hotpot_qa",
+    # dataset_name="google/boolq",
+    # dataset_file="full.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
-    # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
+    dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
     config="fullwiki",
-    split="validation",
+    split="train",
     n_samples=None,
     max_new_tokens=64,
     batch_size=4,
