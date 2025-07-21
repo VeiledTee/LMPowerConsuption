@@ -33,4 +33,4 @@ safe_run("deepseek-think")
 CONFIG.think = False
 safe_run("deepseek-no-think")
 
-main("_deepseek")
+main("hotpot_deepseek")
