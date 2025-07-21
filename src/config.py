@@ -89,13 +89,13 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": "huggingface",
         # "deepseek-r1:1.5b": "ollama",  # doesn't pass baseline
         # "deepseek-r1:7b": "ollama",  # near identical to 8b
-        "deepseek-r1:8b": "ollama",
-        "deepseek-r1:14b": "ollama",
-        "deepseek-r1:32b": "ollama",
-        # "gemma3:1b": "ollama",  # doesn't pass baseline
-        # "gemma3:4b": "ollama",
-        # "gemma3:12b": "ollama",
-        # "gemma3:27b": "ollama",
+        # "deepseek-r1:8b": "ollama",
+        # "deepseek-r1:14b": "ollama",
+        # "deepseek-r1:32b": "ollama",
+        "gemma3:1b": "ollama",  # doesn't pass baseline
+        "gemma3:4b": "ollama",
+        "gemma3:12b": "ollama",
+        "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
     },
     modes={
@@ -109,21 +109,21 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": {"q": False},
         # "deepseek-r1:1.5b": {"q": False, "q+r": True},
         # "deepseek-r1:7b": {"q": False, "q+r": True},
-        "deepseek-r1:8b": {"q": False, "q+r": True},
-        "deepseek-r1:14b": {"q": False, "q+r": True},
-        "deepseek-r1:32b": {"q": False},
-        # "gemma3:1b": {"q": False, "q+r": True},
-        # "gemma3:4b": {"q": False, "q+r": True},
-        # "gemma3:12b": {"q": False, "q+r": True},
-        # "gemma3:27b": {"q": False},
+        # "deepseek-r1:8b": {"q": False, "q+r": True},
+        # "deepseek-r1:14b": {"q": False, "q+r": True},
+        # "deepseek-r1:32b": {"q": False},
+        "gemma3:1b": {"q": False, "q+r": True},
+        "gemma3:4b": {"q": False, "q+r": True},
+        "gemma3:12b": {"q": False, "q+r": True},
+        "gemma3:27b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
     dataset_name="hotpotqa/hotpot_qa",
     # dataset_name="google/boolq",
-    # dataset_file="full.jsonl",  # for full dataset (above) run
+    dataset_file="full.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
-    dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
+    # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
     config="fullwiki",
     split="train",
