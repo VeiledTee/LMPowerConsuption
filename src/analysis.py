@@ -243,4 +243,4 @@ def main(filter_substring: str | None = None) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main("_gemma3")
