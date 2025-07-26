@@ -41,7 +41,7 @@ PROMPT_BUFFER = []
 RESULT_BUFFER = []
 
 
-def run() -> None:
+def run(file_suffix: None | str = "") -> None:
     """Main experiment runner."""
     project_dir = Path(__file__).resolve().parents[1]
     data_dir = project_dir / "data"
@@ -90,6 +90,7 @@ def run() -> None:
                 model,
                 provider,
                 wiki_data,
+                file_suffix
             )
 
         cleanup_resources(model, tokenizer)
@@ -178,6 +179,7 @@ def run_model_mode(
     model: any,
     provider: str,
     wiki_data: tuple,
+    file_suffix: None | str = "",
 ) -> None:
     if "hotpot" in CONFIG.dataset_name:
         from hotpot_scorers import exact_match, f1_score  # use Hotpot-style
@@ -191,7 +193,8 @@ def run_model_mode(
         / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
         f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
         f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-        f"{'_think' if CONFIG.think == True else ''}.csv"
+        f"{'_think' if CONFIG.think == True else ''}"
+        f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
     start_idx = get_resume_index(csv_path)
