@@ -19,7 +19,7 @@ def safe_run(tag, file_suffix: None | str = ""):
 # safe_run("deepseek-think")
 # # main("_deepseek")
 
-# Second config
+# # Second config
 # CONFIG.model_types = {
 #     "gemma3:4b": "ollama",
 # }
