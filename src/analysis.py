@@ -124,6 +124,23 @@ def summarise(
         return {}
 
 
+# Function to calculate stats
+def emission_stats(df_subset, model_name):
+    emissions = df_subset["total_emissions_kg"]
+    mean = emissions.mean()
+    std_dev = emissions.std()
+    val_range = emissions.max() - emissions.min()
+    cv = std_dev / mean if mean != 0 else float("inf")
+    range_pct_mean = val_range / mean * 100 if mean != 0 else float("inf")
+
+    print(f"\n--- Stats for {model_name} ---")
+    print(f"Mean: {mean:.8f} kg")
+    print(f"Standard Deviation: {std_dev:.8f} kg")
+    print(f"Range: {val_range:.8f} kg")
+    print(f"Coefficient of Variation: {cv:.2%}")
+    print(f"Range as % of Mean: {range_pct_mean:.2f}%")
+
+
 def send_email_with_attachment(
     from_addr: str, to_addr: str, subject: str, body: str, attachment_path: str
 ):
@@ -159,8 +176,7 @@ def send_email_with_attachment(
 
 
 def main(filter_substring: str | None = None) -> None:
-    project_dir = Path(__file__).resolve().parents[1]
-    results_dir = project_dir / "results"
+    results_dir = CONFIG.result_dir
 
     files = sorted(results_dir.glob("*.csv"))
     if filter_substring:
@@ -243,4 +259,39 @@ def main(filter_substring: str | None = None) -> None:
 
 
 if __name__ == "__main__":
-    main("_gemma3")
+    emission_variance_check: bool = True  # are we looking at variance across models
+    if emission_variance_check:
+        df = pd.read_csv(f"{CONFIG.result_dir}/_summary.csv")
+
+
+        # --- Sorting helpers ---
+        def extract_family(model: str) -> str:
+            return model.split()[0]
+
+
+        def extract_size(model: str) -> float:
+            match = re.search(r"(\d+(?:\.\d+)?)B", model)
+            return float(match.group(1)) if match else 0.0
+
+
+        def extract_rag_flag(model: str) -> int:
+            return int("(RAG)" in model)
+
+
+        # Add sorting columns
+        df["model_family"] = df["model"].apply(extract_family)
+        df["model_size"] = df["model"].apply(extract_size)
+        df["is_rag"] = df["model"].apply(extract_rag_flag)
+
+        # Sort correctly
+        df_sorted = df.sort_values(
+            by=["model_family", "model_size", "is_rag"],
+            ascending=[True, True, True],
+        )
+
+        # Drop helper cols before stats output
+        for model_name, model_df in df_sorted.groupby("model", sort=False):
+            emission_stats(model_df, model_name)
+
+    else:
+        main("hotpot_")
