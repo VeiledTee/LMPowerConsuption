@@ -133,6 +133,20 @@ def emission_stats(df_subset, model_name):
     cv = std_dev / mean if mean != 0 else float("inf")
     range_pct_mean = val_range / mean * 100 if mean != 0 else float("inf")
 
+    stats_output = (
+        f"--- Stats for {model_name} ---\n"
+        f"Mean: {mean:.8f} kg\n"
+        f"Standard Deviation: {std_dev:.8f} kg\n"
+        f"Range: {val_range:.8f} kg\n"
+        f"Coefficient of Variation: {cv:.2%}\n"
+        f"Range as % of Mean: {range_pct_mean:.2f}%\n"
+    )
+
+    # Save to text file
+    file_path = f"{CONFIG.result_dir}/energy_stats.txt"
+    with open(file_path, "w") as f:
+        f.write(stats_output)
+
     print(f"\n--- Stats for {model_name} ---")
     print(f"Mean: {mean:.8f} kg")
     print(f"Standard Deviation: {std_dev:.8f} kg")
@@ -264,7 +278,6 @@ if __name__ == "__main__":
         df = pd.read_csv(f"{CONFIG.result_dir}/_summary.csv")
 
 
-        # --- Sorting helpers ---
         def extract_family(model: str) -> str:
             return model.split()[0]
 
