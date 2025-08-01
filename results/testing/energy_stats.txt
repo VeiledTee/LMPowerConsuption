@@ -1,0 +1,6 @@
+--- Stats for Gemma3 27B (Base) ---
+Mean: 0.00004240 kg
+Standard Deviation: 0.00000089 kg
+Range: 0.00000200 kg
+Coefficient of Variation: 2.11%
+Range as % of Mean: 4.72%
