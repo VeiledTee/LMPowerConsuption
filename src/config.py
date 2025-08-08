@@ -89,8 +89,8 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": "huggingface",
         # "deepseek-r1:1.5b": "ollama",  # doesn't pass baseline
         # "deepseek-r1:7b": "ollama",  # near identical to 8b
-        "deepseek-r1:8b": "ollama",
-        "deepseek-r1:14b": "ollama",
+        # "deepseek-r1:8b": "ollama",
+        # "deepseek-r1:14b": "ollama",
         "deepseek-r1:32b": "ollama",
         # "gemma3:1b": "ollama",  # doesn't pass boolq baseline
         # "gemma3:4b": "ollama",
@@ -109,8 +109,8 @@ CONFIG = ExperimentConfig(
         # "meta-llama/Llama-2-13b-hf": {"q": False},
         # "deepseek-r1:1.5b": {"q": False, "q+r": True},
         # "deepseek-r1:7b": {"q": False, "q+r": True},
-        "deepseek-r1:8b": {"q": False, "q+r": True},
-        "deepseek-r1:14b": {"q": False, "q+r": True},
+        # "deepseek-r1:8b": {"q": False, "q+r": True},
+        # "deepseek-r1:14b": {"q": False, "q+r": True},
         "deepseek-r1:32b": {"q": False},
         # "gemma3:1b": {"q": False, "q+r": True},
         # "gemma3:4b": {"q+r": True},
