@@ -6416,3 +6416,37 @@ Running modes: {'q': False}
 ++++++++++++++++++++++++++++++
 2025-08-08 13:00:21,668 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\testing\hotpot_deepseek-r1-32b_q_think.csv
 2025-08-08 13:00:21,829 - energy_eval - INFO - Built 1393 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-08-08 19:25:43,022 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:32b': 'ollama'}, dataset_name='hotpotqa/hotpot_qa', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/testing'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-08-08 19:25:43,022 - energy_eval - INFO - Using device: cuda
+2025-08-08 19:25:44,034 - energy_eval - INFO - Loaded dataset with 7405 samples
+2025-08-08 19:25:44,034 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-08-08 19:25:44,035 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-08-08 19:25:44,035 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\testing\hotpot_deepseek-r1-32b_q_think.csv
+2025-08-08 19:25:44,189 - energy_eval - INFO - Built 1165 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-08-09 03:04:18,849 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:32b': 'ollama'}, dataset_name='hotpotqa/hotpot_qa', dataset_file='full.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('data/hotpot_wiki-processed'), corpus_cache=WindowsPath('cache/wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf.pkl'), index_cache=WindowsPath('cache/index.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/testing'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', log_level='INFO', prompt_templates={'hotpot': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}})
+2025-08-09 03:04:18,849 - energy_eval - INFO - Using device: cuda
+2025-08-09 03:04:20,759 - energy_eval - INFO - Loaded dataset with 7405 samples
+2025-08-09 03:04:20,759 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:32b
+============================================================
+2025-08-09 03:04:20,759 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-08-09 03:04:20,759 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\testing\hotpot_deepseek-r1-32b_q_think.csv
+2025-08-09 03:04:20,808 - energy_eval - INFO - Built 201 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-08-09 04:04:21,678 - energy_eval - INFO - Completed q for deepseek-r1:32b in 1h 0m 0s
+2025-08-09 04:04:21,786 - energy_eval - INFO - Completed deepseek-r1:32b in 1h 0m 1s
+2025-08-09 04:04:21,786 - energy_eval - INFO - 
+============================================================
+Experiment completed in 1h 0m 2s
+============================================================
