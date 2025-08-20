@@ -144,8 +144,12 @@ def summarise(
             "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
             "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
             "emissions_kg_per_question": df["combined_emissions"].mean(),
-            "inference_emissions_kg_per_question": df["inference_emissions (kg)"].mean(),
-            "retrieval_emissions_kg_per_question": df["retrieval_emissions (kg)"].mean(),
+            "inference_emissions_kg_per_question": df[
+                "inference_emissions (kg)"
+            ].mean(),
+            "retrieval_emissions_kg_per_question": df[
+                "retrieval_emissions (kg)"
+            ].mean(),
             "time_s_per_question": df["combined_time"].mean(),
             "total_time": f"{hours}:{minutes:02}:{seconds:02}",
         }
