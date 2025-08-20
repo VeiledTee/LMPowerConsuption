@@ -130,7 +130,7 @@ def summarise(
         total_time_seconds = df["combined_time"].sum()
         hours, minutes, seconds = convert_seconds(total_time_seconds)
 
-        avg_pred_tokens = df["original_pred"].apply(count_tokens).mean()
+        avg_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).mean()
 
         return {
             "model": display_name,
