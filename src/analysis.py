@@ -139,14 +139,14 @@ def summarise(
             "dataset_version": str(dataset_version),
             "f1": df["f1"].mean(),
             "em": df["em"].mean(),
-            "avg_pred_tokens": avg_pred_tokens,
+            "pred_tokens_per_question": avg_pred_tokens,
             "energy_kWh_per_question": df["combined_energy"].mean(),
             "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
             "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
             "emissions_kg_per_question": df["combined_emissions"].mean(),
-            "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
-            "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
-            "avg_time_s": df["combined_time"].mean(),  # Average per question
+            "inference_emissions_kg_per_question": df["inference_emissions (kg)"].mean(),
+            "retrieval_emissions_kg_per_question": df["retrieval_emissions (kg)"].mean(),
+            "time_s_per_question": df["combined_time"].mean(),
             "total_time": f"{hours}:{minutes:02}:{seconds:02}",
         }
     except KeyError:
