@@ -4,12 +4,13 @@ import re
 import smtplib
 from email.message import EmailMessage
 from pathlib import Path
+import tiktoken
+import argparse
 
 import pandas as pd
 
 from config import CONFIG
 from utils import convert_seconds
-
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES = {
@@ -48,6 +49,22 @@ RESULT_COLS = {
 }
 
 
+def extract_family(model: str) -> str:
+    """Extracts the base model family name (e.g., 'Gemma')."""
+    return model.split()[0]
+
+
+def extract_size(model: str) -> float:
+    """Extracts the model size in billions of parameters."""
+    match = re.search(r"(\d+(?:\.\d+)?)B", model)
+    return float(match.group(1)) if match else 0.0
+
+
+def extract_rag_flag(model: str) -> int:
+    """Returns 1 if '(RAG)' is in the model name, otherwise 0."""
+    return int("(RAG)" in model)
+
+
 def extract_model_family(name: str) -> str:
     if "Gemma3" in name:
         return "Gemma3"
@@ -66,6 +83,15 @@ def extract_model_family(name: str) -> str:
 def extract_model_size(display_name: str) -> float:
     match = re.search(r"(\d+(\.\d+)?)B", display_name, re.IGNORECASE)
     return float(match.group(1)) if match else 0.0
+
+
+def count_tokens(text, encoding_name="cl100k_base"):
+    """Counts the number of tokens in a text string."""
+    # This handles potential non-string inputs gracefully
+    if not isinstance(text, str):
+        return 0
+    encoding = tiktoken.get_encoding(encoding_name)
+    return len(encoding.encode(text))
 
 
 def _load(path: Path) -> pd.DataFrame:
@@ -104,6 +130,8 @@ def summarise(
         total_time_seconds = df["combined_time"].sum()
         hours, minutes, seconds = convert_seconds(total_time_seconds)
 
+        avg_pred_tokens = df["original_pred"].apply(count_tokens).mean()
+
         return {
             "model": display_name,
             "context_used": context_used,
@@ -111,10 +139,11 @@ def summarise(
             "dataset_version": str(dataset_version),
             "f1": df["f1"].mean(),
             "em": df["em"].mean(),
-            "total_energy_kWh": df["combined_energy"].mean(),
+            "avg_pred_tokens": avg_pred_tokens,
+            "energy_kWh_per_question": df["combined_energy"].mean(),
             "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
             "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
-            "total_emissions_kg": df["combined_emissions"].mean(),
+            "emissions_kg_per_question": df["combined_emissions"].mean(),
             "inference_emissions_kg": df["inference_emissions (kg)"].mean(),
             "retrieval_emissions_kg": df["retrieval_emissions (kg)"].mean(),
             "avg_time_s": df["combined_time"].mean(),  # Average per question
@@ -134,7 +163,7 @@ def emission_stats(df_subset, model_name):
     range_pct_mean = val_range / mean * 100 if mean != 0 else float("inf")
 
     stats_output = (
-        f"--- Stats for {model_name} ---\n"
+        f"Stats for {model_name}\n"
         f"Mean: {mean:.8f} kg\n"
         f"Standard Deviation: {std_dev:.8f} kg\n"
         f"Range: {val_range:.8f} kg\n"
@@ -147,7 +176,7 @@ def emission_stats(df_subset, model_name):
     with open(file_path, "w") as f:
         f.write(stats_output)
 
-    print(f"\n--- Stats for {model_name} ---")
+    print(f"\nStats for {model_name}")
     print(f"Mean: {mean:.8f} kg")
     print(f"Standard Deviation: {std_dev:.8f} kg")
     print(f"Range: {val_range:.8f} kg")
@@ -189,7 +218,7 @@ def send_email_with_attachment(
         server.send_message(msg)
 
 
-def main(filter_substring: str | None = None) -> None:
+def run_summary(filter_substring: str | None = None) -> None:
     results_dir = CONFIG.result_dir
 
     files = sorted(results_dir.glob("*.csv"))
@@ -272,39 +301,31 @@ def main(filter_substring: str | None = None) -> None:
         print("Email sent.")
 
 
+def run_variance_check(input_file: str) -> None:
+    """Loads the summary file and calculates emission variance stats for each model."""
+    summary_file_path = CONFIG.result_dir / input_file
+    print(f"Running emission variance check on: {summary_file_path}")
+
+    df = pd.read_csv(summary_file_path)
+
+    # Add sorting columns
+    df["model_family"] = df["model"].apply(extract_family)
+    df["model_size"] = df["model"].apply(extract_size)
+    df["is_rag"] = df["model"].apply(extract_rag_flag)
+
+    # Sort correctly
+    df_sorted = df.sort_values(
+        by=["model_family", "model_size", "is_rag"],
+        ascending=[True, True, True],
+    )
+
+    # Calculate and print stats for each model
+    for model_name, model_df in df_sorted.groupby("model", sort=False):
+        emission_stats(
+            model_df, model_name
+        )  # Assuming emission_stats is defined elsewhere
+
+
 if __name__ == "__main__":
-    emission_variance_check: bool = True  # are we looking at variance across models
-    if emission_variance_check:
-        df = pd.read_csv(f"{CONFIG.result_dir}/_summary.csv")
-
-
-        def extract_family(model: str) -> str:
-            return model.split()[0]
-
-
-        def extract_size(model: str) -> float:
-            match = re.search(r"(\d+(?:\.\d+)?)B", model)
-            return float(match.group(1)) if match else 0.0
-
-
-        def extract_rag_flag(model: str) -> int:
-            return int("(RAG)" in model)
-
-
-        # Add sorting columns
-        df["model_family"] = df["model"].apply(extract_family)
-        df["model_size"] = df["model"].apply(extract_size)
-        df["is_rag"] = df["model"].apply(extract_rag_flag)
-
-        # Sort correctly
-        df_sorted = df.sort_values(
-            by=["model_family", "model_size", "is_rag"],
-            ascending=[True, True, True],
-        )
-
-        # Drop helper cols before stats output
-        for model_name, model_df in df_sorted.groupby("model", sort=False):
-            emission_stats(model_df, model_name)
-
-    else:
-        main("hotpot_")
+    run_summary(filter_substring="_deepseek")
+    # run_variance_check(input_file='_summary.csv')
