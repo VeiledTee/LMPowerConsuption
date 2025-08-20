@@ -4,12 +4,8 @@ import os
 import torch
 from codecarbon import EmissionsTracker
 from ollama import generate
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    PreTrainedModel,
-    PreTrainedTokenizer,
-)
+from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
+                          PreTrainedTokenizer)
 
 from config import CONFIG
 

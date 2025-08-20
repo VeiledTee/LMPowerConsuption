@@ -1,13 +1,13 @@
+import argparse
 import mimetypes
 import os
 import re
 import smtplib
 from email.message import EmailMessage
 from pathlib import Path
-import tiktoken
-import argparse
 
 import pandas as pd
+import tiktoken
 
 from config import CONFIG
 from utils import convert_seconds

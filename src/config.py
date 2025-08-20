@@ -1,9 +1,10 @@
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
-from dotenv import load_dotenv
+
 import torch
-import os
+from dotenv import load_dotenv
 
 load_dotenv()
 
