@@ -2,12 +2,12 @@ import gc
 import json
 import logging
 import os
+import smtplib
 import time
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from pathlib import Path
-import smtplib
 from email.message import EmailMessage
+from pathlib import Path
 
 import pandas as pd
 import torch
@@ -19,7 +19,8 @@ from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve_hotpot
-from utils import convert_seconds, count_bools, ensure_config_dirs, setup_logging
+from utils import (convert_seconds, count_bools, ensure_config_dirs,
+                   setup_logging)
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -90,7 +91,7 @@ def run(file_suffix: None | str = "") -> None:
                 model,
                 provider,
                 wiki_data,
-                file_suffix
+                file_suffix,
             )
 
         cleanup_resources(model, tokenizer)

@@ -1,15 +1,16 @@
 import bz2
 import json
+import logging
 import re
 from collections import Counter, defaultdict
 
 import joblib
 from codecarbon import EmissionsTracker
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, HashingVectorizer
+from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS,
+                                             HashingVectorizer)
 
 from config import CONFIG
 from utils import normalize, strip_links
-import logging
 
 logger = logging.getLogger("codecarbon")
 logger.setLevel(logging.ERROR)
