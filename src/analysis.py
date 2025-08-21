@@ -5,6 +5,7 @@ import re
 import smtplib
 from email.message import EmailMessage
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 import tiktoken
@@ -13,7 +14,7 @@ from config import CONFIG
 from utils import convert_seconds
 
 # Mapping from internal model keys to display names
-MODEL_DISPLAY_NAMES = {
+MODEL_DISPLAY_NAMES: Dict[str, str] = {
     "distilgpt2_q": "DistilGPT2 (Base)",
     "distilgpt2_q+r": "DistilGPT2 (RAG)",
     "gpt2-xl_q": "GPT2-XL (Base)",
@@ -42,7 +43,7 @@ MODEL_DISPLAY_NAMES = {
     "gemma3-27b_q+r": "Gemma3 27B (RAG)",
 }
 
-RESULT_COLS = {
+RESULT_COLS: Dict[str, Tuple[str, str]] = {
     "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
     "emissions": ("inference_emissions (kg)", "retrieval_emissions (kg)"),
     "time": ("inference_duration (s)", "retrieval_duration (s)"),
@@ -50,22 +51,51 @@ RESULT_COLS = {
 
 
 def extract_family(model: str) -> str:
-    """Extracts the base model family name (e.g., 'Gemma')."""
+    """Extracts the base model family name from a model display name.
+
+    Args:
+        model: The model display name (e.g., 'Gemma 2B (Base)')
+
+    Returns:
+        The extracted family name (e.g., 'Gemma')
+    """
     return model.split()[0]
 
 
 def extract_size(model: str) -> float:
-    """Extracts the model size in billions of parameters."""
+    """Extracts the model size in billions of parameters from a model display name.
+
+    Args:
+        model: The model display name
+
+    Returns:
+        The model size in billions of parameters as a float, or 0.0 if not found
+    """
     match = re.search(r"(\d+(?:\.\d+)?)B", model)
     return float(match.group(1)) if match else 0.0
 
 
 def extract_rag_flag(model: str) -> int:
-    """Returns 1 if '(RAG)' is in the model name, otherwise 0."""
+    """Determines if a model uses RAG based on its display name.
+
+    Args:
+        model: The model display name
+
+    Returns:
+        1 if '(RAG)' is in the model name, otherwise 0
+    """
     return int("(RAG)" in model)
 
 
 def extract_model_family(name: str) -> str:
+    """Extracts the model family from a display name.
+
+    Args:
+        name: The model display name
+
+    Returns:
+        The model family name (Gemma3, Gemma, DeepSeek, GPT2, DistilGPT2, or Other)
+    """
     if "Gemma3" in name:
         return "Gemma3"
     elif "Gemma" in name:
@@ -81,13 +111,28 @@ def extract_model_family(name: str) -> str:
 
 
 def extract_model_size(display_name: str) -> float:
+    """Extracts the model size from a display name.
+
+    Args:
+        display_name: The model display name
+
+    Returns:
+        The model size in billions of parameters as a float, or 0.0 if not found
+    """
     match = re.search(r"(\d+(\.\d+)?)B", display_name, re.IGNORECASE)
     return float(match.group(1)) if match else 0.0
 
 
-def count_tokens(text, encoding_name="cl100k_base"):
-    """Counts the number of tokens in a text string."""
-    # This handles potential non-string inputs gracefully
+def count_tokens(text: Union[str, object], encoding_name: str = "cl100k_base") -> int:
+    """Counts the number of tokens in a text string.
+
+    Args:
+        text: The text to count tokens in (non-string inputs return 0)
+        encoding_name: The encoding to use for token counting
+
+    Returns:
+        The number of tokens in the text
+    """
     if not isinstance(text, str):
         return 0
     encoding = tiktoken.get_encoding(encoding_name)
@@ -95,17 +140,45 @@ def count_tokens(text, encoding_name="cl100k_base"):
 
 
 def _load(path: Path) -> pd.DataFrame:
+    """Loads a CSV file into a pandas DataFrame.
+
+    Args:
+        path: Path to the CSV file
+
+    Returns:
+        A pandas DataFrame containing the CSV data
+
+    Raises:
+        FileNotFoundError: If the file does not exist
+    """
     if not path.exists():
         raise FileNotFoundError(path)
-    df = pd.read_csv(path)
-    return df
+    return pd.read_csv(path)
 
 
 def _combined(df: pd.DataFrame, c1: str, c2: str) -> pd.Series:
+    """Combines two columns from a DataFrame.
+
+    Args:
+        df: The DataFrame containing the columns
+        c1: Name of the first column
+        c2: Name of the second column
+
+    Returns:
+        A Series with the sum of the two columns
+    """
     return df[c1] + df[c2]
 
 
 def add_combined_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """Adds combined columns for energy, emissions, and time to a DataFrame.
+
+    Args:
+        df: The input DataFrame
+
+    Returns:
+        The DataFrame with additional combined columns
+    """
     for new_name, (c1, c2) in RESULT_COLS.items():
         df[f"combined_{new_name}"] = _combined(df, c1, c2)
     return df
@@ -115,21 +188,38 @@ def summarise(
     model_key: str,
     path: Path,
     context_used: bool,
-    dataset_version: str | int,
-) -> dict:
+    dataset_version: Union[str, int],
+) -> Dict[str, Union[str, float, int]]:
+    """Summarizes the results from a model evaluation CSV file.
+
+    Args:
+        model_key: The key identifying the model
+        path: Path to the CSV file with evaluation results
+        context_used: Whether context/retrieval was used
+        dataset_version: Version of the dataset used
+
+    Returns:
+        A dictionary with summary statistics for the model evaluation
+    """
     df = _load(path)
     df = add_combined_cols(df)
+
     try:
+        # Get display name based on model key and context usage
         display_name = (
             MODEL_DISPLAY_NAMES[f"{model_key}_q+r"]
             if context_used
             else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
         )
+
+        # Add "Think" suffix if applicable
         display_name = display_name + " Think" if "think" in str(path) else display_name
 
+        # Calculate total time and convert to hours, minutes, seconds
         total_time_seconds = df["combined_time"].sum()
         hours, minutes, seconds = convert_seconds(total_time_seconds)
 
+        # Calculate average prediction tokens
         avg_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).mean()
 
         return {
@@ -157,8 +247,13 @@ def summarise(
         return {}
 
 
-# Function to calculate stats
-def emission_stats(df_subset, model_name):
+def emission_stats(df_subset: pd.DataFrame, model_name: str) -> None:
+    """Calculates and prints emission statistics for a model.
+
+    Args:
+        df_subset: DataFrame containing emission data for a specific model
+        model_name: Name of the model for reporting
+    """
     emissions = df_subset["total_emissions_kg"]
     mean = emissions.mean()
     std_dev = emissions.std()
@@ -190,7 +285,19 @@ def emission_stats(df_subset, model_name):
 
 def send_email_with_attachment(
     from_addr: str, to_addr: str, subject: str, body: str, attachment_path: str
-):
+) -> None:
+    """Sends an email with an attachment.
+
+    Args:
+        from_addr: Sender email address
+        to_addr: Recipient email address
+        subject: Email subject
+        body: Email body text
+        attachment_path: Path to the file to attach
+
+    Raises:
+        RuntimeError: If SMTP credentials are not set
+    """
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = from_addr
@@ -213,6 +320,7 @@ def send_email_with_attachment(
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_user = CONFIG.from_email
     smtp_pass = CONFIG.smtp_password
+
     if not (smtp_user and smtp_pass):
         raise RuntimeError("SMTP_USERNAME and SMTP_PASSWORD must be set")
 
@@ -222,48 +330,133 @@ def send_email_with_attachment(
         server.send_message(msg)
 
 
-def run_summary(filter_substring: str | None = None) -> None:
+def filter_files_by_dataset_version(
+    files: List[Path], dataset_version: str
+) -> List[Path]:
+    """Filters files based on dataset version criteria.
+
+    Args:
+        files: List of file paths to filter
+        dataset_version: Version of dataset to filter for
+
+    Returns:
+        Filtered list of file paths
+    """
+    files_to_process = []
+
+    for f in files:
+        name = f.stem
+        # Determine dataset_version from filename
+        if "dev (128)" in dataset_version:
+            if "dev" in name or "128" in name:
+                files_to_process.append(f)
+        elif "full" in dataset_version:
+            if "dev" not in name and "128" not in name:
+                files_to_process.append(f)
+
+    return files_to_process
+
+
+def generate_output_filename(model_filter: Optional[str]) -> str:
+    """Generates an output filename based on model filter.
+
+    Args:
+        model_filter: Optional filter string for models
+
+    Returns:
+        Base filename for output files
+    """
+    if model_filter:
+        return f"{model_filter.split('_')[-1]}_summary"
+    return "summary"
+
+
+def determine_dataset_version(filename_parts: List[str]) -> str:
+    """Determines the dataset version from filename parts.
+
+    Args:
+        filename_parts: List of parts from splitting the filename
+
+    Returns:
+        The dataset version string
+    """
+    if len(filename_parts) > 2 and (
+        "dev" in filename_parts[2] or "128" in filename_parts[2]
+    ):
+        return f"dev ({filename_parts[3]})" if len(filename_parts) > 3 else "dev (128)"
+    return "full"
+
+
+def insert_blank_lines(df: pd.DataFrame) -> str:
+    """Formats a DataFrame as markdown with section headers for model families.
+
+    Args:
+        df: DataFrame to format
+
+    Returns:
+        Markdown string with formatted table and section headers
+    """
+    df["model_family"] = df["model"].apply(extract_model_family)
+    output = ""
+    grouped = df.groupby(["model_family", "dataset", "dataset_version"], sort=False)
+
+    for (family, _, _), group in grouped:
+        output += f"### {family}\n\n"
+        output += (
+            group.drop(columns=["model_family"]).to_markdown(
+                index=False, floatfmt=".6f"
+            )
+            + "\n\n"
+        )
+
+    return output
+
+
+def run_summary(
+    model_filter: Optional[str] = None, dataset_version: Optional[str] = None
+) -> None:
+    """Main function to run summary analysis on evaluation results.
+
+    Args:
+        model_filter: Optional filter to select specific models
+        dataset_version: Optional filter to select dataset version
+    """
     results_dir = CONFIG.result_dir
-
     files = sorted(results_dir.glob("*.csv"))
-    if filter_substring:
-        files = [f for f in files if filter_substring in f.name]
 
-    out_filename: str = (
-        f"{filter_substring.split('_')[-1] if filter_substring else ''}{'_' if filter_substring else ''}summary"
-    )
+    if model_filter:
+        files = [f for f in files if model_filter in f.name]
 
+    if dataset_version:
+        files = filter_files_by_dataset_version(files, dataset_version)
+
+    out_filename = generate_output_filename(model_filter)
     summaries = []
+
     for csv_path in files:
         name = csv_path.stem
         parts = name.split("_")
         model_key = parts[1]
         context_used = "q+r" in name
-        dataset_version = ""
-
-        if len(parts) == 3:
-            dataset_version += "full"
-        elif "think" in name and len(parts) == 4:
-            dataset_version += "full"
-        elif "128" in name or "dev" in name:
-            dataset_version = f"dev ({parts[3]})"
-        else:
-            dataset_version = "full"
+        current_dataset_version = determine_dataset_version(parts)
 
         cur_summary = summarise(
             model_key=model_key,
             path=csv_path,
             context_used=context_used,
-            dataset_version=dataset_version,
+            dataset_version=current_dataset_version,
         )
-        if cur_summary != {}:
+
+        if cur_summary:
             summaries.append(cur_summary)
-        else:
-            continue
+
+    if not summaries:
+        print("No valid summaries generated. Check your filters and data files.")
+        return
 
     df_summary = pd.DataFrame(summaries)
     df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
-    df_summary["is_rag"] = df_summary["context_used"].astype(int)  # Base = 0, RAG = 1
+    df_summary["is_rag"] = df_summary["context_used"].astype(int)
     df_summary = df_summary.sort_values(
         by=["dataset", "dataset_version", "model_size_b", "is_rag"]
     )
@@ -273,22 +466,9 @@ def run_summary(filter_substring: str | None = None) -> None:
     out_md = results_dir / f"{out_filename}.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
 
-    def insert_blank_lines(df: pd.DataFrame) -> str:
-        df["model_family"] = df["model"].apply(extract_model_family)
-        output = ""
-        grouped = df.groupby(["model_family", "dataset", "dataset_version"], sort=False)
-        for (family, _, _), group in grouped:
-            output += f"### {family}\n\n"
-            output += (
-                group.drop(columns=["model_family"]).to_markdown(
-                    index=False, floatfmt=".6f"
-                )
-                + "\n\n"
-            )
-        return output
-
     markdown_with_splits = insert_blank_lines(df_summary)
     print(markdown_with_splits)
+
     with open(out_md, "w") as f:
         f.write(markdown_with_splits)
 
@@ -306,7 +486,11 @@ def run_summary(filter_substring: str | None = None) -> None:
 
 
 def run_variance_check(input_file: str) -> None:
-    """Loads the summary file and calculates emission variance stats for each model."""
+    """Loads the summary file and calculates emission variance stats for each model.
+
+    Args:
+        input_file: Name of the summary file to analyze
+    """
     summary_file_path = CONFIG.result_dir / input_file
     print(f"Running emission variance check on: {summary_file_path}")
 
@@ -325,11 +509,8 @@ def run_variance_check(input_file: str) -> None:
 
     # Calculate and print stats for each model
     for model_name, model_df in df_sorted.groupby("model", sort=False):
-        emission_stats(
-            model_df, model_name
-        )  # Assuming emission_stats is defined elsewhere
+        emission_stats(model_df, model_name)
 
 
 if __name__ == "__main__":
-    run_summary(filter_substring="_deepseek")
-    # run_variance_check(input_file='_summary.csv')
+    run_summary(model_filter="_deepseek", dataset_version="full")
