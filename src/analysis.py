@@ -219,7 +219,8 @@ def summarise(
         total_time_seconds = df["combined_time"].sum()
         hours, minutes, seconds = convert_seconds(total_time_seconds)
 
-        # Calculate average prediction tokens
+        # Calculate total and average prediction tokens
+        total_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).sum()
         avg_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).mean()
 
         return {
@@ -230,6 +231,7 @@ def summarise(
             "f1": df["f1"].mean(),
             "em": df["em"].mean(),
             "pred_tokens_per_question": avg_pred_tokens,
+            "total_tokens": total_pred_tokens,
             "energy_kWh_per_question": df["combined_energy"].mean(),
             "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
             "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
@@ -513,4 +515,4 @@ def run_variance_check(input_file: str) -> None:
 
 
 if __name__ == "__main__":
-    run_summary(model_filter="_deepseek", dataset_version="full")
+    run_summary(model_filter="_gemma3", dataset_version="full")
