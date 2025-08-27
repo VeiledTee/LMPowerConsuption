@@ -8,6 +8,7 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from email.message import EmailMessage
 from pathlib import Path
+from random import random
 
 import pandas as pd
 import torch
@@ -18,7 +19,7 @@ from tqdm import tqdm
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
-from retrieval import load_wiki, retrieve_hotpot
+from retrieval import load_wiki, retrieve_hotpot, retrieve_triviaqa
 from utils import (convert_seconds, count_bools, ensure_config_dirs,
                    setup_logging)
 
@@ -61,7 +62,7 @@ def run(file_suffix: None | str = "") -> None:
 
     # Preload Wikipedia if needed
     wiki_data = None
-    if any("q+r" in modes for modes in CONFIG.modes.values()):
+    if any("q+r" in modes for modes in CONFIG.modes.values()) and 'trivia_qa' not in CONFIG.dataset_name:
         logger.info(f"Retrieval mode requested - loading wiki")
         t0 = time.time()
         wiki_data = load_wiki()
@@ -116,19 +117,34 @@ def load_config_dataset(data_dir: Path) -> Dataset:
         return Dataset.from_list(data)
 
     if "hotpot" in CONFIG.dataset_name:
-        return load_dataset(
+        dataset = load_dataset(
+            CONFIG.dataset_name,
+            CONFIG.config,
+            split=CONFIG.split,
+            trust_remote_code=True,
+        )
+        return dataset
+
+    elif "boolq" in CONFIG.dataset_name:
+        dataset = load_dataset(
+            CONFIG.dataset_name,
+            split=CONFIG.split,
+            trust_remote_code=True,
+        )
+        return dataset
+
+    elif "trivia_qa" in CONFIG.dataset_name:
+        dataset = load_dataset(
             CONFIG.dataset_name,
             CONFIG.config,
             split=CONFIG.split,
             trust_remote_code=True,
         )
 
-    if "boolq" in CONFIG.dataset_name:
-        return load_dataset(
-            CONFIG.dataset_name,
-            split=CONFIG.split,
-            trust_remote_code=True,
-        )
+        n = CONFIG.dataset_size
+        subset = dataset.shuffle(seed=CONFIG.seed).select(range(n))
+
+        return subset
 
     raise ValueError(f"Unsupported dataset: {CONFIG.dataset_name}")
 
@@ -188,7 +204,7 @@ def run_model_mode(
         from scorers import exact_match, f1_score  # use general BoolQ-style
 
     """Run evaluation for a specific model and mode, with concurrent inference and batched writes."""
-    dataset_id = "boolq" if "boolq" in CONFIG.dataset_name else "hotpot"
+    dataset_id = CONFIG.dataset_name.split(r'/')[-1]
     csv_path = (
         CONFIG.result_dir
         / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
@@ -207,6 +223,7 @@ def run_model_mode(
     total_ret = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
     for idx in range(start_idx, len(dataset)):
         sample = dataset[idx]
+        print(f"SAMPLE RUN MODE: {sample}")
         ret_metrics = None
         if mode_tag == "q+r":
             ctx, ret_metrics = retrieve_context(sample, wiki_data)
@@ -365,10 +382,9 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
     }
     context = ""
 
-    if not wiki_data:
-        return context, retrieval_metrics
-
     if "hotpot" in CONFIG.dataset_name:
+        if not wiki_data:
+            return context, retrieval_metrics
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
         _, ret_metrics = retrieve_hotpot(
             sample["question"], vectorizer, tfidf_matrix, titles, inv_index
@@ -383,13 +399,43 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
             context = " ".join(
                 sent for section in sample["context"]["sentences"] for sent in section
             )
+
     elif "boolq" in CONFIG.dataset_name:
+        if not wiki_data:
+            return context, retrieval_metrics
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
         _, ret_metrics = retrieve_hotpot(
             sample["question"], vectorizer, tfidf_matrix, titles, inv_index
         )
         retrieval_metrics.update(ret_metrics)
         context = sample.get("passage", "")
+
+    elif "trivia_qa" in CONFIG.dataset_name:
+        print(f"SAMPLE\n===\n{sample}\n===")
+        top_titles, ret_metrics = retrieve_triviaqa(sample, top_k=10)
+        retrieval_metrics.update(ret_metrics)
+
+        # Build context string from the retrieved titles
+        contexts = []
+        if "search_results" in sample:
+            sr = sample["search_results"]
+            sr_ctxs = sr.get("search_context", [])
+            sr_titles = sr.get("title", [])
+            for t in top_titles:
+                if t in sr_titles:
+                    idx = sr_titles.index(t)
+                    contexts.append(sr_ctxs[idx])
+
+        if "entity_pages" in sample:
+            ep = sample["entity_pages"]
+            ep_ctxs = ep.get("wiki_context", [])
+            ep_titles = ep.get("title", [])
+            for t in top_titles:
+                if t in ep_titles:
+                    idx = ep_titles.index(t)
+                    contexts.append(ep_ctxs[idx])
+
+        context = " ".join(contexts)
 
     return context, retrieval_metrics
 

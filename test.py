@@ -1,5 +1,10 @@
-import torch
+from datasets import load_dataset
 
-print(torch.__version__)                  # Should show 2.7.0+cu128
-print(torch.cuda.is_available())          # Should be True
-print(torch.cuda.get_device_name(0))      # Should say "NVIDIA GeForce RTX 4090"
+configs = ["rc", "rc.nocontext", "unfiltered", "unfiltered.nocontext"]
+
+for cfg in configs:
+    ds = load_dataset("trivia_qa", cfg, split='train[:1000]')
+    print(f"\n=== Config: {cfg} ===")
+    print(f"{len(ds)} questions")
+    # for split in ds.keys():
+    #     print(f"{split}: {len(ds[split])} questions")

@@ -15,14 +15,14 @@ def build_prompt(example: dict, include_passage: bool) -> str:
     q = example["question"]
 
     # Determine dataset type
-    dataset_type = "hotpot" if "hotpot" in CONFIG.dataset_name else "boolq"
+    dataset_type = CONFIG.dataset_name.split(r'/')[-1]
 
     # Select appropriate template set
     templates = CONFIG.prompt_templates[dataset_type]
 
     if include_passage:
         # Handle different context formats per dataset
-        if dataset_type == "hotpot":
+        if dataset_type == "hotpot_qa":
             # Check if we're using retrieved context
             if "retrieved_context" in example:
                 context = example["retrieved_context"]
@@ -33,8 +33,10 @@ def build_prompt(example: dict, include_passage: bool) -> str:
                         example["context"]["title"], example["context"]["sentences"]
                     )
                 )
-        else:  # boolq
+        elif 'boolq' in CONFIG.dataset_name:
             context = example.get("retrieved_context", example.get("context", ""))
+        elif 'trivia_qa' in CONFIG.dataset_name:
+            pass
         return templates["with_context"].format(context=context, question=q)
     else:
         return templates["without_context"].format(question=q)
