@@ -223,10 +223,21 @@ def summarise(
         total_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).sum()
         avg_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).mean()
 
+        if "hotpot" in path.name.lower():
+            dataset_name = "HotpotQA"
+        if "boolq" in path.name.lower():
+            dataset_name = "BoolQ"
+        if "squad" in path.name.lower():
+            dataset_name = "SQuAD v1"
+        if "squad_v2" in path.name.lower():
+            dataset_name = "SQuAD v2"
+
+
+
         return {
             "model": display_name,
             "context_used": context_used,
-            "dataset": "BoolQ" if "boolq" in path.name.lower() else "HotpotQA",
+            "dataset": dataset_name,
             "dataset_version": str(dataset_version),
             "f1": df["f1"].mean(),
             "em": df["em"].mean(),
