@@ -20,6 +20,7 @@ from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
 from retrieval import load_wiki, retrieve_hotpot, retrieve_triviaqa
+from src.squad_scorers import compute_exact, compute_f1
 from utils import (convert_seconds, count_bools, ensure_config_dirs,
                    setup_logging)
 
@@ -62,7 +63,7 @@ def run(file_suffix: None | str = "") -> None:
 
     # Preload Wikipedia if needed
     wiki_data = None
-    if any("q+r" in modes for modes in CONFIG.modes.values()) and 'trivia_qa' not in CONFIG.dataset_name:
+    if any("q+r" in modes for modes in CONFIG.modes.values()):
         logger.info(f"Retrieval mode requested - loading wiki")
         t0 = time.time()
         wiki_data = load_wiki()
@@ -133,12 +134,10 @@ def load_config_dataset(data_dir: Path) -> Dataset:
         )
         return dataset
 
-    elif "trivia_qa" in CONFIG.dataset_name:
+    elif "squad" in CONFIG.dataset_name:
         dataset = load_dataset(
             CONFIG.dataset_name,
-            CONFIG.config,
             split=CONFIG.split,
-            trust_remote_code=True,
         )
 
         n = CONFIG.dataset_size
@@ -223,11 +222,12 @@ def run_model_mode(
     total_ret = {"duration": 0.0, "energy_consumed": 0.0, "emissions": 0.0}
     for idx in range(start_idx, len(dataset)):
         sample = dataset[idx]
-        print(f"SAMPLE RUN MODE: {sample}")
         ret_metrics = None
         if mode_tag == "q+r":
             ctx, ret_metrics = retrieve_context(sample, wiki_data)
+
             sample = {**sample, "retrieved_context": ctx}
+
             if ret_metrics:
                 for k in total_ret:
                     total_ret[k] += ret_metrics.get(k, 0.0)
@@ -252,36 +252,66 @@ def run_model_mode(
 
             pred = extract_prediction(full_output)
 
-            if "boolq" in CONFIG.dataset_name:
-                pred, inf_metrics = process_boolq_prediction(
-                    pred, model_name, inf_metrics
-                )
+            if "squad" in CONFIG.dataset_name:
+                # For SQuAD, we need to handle the answer format
+                gold_answers = sample["answers"]["text"] if "answers" in sample else [""]
 
-            em = exact_match(pred, sample["answer"])
-            f1 = f1_score(pred, sample["answer"])
+                # Calculate EM and F1 using the official SQuAD functions
+                em = max(compute_exact(a, pred) for a in gold_answers)
+                f1 = max(compute_f1(a, pred) for a in gold_answers)
 
-            row = {
-                "qid": idx,
-                "original_pred": full_output.replace(",", " ")
-                .replace("  ", " ")
-                .replace("\n", " "),
-                "pred": pred,
-                "gold": sample["answer"],
-                "em": em,
-                "f1": f1,
-                "inference_duration (s)": inf_metrics["duration"],
-                "inference_energy_consumed (kWh)": inf_metrics["energy_consumed"],
-                "inference_emissions (kg)": inf_metrics["emissions"],
-                "retrieval_duration (s)": (
-                    ret_metrics.get("duration") if ret_metrics else 0.0
-                ),
-                "retrieval_energy_consumed (kWh)": (
-                    ret_metrics.get("energy_consumed") if ret_metrics else 0.0
-                ),
-                "retrieval_emissions (kg)": (
-                    ret_metrics.get("emissions") if ret_metrics else 0.0
-                ),
-            }
+                row = {
+                    "qid": sample["id"],
+                    "original_pred": full_output.replace(",", " ").replace("  ", " ").replace("\n", " ").replace(".", '').strip(),
+                    "pred": pred,
+                    "gold": str(gold_answers),  # Store all possible answers as string
+                    "em": em,
+                    "f1": f1,
+                    "inference_duration (s)": inf_metrics["duration"],
+                    "inference_energy_consumed (kWh)": inf_metrics["energy_consumed"],
+                    "inference_emissions (kg)": inf_metrics["emissions"],
+                    "retrieval_duration (s)": (
+                        ret_metrics.get("duration") if ret_metrics else 0.0
+                    ),
+                    "retrieval_energy_consumed (kWh)": (
+                        ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                    ),
+                    "retrieval_emissions (kg)": (
+                        ret_metrics.get("emissions") if ret_metrics else 0.0
+                    ),
+                }
+            else:
+
+                if "boolq" in CONFIG.dataset_name:
+                    pred, inf_metrics = process_boolq_prediction(
+                        pred, model_name, inf_metrics
+                    )
+
+                em = exact_match(pred, sample["answer"])
+                f1 = f1_score(pred, sample["answer"])
+
+                row = {
+                    "qid": idx,
+                    "original_pred": full_output.replace(",", " ")
+                    .replace("  ", " ")
+                    .replace("\n", " "),
+                    "pred": pred,
+                    "gold": sample["answer"],
+                    "em": em,
+                    "f1": f1,
+                    "inference_duration (s)": inf_metrics["duration"],
+                    "inference_energy_consumed (kWh)": inf_metrics["energy_consumed"],
+                    "inference_emissions (kg)": inf_metrics["emissions"],
+                    "retrieval_duration (s)": (
+                        ret_metrics.get("duration") if ret_metrics else 0.0
+                    ),
+                    "retrieval_energy_consumed (kWh)": (
+                        ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                    ),
+                    "retrieval_emissions (kg)": (
+                        ret_metrics.get("emissions") if ret_metrics else 0.0
+                    ),
+                }
 
             result_buffer.append(row)
 
@@ -315,35 +345,67 @@ def run_model_mode(
                 idx, sample, ret_metrics = future_to_job[fut]
                 try:
                     pred, inf_metrics = fut.result()
-                    if "boolq" in CONFIG.dataset_name:
-                        pred, inf_metrics = process_boolq_prediction(
-                            pred, model_name, inf_metrics
-                        )
 
-                    em = exact_match(pred, sample["answer"])
-                    f1 = f1_score(pred, sample["answer"])
-                    row = {
-                        "qid": idx,
-                        "original_pred": pred,
-                        "pred": pred,
-                        "gold": sample["answer"],
-                        "em": em,
-                        "f1": f1,
-                        "inference_duration (s)": inf_metrics["duration"],
-                        "inference_energy_consumed (kWh)": inf_metrics[
-                            "energy_consumed"
-                        ],
-                        "inference_emissions (kg)": inf_metrics["emissions"],
-                        "retrieval_duration (s)": (
-                            ret_metrics.get("duration") if ret_metrics else 0.0
-                        ),
-                        "retrieval_energy_consumed (kWh)": (
-                            ret_metrics.get("energy_consumed") if ret_metrics else 0.0
-                        ),
-                        "retrieval_emissions (kg)": (
-                            ret_metrics.get("emissions") if ret_metrics else 0.0
-                        ),
-                    }
+                    if "squad" in CONFIG.dataset_name:
+                        # For SQuAD, we need to handle the answer format
+                        gold_answers = sample["answers"]["text"] if "answers" in sample else [""]
+
+                        # Calculate EM and F1 using the official SQuAD functions
+                        em = max(compute_exact(a, pred) for a in gold_answers)
+                        f1 = max(compute_f1(a, pred) for a in gold_answers)
+
+                        row = {
+                            "qid": sample["id"],
+                            "original_pred": pred.replace(",", " ").replace("  ", " ").replace("\n", " "),
+                            "pred": pred,
+                            "gold": str(gold_answers),  # Store all possible answers as string
+                            "em": em,
+                            "f1": f1,
+                            "inference_duration (s)": inf_metrics["duration"],
+                            "inference_energy_consumed (kWh)": inf_metrics["energy_consumed"],
+                            "inference_emissions (kg)": inf_metrics["emissions"],
+                            "retrieval_duration (s)": (
+                                ret_metrics.get("duration") if ret_metrics else 0.0
+                            ),
+                            "retrieval_energy_consumed (kWh)": (
+                                ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                            ),
+                            "retrieval_emissions (kg)": (
+                                ret_metrics.get("emissions") if ret_metrics else 0.0
+                            ),
+                        }
+                    else:
+
+                        if "boolq" in CONFIG.dataset_name:
+                            pred, inf_metrics = process_boolq_prediction(
+                                pred, model_name, inf_metrics
+                            )
+
+                        em = exact_match(pred, sample["answer"])
+                        f1 = f1_score(pred, sample["answer"])
+                        row = {
+                            "qid": idx,
+                            "original_pred": pred,
+                            "pred": pred,
+                            "gold": sample["answer"],
+                            "em": em,
+                            "f1": f1,
+                            "inference_duration (s)": inf_metrics["duration"],
+                            "inference_energy_consumed (kWh)": inf_metrics[
+                                "energy_consumed"
+                            ],
+                            "inference_emissions (kg)": inf_metrics["emissions"],
+                            "retrieval_duration (s)": (
+                                ret_metrics.get("duration") if ret_metrics else 0.0
+                            ),
+                            "retrieval_energy_consumed (kWh)": (
+                                ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                            ),
+                            "retrieval_emissions (kg)": (
+                                ret_metrics.get("emissions") if ret_metrics else 0.0
+                            ),
+                        }
+
                     result_buffer.append(row)
                 except Exception as e:
                     logger.error(f"Inference failed for idx={idx}: {e}")
@@ -410,32 +472,16 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         retrieval_metrics.update(ret_metrics)
         context = sample.get("passage", "")
 
-    elif "trivia_qa" in CONFIG.dataset_name:
-        print(f"SAMPLE\n===\n{sample}\n===")
-        top_titles, ret_metrics = retrieve_triviaqa(sample, top_k=10)
+    elif "squad" in CONFIG.dataset_name:
+        if not wiki_data:
+            return context, retrieval_metrics
+        docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+        _, ret_metrics = retrieve_hotpot(
+            sample["question"], vectorizer, tfidf_matrix, titles, inv_index
+        )
         retrieval_metrics.update(ret_metrics)
-
-        # Build context string from the retrieved titles
-        contexts = []
-        if "search_results" in sample:
-            sr = sample["search_results"]
-            sr_ctxs = sr.get("search_context", [])
-            sr_titles = sr.get("title", [])
-            for t in top_titles:
-                if t in sr_titles:
-                    idx = sr_titles.index(t)
-                    contexts.append(sr_ctxs[idx])
-
-        if "entity_pages" in sample:
-            ep = sample["entity_pages"]
-            ep_ctxs = ep.get("wiki_context", [])
-            ep_titles = ep.get("title", [])
-            for t in top_titles:
-                if t in ep_titles:
-                    idx = ep_titles.index(t)
-                    contexts.append(ep_ctxs[idx])
-
-        context = " ".join(contexts)
+        # For SQuAD, use the provided context
+        context = sample["context"]
 
     return context, retrieval_metrics
 

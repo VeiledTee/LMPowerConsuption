@@ -76,11 +76,12 @@ class ExperimentConfig:
                     "Answer:"
                 ),
             },
-            "trivia_qa": {
+            "squad": {
                 "with_context": (
                     "Using the provided context, answer the question with as few words as possible. "
                     "Be thorough in your analysis of the context but answer in as few words as possible. "
-                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Do not overcomplicate your thinking. Do not go in circles. "
+                    "If you do not know the answer output 'Unknown'.\n"
                     "Context: {context}\n"
                     "Question: {question}\n"
                     "Answer:"
@@ -88,7 +89,8 @@ class ExperimentConfig:
                 "without_context": (
                     "Answer with as few words as possible. "
                     "Be thorough in your analysis but answer in as few words as possible. "
-                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Do not overcomplicate your thinking. Do not go in circles. "
+                    "If you do not know the answer output 'Unknown'.\n"
                     "Question: {question}\n"
                     "Answer:"
                 ),
@@ -107,15 +109,15 @@ CONFIG = ExperimentConfig(
         # "google/gemma-2b-it": "huggingface",
         # "meta-llama/Llama-2-7b-hf": "huggingface",
         # "meta-llama/Llama-2-13b-hf": "huggingface",
-        "deepseek-r1:1.5b": "ollama",  # doesn't pass boolq baseline
+        # "deepseek-r1:1.5b": "ollama",  # doesn't pass boolq baseline
         # "deepseek-r1:7b": "ollama",  # near identical to 8b
         # "deepseek-r1:8b": "ollama",
         # "deepseek-r1:14b": "ollama",
         # "deepseek-r1:32b": "ollama",
         # "gemma3:1b": "ollama",  # doesn't pass boolq baseline
         # "gemma3:4b": "ollama",
-        # "gemma3:12b": "ollama",
-        # "gemma3:27b": "ollama",
+        "gemma3:12b": "ollama",
+        "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
     },
     modes={
@@ -127,34 +129,34 @@ CONFIG = ExperimentConfig(
         # "google/gemma-7b-it": {"q": False},
         # "meta-llama/Llama-2-7b-hf": {"q": False, "q+r": True},
         # "meta-llama/Llama-2-13b-hf": {"q": False},
-        "deepseek-r1:1.5b": {"q+r": True},
+        # "deepseek-r1:1.5b": {"q+r": True},
         # "deepseek-r1:7b": {"q": False, "q+r": True},
         # "deepseek-r1:8b": {"q": False, "q+r": True},
         # "deepseek-r1:14b": {"q": False, "q+r": True},
         # "deepseek-r1:32b": {"q": False},
         # "gemma3:1b": {"q": False, "q+r": True},
-        # "gemma3:4b": {"q+r": True},
-        # "gemma3:12b": {"q": False, "q+r": True},
-        # "gemma3:27b": {"q": False},
+        # "gemma3:4b": {"q": False, "q+r": True},
+        "gemma3:12b": {"q": False, "q+r": True},
+        "gemma3:27b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
     # dataset_name="hotpotqa/hotpot_qa",
-    dataset_name="mandarjoshi/trivia_qa",
+    dataset_name="squad",
     # dataset_name="google/boolq",
     dataset_file="full.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
     # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
-    # config="fullwiki",
-    config="unfiltered",
+    config="fullwiki",
+    # config="unfiltered",
     # config="unfiltered.nocontext",
-    split="validation",
+    split="train",
     n_samples=None,
     max_new_tokens=64,
     batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
-    think=True,
+    think=False,
     wiki_dir=Path("data/hotpot_wiki-processed"),
     corpus_cache=Path("cache/wiki.pkl"),
     tfidf_cache=Path("cache/tfidf.pkl"),

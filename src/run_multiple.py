@@ -57,7 +57,9 @@ CONFIG.think = False
 # config 5
 CONFIG.think = True
 CONFIG.model_types = {
-    "deepseek-r1:8b": "ollama",
+    "gemma3:1b": {"q": False, "q+r": True},
+    "gemma3:12b": {"q": False, "q+r": True},
+    "gemma3:27b": {"q": False}
 }
 CONFIG.modes = {
     "deepseek-r1:8b": {"q": False, "q+r": True},
@@ -76,11 +78,11 @@ for i in range(5):
 #     safe_run("deepseek_14_dev_testing", str(i))
 #
 # config 7
-CONFIG.model_types = {
-    "deepseek-r1:32b": "ollama",
-}
-CONFIG.modes = {
-    "deepseek-r1:32b": {"q": False},
-}
-for i in range(5):
-    safe_run("deepseek_32_dev_testing", str(i))
+# CONFIG.model_types = {
+#     "deepseek-r1:32b": "ollama",
+# }
+# CONFIG.modes = {
+#     "deepseek-r1:32b": {"q": False},
+# }
+# for i in range(5):
+#     safe_run("deepseek_32_dev_testing", str(i))
