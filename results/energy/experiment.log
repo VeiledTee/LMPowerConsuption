@@ -6868,3 +6868,35 @@ ExperimentConfig(model_types={'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, d
 2025-09-03 07:47:20,818 - energy_eval - INFO - Using device: cuda
 2025-09-03 07:47:23,020 - energy_eval - INFO - Loaded dataset with 1000 samples
 2025-09-03 07:47:23,020 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-09-03 07:51:10,547 - energy_eval - INFO - Loaded wiki in 0h3m47s
+2025-09-03 07:51:10,547 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-09-03 07:51:10,547 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-09-03 07:51:10,548 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\squad_gemma3-12b_q.csv
+2025-09-03 07:51:10,654 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-09-03 09:11:35,003 - energy_eval - INFO - Completed q for gemma3:12b in 1h 20m 24s
+2025-09-03 09:11:35,003 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\squad_gemma3-12b_q+r.csv
+2025-09-03 10:26:48,581 - energy_eval - INFO - Built 1000 prompts in 1h 15m 13s (+ retrieval: 0h 0m 26s, 0.0068 kWh, 0.0020 kg)
+2025-09-03 11:47:46,866 - energy_eval - INFO - Completed q+r for gemma3:12b in 2h 36m 11s
+2025-09-03 11:47:52,924 - energy_eval - INFO - Completed gemma3:12b in 3h 56m 42s
+2025-09-03 11:47:52,924 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:27b
+============================================================
+2025-09-03 11:47:52,924 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-09-03 11:47:52,924 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\squad_gemma3-27b_q.csv
+2025-09-03 11:47:53,017 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-09-03 13:11:24,235 - energy_eval - INFO - Completed q for gemma3:27b in 1h 23m 31s
+2025-09-03 13:11:28,959 - energy_eval - INFO - Completed gemma3:27b in 1h 23m 36s
+2025-09-03 13:11:28,959 - energy_eval - INFO - 
+============================================================
+Experiment completed in 5h 24m 8s
+============================================================
