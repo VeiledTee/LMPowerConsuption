@@ -9,3 +9,6 @@
 /data/hotpot_wiki-processed/
 /enwiki-20171001-pages-meta-current-withlinks-processed/
 .env
+/enwiki-20200101/
+/2WikiMultihopQA/
+/data/wikimultihop_wiki-processed/
