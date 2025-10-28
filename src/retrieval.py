@@ -118,15 +118,18 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
         docs, titles = joblib.load(CONFIG.corpus_cache)
     else:
         docs, titles = [], []
-        for p in CONFIG.wiki_dir.rglob("wiki_*"):
+        for i, p in enumerate(CONFIG.wiki_dir.rglob("*/wiki_*")):
+            if i % 150 == 0:
+                logger.info(f"{p.name}: processing, {len(docs):,} docs so far")
             if p.is_dir():
                 continue
-            with open(p, "rt") as fh:
+            with open(p, "r", encoding="utf-8") as fh:
                 for line in fh:
                     try:
                         page = json.loads(line)
                     except json.JSONDecodeError:
                         continue
+
                     title = page.get("title", "")
 
                     # Filter out redirects and disambiguation pages
@@ -135,26 +138,32 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
                             any(x in title.lower() for x in ["(disambiguation)", "list of"])):
                         continue
 
-                    # Extract ONLY the first paragraph as summary
-                    text_paragraphs = page.get("text", [])
-                    if text_paragraphs:
-                        # Take the very first paragraph regardless of length
-                        # This matches the dataset where they use first paragraph as summary
-                        first_para = "".join(text_paragraphs[0]).strip()
+                    text = page.get("text", "").strip()
+                    if not text:
+                        continue
 
-                        # Basic cleaning
-                        first_para = strip_links(first_para)
+                    # Extract first paragraph
+                    first_paragraph = text.split("\n")[0].strip()
 
-                        # Remove section headers and other markers
-                        if (not first_para.startswith("==") and
-                                not first_para.startswith("#REDIRECT") and
-                                not first_para.startswith("#redirect")):
-                            docs.append(first_para)
-                            titles.append(title)
+                    # Basic cleaning function for links, markup, etc.
+                    first_paragraph = strip_links(first_paragraph)
 
+                    # Skip if still looks like a section header or redirect
+                    if (first_paragraph.startswith("==") or
+                            first_paragraph.lower().startswith("#redirect")):
+                        continue
+
+                    docs.append(first_paragraph)
+                    titles.append(title)
+
+                if i % 1500 == 0 and len(docs) > 0:
+                    logger.info(f"Checkpoint: dumping {len(docs):,} docs to {CONFIG.corpus_cache}")
+                    joblib.dump((docs, titles), CONFIG.corpus_cache)
+                    logger.info(f"Checkpoint: dumped {len(docs):,} docs to {CONFIG.corpus_cache}")
         joblib.dump((docs, titles), CONFIG.corpus_cache)
+        logger.info(f"Final dump complete: {len(docs):,} docs saved to {CONFIG.corpus_cache}")
 
-    # Rest of your TF-IDF and indexing code remains the same...
+    # TF-IDF code
     if CONFIG.tfidf_cache.exists():
         vectorizer, tfidf_matrix = joblib.load(CONFIG.tfidf_cache)
     else:
@@ -169,8 +178,9 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
         )
         tfidf_matrix = vectorizer.transform(docs)
         joblib.dump((vectorizer, tfidf_matrix), CONFIG.tfidf_cache)
+        logger.info(f"DUMPED {len(docs)} DOCS and MATRIX TO {CONFIG.tfidf_cache}")
 
-    # Inverted index code remains the same...
+    # Inverted index code
     if CONFIG.index_cache.exists():
         inv_index = joblib.load(CONFIG.index_cache)
     else:
@@ -185,6 +195,7 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
                 inv_index[bigram].append(doc_id)
         inv_index = dict(inv_index)
         joblib.dump(inv_index, CONFIG.index_cache)
+        logger.info(f"DUMPED {len(docs)} DOCS and INDEX TO {CONFIG.index_cache}")
 
     return docs, titles, vectorizer, tfidf_matrix, inv_index
 

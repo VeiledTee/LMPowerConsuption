@@ -1,4 +1,4 @@
-from config import CONFIG
+from src.config import CONFIG
 
 
 def build_prompt(example: dict, include_passage: bool) -> str:

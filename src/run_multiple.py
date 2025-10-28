@@ -1,8 +1,7 @@
 import logging
 
-from analysis import main
-from config import CONFIG
-from experiment import run
+from src.config import CONFIG
+from src.experiment import run
 
 logger = logging.getLogger(__name__)
 

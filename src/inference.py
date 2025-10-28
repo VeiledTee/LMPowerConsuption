@@ -7,7 +7,7 @@ from ollama import generate
 from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
                           PreTrainedTokenizer)
 
-from config import CONFIG
+from src.config import CONFIG
 
 logger = logging.getLogger("codecarbon")
 logger.setLevel(logging.ERROR)
