@@ -8,7 +8,6 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from email.message import EmailMessage
 from pathlib import Path
-from random import random
 
 import pandas as pd
 import torch
@@ -16,12 +15,12 @@ from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
 from tqdm import tqdm
 
-from config import CONFIG
-from inference import inference, load_model_and_tokenizer
-from prompts import build_prompt
-from retrieval import load_HotpotQA_wiki, load_2WikiMultiHopQA_wiki, retrieve_2wikimultihop, retrieve_hotpot
+from src.config import CONFIG
+from src.inference import inference, load_model_and_tokenizer
+from src.prompts import build_prompt
+from src.retrieval import load_HotpotQA_wiki, load_2WikiMultiHopQA_wiki, retrieve_2wikimultihop, retrieve_hotpot
 from src.squad_scorers import compute_exact, compute_f1
-from utils import (convert_seconds, count_bools, ensure_config_dirs,
+from src.utils import (convert_seconds, count_bools, ensure_config_dirs,
                    extract_2wiki_gold_context, setup_logging)
 
 # Supress ollama http logs
@@ -117,6 +116,18 @@ def load_config_dataset(data_dir: Path) -> Dataset:
     """Load dataset based on configuration."""
     dataset_path = data_dir / CONFIG.dataset_file
 
+    if '2wiki' in str(dataset_path).lower():
+        with open(dataset_path, "r", encoding="utf-8") as f:
+            data = [json.loads(line) for line in f]
+
+        # flatten or stringify non-scalar fields
+        for d in data:
+            d["context"] = json.dumps(d["context"])
+            d["supporting_facts"] = json.dumps(d["supporting_facts"])
+            d["evidences"] = json.dumps(d["evidences"])
+
+        return Dataset.from_dict({k: [ex[k] for ex in data] for k in data[0]})
+
     if dataset_path.exists():
         logger.info(f"Loading dataset from {dataset_path}")
         with open(dataset_path, "r", encoding="utf-8") as f:
@@ -204,11 +215,13 @@ def run_model_mode(
     file_suffix: None | str = "",
 ) -> None:
     if "hotpot" in CONFIG.dataset_name:
-        from hotpot_scorers import exact_match, f1_score  # use Hotpot-style
+        from scorers_hotpot import exact_match, f1_score  # use Hotpot-style
+    elif '2wiki' in CONFIG.dataset_name.lower():
+        from scorers_2wiki import exact_match, f1_score  # use 2Wiki-style
     else:
         from scorers import exact_match, f1_score  # use general BoolQ-style
 
-    """Run evaluation for a specific model and mode, with concurrent inference and batched writes."""
+    # Run evaluation for a specific model and mode, with concurrent inference and batched writes
     dataset_id = CONFIG.dataset_name.split(r'/')[-1]
     csv_path = (
         CONFIG.result_dir
@@ -231,7 +244,6 @@ def run_model_mode(
         ret_metrics = None
         if mode_tag == "q+r":
             ctx, ret_metrics = retrieve_context(sample, wiki_data)
-
             sample = {**sample, "retrieved_context": ctx}
 
             if ret_metrics:
@@ -472,6 +484,7 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         if not wiki_data:
             return context, retrieval_metrics
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+        print(f"SAMPLE: {sample}")
 
         # Extract question data for 2WikiMultiHopQA
         question_text = sample["question"]

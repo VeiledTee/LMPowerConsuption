@@ -15,7 +15,7 @@ def build_prompt(example: dict, include_passage: bool) -> str:
     q = example["question"]
 
     # Determine dataset type
-    dataset_type = CONFIG.dataset_name.split(r'/')[-1]
+    dataset_type = CONFIG.dataset_name.split(r'/')[-1].lower()
 
     # Select appropriate template set
     templates = CONFIG.prompt_templates[dataset_type]
@@ -23,6 +23,17 @@ def build_prompt(example: dict, include_passage: bool) -> str:
     if include_passage:
         # Handle different context formats per dataset
         if dataset_type == "hotpot_qa":
+            # Check if we're using retrieved context
+            if "retrieved_context" in example:
+                context = example["retrieved_context"]
+            else:
+                context = "\n".join(
+                    f"{title}: {' '.join(s.strip() for s in sents)}"
+                    for title, sents in zip(
+                        example["context"]["title"], example["context"]["sentences"]
+                    )
+                )
+        if dataset_type == "2wikimultihopqa":
             # Check if we're using retrieved context
             if "retrieved_context" in example:
                 context = example["retrieved_context"]
