@@ -131,3 +131,16 @@ def count_bools(output: str) -> str:
         return "False"
 
     return "True"  # Default majority class in BoolQ
+
+
+def extract_2wiki_gold_context(sample):
+    """
+    Extract consolidated text for each title in the gold context.
+
+    Args:
+        sample: A dataset instance from 2WikiMultiHopQA
+
+    Returns:
+        List[str]: A list where each string is the consolidated text for one title
+    """
+    return [" ".join(sentences) for title, sentences in sample["context"]]
