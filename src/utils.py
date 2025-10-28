@@ -5,7 +5,7 @@ import string
 from pathlib import Path
 from typing import Dict, Tuple
 
-from config import CONFIG
+from src.config import CONFIG
 
 
 def normalize(text: str) -> str:

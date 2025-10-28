@@ -95,6 +95,23 @@ class ExperimentConfig:
                     "Answer:"
                 ),
             },
+            "2WikiMultihopQA": {
+                "with_context": (
+                    "Using the provided context, answer the question with as few words as possible. "
+                    "Be thorough in your analysis of the context but answer in as few words as possible. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Context: {context}\n"
+                    "Question: {question}\n"
+                    "Answer:"
+                ),
+                "without_context": (
+                    "Answer with as few words as possible. "
+                    "Be thorough in your analysis but answer in as few words as possible. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Question: {question}\n"
+                    "Answer:"
+                ),
+            },
         }
     )
 
@@ -164,7 +181,7 @@ CONFIG = ExperimentConfig(
     # corpus_cache=Path(f"cache/wiki_hotpot.pkl"),
     # tfidf_cache=Path("cache/tfidf_hotpot.pkl"),
     # index_cache=Path("cache/index_hotpot.pkl"),
-    wiki_dir=Path("data/wikimultihop_wiki-processed"),
+    wiki_dir=Path("../enwiki-20200101"),
     corpus_cache=Path(f"cache/wiki_2wiki.pkl"),
     tfidf_cache=Path("cache/tfidf_2wiki.pkl"),
     index_cache=Path("cache/index_2wiki.pkl"),
