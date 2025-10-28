@@ -19,10 +19,10 @@ from tqdm import tqdm
 from config import CONFIG
 from inference import inference, load_model_and_tokenizer
 from prompts import build_prompt
-from retrieval import load_wiki, retrieve_hotpot, retrieve_triviaqa
+from retrieval import load_HotpotQA_wiki, load_2WikiMultiHopQA_wiki, retrieve_2wikimultihop, retrieve_hotpot
 from src.squad_scorers import compute_exact, compute_f1
 from utils import (convert_seconds, count_bools, ensure_config_dirs,
-                   setup_logging)
+                   extract_2wiki_gold_context, setup_logging)
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -66,7 +66,13 @@ def run(file_suffix: None | str = "") -> None:
     if any("q+r" in modes for modes in CONFIG.modes.values()):
         logger.info(f"Retrieval mode requested - loading wiki")
         t0 = time.time()
-        wiki_data = load_wiki()
+        if "2wikimultihop" in CONFIG.dataset_name.lower():
+            logger.info("Loading mappings for 2WikiMultiHopQA context retrieval...")
+            wiki_data = load_2WikiMultiHopQA_wiki()
+        else:
+            logger.info("Loading mappings for HotpotQA context retrieval...")
+            wiki_data = load_HotpotQA_wiki()
+
         h, m, s = convert_seconds(time.time() - t0)
         logger.info(f"Loaded wiki in {h}h{m}m{s}s")
 
@@ -461,6 +467,30 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
             context = " ".join(
                 sent for section in sample["context"]["sentences"] for sent in section
             )
+
+    elif "2wikimultihop" in CONFIG.dataset_name:
+        if not wiki_data:
+            return context, retrieval_metrics
+        docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+
+        # Extract question data for 2WikiMultiHopQA
+        question_text = sample["question"]
+        question_type = sample.get("type", "comparison")  # comparison, inference, compositional, bridge-comparison
+        gold_titles = [sf[0] for sf in sample["supporting_facts"]]
+
+        # Call the new 2WikiMultiHopQA retrieval function
+        _, ret_metrics = retrieve_2wikimultihop(
+            question=question_text,
+            gold_titles=gold_titles,
+            question_type=question_type,
+            vectorizer=vectorizer,
+            tfidf_matrix=tfidf_matrix,
+            titles=titles,
+            docs=docs,
+        )
+
+        context = extract_2wiki_gold_context(sample)
+        retrieval_metrics.update(ret_metrics)
 
     elif "boolq" in CONFIG.dataset_name:
         if not wiki_data:
