@@ -115,9 +115,9 @@ CONFIG = ExperimentConfig(
         # "deepseek-r1:14b": "ollama",
         # "deepseek-r1:32b": "ollama",
         # "gemma3:1b": "ollama",  # doesn't pass boolq baseline
-        # "gemma3:4b": "ollama",
-        "gemma3:12b": "ollama",
-        "gemma3:27b": "ollama",
+        "gemma3:4b": "ollama",
+        # "gemma3:12b": "ollama",
+        # "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
     },
     modes={
@@ -135,20 +135,22 @@ CONFIG = ExperimentConfig(
         # "deepseek-r1:14b": {"q": False, "q+r": True},
         # "deepseek-r1:32b": {"q": False},
         # "gemma3:1b": {"q": False, "q+r": True},
-        # "gemma3:4b": {"q": False, "q+r": True},
-        "gemma3:12b": {"q": False, "q+r": True},
-        "gemma3:27b": {"q": False},
+        "gemma3:4b": {"q": False, "q+r": True},
+        # "gemma3:12b": {"q": False, "q+r": True},
+        # "gemma3:27b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
     # dataset_name="hotpotqa/hotpot_qa",
     # dataset_name="squad_v2",
     # dataset_name="google/boolq",
     dataset_name="xanhho/2WikiMultihopQA",
-    dataset_file="full.jsonl",  # for full dataset (above) run
+    # dataset_file="full.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
     # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
+    dataset_file="2WikiMultihopQA_mini_dev_1000.jsonl",  # for mini 2wiki dev
+    # dataset_file="2WikiMultihopQA_mini_1000.jsonl",  # for mini 2wiki test
     config="fullwiki",
     # config="unfiltered",
     # config="unfiltered.nocontext",
