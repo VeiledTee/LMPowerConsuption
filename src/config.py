@@ -95,7 +95,7 @@ class ExperimentConfig:
                     "Answer:"
                 ),
             },
-            "2WikiMultihopQA": {
+            "2wikimultihopqa": {
                 "with_context": (
                     "Using the provided context, answer the question with as few words as possible. "
                     "Be thorough in your analysis of the context but answer in as few words as possible. "
@@ -132,10 +132,14 @@ CONFIG = ExperimentConfig(
         # "deepseek-r1:14b": "ollama",
         # "deepseek-r1:32b": "ollama",
         # "gemma3:1b": "ollama",  # doesn't pass boolq baseline
-        "gemma3:4b": "ollama",
+        # "gemma3:4b": "ollama",
         # "gemma3:12b": "ollama",
         # "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
+        "qwen3:4b": "ollama",
+        "qwen3:8b": "ollama",
+        "qwen3:14b": "ollama",
+        "qwen3:32b": "ollama",
     },
     modes={
         # "distilbert/distilgpt2": {"q": False, "q+r": True},
@@ -152,9 +156,13 @@ CONFIG = ExperimentConfig(
         # "deepseek-r1:14b": {"q": False, "q+r": True},
         # "deepseek-r1:32b": {"q": False},
         # "gemma3:1b": {"q": False, "q+r": True},
-        "gemma3:4b": {"q": False, "q+r": True},
+        # "gemma3:4b": {"q": False, "q+r": True},
         # "gemma3:12b": {"q": False, "q+r": True},
         # "gemma3:27b": {"q": False},
+        "qwen3:4b": {"q": False, "q+r": True},
+        "qwen3:8b": {"q": False, "q+r": True},
+        "qwen3:14b": {"q": False, "q+r": True},
+        "qwen3:32b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
     # dataset_name="hotpotqa/hotpot_qa",
@@ -176,7 +184,7 @@ CONFIG = ExperimentConfig(
     max_new_tokens=64,
     batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
-    think=False,
+    think=True,
     # wiki_dir=Path("data/hotpot_wiki-processed"),
     # corpus_cache=Path(f"cache/wiki_hotpot.pkl"),
     # tfidf_cache=Path("cache/tfidf_hotpot.pkl"),
