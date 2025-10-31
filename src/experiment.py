@@ -480,7 +480,7 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
                 sent for section in sample["context"]["sentences"] for sent in section
             )
 
-    elif "2wikimultihop" in CONFIG.dataset_name:
+    elif "2wikimultihop" in CONFIG.dataset_name.lower():
         if not wiki_data:
             return context, retrieval_metrics
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data

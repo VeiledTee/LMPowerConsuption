@@ -135,12 +135,13 @@ def count_bools(output: str) -> str:
 
 def extract_2wiki_gold_context(sample):
     """
-    Extract consolidated text for each title in the gold context.
-
-    Args:
-        sample: A dataset instance from 2WikiMultiHopQA
-
-    Returns:
-        List[str]: A list where each string is the consolidated text for one title
+    Extract consolidated text for each title in the gold context,
+    skipping malformed entries.
     """
-    return [" ".join(sentences) for title, sentences in sample["context"]]
+    return [
+        " ".join(sentences)
+        for item in sample["context"]
+        # Check if the item is iterable AND has exactly two elements before unpacking
+        if isinstance(item, (list, tuple)) and len(item) == 2
+        for title, sentences in [item]
+    ]

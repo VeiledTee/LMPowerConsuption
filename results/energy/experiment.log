@@ -7897,3 +7897,112 @@ Running modes: {'q': False, 'q+r': True}
 ++++++++++++++++++++++++++++++
 2025-10-28 17:12:24,834 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q_128_dev_think.csv
 2025-10-28 17:12:24,872 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-28 23:20:48,045 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='xanhho/2WikiMultihopQA', dataset_file='2WikiMultihopQA_mini_dev_1000.jsonl', config='fullwiki', split='dev', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}})
+2025-10-28 23:20:48,045 - energy_eval - INFO - Using device: cuda
+2025-10-28 23:20:48,096 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-10-28 23:20:48,096 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-10-28 23:20:48,096 - energy_eval - INFO - Loading mappings for 2WikiMultiHopQA context retrieval...
+2025-10-28 23:24:42,425 - energy_eval - INFO - Loaded wiki in 0h3m54s
+2025-10-28 23:24:42,425 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-10-28 23:24:42,425 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-10-28 23:24:42,430 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q_128_dev_think.csv
+2025-10-28 23:24:42,467 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 01:48:04,446 - energy_eval - INFO - Completed q for qwen3:4b in 2h 23m 22s
+2025-10-29 01:48:04,446 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q+r_128_dev_think.csv
+2025-10-29 01:48:04,485 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 03:45:23,432 - energy_eval - INFO - Completed q+r for qwen3:4b in 1h 57m 18s
+2025-10-29 03:45:29,667 - energy_eval - INFO - Completed qwen3:4b in 4h 20m 47s
+2025-10-29 03:45:29,667 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:8b
+============================================================
+2025-10-29 03:45:29,667 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-10-29 03:45:29,667 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-8b_q_128_dev_think.csv
+2025-10-29 03:45:29,703 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 09:44:06,797 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='xanhho/2WikiMultihopQA', dataset_file='2WikiMultihopQA_mini_dev_1000.jsonl', config='fullwiki', split='dev', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}})
+2025-10-29 09:44:06,797 - energy_eval - INFO - Using device: cuda
+2025-10-29 09:44:06,853 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-10-29 09:44:06,854 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-10-29 09:44:06,854 - energy_eval - INFO - Loading mappings for 2WikiMultiHopQA context retrieval...
+2025-10-29 09:48:05,597 - energy_eval - INFO - Loaded wiki in 0h3m58s
+2025-10-29 09:48:05,597 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-10-29 09:48:05,597 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-10-29 09:48:05,598 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q_128_dev_think.csv
+2025-10-29 09:48:05,647 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 12:12:23,321 - energy_eval - INFO - Completed q for qwen3:4b in 2h 24m 17s
+2025-10-29 12:12:23,321 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q+r_128_dev_think.csv
+2025-10-29 12:12:23,361 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 12:39:09,305 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='xanhho/2WikiMultihopQA', dataset_file='2WikiMultihopQA_mini_dev_1000.jsonl', config='fullwiki', split='dev', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}})
+2025-10-29 12:39:09,305 - energy_eval - INFO - Using device: cuda
+2025-10-29 12:39:09,362 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-10-29 12:39:09,362 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-10-29 12:39:09,362 - energy_eval - INFO - Loading mappings for 2WikiMultiHopQA context retrieval...
+2025-10-29 12:43:07,101 - energy_eval - INFO - Loaded wiki in 0h3m57s
+2025-10-29 12:43:07,101 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-10-29 12:43:07,101 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-10-29 12:43:07,110 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q_128_dev_think.csv
+2025-10-29 12:43:07,195 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 12:43:23,416 - energy_eval - INFO - Completed q for qwen3:4b in 0h 0m 16s
+2025-10-29 12:43:23,416 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q+r_128_dev_think.csv
+2025-10-29 12:43:32,166 - energy_eval - ERROR - Critical error: not enough values to unpack (expected 2, got 1)
+Traceback (most recent call last):
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 639, in <module>
+    run()
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 92, in run
+    run_model_mode(
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 246, in run_model_mode
+    ctx, ret_metrics = retrieve_context(sample, wiki_data)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\experiment.py", line 506, in retrieve_context
+    context = extract_2wiki_gold_context(sample)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\utils.py", line 146, in extract_2wiki_gold_context
+    return [" ".join(sentences) for title, sentences in sample["context"]]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ethan\Documents\PhD\LMPowerConsuption\src\utils.py", line 146, in <listcomp>
+    return [" ".join(sentences) for title, sentences in sample["context"]]
+                                    ^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+2025-10-29 13:12:35,250 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='xanhho/2WikiMultihopQA', dataset_file='2WikiMultihopQA_mini_dev_1000.jsonl', config='fullwiki', split='dev', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}})
+2025-10-29 13:12:35,250 - energy_eval - INFO - Using device: cuda
+2025-10-29 13:12:35,299 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-10-29 13:12:35,299 - energy_eval - INFO - Retrieval mode requested - loading wiki
+2025-10-29 13:12:35,299 - energy_eval - INFO - Loading mappings for 2WikiMultiHopQA context retrieval...
+2025-10-29 13:16:33,243 - energy_eval - INFO - Loaded wiki in 0h3m57s
+2025-10-29 13:16:33,243 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-10-29 13:16:33,243 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-10-29 13:16:33,244 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q_128_dev_think.csv
+2025-10-29 13:16:33,328 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-10-29 13:16:38,867 - energy_eval - INFO - Completed q for qwen3:4b in 0h 0m 5s
+2025-10-29 13:16:38,867 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\2WikiMultihopQA_qwen3-4b_q+r_128_dev_think.csv
