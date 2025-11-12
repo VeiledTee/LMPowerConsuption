@@ -404,3 +404,51 @@ def retrieve_2wikimultihop(
         "energy_consumed": data.energy_consumed,
         "emissions": data.emissions,
     }
+
+
+def retrieve_top_k(
+        question: str,
+        vectorizer: HashingVectorizer,
+        tfidf_matrix: Any,
+        titles: list[str],
+        docs: list[str],
+        inv_index: dict[str, list[int]],
+        k: int = 10,
+) -> tuple[list[tuple[str, str]], dict[str, float]]:
+    """
+    Retrieve top-K candidate documents (title and text) for an Open-Domain QA question.
+    This simulates the NQ and TriviaQA style retrieval pipeline.
+    """
+    tokens = re.findall(CONFIG.token_pattern, normalize(question))
+    tokens = [t for t in tokens if t not in ENGLISH_STOP_WORDS]
+    ngrams = tokens + [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
+
+    with EmissionsTracker(save_to_file=False) as tracker:
+        counter = Counter()
+        for ng in ngrams:
+            counter.update(inv_index.get(ng, []))
+        # Use a large number of candidates for initial filtering
+        cand_ids = [doc_id for doc_id, _ in counter.most_common(5000)]
+
+        q_vec = vectorizer.transform([question])
+
+        top_passages = []
+        if cand_ids:
+            sub_mat = tfidf_matrix[cand_ids]
+            scores = (q_vec @ sub_mat.T).toarray().flatten()
+
+            # Retrieve top-K indices from the candidate set
+            top_indices = scores.argsort()[-k:][::-1]
+
+            for i in top_indices:
+                doc_idx_in_corpus = cand_ids[i]  # Map back to full corpus index
+                title = titles[doc_idx_in_corpus]
+                text = docs[doc_idx_in_corpus]
+                top_passages.append((title, text))
+
+    data = tracker.final_emissions_data
+    return top_passages, {  # <--- RETURN LIST OF (TITLE, TEXT) TUPLES
+        "duration": data.duration,
+        "energy_consumed": data.energy_consumed,
+        "emissions": data.emissions,
+    }

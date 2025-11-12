@@ -8,20 +8,7 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from email.message import EmailMessage
 from pathlib import Path
-
 import pandas as pd
-import torch
-from codecarbon import EmissionsTracker
-from datasets import Dataset, load_dataset
-from tqdm import tqdm
-
-from src.config import CONFIG
-from src.inference import inference, load_model_and_tokenizer
-from src.prompts import build_prompt
-from src.retrieval import load_HotpotQA_wiki, load_2WikiMultiHopQA_wiki, retrieve_2wikimultihop, retrieve_hotpot
-from src.squad_scorers import compute_exact, compute_f1
-from src.utils import (convert_seconds, count_bools, ensure_config_dirs,
-                   extract_2wiki_gold_context, setup_logging)
 
 # Supress ollama http logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -30,6 +17,20 @@ warnings.filterwarnings("ignore", category=pd.errors.DtypeWarning)
 logger = logging.getLogger("codecarbon")
 logger.setLevel(logging.ERROR)
 logger.propagate = False
+
+import torch
+from codecarbon import EmissionsTracker
+from datasets import Dataset, load_dataset
+from tqdm import tqdm
+
+from src.config import CONFIG
+from src.inference import inference, load_model_and_tokenizer
+from src.prompts import build_prompt
+from src.retrieval import load_HotpotQA_wiki, load_2WikiMultiHopQA_wiki, retrieve_2wikimultihop, retrieve_hotpot, \
+    retrieve_top_k
+from src.squad_scorers import compute_exact, compute_f1
+from src.utils import (convert_seconds, count_bools, ensure_config_dirs,
+                       extract_2wiki_gold_context, setup_logging)
 
 # Remove existing handlers
 for handler in logger.handlers:
@@ -132,7 +133,7 @@ def load_config_dataset(data_dir: Path) -> Dataset:
         logger.info(f"Loading dataset from {dataset_path}")
         with open(dataset_path, "r", encoding="utf-8") as f:
             data = [json.loads(line) for line in f]
-        return Dataset.from_list(data)
+        return Dataset.from_list(data[:CONFIG.dataset_size])
 
     if "hotpot" in CONFIG.dataset_name:
         dataset = load_dataset(
@@ -204,15 +205,15 @@ def format_time(seconds: float) -> str:
 
 
 def run_model_mode(
-    model_name: str,
-    mode_tag: str,
-    include_passage: bool,
-    dataset,
-    tokenizer: any,
-    model: any,
-    provider: str,
-    wiki_data: tuple,
-    file_suffix: None | str = "",
+        model_name: str,
+        mode_tag: str,
+        include_passage: bool,
+        dataset,
+        tokenizer: any,
+        model: any,
+        provider: str,
+        wiki_data: tuple,
+        file_suffix: None | str = "",
 ) -> None:
     if "hotpot" in CONFIG.dataset_name:
         from scorers_hotpot import exact_match, f1_score  # use Hotpot-style
@@ -223,13 +224,15 @@ def run_model_mode(
 
     # Run evaluation for a specific model and mode, with concurrent inference and batched writes
     dataset_id = CONFIG.dataset_name.split(r'/')[-1]
+    if 'natural_questions' in CONFIG.dataset_name:
+        dataset_id = 'nq'
     csv_path = (
-        CONFIG.result_dir
-        / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
-        f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
-        f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-        f"{'_think' if CONFIG.think == True else ''}"
-        f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
+            CONFIG.result_dir
+            / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
+              f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
+              f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
+              f"{'_think' if CONFIG.think == True else ''}"
+              f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
     start_idx = get_resume_index(csv_path)
@@ -264,7 +267,7 @@ def run_model_mode(
         _ = inference("Ready?", model_name, mode_tag, provider)
 
         for idx, sample, prompt, ret_metrics in tqdm(
-            jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
+                jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
             full_output, inf_metrics = inference(prompt, model_name, mode_tag, provider)
 
@@ -280,7 +283,8 @@ def run_model_mode(
 
                 row = {
                     "qid": sample["id"],
-                    "original_pred": full_output.replace(",", " ").replace("  ", " ").replace("\n", " ").replace(".", '').strip(),
+                    "original_pred": full_output.replace(",", " ").replace("  ", " ").replace("\n", " ").replace(".",
+                                                                                                                 '').strip(),
                     "pred": pred,
                     "gold": str(gold_answers),  # Store all possible answers as string
                     "em": em,
@@ -298,8 +302,41 @@ def run_model_mode(
                         ret_metrics.get("emissions") if ret_metrics else 0.0
                     ),
                 }
+            elif 'natural_questions' in CONFIG.dataset_name:
+                em = -1
+                f1 = -1
+                for short_answer in set([answer[0] for answer in sample['short_answers'] if len(answer) > 0]):
+                    instance_em = exact_match(pred, short_answer)
+                    if instance_em > em:
+                        em = instance_em
+                        sample['answer'] = short_answer
+                    instance_f1 = f1_score(pred, short_answer)
+                    if instance_f1 > f1:
+                        f1 = instance_f1
+                        sample['answer'] = short_answer
+                row = {
+                    "qid": idx,
+                    "original_pred": full_output.replace(",", " ")
+                    .replace("  ", " ")
+                    .replace("\n", " "),
+                    "pred": pred,
+                    "gold": sample['answer'],
+                    "em": em,
+                    "f1": f1,
+                    "inference_duration (s)": inf_metrics["duration"],
+                    "inference_energy_consumed (kWh)": inf_metrics["energy_consumed"],
+                    "inference_emissions (kg)": inf_metrics["emissions"],
+                    "retrieval_duration (s)": (
+                        ret_metrics.get("duration") if ret_metrics else 0.0
+                    ),
+                    "retrieval_energy_consumed (kWh)": (
+                        ret_metrics.get("energy_consumed") if ret_metrics else 0.0
+                    ),
+                    "retrieval_emissions (kg)": (
+                        ret_metrics.get("emissions") if ret_metrics else 0.0
+                    ),
+                }
             else:
-
                 if "boolq" in CONFIG.dataset_name:
                     pred, inf_metrics = process_boolq_prediction(
                         pred, model_name, inf_metrics
@@ -356,9 +393,9 @@ def run_model_mode(
             }
 
             for fut in tqdm(
-                as_completed(future_to_job),
-                total=len(future_to_job),
-                desc=f"{model_name} ({mode_tag})",
+                    as_completed(future_to_job),
+                    total=len(future_to_job),
+                    desc=f"{model_name} ({mode_tag})",
             ):
                 idx, sample, ret_metrics = future_to_job[fut]
                 try:
@@ -479,7 +516,6 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
             context = " ".join(
                 sent for section in sample["context"]["sentences"] for sent in section
             )
-
     elif "2wikimultihop" in CONFIG.dataset_name.lower():
         if not wiki_data:
             return context, retrieval_metrics
@@ -504,7 +540,6 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
 
         context = extract_2wiki_gold_context(sample)
         retrieval_metrics.update(ret_metrics)
-
     elif "boolq" in CONFIG.dataset_name:
         if not wiki_data:
             return context, retrieval_metrics
@@ -514,7 +549,6 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         )
         retrieval_metrics.update(ret_metrics)
         context = sample.get("passage", "")
-
     elif "squad" in CONFIG.dataset_name:
         if not wiki_data:
             return context, retrieval_metrics
@@ -525,6 +559,53 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         retrieval_metrics.update(ret_metrics)
         # For SQuAD, use the provided context
         context = sample["context"]
+    elif 'natural-questions' in CONFIG.dataset_name:
+        if not wiki_data:
+            return context, retrieval_metrics
+        docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+        _, ret_metrics = retrieve_hotpot(
+            sample["question"], vectorizer, tfidf_matrix, titles, inv_index
+        )
+        retrieval_metrics.update(ret_metrics)
+        # get gold/1st paragraph
+        GOLD_STANDARD: bool = True
+        if GOLD_STANDARD:
+            context = sample['long_answer']
+        else:
+            document_text = sample['document']
+            paragraphs = document_text.split('Jump to: navigation , search')
+            if len(paragraphs) > 1:
+                context = paragraphs[1].strip()
+    else:
+        if not wiki_data:
+            return context, retrieval_metrics
+        docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+
+        # Use a reasonable K, e.g., 5-10, as the source papers often do
+        # For simplicity, we use 5 retrieved documents/passages.
+        top_passages_list, ret_metrics = retrieve_top_k(
+            question=sample["question"],
+            vectorizer=vectorizer,
+            tfidf_matrix=tfidf_matrix,
+            titles=titles,
+            docs=docs,  # <--- PASS DOCS
+            inv_index=inv_index,
+            k=5  # <--- Use a specific K value for measurement
+        )
+        retrieval_metrics.update(ret_metrics)
+
+        # Recreate the context-to-question pairing: Combine all top-K retrieved passages
+        # The format should be: [Title 1] Text 1. [Title 2] Text 2. ...
+        context = ""
+        for title, text in top_passages_list:
+            # This forms the final context provided to the reader model
+            context += f"[{title}] {text.strip()} "
+
+            # Fallback to provided context if retrieval fails or is not applicable
+        if not context and "context" in sample:
+            context = sample["context"]
+        elif not context and "passage" in sample:
+            context = sample["passage"]  # Used for BoolQ
 
     return context, retrieval_metrics
 
@@ -541,12 +622,12 @@ def extract_prediction(full_output: str) -> str:
 
 
 def generate_prediction(
-    prompt: str,
-    model: any,
-    tokenizer: any,
-    model_name: str,
-    mode_tag: str,
-    provider: str,
+        prompt: str,
+        model: any,
+        tokenizer: any,
+        model_name: str,
+        mode_tag: str,
+        provider: str,
 ) -> tuple[str, dict]:
     """Generate model prediction with metrics and fallback on CUDA OOM."""
     inference_metrics = {
@@ -581,13 +662,13 @@ def generate_prediction(
 
 
 def process_boolq_prediction(
-    prediction: str, model_name: str, inference_metrics: dict
+        prediction: str, model_name: str, inference_metrics: dict
 ) -> tuple[str, dict]:
     """Process BoolQ prediction and measure emissions."""
     with EmissionsTracker(
-        save_to_file=False,
-        project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
-        log_level="error",
+            save_to_file=False,
+            project_name=f"{CONFIG.dataset_name.split('/')[-1]}_{model_name}_simplifying",
+            log_level="error",
     ) as tracker:
         processed_pred = extract_prediction(count_bools(prediction))
 

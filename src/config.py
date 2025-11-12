@@ -110,6 +110,22 @@ class ExperimentConfig:
                     "Do not overcomplicate your thinking. Do not go in circles.\n"
                     "Question: {question}\n"
                     "Answer:"
+                )},
+            "natural_questions_parsed": {
+                "with_context": (
+                    "Using the provided context, answer the question with as few words as possible. "
+                    "Be thorough in your analysis of the context but answer in as few words as possible. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Context: {context}\n"
+                    "Question: {question}\n"
+                    "Answer:"
+                ),
+                "without_context": (
+                    "Answer with as few words as possible. "
+                    "Be thorough in your analysis but answer in as few words as possible. "
+                    "Do not overcomplicate your thinking. Do not go in circles.\n"
+                    "Question: {question}\n"
+                    "Answer:"
                 ),
             },
         }
@@ -136,6 +152,8 @@ CONFIG = ExperimentConfig(
         # "gemma3:12b": "ollama",
         # "gemma3:27b": "ollama",
         # "smollm:135m": "ollama",
+        "qwen3:0.6b": "ollama",
+        "qwen3:1.7b": "ollama",
         "qwen3:4b": "ollama",
         "qwen3:8b": "ollama",
         "qwen3:14b": "ollama",
@@ -159,6 +177,8 @@ CONFIG = ExperimentConfig(
         # "gemma3:4b": {"q": False, "q+r": True},
         # "gemma3:12b": {"q": False, "q+r": True},
         # "gemma3:27b": {"q": False},
+        "qwen3:0.6b": {"q": False, "q+r": True},
+        "qwen3:1.7b": {"q": False, "q+r": True},
         "qwen3:4b": {"q": False, "q+r": True},
         "qwen3:8b": {"q": False, "q+r": True},
         "qwen3:14b": {"q": False, "q+r": True},
@@ -168,23 +188,26 @@ CONFIG = ExperimentConfig(
     # dataset_name="hotpotqa/hotpot_qa",
     # dataset_name="squad_v2",
     # dataset_name="google/boolq",
-    dataset_name="xanhho/2WikiMultihopQA",
+    # dataset_name="xanhho/2WikiMultihopQA",
+    dataset_name="hugosousa/natural_questions_parsed",
     # dataset_file="full.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
     # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
-    dataset_file="2WikiMultihopQA_mini_dev_1000.jsonl",  # for mini 2wiki dev
+    # dataset_file="2WikiMultihopQA_mini_dev_1000.jsonl",  # for mini 2wiki dev
     # dataset_file="2WikiMultihopQA_mini_1000.jsonl",  # for mini 2wiki test
+    dataset_file="nq_mini_1000.jsonl",  # for mini NQ dev
     config="fullwiki",
     # config="unfiltered",
     # config="unfiltered.nocontext",
-    split="dev",
+    # split="dev",
+    split="validation",
     n_samples=None,
     max_new_tokens=64,
     batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
-    think=True,
+    think=False,
     # wiki_dir=Path("data/hotpot_wiki-processed"),
     # corpus_cache=Path(f"cache/wiki_hotpot.pkl"),
     # tfidf_cache=Path("cache/tfidf_hotpot.pkl"),

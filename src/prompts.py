@@ -33,7 +33,7 @@ def build_prompt(example: dict, include_passage: bool) -> str:
                         example["context"]["title"], example["context"]["sentences"]
                     )
                 )
-        if dataset_type == "2wikimultihopqa":
+        elif dataset_type == "2wikimultihopqa":
             # Check if we're using retrieved context
             if "retrieved_context" in example:
                 context = example["retrieved_context"]
@@ -44,9 +44,7 @@ def build_prompt(example: dict, include_passage: bool) -> str:
                         example["context"]["title"], example["context"]["sentences"]
                     )
                 )
-        elif 'boolq' in CONFIG.dataset_name:
-            context = example.get("retrieved_context", example.get("context", ""))
-        elif 'squad' in CONFIG.dataset_name:
+        else:
             context = example.get("retrieved_context", example.get("context", ""))
         return templates["with_context"].format(context=context, question=q)
     else:

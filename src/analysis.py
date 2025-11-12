@@ -38,8 +38,18 @@ MODEL_DISPLAY_NAMES: Dict[str, str] = {
     "gemma3-4b_q+r": "Gemma3 4B (RAG)",
     "gemma3-12b_q": "Gemma3 12B (Base)",
     "gemma3-12b_q+r": "Gemma3 12B (RAG)",
-    "gemma3-27b_q": "Gemma3 27B (Base)",
-    "gemma3-27b_q+r": "Gemma3 27B (RAG)",
+    "qwen3-0.6b_q": "Qwen3 0.6B (Base)",
+    "qwen3-0.6b_q+r": "Qwen3 0.6B (RAG)",
+    "qwen3-1.7b_q": "Qwen3 1.7B (Base)",
+    "qwen3-1.7b_q+r": "Qwen3 1.7B (RAG)",
+    "qwen3-4b_q": "Qwen3 4B (Base)",
+    "qwen3-4b_q+r": "Qwen3 4B (RAG)",
+    "qwen3-8b_q": "Qwen3 8B (Base)",
+    "qwen3-8b_q+r": "Qwen3 8B (RAG)",
+    "qwen3-14b_q": "Qwen3 14B (Base)",
+    "qwen3-14b_q+r": "Qwen3 14B (RAG)",
+    "qwen3-32b_q": "Qwen3 32B (Base)",
+    "qwen3-32b_q+r": "Qwen3 32B (RAG)",
 }
 
 RESULT_COLS: Dict[str, Tuple[str, str]] = {
@@ -105,6 +115,8 @@ def extract_model_family(name: str) -> str:
         return "GPT2"
     elif "DistilGPT2" in name:
         return "DistilGPT2"
+    elif "qwen3" in name:
+        return "Qwen3"
     else:
         return "Other"
 
@@ -203,60 +215,57 @@ def summarise(
     df = _load(path)
     df = add_combined_cols(df)
 
-    try:
-        # Get display name based on model key and context usage
-        display_name = (
-            MODEL_DISPLAY_NAMES[f"{model_key}_q+r"]
-            if context_used
-            else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
-        )
+    # Get display name based on model key and context usage
+    display_name = (
+        MODEL_DISPLAY_NAMES[f"{model_key}_q+r"]
+        if context_used
+        else MODEL_DISPLAY_NAMES[f"{model_key}_q"]
+    )
 
-        # Add "Think" suffix if applicable
-        display_name = display_name + " Think" if "think" in str(path) else display_name
+    # Add "Think" suffix if applicable
+    # display_name = display_name + " Think" if "think" in str(path) else display_name
 
-        # Calculate total time and convert to hours, minutes, seconds
-        total_time_seconds = df["combined_time"].sum()
-        hours, minutes, seconds = convert_seconds(total_time_seconds)
+    # Calculate total time and convert to hours, minutes, seconds
+    total_time_seconds = df["combined_time"].sum()
+    hours, minutes, seconds = convert_seconds(total_time_seconds)
 
-        # Calculate total and average prediction tokens
-        total_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).sum()
-        avg_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).mean()
+    # Calculate total and average prediction tokens
+    total_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).sum()
+    avg_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).mean()
 
-        if "hotpot" in path.name.lower():
-            dataset_name = "HotpotQA"
-        if "boolq" in path.name.lower():
-            dataset_name = "BoolQ"
-        if "squad" in path.name.lower():
-            dataset_name = "SQuAD v1"
-        if "squad_v2" in path.name.lower():
-            dataset_name = "SQuAD v2"
+    if "hotpot" in path.name.lower():
+        dataset_name = "HotpotQA"
+    elif "boolq" in path.name.lower():
+        dataset_name = "BoolQ"
+    elif "squad" in path.name.lower():
+        dataset_name = "SQuAD v1"
+    elif "squad_v2" in path.name.lower():
+        dataset_name = "SQuAD v2"
+    elif "nq" in path.name.lower():
+        dataset_name = "NQ"
 
-
-
-        return {
-            "model": display_name,
-            "context_used": context_used,
-            "dataset": dataset_name,
-            "dataset_version": str(dataset_version),
-            "f1": df["f1"].mean(),
-            "em": df["em"].mean(),
-            "pred_tokens_per_question": avg_pred_tokens,
-            "total_tokens": total_pred_tokens,
-            "energy_kWh_per_question": df["combined_energy"].mean(),
-            "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
-            "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
-            "emissions_kg_per_question": df["combined_emissions"].mean(),
-            "inference_emissions_kg_per_question": df[
-                "inference_emissions (kg)"
-            ].mean(),
-            "retrieval_emissions_kg_per_question": df[
-                "retrieval_emissions (kg)"
-            ].mean(),
-            "time_s_per_question": df["combined_time"].mean(),
-            "total_time": f"{hours}:{minutes:02}:{seconds:02}",
-        }
-    except KeyError:
-        return {}
+    return {
+        "model": display_name,
+        "context_used": context_used,
+        "dataset": dataset_name,
+        "dataset_version": str(dataset_version),
+        "f1": df["f1"].mean(),
+        "em": df["em"].mean(),
+        "pred_tokens_per_question": avg_pred_tokens,
+        "total_tokens": total_pred_tokens,
+        "energy_kWh_per_question": df["combined_energy"].mean(),
+        "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
+        "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
+        "emissions_kg_per_question": df["combined_emissions"].mean(),
+        "inference_emissions_kg_per_question": df[
+            "inference_emissions (kg)"
+        ].mean(),
+        "retrieval_emissions_kg_per_question": df[
+            "retrieval_emissions (kg)"
+        ].mean(),
+        "time_s_per_question": df["combined_time"].mean(),
+        "total_time": f"{hours}:{minutes:02}:{seconds:02}",
+    }
 
 
 def emission_stats(df_subset: pd.DataFrame, model_name: str) -> None:
@@ -442,6 +451,7 @@ def run_summary(
     if dataset_version:
         files = filter_files_by_dataset_version(files, dataset_version)
 
+    print(files)
     out_filename = generate_output_filename(model_filter)
     summaries = []
 
@@ -449,6 +459,8 @@ def run_summary(
         name = csv_path.stem
         parts = name.split("_")
         model_key = parts[1]
+        print(parts)
+        print(model_key)
         context_used = "q+r" in name
         current_dataset_version = determine_dataset_version(parts)
 
@@ -525,4 +537,4 @@ def run_variance_check(input_file: str) -> None:
 
 
 if __name__ == "__main__":
-    run_summary(model_filter="_gemma3", dataset_version="full")
+    run_summary(model_filter="_qwen3")
