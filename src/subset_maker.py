@@ -165,6 +165,16 @@ def process_boolq(dataset: Dataset) -> list:
     return subset
 
 
+def process_nq(dataset: Dataset) -> list:
+    filtered_dataset = dataset.filter(lambda example:
+                                      any(len(inner_list) > 0 for inner_list in example['short_answers'])
+                                      )
+
+    mini_dataset = filtered_dataset.shuffle(seed=CONFIG.seed).select(range(CONFIG.dataset_size))
+
+    return mini_dataset.to_list()
+
+
 # ----------------------------------------------------------------------
 # Main Execution
 # ----------------------------------------------------------------------
@@ -189,6 +199,11 @@ def main():
         )
         subset = process_boolq(dataset)
 
+    elif "natural_questions":
+        dataset = load_dataset(
+            CONFIG.dataset_name, split=CONFIG.split, trust_remote_code=True
+        )
+        subset = process_nq(dataset)
     else:
         print(f"Error: No processor found for dataset: {CONFIG.dataset_name}")
         return

@@ -405,6 +405,11 @@ def determine_dataset_version(filename_parts: List[str]) -> str:
         "dev" in filename_parts[2] or "128" in filename_parts[2]
     ):
         return f"dev ({filename_parts[3]})" if len(filename_parts) > 3 else "dev (128)"
+    if filename_parts[0] == 'nq':
+        if filename_parts[-1] == 'long':
+            return 'GS Paragraph'
+        elif filename_parts[-1] == 'first':
+            return 'First Paragraph'
     return "full"
 
 
