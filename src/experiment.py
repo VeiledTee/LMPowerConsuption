@@ -229,9 +229,9 @@ def run_model_mode(
     csv_path = (
             CONFIG.result_dir
             / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
-              f"{'_128' if 'mini' in CONFIG.dataset_file else ''}"
+              f"{'_1000' if 'mini' in CONFIG.dataset_file else ''}"
               f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-              f"{'_think' if CONFIG.think == True else ''}"
+              f"{'_long' if CONFIG.think == True else '_first'}"
               f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
@@ -269,9 +269,11 @@ def run_model_mode(
         for idx, sample, prompt, ret_metrics in tqdm(
                 jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
+            print(prompt, flush=True)
             full_output, inf_metrics = inference(prompt, model_name, mode_tag, provider)
 
             pred = extract_prediction(full_output)
+            print(f"PREDICTION: {pred}", flush=True)
 
             if "squad" in CONFIG.dataset_name:
                 # For SQuAD, we need to handle the answer format
@@ -305,6 +307,7 @@ def run_model_mode(
             elif 'natural_questions' in CONFIG.dataset_name:
                 em = -1
                 f1 = -1
+                print(set([answer[0] for answer in sample['short_answers'] if len(answer) > 0]))
                 for short_answer in set([answer[0] for answer in sample['short_answers'] if len(answer) > 0]):
                     instance_em = exact_match(pred, short_answer)
                     if instance_em > em:
@@ -314,12 +317,13 @@ def run_model_mode(
                     if instance_f1 > f1:
                         f1 = instance_f1
                         sample['answer'] = short_answer
+                print(f"{em} | {f1} | {sample['answer']}")
                 row = {
                     "qid": idx,
                     "original_pred": full_output.replace(",", " ")
                     .replace("  ", " ")
                     .replace("\n", " "),
-                    "pred": pred,
+                    "pred": pred.split('think>')[-1].strip(),
                     "gold": sample['answer'],
                     "em": em,
                     "f1": f1,
@@ -374,8 +378,8 @@ def run_model_mode(
                 save_results(result_buffer, csv_path)
                 result_buffer.clear()
 
-        if result_buffer:
-            save_results(result_buffer, csv_path)
+        # if result_buffer:
+        #     save_results(result_buffer, csv_path)
 
     else:
         with ThreadPoolExecutor(max_workers=CONCURRENCY) as executor:
