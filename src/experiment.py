@@ -269,11 +269,9 @@ def run_model_mode(
         for idx, sample, prompt, ret_metrics in tqdm(
                 jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
-            print(prompt, flush=True)
             full_output, inf_metrics = inference(prompt, model_name, mode_tag, provider)
 
             pred = extract_prediction(full_output)
-            print(f"PREDICTION: {pred}", flush=True)
 
             if "squad" in CONFIG.dataset_name:
                 # For SQuAD, we need to handle the answer format
@@ -307,7 +305,6 @@ def run_model_mode(
             elif 'natural_questions' in CONFIG.dataset_name:
                 em = -1
                 f1 = -1
-                print(set([answer[0] for answer in sample['short_answers'] if len(answer) > 0]))
                 for short_answer in set([answer[0] for answer in sample['short_answers'] if len(answer) > 0]):
                     instance_em = exact_match(pred, short_answer)
                     if instance_em > em:
@@ -317,7 +314,6 @@ def run_model_mode(
                     if instance_f1 > f1:
                         f1 = instance_f1
                         sample['answer'] = short_answer
-                print(f"{em} | {f1} | {sample['answer']}")
                 row = {
                     "qid": idx,
                     "original_pred": full_output.replace(",", " ")
@@ -524,7 +520,6 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         if not wiki_data:
             return context, retrieval_metrics
         docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
-        print(f"SAMPLE: {sample}")
 
         # Extract question data for 2WikiMultiHopQA
         question_text = sample["question"]
