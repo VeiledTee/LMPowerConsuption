@@ -114,18 +114,14 @@ class ExperimentConfig:
             "natural_questions_parsed": {
                 "with_context": (
                     "Using the provided context, answer the question with as few words as possible. "
-                    "Be thorough in your analysis of the context but answer in as few words as possible. "
-                    "Do not overcomplicate your thinking. Do not go in circles.\n"
                     "Context: {context}\n"
                     "Question: {question}\n"
-                    "Answer:"
+                    "Answer: "
                 ),
                 "without_context": (
                     "Answer with as few words as possible. "
-                    "Be thorough in your analysis but answer in as few words as possible. "
-                    "Do not overcomplicate your thinking. Do not go in circles.\n"
                     "Question: {question}\n"
-                    "Answer:"
+                    "Answer: "
                 ),
             },
         }
@@ -207,7 +203,7 @@ CONFIG = ExperimentConfig(
     max_new_tokens=64,
     batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
-    think=False,
+    think=True,
     # wiki_dir=Path("data/hotpot_wiki-processed"),
     # corpus_cache=Path(f"cache/wiki_hotpot.pkl"),
     # tfidf_cache=Path("cache/tfidf_hotpot.pkl"),
