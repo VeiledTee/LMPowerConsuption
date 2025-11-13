@@ -3,7 +3,7 @@ import os
 
 import torch
 from codecarbon import EmissionsTracker
-from ollama import generate
+from ollama import chat
 from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
                           PreTrainedTokenizer)
 
@@ -19,18 +19,24 @@ for handler in logger.handlers:
 
 
 def inference_ollama(prompt, model_name):
-    resp = generate(
+    resp = chat(
         model=model_name,
-        prompt=prompt,
+        messages=[
+          {
+            'role': 'user',
+            'content': prompt,
+          },
+        ],
         options={
             "temperature": 0.0,
             "top_p": 0.9,
             "stop": ["</s>", "\n\n\n"],
             "num_thread": os.cpu_count(),
         },
-        think=CONFIG.think,
+        think=False,
     )
-
+    if resp.message.content:
+        return resp.message.content
     if "response" in resp:
         return resp["response"]
     if "choices" in resp and len(resp["choices"]) > 0:
