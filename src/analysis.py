@@ -410,6 +410,8 @@ def determine_dataset_version(filename_parts: List[str]) -> str:
             return 'GS Paragraph'
         elif filename_parts[-1] == 'first':
             return 'First Paragraph'
+        else:
+            return 'Question Only'
     return "full"
 
 
@@ -439,7 +441,7 @@ def insert_blank_lines(df: pd.DataFrame) -> str:
 
 
 def run_summary(
-    model_filter: Optional[str] = None, dataset_version: Optional[str] = None
+        model_filter: Optional[str] = None, dataset_version: Optional[str] = None
 ) -> None:
     """Main function to run summary analysis on evaluation results.
 
@@ -456,7 +458,6 @@ def run_summary(
     if dataset_version:
         files = filter_files_by_dataset_version(files, dataset_version)
 
-    print(files)
     out_filename = generate_output_filename(model_filter)
     summaries = []
 
@@ -464,8 +465,6 @@ def run_summary(
         name = csv_path.stem
         parts = name.split("_")
         model_key = parts[1]
-        print(parts)
-        print(model_key)
         context_used = "q+r" in name
         current_dataset_version = determine_dataset_version(parts)
 
@@ -484,22 +483,29 @@ def run_summary(
         return
 
     df_summary = pd.DataFrame(summaries)
-    df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
-    df_summary["is_rag"] = df_summary["context_used"].astype(int)
-    df_summary = df_summary.sort_values(
-        by=["dataset", "dataset_version", "model_size_b", "is_rag"]
-    )
-    df_summary.drop(columns=["is_rag", "model_size_b"], inplace=True)
 
+    # Add model size and family for sorting
+    df_summary["model_family"] = df_summary["model"].apply(extract_model_family)
+    df_summary["model_size_b"] = df_summary["model"].apply(extract_model_size)
+
+    # Sort by family, then size, then context
+    df_summary = df_summary.sort_values(
+        by=["model_family", "model_size_b", "context_used"]
+    )
+    # Drop the temporary columns used for sorting
+    df_summary = df_summary.drop(columns=["model_family", "model_size_b"])
+
+    # Print single dataframe
+    print(df_summary.to_markdown(index=False, floatfmt=".6f"))
+
+    # Save files
     out_csv = results_dir / f"{out_filename}.csv"
     out_md = results_dir / f"{out_filename}.md"
     df_summary.to_csv(out_csv, index=False, float_format="%.6f")
 
-    markdown_with_splits = insert_blank_lines(df_summary)
-    print(markdown_with_splits)
-
+    # Save markdown version
     with open(out_md, "w") as f:
-        f.write(markdown_with_splits)
+        f.write(df_summary.to_markdown(index=False, floatfmt=".6f"))
 
     print(f"Saved summary to {out_csv} and {out_md}")
 
