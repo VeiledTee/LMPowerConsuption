@@ -582,7 +582,7 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         # )
         # retrieval_metrics.update(ret_metrics)
         # get gold/1st paragraph
-        GOLD_STANDARD: bool = False
+        GOLD_STANDARD: bool = True
         if GOLD_STANDARD:
             context = sample['long_answer']
         else:
