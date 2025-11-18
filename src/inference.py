@@ -30,7 +30,7 @@ def inference_ollama(prompt, model_name):
         options={
             "temperature": 0.0,
             "top_p": 0.9,
-            "stop": ["</s>", "\n\n\n"],
+            "stop": ["</s>", "\n"],
             "num_thread": os.cpu_count(),
         },
         think=False,
