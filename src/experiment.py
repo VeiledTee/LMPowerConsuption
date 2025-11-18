@@ -2,7 +2,9 @@ import gc
 import json
 import logging
 import os
+import re
 import smtplib
+import string
 import time
 import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -30,7 +32,7 @@ from src.retrieval import load_HotpotQA_wiki, load_2WikiMultiHopQA_wiki, retriev
     retrieve_top_k
 from src.squad_scorers import compute_exact, compute_f1
 from src.utils import (convert_seconds, count_bools, ensure_config_dirs,
-                       extract_2wiki_gold_context, setup_logging)
+                       extract_2wiki_gold_context, extract_first_paragraph, setup_logging)
 
 # Remove existing handlers
 for handler in logger.handlers:
@@ -63,18 +65,18 @@ def run(file_suffix: None | str = "") -> None:
 
     # Preload Wikipedia if needed
     wiki_data = None
-    if any("q+r" in modes for modes in CONFIG.modes.values()):
-        logger.info(f"Retrieval mode requested - loading wiki")
-        t0 = time.time()
-        if "2wikimultihop" in CONFIG.dataset_name.lower():
-            logger.info("Loading mappings for 2WikiMultiHopQA context retrieval...")
-            wiki_data = load_2WikiMultiHopQA_wiki()
-        else:
-            logger.info("Loading mappings for HotpotQA context retrieval...")
-            wiki_data = load_HotpotQA_wiki()
-
-        h, m, s = convert_seconds(time.time() - t0)
-        logger.info(f"Loaded wiki in {h}h{m}m{s}s")
+    # if any("q+r" in modes for modes in CONFIG.modes.values()):
+    #     logger.info(f"Retrieval mode requested - loading wiki")
+    #     t0 = time.time()
+    #     if "2wikimultihop" in CONFIG.dataset_name.lower():
+    #         logger.info("Loading mappings for 2WikiMultiHopQA context retrieval...")
+    #         wiki_data = load_2WikiMultiHopQA_wiki()
+    #     else:
+    #         logger.info("Loading mappings for HotpotQA context reprotrieval...")
+    #         wiki_data = load_HotpotQA_wiki()
+    #
+    #     h, m, s = convert_seconds(time.time() - t0)
+    #     logger.info(f"Loaded wiki in {h}h{m}m{s}s")
 
     for model_name, provider in CONFIG.model_types.items():
         model_start_time = time.time()
@@ -231,7 +233,7 @@ def run_model_mode(
             / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
               f"{'_1000' if 'mini' in CONFIG.dataset_file else ''}"
               f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-              f"{'_long' if CONFIG.think == True else '_first'}"
+              f"{'_first' if CONFIG.think == True else '_first'}"
               f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
@@ -271,21 +273,23 @@ def run_model_mode(
         ):
             full_output, inf_metrics = inference(prompt, model_name, mode_tag, provider)
 
-            pred = extract_prediction(full_output)
+            llm_prediction = extract_prediction(full_output)
 
             if "squad" in CONFIG.dataset_name:
                 # For SQuAD, we need to handle the answer format
                 gold_answers = sample["answers"]["text"] if "answers" in sample else [""]
 
                 # Calculate EM and F1 using the official SQuAD functions
-                em = max(compute_exact(a, pred) for a in gold_answers)
-                f1 = max(compute_f1(a, pred) for a in gold_answers)
+                em = max(compute_exact(a, llm_prediction) for a in gold_answers)
+                f1 = max(compute_f1(a, llm_prediction) for a in gold_answers)
+
 
                 row = {
                     "qid": sample["id"],
+                    'prompt': prompt,
                     "original_pred": full_output.replace(",", " ").replace("  ", " ").replace("\n", " ").replace(".",
                                                                                                                  '').strip(),
-                    "pred": pred,
+                    "pred": llm_prediction,
                     "gold": str(gold_answers),  # Store all possible answers as string
                     "em": em,
                     "f1": f1,
@@ -306,20 +310,30 @@ def run_model_mode(
                 em = -1
                 f1 = -1
                 for short_answer in set([answer[0] for answer in sample['short_answers'] if len(answer) > 0]):
-                    instance_em = exact_match(pred, short_answer)
+                    instance_em = exact_match(llm_prediction, short_answer)
                     if instance_em > em:
                         em = instance_em
                         sample['answer'] = short_answer
-                    instance_f1 = f1_score(pred, short_answer)
+                    instance_f1 = f1_score(llm_prediction, short_answer)
                     if instance_f1 > f1:
                         f1 = instance_f1
                         sample['answer'] = short_answer
+
+                llm_prediction = llm_prediction.split('think>')[-1].lower().strip()
+                # remove punctuation
+                llm_prediction = llm_prediction.translate(str.maketrans("", "", string.punctuation))
+                # remove articles
+                llm_prediction = re.sub(r"\b(a|an|the)\b", " ", llm_prediction)
+                # collapse whitespace
+                llm_prediction = re.sub(r"\s+", " ", llm_prediction)
+
                 row = {
                     "qid": idx,
+                    'prompt': prompt,
                     "original_pred": full_output.replace(",", " ")
                     .replace("  ", " ")
                     .replace("\n", " "),
-                    "pred": pred.split('think>')[-1].strip(),
+                    "pred": llm_prediction,
                     "gold": sample['answer'],
                     "em": em,
                     "f1": f1,
@@ -338,19 +352,20 @@ def run_model_mode(
                 }
             else:
                 if "boolq" in CONFIG.dataset_name:
-                    pred, inf_metrics = process_boolq_prediction(
-                        pred, model_name, inf_metrics
+                    llm_prediction, inf_metrics = process_boolq_prediction(
+                        llm_prediction, model_name, inf_metrics
                     )
 
-                em = exact_match(pred, sample["answer"])
-                f1 = f1_score(pred, sample["answer"])
+                em = exact_match(llm_prediction, sample["answer"])
+                f1 = f1_score(llm_prediction, sample["answer"])
 
                 row = {
                     "qid": idx,
+                    'prompt': prompt,
                     "original_pred": full_output.replace(",", " ")
                     .replace("  ", " ")
                     .replace("\n", " "),
-                    "pred": pred,
+                    "pred": llm_prediction,
                     "gold": sample["answer"],
                     "em": em,
                     "f1": f1,
@@ -399,20 +414,20 @@ def run_model_mode(
             ):
                 idx, sample, ret_metrics = future_to_job[fut]
                 try:
-                    pred, inf_metrics = fut.result()
+                    llm_prediction, inf_metrics = fut.result()
 
                     if "squad" in CONFIG.dataset_name:
                         # For SQuAD, we need to handle the answer format
                         gold_answers = sample["answers"]["text"] if "answers" in sample else [""]
 
                         # Calculate EM and F1 using the official SQuAD functions
-                        em = max(compute_exact(a, pred) for a in gold_answers)
-                        f1 = max(compute_f1(a, pred) for a in gold_answers)
+                        em = max(compute_exact(a, llm_prediction) for a in gold_answers)
+                        f1 = max(compute_f1(a, llm_prediction) for a in gold_answers)
 
                         row = {
                             "qid": sample["id"],
-                            "original_pred": pred.replace(",", " ").replace("  ", " ").replace("\n", " "),
-                            "pred": pred,
+                            "original_pred": llm_prediction.replace(",", " ").replace("  ", " ").replace("\n", " "),
+                            "pred": llm_prediction,
                             "gold": str(gold_answers),  # Store all possible answers as string
                             "em": em,
                             "f1": f1,
@@ -432,16 +447,16 @@ def run_model_mode(
                     else:
 
                         if "boolq" in CONFIG.dataset_name:
-                            pred, inf_metrics = process_boolq_prediction(
-                                pred, model_name, inf_metrics
+                            llm_prediction, inf_metrics = process_boolq_prediction(
+                                llm_prediction, model_name, inf_metrics
                             )
 
-                        em = exact_match(pred, sample["answer"])
-                        f1 = f1_score(pred, sample["answer"])
+                        em = exact_match(llm_prediction, sample["answer"])
+                        f1 = f1_score(llm_prediction, sample["answer"])
                         row = {
                             "qid": idx,
-                            "original_pred": pred,
-                            "pred": pred,
+                            "original_pred": llm_prediction,
+                            "pred": llm_prediction,
                             "gold": sample["answer"],
                             "em": em,
                             "f1": f1,
@@ -558,23 +573,20 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         retrieval_metrics.update(ret_metrics)
         # For SQuAD, use the provided context
         context = sample["context"]
-    elif 'natural-questions' in CONFIG.dataset_name:
-        if not wiki_data:
-            return context, retrieval_metrics
-        docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
-        _, ret_metrics = retrieve_hotpot(
-            sample["question"], vectorizer, tfidf_matrix, titles, inv_index
-        )
-        retrieval_metrics.update(ret_metrics)
+    elif 'natural_questions' in CONFIG.dataset_name:
+        # if not wiki_data:
+        #     return context, retrieval_metrics
+        # docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+        # _, ret_metrics = retrieve_hotpot(
+        #     sample["question"], vectorizer, tfidf_matrix, titles, inv_index
+        # )
+        # retrieval_metrics.update(ret_metrics)
         # get gold/1st paragraph
-        GOLD_STANDARD: bool = True
+        GOLD_STANDARD: bool = False
         if GOLD_STANDARD:
             context = sample['long_answer']
         else:
-            document_text = sample['document']
-            paragraphs = document_text.split('Jump to: navigation , search')
-            if len(paragraphs) > 1:
-                context = paragraphs[1].strip()
+            context = sample['first_paragraph']
     else:
         if not wiki_data:
             return context, retrieval_metrics
@@ -605,17 +617,20 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
             context = sample["context"]
         elif not context and "passage" in sample:
             context = sample["passage"]  # Used for BoolQ
-
     return context, retrieval_metrics
 
 
 def extract_prediction(full_output: str) -> str:
     # If model uses <think>...True, extract the last line or the final word
     if "<think>" in full_output:
-        full_output = full_output.split("</think>")[-1].strip()
+        full_output = full_output.split("</think>")[-1]
     # If model doesn't think and prepends reply with "Answer:" split on that instead
     elif "Answer: " in full_output:
-        full_output = full_output.split("Answer:")[-1].strip()
+        full_output = full_output.split("Answer:")[-1]
+    for prefix in ["The answer is:", "Answer:", "answer:", "A:", "a:"]:
+        if full_output.lower().startswith(prefix.lower()):
+            full_output = full_output[len(prefix):]
+
     # Fallback is taking the original output
     return full_output.strip()
 
