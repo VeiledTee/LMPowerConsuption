@@ -233,7 +233,7 @@ def run_model_mode(
             / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
               f"{'_1000' if 'mini' in CONFIG.dataset_file else ''}"
               f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-              f"{'_first' if CONFIG.think == True else '_first'}"
+              f"{'_long' if CONFIG.think == True else '_first'}"
               f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
