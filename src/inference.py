@@ -30,20 +30,20 @@ def inference_ollama(prompt, model_name):
         options={
             "temperature": 0.0,
             "top_p": 0.9,
-            "stop": ["</s>", "\n\n"],
             "num_thread": os.cpu_count(),
+            "num_predict": 1024,
+            "repeat_penalty": 1.2,
+            "repeat_last_n": 64,
         },
-        think=False,
+        think=CONFIG.think,
     )
-    if resp.message.content:
+    if CONFIG.think:
+        if resp.done_reason == 'length':
+            return f"{resp.message.thinking}"
+        else:
+            return f"{resp.message.thinking} {resp.message.content}"
+    else:
         return resp.message.content
-    if "response" in resp:
-        return resp["response"]
-    if "choices" in resp and len(resp["choices"]) > 0:
-        return resp["choices"][0]["text"]
-    raise ValueError(
-        f"Invalid Ollama response for prompt: {prompt[:200]}...\nResponse: {resp}"
-    )
 
 
 def load_model_and_tokenizer(

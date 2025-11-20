@@ -233,7 +233,9 @@ def run_model_mode(
             / f"{dataset_id}_{model_name.split('/')[-1].replace(':', '-')}_{mode_tag}"
               f"{'_1000' if 'mini' in CONFIG.dataset_file else ''}"
               f"{'_dev' if 'dev' in CONFIG.dataset_file else ''}"
-              f"{'_long' if CONFIG.think == True else '_first'}"
+              f"{'_think' if CONFIG.think else ''}"
+              f"{'_long' if CONFIG.gold == True and 'r' in mode_tag else ''}"
+              f"{'_first' if CONFIG.gold == False and 'r' in mode_tag else ''}"
               f"{'_' + file_suffix if file_suffix != '' else ''}.csv"
     )
     logger.info(f"Saving results to: {csv_path}")
@@ -582,11 +584,10 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
         # )
         # retrieval_metrics.update(ret_metrics)
         # get gold/1st paragraph
-        GOLD_STANDARD: bool = True
-        if GOLD_STANDARD:
-            context = sample['long_answer']
+        if CONFIG.gold:
+            context = sample["long_answer"]
         else:
-            context = sample['first_paragraph']
+            context = sample["first_paragraph"]
     else:
         if not wiki_data:
             return context, retrieval_metrics

@@ -22,6 +22,7 @@ class ExperimentConfig:
     device: str
     modes: dict[str, dict]
     think: bool
+    gold: bool
     wiki_dir: Path
     corpus_cache: Path
     tfidf_cache: Path
@@ -113,13 +114,13 @@ class ExperimentConfig:
                 )},
             "natural_questions_parsed": {
                 "with_context": (
-                    "Using the provided context, answer the question with as few words as possible. "
+                    "Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. "
                     "Context: {context}\n"
                     "Question: {question}\n"
                     "Answer: "
                 ),
                 "without_context": (
-                    "Answer with as few words as possible. "
+                    "Answer the question. Provide concise, direct answers without excessive reasoning or repetition. "
                     "Question: {question}\n"
                     "Answer: "
                 ),
@@ -173,11 +174,11 @@ CONFIG = ExperimentConfig(
         # "gemma3:4b": {"q": False, "q+r": True},
         # "gemma3:12b": {"q": False, "q+r": True},
         # "gemma3:27b": {"q": False},
-        "qwen3:0.6b": {"q+r": True},
-        "qwen3:1.7b": {"q+r": True},
-        "qwen3:4b": {"q+r": True},
-        "qwen3:8b": {"q+r": True},
-        "qwen3:14b": {"q+r": True},
+        "qwen3:0.6b": {"q": False, "q+r": True},
+        "qwen3:1.7b": {"q": False, "q+r": True},
+        "qwen3:4b": {"q": False, "q+r": True},
+        "qwen3:8b": {"q": False, "q+r": True},
+        "qwen3:14b": {"q": False, "q+r": True},
         "qwen3:32b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
@@ -204,6 +205,7 @@ CONFIG = ExperimentConfig(
     batch_size=4,
     device="cuda" if torch.cuda.is_available() else "cpu",
     think=True,
+    gold=True,
     # wiki_dir=Path("data/hotpot_wiki-processed"),
     # corpus_cache=Path(f"cache/wiki_hotpot.pkl"),
     # tfidf_cache=Path("cache/tfidf_hotpot.pkl"),
