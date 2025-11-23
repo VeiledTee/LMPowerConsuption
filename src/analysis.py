@@ -247,6 +247,7 @@ def summarise(
     return {
         "model": display_name,
         "context_used": context_used,
+        "thinking": True if "think" in str(path) else False,
         "dataset": dataset_name,
         "dataset_version": str(dataset_version),
         "f1": df["f1"].mean(),
