@@ -274,7 +274,6 @@ def run_model_mode(
                 jobs, desc=f"{model_name} ({mode_tag})", total=len(jobs)
         ):
             full_output, inf_metrics = inference(prompt, model_name, mode_tag, provider)
-
             llm_prediction = extract_prediction(full_output)
 
             if "squad" in CONFIG.dataset_name:
@@ -285,14 +284,13 @@ def run_model_mode(
                 em = max(compute_exact(a, llm_prediction) for a in gold_answers)
                 f1 = max(compute_f1(a, llm_prediction) for a in gold_answers)
 
-
                 row = {
                     "qid": sample["id"],
                     'prompt': prompt,
                     "original_pred": full_output.replace(",", " ").replace("  ", " ").replace("\n", " ").replace(".",
                                                                                                                  '').strip(),
                     "pred": llm_prediction,
-                    "gold": str(gold_answers),  # Store all possible answers as string
+                    "gold": str(gold_answers),
                     "em": em,
                     "f1": f1,
                     "inference_duration (s)": inf_metrics["duration"],
@@ -633,7 +631,7 @@ def extract_prediction(full_output: str) -> str:
             full_output = full_output[len(prefix):]
 
     # Fallback is taking the original output
-    return full_output.strip()
+    return full_output.split('\n')[-1].strip()
 
 
 def generate_prediction(
