@@ -28,12 +28,9 @@ def inference_ollama(prompt, model_name):
           },
         ],
         options={
-            "temperature": 0.0,
-            "top_p": 0.9,
+            "temperature": 0.6,
+            "top_p": 0.95,
             "num_thread": os.cpu_count(),
-            "num_predict": 1024,
-            "repeat_penalty": 1.2,
-            "repeat_last_n": 64,
         },
         think=CONFIG.think,
     )
