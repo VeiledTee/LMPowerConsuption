@@ -1554,3 +1554,338 @@ Running modes: {'q': False}
 ============================================================
 Experiment completed in 5h 16m 20s
 ============================================================
+2025-11-20 18:46:08,150 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:0.6b': 'ollama', 'qwen3:1.7b': 'ollama', 'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:0.6b': {'q': False, 'q+r': True}, 'qwen3:1.7b': {'q': False, 'q+r': True}, 'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-11-20 18:46:08,151 - energy_eval - INFO - Using device: cuda
+2025-11-20 18:46:08,151 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-11-20 18:46:12,587 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-11-20 18:46:12,587 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:0.6b
+============================================================
+2025-11-20 18:46:12,587 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-20 18:46:12,588 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q_1000_think.csv
+2025-11-20 18:46:12,623 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-20 18:46:20,167 - energy_eval - INFO - Completed q for qwen3:0.6b in 0h 0m 7s
+2025-11-20 18:46:20,167 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q+r_1000_think_first.csv
+2025-11-20 18:46:20,478 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-20 20:00:36,392 - energy_eval - WARNING - Experiment interrupted by user
+2025-11-20 23:05:26,522 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:0.6b': 'ollama', 'qwen3:1.7b': 'ollama', 'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:0.6b': {'q': False, 'q+r': True}, 'qwen3:1.7b': {'q': False, 'q+r': True}, 'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-11-20 23:05:26,523 - energy_eval - INFO - Using device: cuda
+2025-11-20 23:05:26,523 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-11-20 23:05:28,523 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-11-20 23:05:28,523 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:0.6b
+============================================================
+2025-11-20 23:05:28,523 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-20 23:05:28,524 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q_1000_think.csv
+2025-11-20 23:05:28,562 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-20 23:05:34,673 - energy_eval - INFO - Completed q for qwen3:0.6b in 0h 0m 6s
+2025-11-20 23:05:34,673 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q+r_1000_think_first.csv
+2025-11-20 23:05:34,781 - energy_eval - INFO - Built 240 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-20 23:29:04,513 - energy_eval - INFO - Completed q+r for qwen3:0.6b in 0h 23m 29s
+2025-11-20 23:29:04,607 - energy_eval - INFO - Completed qwen3:0.6b in 0h 23m 36s
+2025-11-20 23:29:04,607 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:1.7b
+============================================================
+2025-11-20 23:29:04,607 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-20 23:29:04,607 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-1.7b_q_1000_think.csv
+2025-11-20 23:29:04,639 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-20 23:29:11,332 - energy_eval - INFO - Completed q for qwen3:1.7b in 0h 0m 6s
+2025-11-20 23:29:11,332 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-1.7b_q+r_1000_think_first.csv
+2025-11-20 23:29:11,653 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 01:12:32,421 - energy_eval - INFO - Completed q+r for qwen3:1.7b in 1h 43m 21s
+2025-11-21 01:12:32,540 - energy_eval - INFO - Completed qwen3:1.7b in 1h 43m 27s
+2025-11-21 01:12:32,540 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-11-21 01:12:32,540 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 01:12:32,540 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-4b_q_1000_think.csv
+2025-11-21 01:12:32,562 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 01:12:41,329 - energy_eval - INFO - Completed q for qwen3:4b in 0h 0m 8s
+2025-11-21 01:12:41,329 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-4b_q+r_1000_think_first.csv
+2025-11-21 01:12:41,719 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 03:15:46,127 - energy_eval - INFO - Completed q+r for qwen3:4b in 2h 3m 4s
+2025-11-21 03:15:46,249 - energy_eval - INFO - Completed qwen3:4b in 2h 3m 13s
+2025-11-21 03:15:46,249 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:8b
+============================================================
+2025-11-21 03:15:46,249 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 03:15:46,249 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-8b_q_1000_think.csv
+2025-11-21 03:15:46,293 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 03:15:55,994 - energy_eval - INFO - Completed q for qwen3:8b in 0h 0m 9s
+2025-11-21 03:15:55,994 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-8b_q+r_1000_think_first.csv
+2025-11-21 03:15:56,333 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 05:38:17,943 - energy_eval - INFO - Completed q+r for qwen3:8b in 2h 22m 21s
+2025-11-21 05:38:18,072 - energy_eval - INFO - Completed qwen3:8b in 2h 22m 31s
+2025-11-21 05:38:18,072 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:14b
+============================================================
+2025-11-21 05:38:18,072 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 05:38:18,072 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-14b_q_1000_think.csv
+2025-11-21 05:38:18,123 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 05:38:33,565 - energy_eval - INFO - Completed q for qwen3:14b in 0h 0m 15s
+2025-11-21 05:38:33,565 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-14b_q+r_1000_think_first.csv
+2025-11-21 05:38:33,913 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 08:38:47,547 - energy_eval - INFO - Completed q+r for qwen3:14b in 3h 0m 13s
+2025-11-21 08:38:47,683 - energy_eval - INFO - Completed qwen3:14b in 3h 0m 29s
+2025-11-21 08:38:47,683 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:32b
+============================================================
+2025-11-21 08:38:47,683 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-11-21 08:38:47,683 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-32b_q_1000_think.csv
+2025-11-21 08:38:47,736 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 08:39:07,970 - energy_eval - INFO - Completed q for qwen3:32b in 0h 0m 20s
+2025-11-21 08:39:08,066 - energy_eval - INFO - Completed qwen3:32b in 0h 0m 20s
+2025-11-21 08:39:08,066 - energy_eval - INFO - 
+============================================================
+Experiment completed in 9h 33m 41s
+============================================================
+2025-11-21 12:58:24,911 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:0.6b': 'ollama', 'qwen3:1.7b': 'ollama', 'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:0.6b': {'q': False, 'q+r': True}, 'qwen3:1.7b': {'q': False, 'q+r': True}, 'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-11-21 12:58:24,912 - energy_eval - INFO - Using device: cuda
+2025-11-21 12:58:24,912 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-11-21 12:58:26,823 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-11-21 12:58:26,824 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:0.6b
+============================================================
+2025-11-21 12:58:26,824 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 12:58:26,825 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q_1000_think.csv
+2025-11-21 12:58:27,132 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 15:59:43,650 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:0.6b': 'ollama', 'qwen3:1.7b': 'ollama', 'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:0.6b': {'q': False, 'q+r': True}, 'qwen3:1.7b': {'q': False, 'q+r': True}, 'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-11-21 15:59:43,650 - energy_eval - INFO - Using device: cuda
+2025-11-21 15:59:43,650 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-11-21 15:59:45,657 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-11-21 15:59:45,657 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:0.6b
+============================================================
+2025-11-21 15:59:45,657 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 15:59:45,658 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q_1000_think.csv
+2025-11-21 15:59:45,734 - energy_eval - INFO - Built 176 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 16:25:05,959 - energy_eval - INFO - Completed q for qwen3:0.6b in 0h 25m 20s
+2025-11-21 16:25:05,960 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q+r_1000_think_first.csv
+2025-11-21 16:25:06,285 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 18:08:16,089 - energy_eval - INFO - Completed q+r for qwen3:0.6b in 1h 43m 10s
+2025-11-21 18:08:16,211 - energy_eval - INFO - Completed qwen3:0.6b in 2h 8m 30s
+2025-11-21 18:08:16,211 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:1.7b
+============================================================
+2025-11-21 18:08:16,211 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 18:08:16,211 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-1.7b_q_1000_think.csv
+2025-11-21 18:08:16,542 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 19:48:20,412 - energy_eval - INFO - Completed q for qwen3:1.7b in 1h 40m 4s
+2025-11-21 19:48:20,412 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-1.7b_q+r_1000_think_first.csv
+2025-11-21 19:48:20,780 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 21:33:34,655 - energy_eval - INFO - Completed q+r for qwen3:1.7b in 1h 45m 14s
+2025-11-21 21:33:34,826 - energy_eval - INFO - Completed qwen3:1.7b in 3h 25m 18s
+2025-11-21 21:33:34,826 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-11-21 21:33:34,826 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-21 21:33:34,827 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-4b_q_1000_think.csv
+2025-11-21 21:33:35,158 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-21 23:46:16,750 - energy_eval - INFO - Completed q for qwen3:4b in 2h 12m 41s
+2025-11-21 23:46:16,750 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-4b_q+r_1000_think_first.csv
+2025-11-21 23:46:17,091 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 01:51:56,140 - energy_eval - INFO - Completed q+r for qwen3:4b in 2h 5m 39s
+2025-11-22 01:51:56,332 - energy_eval - INFO - Completed qwen3:4b in 4h 18m 21s
+2025-11-22 01:51:56,332 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:8b
+============================================================
+2025-11-22 01:51:56,332 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 01:51:56,332 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-8b_q_1000_think.csv
+2025-11-22 01:51:56,660 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 05:06:43,655 - energy_eval - INFO - Completed q for qwen3:8b in 3h 14m 47s
+2025-11-22 05:06:43,655 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-8b_q+r_1000_think_first.csv
+2025-11-22 05:06:43,974 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 07:35:39,840 - energy_eval - INFO - Completed q+r for qwen3:8b in 2h 28m 56s
+2025-11-22 07:35:40,054 - energy_eval - INFO - Completed qwen3:8b in 5h 43m 43s
+2025-11-22 07:35:40,054 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:14b
+============================================================
+2025-11-22 07:35:40,054 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 07:35:40,054 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-14b_q_1000_think.csv
+2025-11-22 07:35:40,365 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 10:54:26,216 - energy_eval - INFO - Completed q for qwen3:14b in 3h 18m 46s
+2025-11-22 10:54:26,216 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-14b_q+r_1000_think_first.csv
+2025-11-22 10:54:26,535 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 14:13:48,980 - energy_eval - INFO - Completed q+r for qwen3:14b in 3h 19m 22s
+2025-11-22 14:13:49,200 - energy_eval - INFO - Completed qwen3:14b in 6h 38m 9s
+2025-11-22 14:13:49,200 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:32b
+============================================================
+2025-11-22 14:13:49,200 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-11-22 14:13:49,200 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-32b_q_1000_think.csv
+2025-11-22 14:13:49,530 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 18:20:17,695 - energy_eval - WARNING - Experiment interrupted by user
+2025-11-22 23:53:46,533 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:0.6b': 'ollama', 'qwen3:1.7b': 'ollama', 'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:0.6b': {'q': False, 'q+r': True}, 'qwen3:1.7b': {'q': False, 'q+r': True}, 'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-11-22 23:53:46,533 - energy_eval - INFO - Using device: cuda
+2025-11-22 23:53:46,533 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-11-22 23:53:50,828 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-11-22 23:53:50,828 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:0.6b
+============================================================
+2025-11-22 23:53:50,828 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 23:53:50,834 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q_1000_think.csv
+2025-11-22 23:53:50,859 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:53:58,025 - energy_eval - INFO - Completed q for qwen3:0.6b in 0h 0m 7s
+2025-11-22 23:53:58,025 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q+r_1000_think_first.csv
+2025-11-22 23:53:58,060 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:03,057 - energy_eval - INFO - Completed q+r for qwen3:0.6b in 0h 0m 4s
+2025-11-22 23:54:03,132 - energy_eval - INFO - Completed qwen3:0.6b in 0h 0m 12s
+2025-11-22 23:54:03,132 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:1.7b
+============================================================
+2025-11-22 23:54:03,132 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 23:54:03,132 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-1.7b_q_1000_think.csv
+2025-11-22 23:54:03,156 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:09,869 - energy_eval - INFO - Completed q for qwen3:1.7b in 0h 0m 6s
+2025-11-22 23:54:09,869 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-1.7b_q+r_1000_think_first.csv
+2025-11-22 23:54:09,901 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:15,438 - energy_eval - INFO - Completed q+r for qwen3:1.7b in 0h 0m 5s
+2025-11-22 23:54:15,530 - energy_eval - INFO - Completed qwen3:1.7b in 0h 0m 12s
+2025-11-22 23:54:15,530 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:4b
+============================================================
+2025-11-22 23:54:15,530 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 23:54:15,530 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-4b_q_1000_think.csv
+2025-11-22 23:54:15,565 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:24,342 - energy_eval - INFO - Completed q for qwen3:4b in 0h 0m 8s
+2025-11-22 23:54:24,342 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-4b_q+r_1000_think_first.csv
+2025-11-22 23:54:24,378 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:31,662 - energy_eval - INFO - Completed q+r for qwen3:4b in 0h 0m 7s
+2025-11-22 23:54:31,735 - energy_eval - INFO - Completed qwen3:4b in 0h 0m 16s
+2025-11-22 23:54:31,735 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:8b
+============================================================
+2025-11-22 23:54:31,735 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 23:54:31,735 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-8b_q_1000_think.csv
+2025-11-22 23:54:31,776 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:42,219 - energy_eval - INFO - Completed q for qwen3:8b in 0h 0m 10s
+2025-11-22 23:54:42,219 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-8b_q+r_1000_think_first.csv
+2025-11-22 23:54:42,262 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:54:48,325 - energy_eval - INFO - Completed q+r for qwen3:8b in 0h 0m 6s
+2025-11-22 23:54:48,397 - energy_eval - INFO - Completed qwen3:8b in 0h 0m 16s
+2025-11-22 23:54:48,397 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:14b
+============================================================
+2025-11-22 23:54:48,397 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-22 23:54:48,397 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-14b_q_1000_think.csv
+2025-11-22 23:54:48,436 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:55:01,559 - energy_eval - INFO - Completed q for qwen3:14b in 0h 0m 13s
+2025-11-22 23:55:01,559 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-14b_q+r_1000_think_first.csv
+2025-11-22 23:55:01,601 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-22 23:55:10,127 - energy_eval - INFO - Completed q+r for qwen3:14b in 0h 0m 8s
+2025-11-22 23:55:10,204 - energy_eval - INFO - Completed qwen3:14b in 0h 0m 21s
+2025-11-22 23:55:10,204 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:32b
+============================================================
+2025-11-22 23:55:10,205 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-11-22 23:55:10,205 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-32b_q_1000_think.csv
+2025-11-22 23:55:10,462 - energy_eval - INFO - Built 620 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-23 04:06:41,692 - energy_eval - INFO - Completed q for qwen3:32b in 4h 11m 31s
+2025-11-23 04:06:41,799 - energy_eval - INFO - Completed qwen3:32b in 4h 11m 31s
+2025-11-23 04:06:41,799 - energy_eval - INFO - 
+============================================================
+Experiment completed in 4h 12m 55s
+============================================================
+2025-11-23 09:04:09,228 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'qwen3:0.6b': 'ollama', 'qwen3:1.7b': 'ollama', 'qwen3:4b': 'ollama', 'qwen3:8b': 'ollama', 'qwen3:14b': 'ollama', 'qwen3:32b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'qwen3:0.6b': {'q': False, 'q+r': True}, 'qwen3:1.7b': {'q': False, 'q+r': True}, 'qwen3:4b': {'q': False, 'q+r': True}, 'qwen3:8b': {'q': False, 'q+r': True}, 'qwen3:14b': {'q': False, 'q+r': True}, 'qwen3:32b': {'q': False}}, think=True, gold=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-11-23 09:04:09,229 - energy_eval - INFO - Using device: cuda
+2025-11-23 09:04:09,229 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-11-23 09:04:14,142 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-11-23 09:04:14,142 - energy_eval - INFO - 
+============================================================
+Running model: qwen3:0.6b
+============================================================
+2025-11-23 09:04:14,142 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False, 'q+r': True}
+++++++++++++++++++++++++++++++
+2025-11-23 09:04:14,147 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q_1000_think.csv
+2025-11-23 09:04:14,163 - energy_eval - INFO - Built 0 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-11-23 09:04:21,393 - energy_eval - INFO - Completed q for qwen3:0.6b in 0h 0m 7s
+2025-11-23 09:04:21,394 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_qwen3-0.6b_q+r_1000_think_long.csv
+2025-11-23 09:04:21,713 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
