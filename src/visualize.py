@@ -36,7 +36,7 @@ def get_marker(dtype):
 def main():
     # 1. Load Data
     try:
-        df = pd.read_csv('qwen3_summary.csv')
+        df = pd.read_csv(r'C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\qwen3_summary.csv')
     except FileNotFoundError:
         print("Error: 'qwen3_summary.csv' not found. Please ensure the file is in the same directory.")
         return
@@ -44,6 +44,11 @@ def main():
     # 2. Preprocessing
     # Extract Model Size
     df['params_B'] = df['model'].apply(parse_model_size)
+
+    # Create ordinal mapping for even spacing on X-axis
+    unique_sizes = sorted(df['params_B'].unique())
+    size_map = {size: i for i, size in enumerate(unique_sizes)}
+    df['size_idx'] = df['params_B'].map(size_map)
 
     # Normalize Dataset Version Types
     df['type'] = df['dataset_version'].apply(map_dataset_type)
@@ -66,7 +71,7 @@ def main():
     # (or plot all points if distinct enough. Let's plot all to see distribution)
     sns.lineplot(
         data=df,
-        x='params_B',
+        x='size_idx',
         y='f1',
         hue='thinking',
         style='thinking',
@@ -78,13 +83,13 @@ def main():
     plt.title('Performance vs Model Size: F1 Score')
     plt.xlabel('Model Parameters (Billions)')
     plt.ylabel('F1 Score')
-    plt.xscale('log')  # Log scale often helps with 0.6B vs 70B
-    plt.xticks(df['params_B'].unique(), df['params_B'].unique())  # Force specific ticks
+    # plt.xscale('log') # Removed log scale for even spacing
+    plt.xticks(list(size_map.values()), list(size_map.keys()))  # Map indices back to labels
     plt.legend(title='Thinking Mode')
     plt.grid(True, which="both", ls="-", alpha=0.2)
     plt.tight_layout()
-    plt.savefig('plot_1_performance_vs_size.svg', bbox_inches='tight')
-    print("Generated plot_1_performance_vs_size.svg")
+    plt.savefig('performance_vs_size.svg', bbox_inches='tight')
+    print("Generated performance_vs_size.svg")
 
     # ---------------------------------------------------------
     # PLOT 2: Energy vs Model Size
@@ -93,7 +98,7 @@ def main():
 
     sns.lineplot(
         data=df,
-        x='params_B',
+        x='size_idx',
         y='energy_kWh_per_question',
         hue='thinking',
         style='thinking',
@@ -105,14 +110,14 @@ def main():
     plt.title('Energy Consumption vs Model Size')
     plt.xlabel('Model Parameters (Billions)')
     plt.ylabel('Energy (kWh per Question)')
-    plt.xscale('log')
-    plt.yscale('log')  # Energy often scales exponentially
-    plt.xticks(df['params_B'].unique(), df['params_B'].unique())
+    # plt.xscale('log') # Removed log scale on X
+    plt.yscale('log')  # Energy often scales exponentially, kept Y log
+    plt.xticks(list(size_map.values()), list(size_map.keys()))
     plt.legend(title='Thinking Mode')
     plt.grid(True, which="both", ls="-", alpha=0.2)
     plt.tight_layout()
-    plt.savefig('plot_2_energy_vs_size.svg', bbox_inches='tight')
-    print("Generated plot_2_energy_vs_size.svg")
+    plt.savefig('energy_vs_size.svg', bbox_inches='tight')
+    print("Generated energy_vs_size.svg")
 
     # ---------------------------------------------------------
     # PLOT 3 & 4: Performance per Energy (Split by Thinking)
@@ -130,10 +135,23 @@ def main():
         subset = df[df['thinking'] == mode]
         ax = axes[i]
 
+        # Draw lines connecting the points (plotted before scatter so markers sit on top)
+        sns.lineplot(
+            data=subset,
+            x='size_idx',
+            y='perf_per_energy',
+            hue='type',
+            palette=type_palette,
+            ax=ax,
+            legend=False,
+            markers=False,
+            sort=True
+        )
+
         # We use scatterplot to control markers specifically
         sns.scatterplot(
             data=subset,
-            x='params_B',
+            x='size_idx',
             y='perf_per_energy',
             hue='type',
             style='type',
@@ -145,9 +163,9 @@ def main():
 
         ax.set_title(f'{mode_names[i]} Models: Efficiency')
         ax.set_xlabel('Model Parameters (Billions)')
-        ax.set_xscale('log')
-        ax.set_xticks(df['params_B'].unique())
-        ax.set_xticklabels(df['params_B'].unique())
+        # ax.set_xscale('log') # Removed
+        ax.set_xticks(list(size_map.values()))
+        ax.set_xticklabels(list(size_map.keys()))
 
         if i == 0:
             ax.set_ylabel('Efficiency (F1 / kWh)')
@@ -157,8 +175,8 @@ def main():
         ax.grid(True, which="both", ls="-", alpha=0.2)
 
     plt.tight_layout()
-    plt.savefig('plot_3_efficiency_comparison.svg', bbox_inches='tight')
-    print("Generated plot_3_efficiency_comparison.svg")
+    plt.savefig('efficiency_comparison.svg', bbox_inches='tight')
+    print("Generated efficiency_comparison.svg")
 
     # ---------------------------------------------------------
     # TABLE: Best Small vs Largest

@@ -1,0 +1,5 @@
+model,type,thinking,params_B,f1,energy_kWh_per_question,perf_per_energy
+Qwen3 0.6B (RAG),GS,True,0.6,0.41788,0.000723,577.9806362378976
+Qwen3 1.7B (RAG),GS,False,1.7,0.489268,8.8e-05,5559.863636363636
+Qwen3 32B (Base),Base,False,32.0,0.30153,0.000176,1713.2386363636365
+Qwen3 32B (Base),Base,True,32.0,0.208871,0.009438,22.13085399449036
