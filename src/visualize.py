@@ -334,7 +334,7 @@ def main():
             plt.annotate(
                 point[2],
                 (point[0], point[1]),
-                xytext=(25, 25),
+                xytext=(35, 10),
                 textcoords="offset points",
                 fontsize=9,
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
