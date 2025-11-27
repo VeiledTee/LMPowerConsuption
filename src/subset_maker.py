@@ -22,7 +22,9 @@ def save_jsonl(data: list, path: str):
 # ----------------------------------------------------------------------
 # Helper Function for Dynamic Stratified Counts
 # ----------------------------------------------------------------------
-def calculate_stratified_counts(full_counts: dict, subset_size: int, total_full_samples: int) -> dict:
+def calculate_stratified_counts(
+    full_counts: dict, subset_size: int, total_full_samples: int
+) -> dict:
     """Calculates the proportional counts for the subset, ensuring the total is exact."""
 
     float_targets = {}
@@ -39,8 +41,12 @@ def calculate_stratified_counts(full_counts: dict, subset_size: int, total_full_
     remaining_needed = subset_size - sum(target_counts_floored.values())
 
     # 4. Use fractional parts for tie-breaking to allocate remaining samples
-    fractional_parts = {k: v - target_counts_floored[k] for k, v in float_targets.items()}
-    sorted_fractions = sorted(fractional_parts.items(), key=lambda item: item[1], reverse=True)
+    fractional_parts = {
+        k: v - target_counts_floored[k] for k, v in float_targets.items()
+    }
+    sorted_fractions = sorted(
+        fractional_parts.items(), key=lambda item: item[1], reverse=True
+    )
 
     final_counts = target_counts_floored
 
@@ -61,7 +67,7 @@ def process_2wikimultihop_local(file_path: str) -> list:
     based on the 'type' distribution.
     """
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         df_full = pd.DataFrame(data)
 
@@ -71,7 +77,7 @@ def process_2wikimultihop_local(file_path: str) -> list:
         return []
 
     # Dynamically get the full counts and total size from the loaded file
-    full_counts = df_full['type'].value_counts().to_dict()
+    full_counts = df_full["type"].value_counts().to_dict()
     total_full_samples = len(df_full)
 
     print("Full Dataset Question Type Distribution:")
@@ -91,10 +97,12 @@ def process_2wikimultihop_local(file_path: str) -> list:
     sampled_data = []
 
     for q_type, count in target_counts.items():
-        df_type = df_full[df_full['type'] == q_type]
+        df_type = df_full[df_full["type"] == q_type]
 
         if len(df_type) < count:
-            print(f"Warning: Not enough samples for '{q_type}'. Only sampling available {len(df_type)}.")
+            print(
+                f"Warning: Not enough samples for '{q_type}'. Only sampling available {len(df_type)}."
+            )
             sample = df_type
         else:
             # Use random_state=42 for reproducibility
@@ -107,15 +115,17 @@ def process_2wikimultihop_local(file_path: str) -> list:
     df_subset = df_subset.sample(frac=1, random_state=42).reset_index(drop=True)
 
     # Verification and logging
-    subset_stats = df_subset['type'].value_counts()
+    subset_stats = df_subset["type"].value_counts()
     print(f"Final subset: {len(df_subset)} examples")
     for q_type, count in subset_stats.items():
         percent = count / len(df_subset) * 100
         full_percent = full_counts.get(q_type, 0) / total_full_samples * 100
-        print(f"{q_type} ratio: {percent:.1f}% ({count}) | Original: {full_percent:.1f}%")
+        print(
+            f"{q_type} ratio: {percent:.1f}% ({count}) | Original: {full_percent:.1f}%"
+        )
 
     # Return as a list of dictionaries
-    return df_subset.to_dict('records')
+    return df_subset.to_dict("records")
 
 
 def process_hotpot(dataset: Dataset) -> list:
@@ -166,11 +176,15 @@ def process_boolq(dataset: Dataset) -> list:
 
 
 def process_nq(dataset: Dataset) -> list:
-    filtered_dataset = dataset.filter(lambda example:
-                                      any(len(inner_list) > 0 for inner_list in example['short_answers'])
-                                      )
+    filtered_dataset = dataset.filter(
+        lambda example: any(
+            len(inner_list) > 0 for inner_list in example["short_answers"]
+        )
+    )
 
-    mini_dataset = filtered_dataset.shuffle(seed=CONFIG.seed).select(range(CONFIG.dataset_size))
+    mini_dataset = filtered_dataset.shuffle(seed=CONFIG.seed).select(
+        range(CONFIG.dataset_size)
+    )
 
     return mini_dataset.to_list()
 
@@ -190,8 +204,13 @@ def main():
         )
         subset = process_hotpot(dataset)
 
-    elif "2wikimultihopqa" in dataset_name.lower() or "2wikimultihop" in dataset_name.lower():
-        subset = process_2wikimultihop_local(rf"..\data\wikimultihop_wiki-processed\{CONFIG.split}.json")
+    elif (
+        "2wikimultihopqa" in dataset_name.lower()
+        or "2wikimultihop" in dataset_name.lower()
+    ):
+        subset = process_2wikimultihop_local(
+            rf"..\data\wikimultihop_wiki-processed\{CONFIG.split}.json"
+        )
 
     elif "boolq" in dataset_name:
         dataset = load_dataset(

@@ -15,7 +15,7 @@ def build_prompt(example: dict, include_passage: bool) -> str:
     q = example["question"]
 
     # Determine dataset type
-    dataset_type = CONFIG.dataset_name.split(r'/')[-1].lower()
+    dataset_type = CONFIG.dataset_name.split(r"/")[-1].lower()
 
     # Select appropriate template set
     templates = CONFIG.prompt_templates[dataset_type]

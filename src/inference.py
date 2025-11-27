@@ -4,8 +4,12 @@ import os
 import torch
 from codecarbon import EmissionsTracker
 from ollama import chat
-from transformers import (AutoModelForCausalLM, AutoTokenizer, PreTrainedModel,
-                          PreTrainedTokenizer)
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    PreTrainedModel,
+    PreTrainedTokenizer,
+)
 
 from src.config import CONFIG
 
@@ -22,10 +26,10 @@ def inference_ollama(prompt, model_name):
     resp = chat(
         model=model_name,
         messages=[
-          {
-            'role': 'user',
-            'content': prompt,
-          },
+            {
+                "role": "user",
+                "content": prompt,
+            },
         ],
         options={
             "temperature": 0.6,
@@ -35,7 +39,7 @@ def inference_ollama(prompt, model_name):
         think=CONFIG.think,
     )
     if CONFIG.think:
-        if resp.done_reason == 'length':
+        if resp.done_reason == "length":
             return f"{resp.message.thinking}"
         else:
             return f"{resp.message.thinking} {resp.message.content}"

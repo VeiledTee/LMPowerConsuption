@@ -262,12 +262,8 @@ def summarise(
         "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
         "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
         "emissions_kg_per_question": df["combined_emissions"].mean(),
-        "inference_emissions_kg_per_question": df[
-            "inference_emissions (kg)"
-        ].mean(),
-        "retrieval_emissions_kg_per_question": df[
-            "retrieval_emissions (kg)"
-        ].mean(),
+        "inference_emissions_kg_per_question": df["inference_emissions (kg)"].mean(),
+        "retrieval_emissions_kg_per_question": df["retrieval_emissions (kg)"].mean(),
         "time_s_per_question": df["combined_time"].mean(),
         "total_time": f"{hours}:{minutes:02}:{seconds:02}",
     }
@@ -410,13 +406,13 @@ def determine_dataset_version(filename_parts: List[str]) -> str:
         "dev" in filename_parts[2] or "128" in filename_parts[2]
     ):
         return f"dev ({filename_parts[3]})" if len(filename_parts) > 3 else "dev (128)"
-    if filename_parts[0] == 'nq':
-        if filename_parts[-1] == 'long':
-            return 'GS Paragraph'
-        elif filename_parts[-1] == 'first':
-            return 'First Paragraph'
+    if filename_parts[0] == "nq":
+        if filename_parts[-1] == "long":
+            return "GS Paragraph"
+        elif filename_parts[-1] == "first":
+            return "First Paragraph"
         else:
-            return 'Question Only'
+            return "Question Only"
     return "full"
 
 
@@ -446,7 +442,7 @@ def insert_blank_lines(df: pd.DataFrame) -> str:
 
 
 def run_summary(
-        model_filter: Optional[str] = None, dataset_version: Optional[str] = None
+    model_filter: Optional[str] = None, dataset_version: Optional[str] = None
 ) -> None:
     """Main function to run summary analysis on evaluation results.
 
@@ -491,7 +487,7 @@ def run_summary(
 
     # Calculate 'Performance per Energy' (F1 divided by Total Energy in kWh)
     df_summary["performance_per_energy"] = (
-            df_summary["f1"] / df_summary["total_energy_kWh"]
+        df_summary["f1"] / df_summary["total_energy_kWh"]
     )
 
     # Add model size and family for sorting

@@ -111,7 +111,8 @@ class ExperimentConfig:
                     "Do not overcomplicate your thinking. Do not go in circles.\n"
                     "Question: {question}\n"
                     "Answer:"
-                )},
+                ),
+            },
             "natural_questions_parsed": {
                 "with_context": (
                     "Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. "

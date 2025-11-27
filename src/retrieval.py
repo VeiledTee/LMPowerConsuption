@@ -8,9 +8,11 @@ import random
 
 import joblib
 from codecarbon import EmissionsTracker
-from sklearn.feature_extraction.text import (ENGLISH_STOP_WORDS,
-                                             HashingVectorizer,
-                                             TfidfVectorizer)
+from sklearn.feature_extraction.text import (
+    ENGLISH_STOP_WORDS,
+    HashingVectorizer,
+    TfidfVectorizer,
+)
 
 from src.config import CONFIG
 from src.utils import normalize, strip_links
@@ -32,14 +34,18 @@ def get_entity_summary(entity_id: str, docs: list[str], titles: list[str]) -> st
     return ""
 
 
-def filter_paragraphs_by_entity_type(paragraphs: list[str], gold_paragraphs: list[str], k: int) -> list[str]:
+def filter_paragraphs_by_entity_type(
+    paragraphs: list[str], gold_paragraphs: list[str], k: int
+) -> list[str]:
     """Filter paragraphs by entity type matching (simplified version)."""
     # In the paper, they filter by matching entity types between gold and candidate paragraphs
     # For energy measurement, we'll just take top-k as distractors
     return paragraphs[:k] if paragraphs else []
 
 
-def load_HotpotQA_wiki() -> tuple[list[str], list[str], HashingVectorizer, Any, dict[str, list[int]]]:
+def load_HotpotQA_wiki() -> (
+    tuple[list[str], list[str], HashingVectorizer, Any, dict[str, list[int]]]
+):
     """
     Load and index a Wikipedia dump for HotpotQA-style retrieval.
 
@@ -70,7 +76,9 @@ def load_HotpotQA_wiki() -> tuple[list[str], list[str], HashingVectorizer, Any, 
                         continue
                     for para_tokens in page.get("text", []):
                         para = "".join(para_tokens).strip()
-                        if len(para) >= CONFIG.intro_min_chars and not para.startswith("=="):
+                        if len(para) >= CONFIG.intro_min_chars and not para.startswith(
+                            "=="
+                        ):
                             para = strip_links(para)
                             docs.append(para)
                             titles.append(title)
@@ -110,7 +118,9 @@ def load_HotpotQA_wiki() -> tuple[list[str], list[str], HashingVectorizer, Any, 
     return docs, titles, vectorizer, tfidf_matrix, inv_index
 
 
-def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer, Any, dict[str, list[int]]]:
+def load_2WikiMultiHopQA_wiki() -> (
+    tuple[list[str], list[str], HashingVectorizer, Any, dict[str, list[int]]]
+):
     """
     Load and index Wikipedia dump following 2WikiMultiHopQA methodology.
     """
@@ -133,9 +143,13 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
                     title = page.get("title", "")
 
                     # Filter out redirects and disambiguation pages
-                    if (page.get("redirect") or
-                            title.endswith("(disambiguation)") or
-                            any(x in title.lower() for x in ["(disambiguation)", "list of"])):
+                    if (
+                        page.get("redirect")
+                        or title.endswith("(disambiguation)")
+                        or any(
+                            x in title.lower() for x in ["(disambiguation)", "list of"]
+                        )
+                    ):
                         continue
 
                     text = page.get("text", "").strip()
@@ -149,19 +163,26 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
                     first_paragraph = strip_links(first_paragraph)
 
                     # Skip if still looks like a section header or redirect
-                    if (first_paragraph.startswith("==") or
-                            first_paragraph.lower().startswith("#redirect")):
+                    if first_paragraph.startswith(
+                        "=="
+                    ) or first_paragraph.lower().startswith("#redirect"):
                         continue
 
                     docs.append(first_paragraph)
                     titles.append(title)
 
                 if i % 1500 == 0 and len(docs) > 0:
-                    logger.info(f"Checkpoint: dumping {len(docs):,} docs to {CONFIG.corpus_cache}")
+                    logger.info(
+                        f"Checkpoint: dumping {len(docs):,} docs to {CONFIG.corpus_cache}"
+                    )
                     joblib.dump((docs, titles), CONFIG.corpus_cache)
-                    logger.info(f"Checkpoint: dumped {len(docs):,} docs to {CONFIG.corpus_cache}")
+                    logger.info(
+                        f"Checkpoint: dumped {len(docs):,} docs to {CONFIG.corpus_cache}"
+                    )
         joblib.dump((docs, titles), CONFIG.corpus_cache)
-        logger.info(f"Final dump complete: {len(docs):,} docs saved to {CONFIG.corpus_cache}")
+        logger.info(
+            f"Final dump complete: {len(docs):,} docs saved to {CONFIG.corpus_cache}"
+        )
 
     # TF-IDF code
     if CONFIG.tfidf_cache.exists():
@@ -169,7 +190,10 @@ def load_2WikiMultiHopQA_wiki() -> tuple[list[str], list[str], HashingVectorizer
     else:
         vectorizer = HashingVectorizer(
             n_features=1 << CONFIG.hash_bits,
-            ngram_range=(1, 2),  # Keep as (1, 2) since paper says "bigram" but they might have used unigrams too
+            ngram_range=(
+                1,
+                2,
+            ),  # Keep as (1, 2) since paper says "bigram" but they might have used unigrams too
             alternate_sign=False,
             norm="l2",
             stop_words="english",
@@ -290,7 +314,9 @@ def retrieve_boolq(
     }
 
 
-def retrieve_triviaqa(example: dict[str, Any], top_k: int = 10) -> tuple[list[str], dict[str, float]]:
+def retrieve_triviaqa(
+    example: dict[str, Any], top_k: int = 10
+) -> tuple[list[str], dict[str, float]]:
     """
     Retrieve passages for a TriviaQA example using its provided contexts.
 
@@ -347,13 +373,13 @@ def retrieve_triviaqa(example: dict[str, Any], top_k: int = 10) -> tuple[list[st
 
 
 def retrieve_2wikimultihop(
-        question: str,
-        gold_titles: list[str],
-        question_type: str,
-        vectorizer: HashingVectorizer,
-        tfidf_matrix: Any,
-        titles: list[str],
-        docs: list[str],
+    question: str,
+    gold_titles: list[str],
+    question_type: str,
+    vectorizer: HashingVectorizer,
+    tfidf_matrix: Any,
+    titles: list[str],
+    docs: list[str],
 ) -> tuple[list, dict[str, float]]:
     """
     Closest reproduction of original 2WikiMultiHopQA retrieval methodology.
@@ -392,7 +418,7 @@ def retrieve_2wikimultihop(
                 doc_idx = titles.index(title)
                 summary = docs[doc_idx]
                 # Simple sentence splitting
-                sentences = [s.strip() for s in summary.split('. ') if s.strip()]
+                sentences = [s.strip() for s in summary.split(". ") if s.strip()]
                 context.append([title, sentences])
 
         # Step 6: Shuffle the context with controlled randomness
@@ -407,13 +433,13 @@ def retrieve_2wikimultihop(
 
 
 def retrieve_top_k(
-        question: str,
-        vectorizer: HashingVectorizer,
-        tfidf_matrix: Any,
-        titles: list[str],
-        docs: list[str],
-        inv_index: dict[str, list[int]],
-        k: int = 10,
+    question: str,
+    vectorizer: HashingVectorizer,
+    tfidf_matrix: Any,
+    titles: list[str],
+    docs: list[str],
+    inv_index: dict[str, list[int]],
+    k: int = 10,
 ) -> tuple[list[tuple[str, str]], dict[str, float]]:
     """
     Retrieve top-K candidate documents (title and text) for an Open-Domain QA question.

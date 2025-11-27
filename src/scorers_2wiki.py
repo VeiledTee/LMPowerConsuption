@@ -1,6 +1,7 @@
 from collections import Counter
 from src.utils import normalize
 
+
 def exact_match(pred: str, gold: str) -> int:
     """
     2WikiMultiHopQA-style exact match: normalized, case/punctuation/articles-insensitive.

@@ -151,6 +151,6 @@ def extract_2wiki_gold_context(sample):
 
 def extract_first_paragraph(html_content):
     """Extract the first paragraph from HTML content."""
-    soup = BeautifulSoup(html_content, 'html.parser')
-    first_p = soup.find('p')
+    soup = BeautifulSoup(html_content, "html.parser")
+    first_p = soup.find("p")
     return first_p.get_text().strip() if first_p else ""
