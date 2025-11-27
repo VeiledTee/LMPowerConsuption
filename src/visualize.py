@@ -108,7 +108,7 @@ def create_config_label(row):
 
 
 def main():
-    # 1. Load Data
+    # Load Data
     try:
         # Assuming the updated analysis.py created this file with the new 'total_energy_kWh' column
         df = pd.read_csv(
@@ -132,21 +132,18 @@ def main():
     # Normalize Dataset Version Types
     df["type"] = df["dataset_version"].apply(map_dataset_type)
 
-    # --- CRITICAL CHANGE 1: Update PPE Calculation ---
     # Calculate Performance per Energy (F1 / Total kWh)
     # Check for zeros in the new total energy column
     if "total_energy_kWh" in df.columns:
         df["total_energy_kWh"] = df["total_energy_kWh"].replace(0, np.nan)
     else:
-        print("ERROR: 'total_energy_kWh' column not found! Check analysis.py update.")
+        print("ERROR: 'total_energy_kWh' column not found!")
         return
 
     df["perf_per_energy"] = df["f1"] / df["total_energy_kWh"]
-    # --------------------------------------------------
 
     # The original avg energy check is fine to keep for safety for plots that still use avg energy
     df["energy_kWh_per_question"] = df["energy_kWh_per_question"].replace(0, np.nan)
-
 
     # Calculate additional efficiency metrics (these still use avg energy/tokens/time)
     df["performance_per_token"] = df["f1"] / df["pred_tokens_per_question"]
@@ -161,7 +158,7 @@ def main():
     sns.set_theme(style="whitegrid")
     plt.rcParams.update({"font.size": 12})
 
-    # PLOT 3 & 4: Performance per Energy (Split by Thinking)
+    # Performance per Energy (Split by Thinking)
     fig, axes = plt.subplots(1, 2, figsize=(16, 6), sharey=True)
     modes = [False, True]
     mode_names = ["Non-Thinking", "Thinking"]
@@ -201,9 +198,8 @@ def main():
         ax.set_xticklabels(list(size_map.keys()))
 
         if i == 0:
-            # --- CRITICAL CHANGE 2a: Update Y-axis Label for PPE ---
+
             ax.set_ylabel("Efficiency (F1 / Total kWh)")
-            # -------------------------------------------------------
         else:
             ax.set_ylabel("")
 
@@ -213,15 +209,12 @@ def main():
     plt.savefig("efficiency_comparison.svg", bbox_inches="tight")
     print("Generated efficiency_comparison.svg")
 
-    # ---------------------------------------------------------
-    # PLOT 5: Performance-Energy Trade-off Scatter Plot
-    # ---------------------------------------------------------
+    # Performance-Energy Trade-off Scatter Plot
     plt.figure(figsize=(10, 6))
-    # --- CRITICAL CHANGE 3a: Use Total Energy for Y-Axis ---
+
     scatter = plt.scatter(
         df["f1"],
         df["total_energy_kWh"],
-    # ------------------------------------------------------
         c=df["params_B"],
         s=100,
         alpha=0.7,
@@ -229,24 +222,22 @@ def main():
     )
     plt.colorbar(scatter, label="Model Size (B)")
     plt.xlabel("F1 Score")
-    # --- CRITICAL CHANGE 3b: Update Y-Axis Label ---
+
     plt.ylabel("Total Energy Consumption (kWh)")
-    # ------------------------------------------------
     plt.title("Performance vs Total Energy Trade-off")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig("performance_energy_tradeoff.svg", bbox_inches="tight")
     print("Generated performance_energy_tradeoff.svg")
 
-    # PLOT 11: Pareto Frontier Analysis
-    # --- CRITICAL CHANGE 4: Use Total Energy for Pareto Frontier Calculation ---
+    # Pareto Frontier Analysis
+
     pareto_points = get_pareto_frontier_detailed(df, "total_energy_kWh", "f1")
-    # --------------------------------------------------------------------------
 
     plt.figure(figsize=(14, 9))
 
     # color mapping: Thinking -> blue, Non-thinking -> green
-    thinking_color_map = {True: "#1f77b4", False: "#2ca02c"}
+    thinking_color_map = {True: "#E66100", False: "#5D3A9B"}
 
     # Plot all points individually so we can set both color (thinking) and marker (context)
     for _, row in df.iterrows():
@@ -265,7 +256,6 @@ def main():
             edgecolors="none",
             zorder=2,
         )
-        # -----------------------------------------
 
     # Plot dotted black Pareto frontier line
     plt.plot(
@@ -273,7 +263,7 @@ def main():
         pareto_points[:, 1],
         color="k",
         linestyle=":",  # dotted
-        linewidth=2.0,
+        linewidth=4.0,
         alpha=0.9,
         label="Pareto Frontier",
         zorder=3,
@@ -281,9 +271,13 @@ def main():
 
     # Plot Pareto optimal points: same color mapping but with black border
     pareto_colors = [
-        thinking_color_map.get(bool(df.loc[df["config_label"] == p[2], "thinking"].iloc[0]), "#2ca02c")
-        if not df.loc[df["config_label"] == p[2], "thinking"].empty
-        else "#2ca02c"
+        (
+            thinking_color_map.get(
+                bool(df.loc[df["config_label"] == p[2], "thinking"].iloc[0]), "#2ca02c"
+            )
+            if not df.loc[df["config_label"] == p[2], "thinking"].empty
+            else "#2ca02c"
+        )
         for p in pareto_points
     ]
     # determine markers for pareto points (respect context)
@@ -312,29 +306,53 @@ def main():
     # Annotations
     key_configs = [
         "1.7-GS-NoThink",
-        "14-GS-NoThink",
-        "32-B-NoThink",
+        "1.7-GS-Think",
+        "32-Base-NoThink",
     ]
 
     for point in pareto_points:
         if point[2] in key_configs:
             continue
-        plt.annotate(
-            point[2],
-            (point[0], point[1]),
-            xytext=(8, 8),
-            textcoords="offset points",
-            fontsize=9,
-            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
-            arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=0", color="black", lw=0.8),
-        )
+        if "-Think" in point[2]:
+            plt.annotate(
+                point[2],
+                (point[0], point[1]),
+                xytext=(25, -25),
+                textcoords="offset points",
+                fontsize=9,
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.85),
+                arrowprops=dict(
+                    arrowstyle="->",
+                    connectionstyle="arc3,rad=-0.2",
+                    shrinkB=8,  # <-- prevents overlap
+                    color="black",
+                    lw=1.0,
+                ),
+                ha="left",
+                va="top",
+            )
+        else:
+            plt.annotate(
+                point[2],
+                (point[0], point[1]),
+                xytext=(25, 25),
+                textcoords="offset points",
+                fontsize=9,
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
+                arrowprops=dict(
+                    arrowstyle="->",
+                    connectionstyle="arc3,rad=0.2",
+                    shrinkB=8,
+                    color="black",
+                    lw=1.0,
+                ),
+            )
 
     for config in key_configs:
         point_data = df[df["config_label"] == config]
         if not point_data.empty:
             # --- Use Total Energy for annotation positioning ---
             x_pos = point_data["total_energy_kWh"].values[0]
-            # ----------------------------------------------------
             y_pos = point_data["f1"].values[0]
             plt.annotate(
                 config,
@@ -342,15 +360,25 @@ def main():
                 xytext=(15, -25),
                 textcoords="offset points",
                 fontsize=10,
-                bbox=dict(boxstyle="round,pad=0.5", facecolor="white", alpha=0.95, edgecolor="black", linewidth=1.2),
-                arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.2", color="red", lw=1.2),
+                bbox=dict(
+                    boxstyle="round,pad=0.5",
+                    facecolor="white",
+                    alpha=0.95,
+                    edgecolor="black",
+                    linewidth=1.2,
+                ),
+                arrowprops=dict(
+                    arrowstyle="->",
+                    connectionstyle="arc3,rad=-0.2",
+                    shrinkB=8,
+                    color="red",
+                    lw=1.5,
+                ),
                 ha="left",
                 va="top",
             )
 
-    # --- CRITICAL CHANGE 5: Update X-axis Label ---
     plt.xlabel("Total Energy Consumption (kWh)", fontsize=13, fontweight="bold")
-    # ----------------------------------------------
     plt.ylabel("F1 Score", fontsize=13, fontweight="bold")
     plt.title(
         "Pareto Frontier: F1 Score vs. Total Energy Consumption\nQwen3 Model Family on Natural Questions",
@@ -365,19 +393,67 @@ def main():
     from matplotlib.lines import Line2D
 
     legend_elements = [
-        Line2D([0], [0], marker="o", color="w", markerfacecolor=thinking_color_map[False], markersize=10,
-               label="Non-Thinking"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor=thinking_color_map[True], markersize=10,
-               label="Thinking"),
-        Line2D([0], [0], marker=get_marker("Base"), color="w", markerfacecolor="w", markeredgecolor="k", markersize=10,
-               label="Base (shape)"),
-        Line2D([0], [0], marker=get_marker("GS"), color="w", markerfacecolor="w", markeredgecolor="k", markersize=10,
-               label="GS (shape)"),
-        Line2D([0], [0], marker=get_marker("FP"), color="w", markerfacecolor="w", markeredgecolor="k", markersize=10,
-               label="FP (shape)"),
-        Line2D([0], [0], color="k", linestyle=":", linewidth=2.0, label="Pareto Frontier"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="none", markeredgecolor="black", markersize=10,
-               label="Pareto Optimal (black border)"),
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            markerfacecolor=thinking_color_map[False],
+            markersize=10,
+            label="Non-Thinking",
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            markerfacecolor=thinking_color_map[True],
+            markersize=10,
+            label="Thinking",
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker=get_marker("Base"),
+            color="w",
+            markerfacecolor="w",
+            markeredgecolor="k",
+            markersize=10,
+            label="Base",
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker=get_marker("GS"),
+            color="w",
+            markerfacecolor="w",
+            markeredgecolor="k",
+            markersize=10,
+            label="GS",
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker=get_marker("FP"),
+            color="w",
+            markerfacecolor="w",
+            markeredgecolor="k",
+            markersize=10,
+            label="FP",
+        ),
+        Line2D(
+            [0], [0], color="k", linestyle=":", linewidth=2.0, label="Pareto Frontier"
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            markerfacecolor="none",
+            markeredgecolor="black",
+            markersize=10,
+            label="Pareto Optimal Border",
+        ),
     ]
 
     plt.legend(handles=legend_elements, loc="lower right", framealpha=0.9)
@@ -393,21 +469,18 @@ def main():
     pareto_df = pd.DataFrame(pareto_points, columns=["energy", "f1", "config"])
     pareto_df = pareto_df.sort_values("energy")
     for i, row in pareto_df.iterrows():
-        # --- Update Print Statement to reflect Total Energy ---
         print(
             f"{row['config']:20} | F1: {row['f1']:.4f} | Total Energy: {row['energy']:.6f} kWh | PPE: {row['f1'] / row['energy']:.1f}"
         )
-        # ------------------------------------------------------
 
     # Additional analysis
     print("\n" + "=" * 70)
     print("KEY COMPARISONS")
     print("=" * 70)
     best_small = df[df["config_label"] == "1.7-GS-NoThink"].iloc[0]
-    best_large = df[df["config_label"] == "32-B-NoThink"].iloc[0]
+    best_large = df[df["config_label"] == "32-Base-NoThink"].iloc[0]
 
     print(f"Best Small (1.7-GS-NoThink):")
-    # --- Update Print Statement to use Total Energy ---
     print(
         f"  F1: {best_small['f1']:.4f}, Total Energy: {best_small['total_energy_kWh']:.6f} kWh, PPE: {best_small['perf_per_energy']:.1f}"
     )
@@ -415,15 +488,13 @@ def main():
     print(
         f"  F1: {best_large['f1']:.4f}, Total Energy: {best_large['total_energy_kWh']:.6f} kWh, PPE: {best_large['perf_per_energy']:.1f}"
     )
-    # --------------------------------------------------
     # The improvement comparison now correctly uses the new 'perf_per_energy' which is F1/Total Energy
     print(
         f"Improvement: F1 +{((best_small['f1'] / best_large['f1']) - 1) * 100:.1f}%, PPE +{((best_small['perf_per_energy'] / best_large['perf_per_energy']) - 1) * 100:.1f}%"
     )
 
-    # ---------------------------------------------------------
     # TABLE: Best Small vs Largest
-    # ---------------------------------------------------------
+
     unique_sizes = sorted(df["params_B"].unique())
 
     if len(unique_sizes) < 2:
@@ -442,7 +513,7 @@ def main():
     best_large = large_df.sort_values("f1", ascending=False).head(2)
 
     comparison_table = pd.concat([best_small, best_large])
-    # --- CRITICAL CHANGE 6: Update the columns in the final table ---
+
     cols_to_show = [
         "model",
         "type",
@@ -452,7 +523,7 @@ def main():
         "total_energy_kWh",
         "perf_per_energy",
     ]
-    # ----------------------------------------------------------------
+
     final_table = comparison_table[cols_to_show].sort_values("params_B")
 
     final_table.to_csv("best_config_comparison.csv", index=False)
