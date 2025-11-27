@@ -245,7 +245,6 @@ def main():
         marker = get_marker(dtype)
         color = thinking_color_map[row["thinking"]]
 
-        # --- Use Total Energy for X-axis plot ---
         plt.scatter(
             row["total_energy_kWh"],
             row["f1"],
@@ -351,7 +350,6 @@ def main():
     for config in key_configs:
         point_data = df[df["config_label"] == config]
         if not point_data.empty:
-            # --- Use Total Energy for annotation positioning ---
             x_pos = point_data["total_energy_kWh"].values[0]
             y_pos = point_data["f1"].values[0]
             plt.annotate(
