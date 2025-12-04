@@ -31,11 +31,6 @@ def inference_ollama(prompt, model_name):
                 "content": prompt,
             },
         ],
-        options={
-            "temperature": 0.6,
-            "top_p": 0.95,
-            "num_thread": os.cpu_count(),
-        },
         think=CONFIG.think,
     )
     if CONFIG.think:
