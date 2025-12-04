@@ -17,9 +17,9 @@ def safe_run(tag, file_suffix: None | str = ""):
 # First config
 CONFIG.think = False
 CONFIG.gold = True
-safe_run("qen3-no_think-gs")
+safe_run("gemma3-gs")
 
 # Second config
 CONFIG.think = False
 CONFIG.gold = False
-safe_run("qen3-no_think-fp")
+safe_run("gemma3-fp")
