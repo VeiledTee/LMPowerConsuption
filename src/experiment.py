@@ -547,14 +547,14 @@ def retrieve_context(sample: dict, wiki_data: tuple | None) -> tuple[str, dict]:
     context = ""
 
     if "hotpot" in CONFIG.dataset_name:
-        if not wiki_data:
-            return context, retrieval_metrics
-        docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
-        _, ret_metrics = retrieve_hotpot(
-            sample["question"], vectorizer, tfidf_matrix, titles, inv_index
-        )
-        retrieval_metrics.update(ret_metrics)
-        # Extract context from sample
+        # if not wiki_data:
+        #     return context, retrieval_metrics
+        # docs, titles, vectorizer, tfidf_matrix, inv_index = wiki_data
+        # _, ret_metrics = retrieve_hotpot(
+        #     sample["question"], vectorizer, tfidf_matrix, titles, inv_index
+        # )
+        # retrieval_metrics.update(ret_metrics)
+        # # Extract context from sample
         if "passage" in sample.keys():
             context = " ".join(
                 sent for section in sample["passage"] for sent in section

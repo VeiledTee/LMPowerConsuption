@@ -183,19 +183,21 @@ CONFIG = ExperimentConfig(
         # "qwen3:32b": {"q": False},
         # "smollm:135m": {"q+r": True},
     },
-    # dataset_name="hotpotqa/hotpot_qa",
+    dataset_name="hotpotqa/hotpot_qa",
     # dataset_name="squad_v2",
     # dataset_name="google/boolq",
     # dataset_name="xanhho/2WikiMultihopQA",
-    dataset_name="hugosousa/natural_questions_parsed",
+    # dataset_name="hugosousa/natural_questions_parsed",
+
     # dataset_file="full.jsonl",  # for full dataset (above) run
     # dataset_file="boolq_mini_dev_128.jsonl",  # for mini boolq dev
     # dataset_file="boolq_mini_128.jsonl",  # for mini boolq test
     # dataset_file="hotpot_mini_dev_128.jsonl",  # for mini hotpot dev
     # dataset_file="hotpot_mini_128.jsonl",  # for mini hotpot test
+    dataset_file="hotpot_qa_mini_1000.jsonl",  # for hotpot 1000
     # dataset_file="2WikiMultihopQA_mini_dev_1000.jsonl",  # for mini 2wiki dev
     # dataset_file="2WikiMultihopQA_mini_1000.jsonl",  # for mini 2wiki test
-    dataset_file="nq_mini_1000.jsonl",  # for mini NQ dev
+    # dataset_file="nq_mini_1000.jsonl",  # for mini NQ dev
     config="fullwiki",
     # config="unfiltered",
     # config="unfiltered.nocontext",
