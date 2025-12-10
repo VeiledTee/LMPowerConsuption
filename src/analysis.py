@@ -4,7 +4,7 @@ import re
 import smtplib
 from email.message import EmailMessage
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Optional, Union
 
 import pandas as pd
 import tiktoken
@@ -13,7 +13,7 @@ from src.config import CONFIG
 from src.utils import convert_seconds
 
 # Mapping from internal model keys to display names
-MODEL_DISPLAY_NAMES: Dict[str, str] = {
+MODEL_DISPLAY_NAMES: dict[str, str] = {
     "distilgpt2_q": "DistilGPT2 (Base)",
     "distilgpt2_q+r": "DistilGPT2 (RAG)",
     "gpt2-xl_q": "GPT2-XL (Base)",
@@ -38,6 +38,8 @@ MODEL_DISPLAY_NAMES: Dict[str, str] = {
     "gemma3-4b_q+r": "Gemma3 4B (RAG)",
     "gemma3-12b_q": "Gemma3 12B (Base)",
     "gemma3-12b_q+r": "Gemma3 12B (RAG)",
+    "gemma3-27b_q": "Gemma3 27B (Base)",
+    "gemma3-27b_q+r": "Gemma3 27B (RAG)",
     "qwen3-0.6b_q": "Qwen3 0.6B (Base)",
     "qwen3-0.6b_q+r": "Qwen3 0.6B (RAG)",
     "qwen3-1.7b_q": "Qwen3 1.7B (Base)",
@@ -52,7 +54,7 @@ MODEL_DISPLAY_NAMES: Dict[str, str] = {
     "qwen3-32b_q+r": "Qwen3 32B (RAG)",
 }
 
-RESULT_COLS: Dict[str, Tuple[str, str]] = {
+RESULT_COLS: dict[str, tuple[str, str]] = {
     "energy": ("inference_energy_consumed (kWh)", "retrieval_energy_consumed (kWh)"),
     "emissions": ("inference_emissions (kg)", "retrieval_emissions (kg)"),
     "time": ("inference_duration (s)", "retrieval_duration (s)"),
@@ -200,7 +202,7 @@ def summarise(
     path: Path,
     context_used: bool,
     dataset_version: Union[str, int],
-) -> Dict[str, Union[str, float, int]]:
+) -> dict[str, Union[str, float, int]]:
     """Summarizes the results from a model evaluation CSV file.
 
     Args:
@@ -353,12 +355,12 @@ def send_email_with_attachment(
 
 
 def filter_files_by_dataset_version(
-    files: List[Path], dataset_version: str
-) -> List[Path]:
+    files: list[Path], dataset_version: str
+) -> list[Path]:
     """Filters files based on dataset version criteria.
 
     Args:
-        files: List of file paths to filter
+        files: list of file paths to filter
         dataset_version: Version of dataset to filter for
 
     Returns:
@@ -393,11 +395,11 @@ def generate_output_filename(model_filter: Optional[str]) -> str:
     return "summary"
 
 
-def determine_dataset_version(filename_parts: List[str]) -> str:
+def determine_dataset_version(filename_parts: list[str]) -> str:
     """Determines the dataset version from filename parts.
 
     Args:
-        filename_parts: List of parts from splitting the filename
+        filename_parts: list of parts from splitting the filename
 
     Returns:
         The dataset version string
@@ -554,4 +556,4 @@ def run_variance_check(input_file: str) -> None:
 
 
 if __name__ == "__main__":
-    run_summary(model_filter="_qwen3")
+    run_summary(model_filter="nq_d")
