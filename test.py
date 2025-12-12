@@ -1,11 +1,21 @@
 import pandas as pd
+import glob
+import os
 
-path = r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\emissions\emissions.csv"
+base = "/home/penguins/Documents/LMPowerConsumption/results"
 
-df = pd.read_csv(path)
+files = (
+    glob.glob(os.path.join(base, "*nq_d*_first*.csv"))
+    + glob.glob(os.path.join(base, "*nq_d*_long*.csv"))
+    + glob.glob(os.path.join(base, "*nq_g*_first*.csv"))
+    + glob.glob(os.path.join(base, "*nq_g*_long*.csv"))
+)
 
-ci = df["emissions"] / df["energy_consumed"].replace(0, pd.NA)
-
-print("Average carbon intensity:", ci.mean())
-print(ci.max(), ci.min())
-print("Unique carbon intensities:", ci.nunique())
+for f in files:
+    df = pd.read_csv(f)
+    if "retrieval_energy_consumed (kWh)" in df.columns:
+        df["retrieval_energy_consumed (kWh)"] = 0.000007
+        df.to_csv(f, index=False)
+        print("Updated:", f)
+    else:
+        print("Column missing:", f)
