@@ -42,24 +42,25 @@ CONFIG.modes = {
     "qwen3:14b": {"q": False, "q+r": True},
     "qwen3:32b": {"q": False},
  }
-# 1st config
-CONFIG.think = False
-CONFIG.gold = True
-try:
-    safe_run("qwen3-hotpot-nothink")
-    send_email(
-        from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
-        to_addr=CONFIG.to_email,
-        subject="Completed qwen3-hotpot no think with no issues.",
-        body="No errors",
-    )
-except Exception as error:
-    send_email(
-        from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
-        to_addr=CONFIG.to_email,
-        subject="Script Error",
-        body=f"The qwen3-hotpot-nothink script crashed with:\n\n{error}",
-    )
+
+# # 1st config
+# CONFIG.think = False
+# CONFIG.gold = True
+# try:
+#     safe_run("qwen3-hotpot-nothink")
+#     send_email(
+#         from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+#         to_addr=CONFIG.to_email,
+#         subject="Completed qwen3-hotpot no think with no issues.",
+#         body="No errors",
+#     )
+# except Exception as error:
+#     send_email(
+#         from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+#         to_addr=CONFIG.to_email,
+#         subject="Script Error",
+#         body=f"The qwen3-hotpot-nothink script crashed with:\n\n{error}",
+#     )
 
 # 2nd config
 CONFIG.think = True
