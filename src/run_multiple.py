@@ -81,26 +81,35 @@ except Exception as error:
         body=f"The qwen3-hotpot-think script crashed with:\n\n{error}",
     )
 
-# CONFIG.model_types = {
-#     "deepseek-r1:1.5b": "ollama",
-#     "deepseek-r1:7b": "ollama",
-#     "deepseek-r1:14b": "ollama",
-#     "deepseek-r1:32b": "ollama"
-# }
-# CONFIG.modes = {
-#     "deepseek-r1:1.5b": {"q": False, "q+r": True},
-#     "deepseek-r1:7b": {"q": False, "q+r": True},
-#     "deepseek-r1:14b": {"q": False, "q+r": True},
-#     "deepseek-r1:32b": {"q": False}
-#  }
-#
-# # First config
-# CONFIG.think = True
-# CONFIG.gold = True
-# safe_run("deepseek-hotpot")
-# send_email(
-#     from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
-#     to_addr=CONFIG.to_email,
-#     subject="Completed deepseek-hotpot with no issues.",
-#     body="No errors",
-# )
+CONFIG.model_types = {
+    "deepseek-r1:1.5b": "ollama",
+    "deepseek-r1:7b": "ollama",
+    "deepseek-r1:14b": "ollama",
+    "deepseek-r1:32b": "ollama"
+}
+CONFIG.modes = {
+    "deepseek-r1:1.5b": {"q": False, "q+r": True},
+    "deepseek-r1:7b": {"q": False, "q+r": True},
+    "deepseek-r1:14b": {"q": False, "q+r": True},
+    "deepseek-r1:32b": {"q": False}
+}
+
+# First config
+CONFIG.think = True
+CONFIG.gold = True
+
+try:
+    safe_run("deepseek-hotpot")
+    send_email(
+        from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+        to_addr=CONFIG.to_email,
+        subject="Completed deepseek-hotpot with no issues.",
+        body="No errors",
+    )
+except Exception as error:
+    send_email(
+        from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+        to_addr=CONFIG.to_email,
+        subject="Script Error",
+        body=f"The deepseek-hotpot script crashed with:\n\n{error}",
+    )
