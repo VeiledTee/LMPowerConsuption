@@ -3643,3 +3643,52 @@ Running modes: {'q': False}
 ============================================================
 Experiment completed in 13h 35m 32s
 ============================================================
+2025-12-17 10:37:03,262 - __main__ - INFO - Starting run: gemma3-NQ - 
+2025-12-17 10:37:03,262 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:1b': 'ollama', 'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'gemma3:4b': {'q': False}}, think=False, gold=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-12-17 10:37:03,262 - energy_eval - INFO - Using device: cuda
+2025-12-17 10:37:03,262 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-12-17 10:37:07,557 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-12-17 10:37:07,557 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:1b
+============================================================
+2025-12-17 10:37:07,557 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-17 10:37:07,633 - energy_eval - INFO - Completed gemma3:1b in 0h 0m 0s
+2025-12-17 10:37:07,633 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-12-17 10:37:07,633 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q': False}
+++++++++++++++++++++++++++++++
+2025-12-17 10:37:07,647 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_gemma3-4b_q_1000.csv
+2025-12-17 10:37:07,968 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-12-17 11:14:13,219 - energy_eval - INFO - Completed q for gemma3:4b in 0h 37m 5s
+2025-12-17 11:14:13,339 - energy_eval - INFO - Completed gemma3:4b in 0h 37m 5s
+2025-12-17 11:14:13,339 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-12-17 11:14:13,339 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-17 11:14:13,395 - energy_eval - INFO - Completed gemma3:12b in 0h 0m 0s
+2025-12-17 11:14:13,395 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:27b
+============================================================
+2025-12-17 11:14:13,395 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-17 11:14:13,459 - energy_eval - INFO - Completed gemma3:27b in 0h 0m 0s
+2025-12-17 11:14:13,459 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 37m 10s
+============================================================
