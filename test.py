@@ -1,50 +1,48 @@
+import os
+import pandas as pd
 import json
-from datasets import load_dataset
-from tqdm import tqdm
 
-jsonl_path = (
-    "/home/penguins/Documents/LMPowerConsumption/data/hotpot_qa_mini_1000.jsonl"
-)
-out_jsonl = (
+# Define paths
+results_dir = "/home/penguins/Documents/LMPowerConsumption/results"
+jsonl_file_path = (
     "/home/penguins/Documents/LMPowerConsumption/data/hotpot_qa_mini_1000_indexed.jsonl"
 )
 
-# --- load jsonl subset into list and map qid -> object ---
-subset = []
-id_map = {}
-with open(jsonl_path, "r") as f:
-    for line in f:
-        ex = json.loads(line)
-        qid = ex.get("_id") or ex.get("id")
-        if qid is None:
-            continue
-        # initialize field so it's present even if not matched
-        ex["qid"] = None
-        subset.append(ex)
-        id_map[qid] = ex
 
-print(f"Loaded {len(subset)} jsonl entries; mapping contains {len(id_map)} ids")
+def update_csv_ids():
+    # 1. Load the real IDs from the JSONL file into a list
+    # The index in this list will correspond to the integer ID in your CSV
+    print("Loading original IDs from JSONL...")
+    jsonl_ids = []
+    with open(jsonl_file_path, "r") as f:
+        for line in f:
+            data = json.loads(line)
+            jsonl_ids.append(data["id"])
 
-# --- load HotpotQA fullwiki validation ---
-hotpot = load_dataset("hotpot_qa", "fullwiki", split="validation")
-print(f"HotpotQA validation size: {len(hotpot)}")
+    # 2. Iterate through the results directory
+    for filename in os.listdir(results_dir):
+        if filename.startswith("hotpot") and filename.endswith(".csv"):
+            file_path = os.path.join(results_dir, filename)
+            print(f"Processing {filename}...")
 
-# --- iterate and annotate matching jsonl entries ---
-matched_indices = []
-for idx, example in tqdm(enumerate(hotpot), total=len(hotpot), desc="Matching qids"):
-    qid = example.get("_id") or example.get("id")
-    if qid is None:
-        continue
-    if qid in id_map:
-        id_map[qid]["qid"] = idx  # add the index to the jsonl object
-        matched_indices.append(idx)
+            # Load the CSV
+            df = pd.read_csv(file_path)
 
-print(f"Matched {len(matched_indices)} instances")
-print(matched_indices)
+            # 3. Replace the 'id' column
+            # We use the integer value in the 'id' column as an index for our jsonl_ids list
+            try:
+                df["qid"] = df["qid"].apply(lambda x: jsonl_ids[int(x)])
 
-# --- save updated jsonl (preserves original order of subset) ---
-with open(out_jsonl, "w") as f:
-    for ex in subset:
-        f.write(json.dumps(ex, ensure_ascii=False) + "\n")
+                # Save the updated CSV (overwriting the old one)
+                df.to_csv(file_path, index=False)
+                print(f"Successfully updated {filename}")
+            except IndexError:
+                print(
+                    f"Error: An ID in {filename} exceeded the number of rows in the JSONL."
+                )
+            except Exception as e:
+                print(f"An error occurred with {filename}: {e}")
 
-print(f"Saved annotated jsonl -> {out_jsonl}")
+
+if __name__ == "__main__":
+    update_csv_ids()
