@@ -466,6 +466,8 @@ def run_summary(
 
     for csv_path in files:
         name = csv_path.stem
+        if name.startswith("hotpot_qa"):
+            name = name.replace("hotpot_qa", "hotpotqa")
         parts = name.split("_")
         model_key = parts[1]
         context_used = "q+r" in name
@@ -556,4 +558,4 @@ def run_variance_check(input_file: str) -> None:
 
 
 if __name__ == "__main__":
-    run_summary(model_filter="nq_d")
+    run_summary(model_filter="deepseek")
