@@ -500,7 +500,7 @@ def run_summary(
 
     # Sort by family, then size, then context
     df_summary = df_summary.sort_values(
-        by=["model_family", "model_size_b", "context_used"]
+        by=["dataset", "model_family", "model_size_b", "context_used"]
     )
     # Drop the temporary columns used for sorting
     df_summary = df_summary.drop(columns=["model_family", "model_size_b"])
@@ -558,4 +558,4 @@ def run_variance_check(input_file: str) -> None:
 
 
 if __name__ == "__main__":
-    run_summary(model_filter="deepseek")
+    run_summary(model_filter="qwen3")
