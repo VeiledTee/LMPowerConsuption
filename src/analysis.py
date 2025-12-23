@@ -559,3 +559,5 @@ def run_variance_check(input_file: str) -> None:
 
 if __name__ == "__main__":
     run_summary(model_filter="qwen3")
+    run_summary(model_filter="gemma3")
+    run_summary(model_filter="deepseek")
