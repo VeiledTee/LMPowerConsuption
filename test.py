@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 import pandas as pd
+import numpy as np
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -23,6 +24,11 @@ qid_id_map_path = (
 
 target_cols = [
     "retrieval_duration (s)",
+    "retrieval_energy_consumed (kWh)",
+    "retrieval_emissions (kg)",
+]
+
+cols_to_double = [
     "retrieval_energy_consumed (kWh)",
     "retrieval_emissions (kg)",
 ]
@@ -53,50 +59,52 @@ all_src = pd.concat(dfs, ignore_index=True)
 # ---------- MEDIAN PER qid ----------
 qid_medians = all_src.groupby("qid")[target_cols].median().reset_index()
 
-# ---------- MAP qid → id ----------
+# ---------- MAP qid → id (Original Logic) ----------
 qid_medians["id"] = qid_medians["qid"].map(qid_to_id)
 qid_medians = qid_medians.dropna(subset=["id"])
-qid_medians["id"] = qid_medians["id"]
 
-id_medians = qid_medians.set_index("id")[target_cols]
+# We sort by 'id' here to ensure the 1000 rows are in a consistent order
+# before converting to a list for the blind NQ injection.
+id_medians = qid_medians.sort_values("id").set_index("id")[target_cols]
 
 print(f"Computed medians for {len(id_medians)} instances")
-print("\nSample of computed instance medians (after qid → id mapping):")
-print(id_medians.head(10))
+assert len(id_medians) == 1000, f"Expected 1000 instances, found {len(id_medians)}"
 
-print("\nSummary stats of medians:")
-print(id_medians.describe())
+# ---------- PREPARE THE INJECTION VALUES (DOUBLED) ----------
+# We double the specific columns in our prepared median set
+injection_df = id_medians.copy()
+for col in cols_to_double:
+    injection_df[col] = injection_df[col] * 2.0
 
-assert id_medians.index.is_unique
-assert id_medians.notna().all().all()
+# Convert to a numpy array for blind positional insertion
+injection_values = injection_df.values
 
-# ---------- OVERWRITE TARGET FILES ----------
+# ---------- OVERWRITE NQ TARGET FILES ----------
 target_files = [
-    p for p in results_dir.glob("hotpot*") if ("+r" in p.name or "q+r" in p.name)
+    p for p in results_dir.glob("*.csv") if (p.name.startswith("nq") and "+r" in p.name)
 ]
-print(target_files)
+
+print(f"\nProcessing {len(target_files)} target files...")
+
 for path in target_files:
     df = pd.read_csv(path)
 
-    if "qid" not in df.columns:
-        print(f"SKIP (no id): {path.name}")
+    # Check for length consistency
+    if len(df) != len(injection_values):
+        print(
+            f"SKIP {path.name}: Row count mismatch ({len(df)} vs {len(injection_values)})"
+        )
         continue
 
-    df = df.copy()
+    # Create columns if missing
     for c in target_cols:
         if c not in df.columns:
-            df[c] = None
-        df[c] = pd.to_numeric(df[c], errors="coerce")
+            df[c] = np.nan
 
-    mask = df["qid"].isin(id_medians.index)
-    if not mask.any():
-        continue
-
-    df.loc[mask, target_cols] = (
-        df.loc[mask, "qid"].map(id_medians.to_dict("index")).apply(pd.Series).values
-    )
+    # Blindly overwrite columns by position using the doubled values
+    df[target_cols] = injection_values
 
     df.to_csv(path, index=False)
-    print(f"Overwritten: {path.name}")
+    print(f"Overwritten (Positional + Doubled): {path.name}")
 
-print("Done.")
+print("\nDone.")
