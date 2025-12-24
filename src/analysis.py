@@ -9,8 +9,8 @@ from typing import Optional, Union
 import pandas as pd
 import tiktoken
 
-from src.config import CONFIG
-from src.utils import convert_seconds
+from config import CONFIG
+from utils import convert_seconds
 
 # Mapping from internal model keys to display names
 MODEL_DISPLAY_NAMES: dict[str, str] = {

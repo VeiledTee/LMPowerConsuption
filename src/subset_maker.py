@@ -5,7 +5,7 @@ import pandas as pd
 
 from datasets import Dataset, load_dataset
 
-from src.config import CONFIG
+from config import CONFIG
 
 # Use N_SAMPLES from CONFIG, defaulting to 128
 N_SAMPLES = CONFIG.dataset_size or 128

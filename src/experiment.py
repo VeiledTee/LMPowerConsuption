@@ -25,18 +25,18 @@ from codecarbon import EmissionsTracker
 from datasets import Dataset, load_dataset
 from tqdm import tqdm
 
-from src.config import CONFIG
-from src.inference import inference, load_model_and_tokenizer
-from src.prompts import build_prompt
-from src.retrieval import (
+from config import CONFIG
+from inference import inference, load_model_and_tokenizer
+from prompts import build_prompt
+from retrieval import (
     load_HotpotQA_wiki,
     load_2WikiMultiHopQA_wiki,
     retrieve_2wikimultihop,
     retrieve_hotpot,
     retrieve_top_k,
 )
-from src.squad_scorers import compute_exact, compute_f1
-from src.utils import (
+from squad_scorers import compute_exact, compute_f1
+from utils import (
     convert_seconds,
     count_bools,
     ensure_config_dirs,

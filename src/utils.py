@@ -7,7 +7,7 @@ from typing import Dict, Tuple
 
 from bs4 import BeautifulSoup
 
-from src.config import CONFIG
+from config import CONFIG
 
 
 def normalize(text: str) -> str:

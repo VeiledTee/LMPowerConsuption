@@ -14,8 +14,8 @@ from sklearn.feature_extraction.text import (
     TfidfVectorizer,
 )
 
-from src.config import CONFIG
-from src.utils import normalize, strip_links
+from config import CONFIG
+from utils import normalize, strip_links
 
 logger = logging.getLogger("codecarbon")
 logger.setLevel(logging.ERROR)

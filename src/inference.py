@@ -11,7 +11,7 @@ from transformers import (
     PreTrainedTokenizer,
 )
 
-from src.config import CONFIG
+from config import CONFIG
 
 logger = logging.getLogger("codecarbon")
 logger.setLevel(logging.ERROR)

@@ -1,4 +1,4 @@
-from src.utils import normalize
+from utils import normalize
 
 
 def exact_match(pred: str, gold: str) -> int:

@@ -1,8 +1,8 @@
 import logging
 import os
 
-from src.config import CONFIG
-from src.experiment import run, send_email
+from config import CONFIG
+from experiment import run, send_email
 
 logger = logging.getLogger(__name__)
 
@@ -16,10 +16,10 @@ def safe_run(tag, file_suffix: None | str = ""):
 
 
 # First config
-CONFIG.think = False
+CONFIG.think = True
 CONFIG.gold = True
 try:
-    safe_run("gemma3-NQ")
+    safe_run("deepseek-8B-GOLD-NQ")
     send_email(
         from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
         to_addr=CONFIG.to_email,
@@ -31,5 +31,22 @@ except Exception as error:
         from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
         to_addr=CONFIG.to_email,
         subject="Script Error",
-        body=f"The gemma3-NQ script crashed with:\n\n{error}",
+        body=f"The deepseek-8B-GOLD-NQ script crashed with:\n\n{error}",
+    )
+
+CONFIG.gold = False
+try:
+    safe_run("deepseek-8B-FP-NQ")
+    send_email(
+        from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+        to_addr=CONFIG.to_email,
+        subject="Completed gemma3-NQ with no issues.",
+        body="No errors",
+    )
+except Exception as error:
+    send_email(
+        from_addr=os.getenv("EMAIL_FROM", CONFIG.from_email),
+        to_addr=CONFIG.to_email,
+        subject="Script Error",
+        body=f"The deepseek-8B-FP-NQ script crashed with:\n\n{error}",
     )
