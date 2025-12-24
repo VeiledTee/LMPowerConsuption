@@ -3692,3 +3692,139 @@ Running modes: {}
 ============================================================
 Experiment completed in 0h 37m 10s
 ============================================================
+2025-12-23 11:22:59,124 - __main__ - INFO - Starting run: deepseek-8B-GOLD-NQ - 
+2025-12-23 11:22:59,125 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:1b': 'ollama', 'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q+r': True}}, think=True, gold=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-12-23 11:22:59,125 - energy_eval - INFO - Using device: cuda
+2025-12-23 11:22:59,125 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-12-23 11:23:03,337 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-12-23 11:23:03,338 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:1b
+============================================================
+2025-12-23 11:23:03,338 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:03,422 - energy_eval - INFO - Completed gemma3:1b in 0h 0m 0s
+2025-12-23 11:23:03,422 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-12-23 11:23:03,422 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:03,480 - energy_eval - INFO - Completed gemma3:4b in 0h 0m 0s
+2025-12-23 11:23:03,480 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-12-23 11:23:03,481 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:03,541 - energy_eval - INFO - Completed gemma3:12b in 0h 0m 0s
+2025-12-23 11:23:03,541 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:27b
+============================================================
+2025-12-23 11:23:03,541 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:03,605 - energy_eval - INFO - Completed gemma3:27b in 0h 0m 0s
+2025-12-23 11:23:03,605 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 0m 4s
+============================================================
+2025-12-23 11:23:05,283 - __main__ - INFO - Starting run: deepseek-8B-FP-NQ - 
+2025-12-23 11:23:05,284 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'gemma3:1b': 'ollama', 'gemma3:4b': 'ollama', 'gemma3:12b': 'ollama', 'gemma3:27b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q+r': True}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-12-23 11:23:05,284 - energy_eval - INFO - Using device: cuda
+2025-12-23 11:23:05,284 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-12-23 11:23:07,217 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-12-23 11:23:07,218 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:1b
+============================================================
+2025-12-23 11:23:07,218 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:07,293 - energy_eval - INFO - Completed gemma3:1b in 0h 0m 0s
+2025-12-23 11:23:07,294 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:4b
+============================================================
+2025-12-23 11:23:07,294 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:07,361 - energy_eval - INFO - Completed gemma3:4b in 0h 0m 0s
+2025-12-23 11:23:07,361 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:12b
+============================================================
+2025-12-23 11:23:07,361 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:07,424 - energy_eval - INFO - Completed gemma3:12b in 0h 0m 0s
+2025-12-23 11:23:07,424 - energy_eval - INFO - 
+============================================================
+Running model: gemma3:27b
+============================================================
+2025-12-23 11:23:07,424 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:07,489 - energy_eval - INFO - Completed gemma3:27b in 0h 0m 0s
+2025-12-23 11:23:07,489 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 0m 2s
+============================================================
+2025-12-23 11:23:38,421 - __main__ - INFO - Starting run: deepseek-8B-GOLD-NQ - 
+2025-12-23 11:23:38,422 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q+r': True}}, think=True, gold=True, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-12-23 11:23:38,422 - energy_eval - INFO - Using device: cuda
+2025-12-23 11:23:38,422 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-12-23 11:23:40,599 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-12-23 11:23:40,599 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-12-23 11:23:40,599 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q+r': True}
+++++++++++++++++++++++++++++++
+2025-12-23 11:23:40,601 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_deepseek-r1-8b_q+r_1000_think_long.csv
+2025-12-23 11:23:41,057 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-12-23 12:09:15,912 - energy_eval - INFO - Completed q+r for deepseek-r1:8b in 0h 45m 35s
+2025-12-23 12:09:16,035 - energy_eval - INFO - Completed deepseek-r1:8b in 0h 45m 35s
+2025-12-23 12:09:16,035 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 45m 37s
+============================================================
+2025-12-23 12:09:17,448 - __main__ - INFO - Starting run: deepseek-8B-FP-NQ - 
+2025-12-23 12:09:17,449 - energy_eval - INFO - Starting experiment with config:
+ExperimentConfig(model_types={'deepseek-r1:8b': 'ollama'}, dataset_name='hugosousa/natural_questions_parsed', dataset_file='nq_mini_1000.jsonl', config='fullwiki', split='validation', n_samples=None, max_new_tokens=64, batch_size=4, device='cuda', modes={'deepseek-r1:8b': {'q+r': True}}, think=True, gold=False, wiki_dir=WindowsPath('../enwiki-20200101'), corpus_cache=WindowsPath('cache/wiki_2wiki.pkl'), tfidf_cache=WindowsPath('cache/tfidf_2wiki.pkl'), index_cache=WindowsPath('cache/index_2wiki.pkl'), intro_min_chars=51, hash_bits=20, token_pattern='(?u)\\b\\w+\\b', energy_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results/energy'), result_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/results'), data_dir=WindowsPath('C:/Users/Ethan/Documents/PhD/LMPowerConsuption/data'), retrieval_only=False, email_results=True, from_email='eheavey626@gmail.com', to_email='s72kw@unb.ca', smtp_password='qjzk qmri wtrl fqyw', seed=42, dataset_size=1000, log_level='INFO', prompt_templates={'hotpot_qa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'boolq': {'with_context': "Using the provided context, answer the question ONLY with 'True' or 'False'. Be thorough in your analysis of the context but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer ONLY with 'True' or 'False'. Be thorough in your analysis but answer with just one word. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:"}, 'squad': {'with_context': "Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nContext: {context}\nQuestion: {question}\nAnswer:", 'without_context': "Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles. If you do not know the answer output 'Unknown'.\nQuestion: {question}\nAnswer:"}, '2wikimultihopqa': {'with_context': 'Using the provided context, answer the question with as few words as possible. Be thorough in your analysis of the context but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nContext: {context}\nQuestion: {question}\nAnswer:', 'without_context': 'Answer with as few words as possible. Be thorough in your analysis but answer in as few words as possible. Do not overcomplicate your thinking. Do not go in circles.\nQuestion: {question}\nAnswer:'}, 'natural_questions_parsed': {'with_context': 'Using the provided context, answer the question. Provide concise, direct answers without excessive reasoning or repetition. Context: {context}\nQuestion: {question}\nAnswer: ', 'without_context': 'Answer the question. Provide concise, direct answers without excessive reasoning or repetition. Question: {question}\nAnswer: '}})
+2025-12-23 12:09:17,449 - energy_eval - INFO - Using device: cuda
+2025-12-23 12:09:17,449 - energy_eval - INFO - Loading dataset from C:\Users\Ethan\Documents\PhD\LMPowerConsuption\data\nq_mini_1000.jsonl
+2025-12-23 12:09:21,601 - energy_eval - INFO - Loaded dataset with 1000 samples
+2025-12-23 12:09:21,601 - energy_eval - INFO - 
+============================================================
+Running model: deepseek-r1:8b
+============================================================
+2025-12-23 12:09:21,601 - energy_eval - INFO - 
+++++++++++++++++++++++++++++++
+Running modes: {'q+r': True}
+++++++++++++++++++++++++++++++
+2025-12-23 12:09:21,601 - energy_eval - INFO - Saving results to: C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\nq_deepseek-r1-8b_q+r_1000_think_first.csv
+2025-12-23 12:09:21,926 - energy_eval - INFO - Built 1000 prompts in 0h 0m 0s (+ retrieval: 0h 0m 0s, 0.0000 kWh, 0.0000 kg)
+2025-12-23 12:39:10,488 - energy_eval - INFO - Completed q+r for deepseek-r1:8b in 0h 29m 48s
+2025-12-23 12:39:10,610 - energy_eval - INFO - Completed deepseek-r1:8b in 0h 29m 49s
+2025-12-23 12:39:10,611 - energy_eval - INFO - 
+============================================================
+Experiment completed in 0h 29m 53s
+============================================================
