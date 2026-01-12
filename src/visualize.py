@@ -1,11 +1,11 @@
-from pathlib import Path
-
 import seaborn as sns
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
 import re
 from matplotlib.colors import LogNorm
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+from pathlib import Path
 
 
 def parse_model_size(model_name):
@@ -91,6 +91,125 @@ def get_pareto_frontier_detailed(df, x_col, y_col):
     # Sort by x-axis for clean plotting
     pareto_points = sorted(pareto_points, key=lambda x: x[0])
     return np.array(pareto_points)
+
+
+def generate_final_pareto_plots():
+    # 1. Define Paths (Assuming script is in project/src/)
+    # We look one level up into results/
+    results_dir = Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results")
+
+    # 2. Load and Combine Data
+    try:
+        csv_files = ['deepseek_summary.csv', 'gemma3_summary.csv', 'qwen3_summary.csv']
+        dfs = [pd.read_csv(results_dir / f) for f in csv_files if (results_dir / f).exists()]
+        if not dfs:
+            raise FileNotFoundError("No CSV files found in the results directory.")
+        df = pd.concat(dfs, ignore_index=True)
+    except Exception as e:
+        print(f"Error: {e}")
+        return
+
+    # 3. Preprocessing
+    df['g_CO2'] = df['emissions_kg_per_question'] * 1000
+    df['short_model'] = df['model'].apply(lambda x: x.split('(')[0].strip())
+
+    # 4. Marker Assignment Logic
+    def assign_marker(row):
+        if row['dataset'] == 'HotpotQA':
+            # Hotpot: Base (False) vs Gold Standard (True)
+            return 'o' if not row['context_used'] else 's'
+        else:
+            # NQ: Map based on dataset_version
+            mapping = {
+                'Question Only': 'o',
+                'GS Paragraph': 's',
+                'First Paragraph': '^'
+            }
+            return mapping.get(row['dataset_version'], 'o')
+
+    df['marker'] = df.apply(assign_marker, axis=1)
+
+    # 5. Pareto Frontier Logic
+    def get_pareto_frontier(ds_df, x_col, y_col):
+        """Finds non-dominated points (Maximize X, Minimize Y)"""
+        points = ds_df[[x_col, y_col]].values
+        pareto_mask = np.ones(len(points), dtype=bool)
+        for i, point in enumerate(points):
+            for j, other_point in enumerate(points):
+                if i == j: continue
+                if (other_point[0] >= point[0] and other_point[1] <= point[1]):
+                    if (other_point[0] > point[0] or other_point[1] < point[1]):
+                        pareto_mask[i] = False
+                        break
+        return ds_df[pareto_mask].sort_values(by=x_col)
+
+    # 6. Plotting
+    model_colors = {'DeepSeek': '#1f77b4', 'Gemma3': '#2ca02c', 'Qwen3': '#ff7f0e'}
+
+    for dataset in ['HotpotQA', 'NQ']:
+        ds_df = df[df['dataset'] == dataset]
+        if ds_df.empty: continue
+
+        pareto_df = get_pareto_frontier(ds_df, 'f1', 'g_CO2')
+
+        plt.figure(figsize=(12, 5))
+
+        # Plot background (All points with their specific shapes/colors)
+        for fam, color in model_colors.items():
+            fam_df = ds_df[ds_df['model'].str.contains(fam, case=False)]
+            for marker in fam_df['marker'].unique():
+                sub = fam_df[fam_df['marker'] == marker]
+                plt.scatter(sub['f1'], sub['g_CO2'], color=color, marker=marker,
+                            s=60, alpha=0.5, edgecolors='none')
+
+        # Draw the Frontier Line
+        plt.step(pareto_df['f1'], pareto_df['g_CO2'], where='post',
+                 color='red', lw=2.5, label='Pareto Frontier', zorder=4)
+
+        # Draw Frontier points using their correct context-shapes
+        for i, (idx, row) in enumerate(pareto_df.iterrows()):
+            plt.scatter(row['f1'], row['g_CO2'], color='red', marker=row['marker'],
+                        s=180, edgecolor='black', zorder=5)
+
+            # Spaced labels with arrows
+            y_off = 45 if i % 2 == 0 else -55
+            plt.annotate(
+                row['short_model'], (row['f1'], row['g_CO2']),
+                xytext=(35, y_off), textcoords='offset points',
+                fontsize=11, fontweight='bold', ha='center', va='center',
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.9, ec='red', lw=1),
+                arrowprops=dict(arrowstyle='->', color='black', alpha=0.6,
+                                connectionstyle="arc3,rad=0.1"),
+                zorder=6
+            )
+
+        plt.title(f'Pareto Frontier: Performance vs Carbon Emissions ({dataset})',
+                  fontsize=18, fontweight='bold', pad=25)
+        plt.xlabel('F1 Score', fontsize=14)
+        plt.ylabel('g of CO$_2$ per question', fontsize=14)
+
+        # Consistent Legend
+        legend_elements = [Line2D([0], [0], color='red', lw=2.5, label='Pareto Frontier')]
+        for k, v in model_colors.items():
+            legend_elements.append(Line2D([0], [0], marker='o', color='w', label=k,
+                                          markerfacecolor=v, markersize=10))
+        legend_elements.append(Line2D([0], [0], color='w', label=''))
+        legend_elements.append(Line2D([0], [0], marker='o', color='w', label='Base (No Context)',
+                                      markerfacecolor='gray', markersize=10, markeredgecolor='black'))
+        legend_elements.append(Line2D([0], [0], marker='s', color='w', label='GS Paragraph',
+                                      markerfacecolor='gray', markersize=10, markeredgecolor='black'))
+        if dataset == 'NQ':
+            legend_elements.append(Line2D([0], [0], marker='^', color='w', label='First Paragraph',
+                                          markerfacecolor='gray', markersize=10, markeredgecolor='black'))
+
+        plt.legend(handles=legend_elements, loc='upper left', frameon=True, shadow=True)
+        plt.grid(True, linestyle='--', alpha=0.4)
+        plt.tight_layout()
+
+        save_path = results_dir / f'pareto_all_families_{dataset.lower()}.svg'
+        plt.savefig(save_path, bbox_inches='tight')
+        plt.close()
+        print(f"Plot saved to: {save_path}")
 
 
 def create_config_label(row):
@@ -197,6 +316,7 @@ def generate_scatter_plots(csv_path):
 
     # Use bbox_inches='tight' to ensure the title isn't cut off!
     plt.savefig(save_path, bbox_inches='tight')
+    plt.close()
     print(f"Plot saved to: {save_path}")
 
 def main(csv_path: str):
@@ -246,6 +366,7 @@ def main(csv_path: str):
     df["config_label"] = df.apply(create_config_label, axis=1)
 
     generate_scatter_plots(fr"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\{csv_path}")
+    generate_final_pareto_plots()
 
     # Set general style
     sns.set_theme(style="whitegrid")
@@ -625,4 +746,4 @@ def main(csv_path: str):
 
 
 if __name__ == "__main__":
-    main("deepseek_summary.csv")
+    main("gemma3_summary.csv")
