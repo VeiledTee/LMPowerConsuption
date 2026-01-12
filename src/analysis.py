@@ -233,6 +233,7 @@ def summarise(
 
     # Calculate total energy
     total_energy_kWh = df["combined_energy"].sum()
+    total_energy_kg = df["combined_emissions"].sum()
 
     # Calculate total and average prediction tokens
     total_pred_tokens = df["original_pred"].astype(str).apply(count_tokens).sum()
@@ -263,6 +264,7 @@ def summarise(
         "energy_kWh_per_question": df["combined_energy"].mean(),
         "inference_energy_kWh": df["inference_energy_consumed (kWh)"].mean(),
         "retrieval_energy_kWh": df["retrieval_energy_consumed (kWh)"].mean(),
+        "total_energy_kg": total_energy_kg,
         "emissions_kg_per_question": df["combined_emissions"].mean(),
         "inference_emissions_kg_per_question": df["inference_emissions (kg)"].mean(),
         "retrieval_emissions_kg_per_question": df["retrieval_emissions (kg)"].mean(),
@@ -511,7 +513,7 @@ def run_summary(
     # Save files
     out_csv = results_dir / f"{out_filename}.csv"
     out_md = results_dir / f"{out_filename}.md"
-    df_summary.to_csv(out_csv, index=False, float_format="%.6f")
+    df_summary.to_csv(out_csv, index=False, float_format="%.15f")
 
     # Save markdown version
     with open(out_md, "w") as f:
