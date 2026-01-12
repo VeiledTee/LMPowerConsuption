@@ -1,8 +1,11 @@
-import pandas as pd
-import matplotlib.pyplot as plt
+from pathlib import Path
+
 import seaborn as sns
-import re
+import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
+import re
+from matplotlib.colors import LogNorm
 
 
 def parse_model_size(model_name):
@@ -107,12 +110,100 @@ def create_config_label(row):
     return f"{size}-{context}-{think_mode}"
 
 
-def main():
+def generate_scatter_plots(csv_path):
+    """
+    Generates scatter plots for HotpotQA and NQ with synced y-axes
+    and a logarithmic color scale for distinct model sizes.
+    """
+    # 1. Load and Clean Data
+    df = pd.read_csv(csv_path)
+    df['g_CO2'] = df['emissions_kg_per_question'] * 1000
+
+    def extract_size(model_name):
+        match = re.search(r"(\d+(\.\d+)?)B", model_name)
+        return float(match.group(1)) if match else 0
+
+    df['model_size'] = df['model'].apply(extract_size)
+    df = df.sort_values('model_size')
+
+    # Determine global y-axis limit
+    y_max = df['g_CO2'].max() * 1.1  # Add 10% headroom
+
+    # 2. Setup Plot (sharey=True ensures axes are synced)
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True, layout='constrained')
+    fig.suptitle('Qwen3 Model Performance vs Carbon Emissions', fontsize=16, fontweight='bold')
+
+    # 3. Logarithmic Normalization for color contrast
+    cmap = plt.cm.plasma
+    norm = LogNorm(vmin=df['model_size'].min(), vmax=df['model_size'].max())
+
+    # --- Plot 1: HotpotQA ---
+    ax1 = axes[0]
+    hotpot = df[df['dataset'] == 'HotpotQA']
+
+    # Base (Circle)
+    base_hp = hotpot[hotpot['context_used'] == False]
+    ax1.scatter(base_hp['f1'], base_hp['g_CO2'], c=base_hp['model_size'],
+                cmap=cmap, norm=norm, marker='o', s=50,
+                label='No Context', alpha=0.8, edgecolor='black')
+
+    # GS Paragraph (Square)
+    rag_hp = hotpot[hotpot['context_used'] == True]
+    ax1.scatter(rag_hp['f1'], rag_hp['g_CO2'], c=rag_hp['model_size'],
+                cmap=cmap, norm=norm, marker='s', s=50,
+                label='GS Paragraph', alpha=0.8, edgecolor='black')
+
+    ax1.set_title('HotpotQA Dataset', fontsize=14)
+    ax1.set_xlabel('F1 Score', fontsize=12)
+    ax1.set_ylabel('g of CO$_2$', fontsize=12)
+    ax1.grid(True, linestyle='--', alpha=0.4)
+    ax1.legend()
+    ax1.set_ylim(0, y_max)
+
+    # --- Plot 2: NQ ---
+    ax2 = axes[1]
+    nq = df[df['dataset'] == 'NQ']
+    nq_markers = {
+        'Question Only': ('o', 'No Context'),
+        'GS Paragraph': ('s', 'GS Paragraph'),
+        'First Paragraph': ('^', 'First Paragraph')
+    }
+
+    for version, (marker, label) in nq_markers.items():
+        subset = nq[nq['dataset_version'] == version]
+        if not subset.empty:
+            ax2.scatter(subset['f1'], subset['g_CO2'], c=subset['model_size'],
+                        cmap=cmap, norm=norm, marker=marker, s=50,
+                        label=label, alpha=0.8, edgecolor='black')
+
+    ax2.set_title('NQ Dataset', fontsize=14)
+    ax2.set_xlabel('F1 Score', fontsize=12)
+    ax2.grid(True, linestyle='--', alpha=0.4)
+    ax2.legend()
+    ax2.set_ylim(0, y_max)
+
+    # --- 4. Colorbar ---
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+
+    unique_sizes = sorted(df['model_size'].unique())
+    cbar = fig.colorbar(sm, ax=axes, shrink=0.8, location='right', ticks=unique_sizes)
+    cbar.set_label('Model Size (B)', fontsize=12)
+    cbar.ax.set_yticklabels([f'{s}B' for s in unique_sizes])
+
+    output_dir = Path(csv_path).parent
+    model_name = Path(csv_path).stem.split('_')[0]
+    save_path = output_dir / f"{model_name.capitalize()}_dataset_breakdown.svg"
+
+    # Use bbox_inches='tight' to ensure the title isn't cut off!
+    plt.savefig(save_path, bbox_inches='tight')
+    print(f"Plot saved to: {save_path}")
+
+def main(csv_path: str):
     # Load Data
     try:
-        # Assuming the updated analysis.py created this file with the new 'total_energy_kWh' column
         df = pd.read_csv(
-            r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\qwen3_summary.csv"
+            fr"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\{csv_path}"
         )
     except FileNotFoundError:
         print(
@@ -132,18 +223,18 @@ def main():
     # Normalize Dataset Version Types
     df["type"] = df["dataset_version"].apply(map_dataset_type)
 
-    # Calculate Performance per Energy (F1 / Total kWh)
+    # Calculate Performance per Energy (F1 / Total kg)
     # Check for zeros in the new total energy column
-    if "total_energy_kWh" in df.columns:
-        df["total_energy_kWh"] = df["total_energy_kWh"].replace(0, np.nan)
+    if "total_energy_kg" in df.columns:
+        df["total_energy_kg"] = df["total_energy_kg"].replace(0, np.nan)
     else:
-        print("ERROR: 'total_energy_kWh' column not found!")
+        print("ERROR: 'total_energy_kg' column not found!")
         return
 
-    df["perf_per_energy"] = df["f1"] / df["total_energy_kWh"]
+    df["perf_per_energy"] = df["f1"] / df["total_energy_kg"]
 
     # The original avg energy check is fine to keep for safety for plots that still use avg energy
-    df["energy_kWh_per_question"] = df["energy_kWh_per_question"].replace(0, np.nan)
+    df["emissions_kg_per_question"] = df["emissions_kg_per_question"].replace(0, np.nan)
 
     # Calculate additional efficiency metrics (these still use avg energy/tokens/time)
     df["performance_per_token"] = df["f1"] / df["pred_tokens_per_question"]
@@ -153,6 +244,8 @@ def main():
 
     # Create config labels for annotations
     df["config_label"] = df.apply(create_config_label, axis=1)
+
+    generate_scatter_plots(fr"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\{csv_path}")
 
     # Set general style
     sns.set_theme(style="whitegrid")
@@ -199,7 +292,7 @@ def main():
 
         if i == 0:
 
-            ax.set_ylabel("Efficiency (F1 / Total kWh)")
+            ax.set_ylabel("Efficiency (F1 / Total kg)")
         else:
             ax.set_ylabel("")
 
@@ -214,7 +307,7 @@ def main():
 
     scatter = plt.scatter(
         df["f1"],
-        df["total_energy_kWh"],
+        df["total_energy_kg"],
         c=df["params_B"],
         s=100,
         alpha=0.7,
@@ -223,7 +316,7 @@ def main():
     plt.colorbar(scatter, label="Model Size (B)")
     plt.xlabel("F1 Score")
 
-    plt.ylabel("Total Energy Consumption (kWh)")
+    plt.ylabel("Total Energy Consumption (kg)")
     plt.title("Performance vs Total Energy Trade-off")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
@@ -232,7 +325,7 @@ def main():
 
     # Pareto Frontier Analysis
 
-    pareto_points = get_pareto_frontier_detailed(df, "total_energy_kWh", "f1")
+    pareto_points = get_pareto_frontier_detailed(df, "total_energy_kg", "f1")
 
     plt.figure(figsize=(14, 9))
 
@@ -246,7 +339,7 @@ def main():
         color = thinking_color_map[row["thinking"]]
 
         plt.scatter(
-            row["total_energy_kWh"],
+            row["total_energy_kg"],
             row["f1"],
             c=color,
             marker=marker,
@@ -350,7 +443,7 @@ def main():
     for config in key_configs:
         point_data = df[df["config_label"] == config]
         if not point_data.empty:
-            x_pos = point_data["total_energy_kWh"].values[0]
+            x_pos = point_data["total_energy_kg"].values[0]
             y_pos = point_data["f1"].values[0]
             plt.annotate(
                 config,
@@ -376,7 +469,7 @@ def main():
                 va="top",
             )
 
-    plt.xlabel("Total Energy Consumption (kWh)", fontsize=13, fontweight="bold")
+    plt.xlabel("Total Energy Consumption (kg)", fontsize=13, fontweight="bold")
     plt.ylabel("F1 Score", fontsize=13, fontweight="bold")
     plt.title(
         "Pareto Frontier: F1 Score vs. Total Energy Consumption\nQwen3 Model Family on Natural Questions",
@@ -468,7 +561,7 @@ def main():
     pareto_df = pareto_df.sort_values("energy")
     for i, row in pareto_df.iterrows():
         print(
-            f"{row['config']:20} | F1: {row['f1']:.4f} | Total Energy: {row['energy']:.6f} kWh | PPE: {row['f1'] / row['energy']:.1f}"
+            f"{row['config']:20} | F1: {row['f1']:.4f} | Total Energy: {row['energy']:.6f} kg | PPE: {row['f1'] / row['energy']:.1f}"
         )
 
     # Additional analysis
@@ -478,21 +571,20 @@ def main():
     best_small = df[df["config_label"] == "1.7-GS-NoThink"].iloc[0]
     best_large = df[df["config_label"] == "32-Base-NoThink"].iloc[0]
 
-    print(f"Best Small (1.7-GS-NoThink):")
-    print(
-        f"  F1: {best_small['f1']:.4f}, Total Energy: {best_small['total_energy_kWh']:.6f} kWh, PPE: {best_small['perf_per_energy']:.1f}"
-    )
-    print(f"Best Large (32-Base-NoThink):")
-    print(
-        f"  F1: {best_large['f1']:.4f}, Total Energy: {best_large['total_energy_kWh']:.6f} kWh, PPE: {best_large['perf_per_energy']:.1f}"
-    )
-    # The improvement comparison now correctly uses the new 'perf_per_energy' which is F1/Total Energy
-    print(
-        f"Improvement: F1 +{((best_small['f1'] / best_large['f1']) - 1) * 100:.1f}%, PPE +{((best_small['perf_per_energy'] / best_large['perf_per_energy']) - 1) * 100:.1f}%"
-    )
+    # print(f"Best Small (1.7-GS-NoThink):")
+    # print(
+    #     f"  F1: {best_small['f1']:.4f}, Total Energy: {best_small['total_energy_kg']:.6f} kg, PPE: {best_small['perf_per_energy']:.1f}"
+    # )
+    # print(f"Best Large (32-Base-NoThink):")
+    # print(
+    #     f"  F1: {best_large['f1']:.4f}, Total Energy: {best_large['total_energy_kg']:.6f} kg, PPE: {best_large['perf_per_energy']:.1f}"
+    # )
+    # # The improvement comparison now correctly uses the new 'perf_per_energy' which is F1/Total Energy
+    # print(
+    #     f"Improvement: F1 +{((best_small['f1'] / best_large['f1']) - 1) * 100:.1f}%, PPE +{((best_small['perf_per_energy'] / best_large['perf_per_energy']) - 1) * 100:.1f}%"
+    # )
 
     # TABLE: Best Small vs Largest
-
     unique_sizes = sorted(df["params_B"].unique())
 
     if len(unique_sizes) < 2:
@@ -518,7 +610,7 @@ def main():
         "thinking",
         "params_B",
         "f1",
-        "total_energy_kWh",
+        "total_energy_kg",
         "perf_per_energy",
     ]
 
@@ -533,4 +625,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main("deepseek_summary.csv")
