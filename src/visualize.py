@@ -94,40 +94,60 @@ def get_pareto_frontier_detailed(df, x_col, y_col):
 
 
 def generate_final_pareto_plots():
-    # 1. Define Paths (Assuming script is in project/src/)
-    # We look one level up into results/
-    results_dir = Path(r"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results")
+    # 1. Define Paths - Use absolute path
+    # The script is in project/src/, results are in project/results/
+    script_dir = Path(__file__).parent  # Directory where visualize.py is located
+    project_root = script_dir.parent  # Go up one level to project root
+    results_dir = project_root / "results"
 
-    # 2. Load and Combine Data
-    try:
-        csv_files = ['deepseek_summary.csv', 'gemma3_summary.csv', 'qwen3_summary.csv']
-        dfs = [pd.read_csv(results_dir / f) for f in csv_files if (results_dir / f).exists()]
-        if not dfs:
-            raise FileNotFoundError("No CSV files found in the results directory.")
-        df = pd.concat(dfs, ignore_index=True)
-    except Exception as e:
-        print(f"Error: {e}")
+    print(f"Looking for CSV files in: {results_dir}")
+
+    # 2. Load and Combine Data with better error handling
+    csv_files = ["deepseek_summary.csv", "gemma3_summary.csv", "qwen3_summary.csv"]
+    dfs = []
+
+    # Check each file individually
+    for csv_file in csv_files:
+        file_path = results_dir / csv_file
+        if file_path.exists():
+            try:
+                df_temp = pd.read_csv(file_path)
+                dfs.append(df_temp)
+            except Exception as e:
+                print(f"Error reading {csv_file}: {e}")
+        else:
+            print(f"Not found: {csv_file}")
+
+    if not dfs:
+        print("Error: No CSV files were successfully loaded.")
+        # List what's actually in the directory
+        for f in results_dir.iterdir():
+            if f.is_file():
+                print(f"  - {f.name}")
         return
 
+    # Combine dataframes
+    df = pd.concat(dfs, ignore_index=True)
+
     # 3. Preprocessing
-    df['g_CO2'] = df['emissions_kg_per_question'] * 1000
-    df['short_model'] = df['model'].apply(lambda x: x.split('(')[0].strip())
+    df["g_CO2"] = df["emissions_kg_per_question"] * 1000
+    df["short_model"] = df["model"].apply(lambda x: x.split("(")[0].strip())
 
     # 4. Marker Assignment Logic
     def assign_marker(row):
-        if row['dataset'] == 'HotpotQA':
+        if row["dataset"] == "HotpotQA":
             # Hotpot: Base (False) vs Gold Standard (True)
-            return 'o' if not row['context_used'] else 's'
+            return "o" if not row["context_used"] else "s"
         else:
             # NQ: Map based on dataset_version
             mapping = {
-                'Question Only': 'o',
-                'GS Paragraph': 's',
-                'First Paragraph': '^'
+                "Question Only": "o",
+                "GS Paragraph": "s",
+                "First Paragraph": "^",
             }
-            return mapping.get(row['dataset_version'], 'o')
+            return mapping.get(row["dataset_version"], "o")
 
-    df['marker'] = df.apply(assign_marker, axis=1)
+    df["marker"] = df.apply(assign_marker, axis=1)
 
     # 5. Pareto Frontier Logic
     def get_pareto_frontier(ds_df, x_col, y_col):
@@ -136,80 +156,183 @@ def generate_final_pareto_plots():
         pareto_mask = np.ones(len(points), dtype=bool)
         for i, point in enumerate(points):
             for j, other_point in enumerate(points):
-                if i == j: continue
-                if (other_point[0] >= point[0] and other_point[1] <= point[1]):
-                    if (other_point[0] > point[0] or other_point[1] < point[1]):
+                if i == j:
+                    continue
+                if other_point[0] >= point[0] and other_point[1] <= point[1]:
+                    if other_point[0] > point[0] or other_point[1] < point[1]:
                         pareto_mask[i] = False
                         break
         return ds_df[pareto_mask].sort_values(by=x_col)
 
     # 6. Plotting
-    model_colors = {'DeepSeek': '#1f77b4', 'Gemma3': '#2ca02c', 'Qwen3': '#ff7f0e'}
+    model_colors = {"DeepSeek": "#1f77b4", "Gemma3": "#2ca02c", "Qwen3": "#ff7f0e"}
 
-    for dataset in ['HotpotQA', 'NQ']:
-        ds_df = df[df['dataset'] == dataset]
-        if ds_df.empty: continue
+    for dataset in ["HotpotQA", "NQ"]:
+        ds_df = df[df["dataset"] == dataset]
+        if ds_df.empty:
+            print(f"No data found for dataset: {dataset}")
+            continue
 
-        pareto_df = get_pareto_frontier(ds_df, 'f1', 'g_CO2')
+        print(f"\nProcessing {dataset}: {len(ds_df)} rows")
+        pareto_df = get_pareto_frontier(ds_df, "f1", "g_CO2")
 
         plt.figure(figsize=(12, 5))
 
         # Plot background (All points with their specific shapes/colors)
         for fam, color in model_colors.items():
-            fam_df = ds_df[ds_df['model'].str.contains(fam, case=False)]
-            for marker in fam_df['marker'].unique():
-                sub = fam_df[fam_df['marker'] == marker]
-                plt.scatter(sub['f1'], sub['g_CO2'], color=color, marker=marker,
-                            s=60, alpha=0.5, edgecolors='none')
+            fam_df = ds_df[ds_df["model"].str.contains(fam, case=False)]
+            if not fam_df.empty:
+                for marker in fam_df["marker"].unique():
+                    sub = fam_df[fam_df["marker"] == marker]
+                    plt.scatter(
+                        sub["f1"],
+                        sub["g_CO2"],
+                        color=color,
+                        marker=marker,
+                        s=60,
+                        alpha=0.5,
+                        edgecolors="none",
+                        label=f"{fam}_{marker}",
+                    )
 
-        # Draw the Frontier Line
-        plt.step(pareto_df['f1'], pareto_df['g_CO2'], where='post',
-                 color='red', lw=2.5, label='Pareto Frontier', zorder=4)
+        # Draw the Frontier Line (DOTTED BLACK)
+        plt.step(
+            pareto_df["f1"],
+            pareto_df["g_CO2"],
+            where="post",
+            color="black",
+            linestyle=":",
+            lw=2.5,
+            label="Pareto Frontier",
+            zorder=4,
+        )
 
-        # Draw Frontier points using their correct context-shapes
+        # Draw Frontier points with HEAVY BLACK OUTLINE and original colors
         for i, (idx, row) in enumerate(pareto_df.iterrows()):
-            plt.scatter(row['f1'], row['g_CO2'], color='red', marker=row['marker'],
-                        s=180, edgecolor='black', zorder=5)
+            # Determine color based on model
+            color = None
+            for fam, fam_color in model_colors.items():
+                if fam.lower() in row["model"].lower():
+                    color = fam_color
+                    break
 
-            # Spaced labels with arrows
-            y_off = 45 if i % 2 == 0 else -55
-            plt.annotate(
-                row['short_model'], (row['f1'], row['g_CO2']),
-                xytext=(35, y_off), textcoords='offset points',
-                fontsize=11, fontweight='bold', ha='center', va='center',
-                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.9, ec='red', lw=1),
-                arrowprops=dict(arrowstyle='->', color='black', alpha=0.6,
-                                connectionstyle="arc3,rad=0.1"),
-                zorder=6
+            plt.scatter(
+                row["f1"],
+                row["g_CO2"],
+                color=color,
+                marker=row["marker"],
+                s=180,
+                edgecolor="black",
+                linewidth=3,
+                zorder=5,
             )
 
-        plt.title(f'Pareto Frontier: Performance vs Carbon Emissions ({dataset})',
-                  fontsize=18, fontweight='bold', pad=25)
-        plt.xlabel('F1 Score', fontsize=14)
-        plt.ylabel('g of CO$_2$ per question', fontsize=14)
+            # Spaced labels with arrows (use black border for consistency)
+            y_off = 45 if i % 2 == 0 else -55
+            plt.annotate(
+                row["short_model"],
+                (row["f1"], row["g_CO2"]),
+                xytext=(35, y_off),
+                textcoords="offset points",
+                fontsize=11,
+                fontweight="bold",
+                ha="center",
+                va="center",
+                bbox=dict(
+                    boxstyle="round,pad=0.3", fc="white", alpha=0.9, ec="black", lw=1.5
+                ),
+                arrowprops=dict(
+                    arrowstyle="->",
+                    color="black",
+                    alpha=0.8,
+                    connectionstyle="arc3,rad=0.1",
+                ),
+                zorder=6,
+            )
 
-        # Consistent Legend
-        legend_elements = [Line2D([0], [0], color='red', lw=2.5, label='Pareto Frontier')]
+        plt.title(
+            f"Pareto Frontier: Performance vs Carbon Emissions ({dataset})",
+            fontsize=18,
+            fontweight="bold",
+            pad=25,
+        )
+        plt.xlabel("F1 Score", fontsize=14)
+        plt.ylabel("g of CO$_2$ per question", fontsize=14)
+
+        # UPDATED LEGEND with better visual distinction
+        import matplotlib.patches as mpatches
+
+        legend_elements = [
+            Line2D(
+                [0], [0], color="black", linestyle=":", lw=2.5, label="Pareto Frontier"
+            )
+        ]
+
+        # Model families - use COLORED SQUARES instead of circles
         for k, v in model_colors.items():
-            legend_elements.append(Line2D([0], [0], marker='o', color='w', label=k,
-                                          markerfacecolor=v, markersize=10))
-        legend_elements.append(Line2D([0], [0], color='w', label=''))
-        legend_elements.append(Line2D([0], [0], marker='o', color='w', label='Base (No Context)',
-                                      markerfacecolor='gray', markersize=10, markeredgecolor='black'))
-        legend_elements.append(Line2D([0], [0], marker='s', color='w', label='GS Paragraph',
-                                      markerfacecolor='gray', markersize=10, markeredgecolor='black'))
-        if dataset == 'NQ':
-            legend_elements.append(Line2D([0], [0], marker='^', color='w', label='First Paragraph',
-                                          markerfacecolor='gray', markersize=10, markeredgecolor='black'))
+            legend_elements.append(
+                mpatches.Patch(color=v, label=k, edgecolor="black", linewidth=1)
+            )
 
-        plt.legend(handles=legend_elements, loc='upper left', frameon=True, shadow=True)
-        plt.grid(True, linestyle='--', alpha=0.4)
+        legend_elements.append(Line2D([0], [0], color="w", label=""))  # Spacer
+
+        # Context types - use black outlines on grey shapes
+        grey_colour = "#777777"
+        legend_elements.append(
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                color="w",
+                label="Base (No Context)",
+                markerfacecolor=grey_colour,
+                markersize=12,
+                markeredgecolor="black",
+                markeredgewidth=1.5,
+            )
+        )
+        legend_elements.append(
+            Line2D(
+                [0],
+                [0],
+                marker="s",
+                color="w",
+                label="GS Paragraph",
+                markerfacecolor=grey_colour,
+                markersize=12,
+                markeredgecolor="black",
+                markeredgewidth=1.5,
+            )
+        )
+        if dataset == "NQ":
+            legend_elements.append(
+                Line2D(
+                    [0],
+                    [0],
+                    marker="^",
+                    color="w",
+                    label="First Paragraph",
+                    markerfacecolor=grey_colour,
+                    markersize=12,
+                    markeredgecolor="black",
+                    markeredgewidth=1.5,
+                )
+            )
+
+        plt.legend(
+            handles=legend_elements,
+            loc="upper left",
+            frameon=True,
+            shadow=True,
+            framealpha=0.95,
+        )
+        plt.grid(True, linestyle="--", alpha=0.4)
         plt.tight_layout()
 
-        save_path = results_dir / f'pareto_all_families_{dataset.lower()}.png'
-        plt.savefig(save_path, bbox_inches='tight')
+        save_path = results_dir / f"pareto_all_families_{dataset.lower()}.png"
+        plt.savefig(save_path, bbox_inches="tight", dpi=300)
         plt.close()
-        print(f"Plot saved to: {save_path}")
+        print(f"  Plot saved to: {save_path}")
 
 
 def create_config_label(row):
@@ -233,101 +356,244 @@ def generate_scatter_plots(csv_path):
     """
     Generates scatter plots for HotpotQA and NQ with synced y-axes
     and a logarithmic color scale for distinct model sizes.
+    Uses clearer blue-to-red colormap and improved legend design.
     """
     # 1. Load and Clean Data
     df = pd.read_csv(csv_path)
-    df['g_CO2'] = df['emissions_kg_per_question'] * 1000
+    df["g_CO2"] = df["emissions_kg_per_question"] * 1000
 
     def extract_size(model_name):
         match = re.search(r"(\d+(\.\d+)?)B", model_name)
         return float(match.group(1)) if match else 0
 
-    df['model_size'] = df['model'].apply(extract_size)
-    df = df.sort_values('model_size')
+    df["model_size"] = df["model"].apply(extract_size)
+    df = df.sort_values("model_size")
 
     # Determine global y-axis limit
-    y_max = df['g_CO2'].max() * 1.1  # Add 10% headroom
+    y_max = df["g_CO2"].max() * 1.1  # Add 10% headroom
 
-    # 2. Setup Plot (sharey=True ensures axes are synced)
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True, layout='constrained')
-    fig.suptitle('Gemma 3 Model Performance vs Carbon Emissions', fontsize=16, fontweight='bold')
+    # 2. Setup Plot with constrained_layout to avoid tight_layout issues
+    fig, axes = plt.subplots(
+        1, 2, figsize=(12, 5), sharey=True, constrained_layout=True
+    )
+    model_name = Path(csv_path).stem.replace("_summary", "").capitalize()
+    fig.suptitle(
+        f"{model_name} Model Performance vs Carbon Emissions",
+        fontsize=16,
+        fontweight="bold",
+        y=1.05,
+    )
 
-    # 3. Logarithmic Normalization for color contrast
-    cmap = plt.cm.plasma
-    norm = LogNorm(vmin=df['model_size'].min(), vmax=df['model_size'].max())
+    # 3. Use blue-to-red colormap
+    cmap = plt.cm.coolwarm
+
+    # Logarithmic normalization for better contrast between close model sizes
+    norm = LogNorm(vmin=df["model_size"].min(), vmax=df["model_size"].max())
+
+    # Define distinct marker properties for better visibility
+    marker_size = 60
+    edge_width = 1.5
 
     # --- Plot 1: HotpotQA ---
     ax1 = axes[0]
-    hotpot = df[df['dataset'] == 'HotpotQA']
+    hotpot = df[df["dataset"] == "HotpotQA"]
 
     # Base (Circle)
-    base_hp = hotpot[hotpot['context_used'] == False]
-    ax1.scatter(base_hp['f1'], base_hp['g_CO2'], c=base_hp['model_size'],
-                cmap=cmap, norm=norm, marker='o', s=50,
-                label='No Context', alpha=0.8, edgecolor='black')
+    base_hp = hotpot[hotpot["context_used"] == False]
+    scatter1 = ax1.scatter(
+        base_hp["f1"],
+        base_hp["g_CO2"],
+        c=base_hp["model_size"],
+        cmap=cmap,
+        norm=norm,
+        marker="o",
+        s=marker_size,
+        alpha=0.8,
+        edgecolor="black",
+        linewidth=edge_width,
+    )
 
     # GS Paragraph (Square)
-    rag_hp = hotpot[hotpot['context_used'] == True]
-    ax1.scatter(rag_hp['f1'], rag_hp['g_CO2'], c=rag_hp['model_size'],
-                cmap=cmap, norm=norm, marker='s', s=50,
-                label='GS Paragraph', alpha=0.8, edgecolor='black')
+    rag_hp = hotpot[hotpot["context_used"] == True]
+    scatter2 = ax1.scatter(
+        rag_hp["f1"],
+        rag_hp["g_CO2"],
+        c=rag_hp["model_size"],
+        cmap=cmap,
+        norm=norm,
+        marker="s",
+        s=marker_size,
+        alpha=0.8,
+        edgecolor="black",
+        linewidth=edge_width,
+    )
 
-    ax1.set_title('HotpotQA Dataset', fontsize=14)
-    ax1.set_xlabel('F1 Score', fontsize=12)
-    ax1.set_ylabel('g of CO$_2$', fontsize=12)
-    ax1.grid(True, linestyle='--', alpha=0.4)
-    ax1.legend()
+    ax1.set_title("HotpotQA Dataset", fontsize=14, fontweight="bold")
+    ax1.set_xlabel("F1 Score", fontsize=12)
+    ax1.set_ylabel("g of CO$_2$ per question", fontsize=12)
+    ax1.grid(True, linestyle="--", alpha=0.4)
     ax1.set_ylim(0, y_max)
 
     # --- Plot 2: NQ ---
     ax2 = axes[1]
-    nq = df[df['dataset'] == 'NQ']
+    nq = df[df["dataset"] == "NQ"]
     nq_markers = {
-        'Question Only': ('o', 'No Context'),
-        'GS Paragraph': ('s', 'GS Paragraph'),
-        'First Paragraph': ('^', 'First Paragraph')
+        "Question Only": ("o", "Base (No Context)"),
+        "GS Paragraph": ("s", "GS Paragraph"),
+        "First Paragraph": ("^", "First Paragraph"),
     }
 
     for version, (marker, label) in nq_markers.items():
-        subset = nq[nq['dataset_version'] == version]
+        subset = nq[nq["dataset_version"] == version]
         if not subset.empty:
-            ax2.scatter(subset['f1'], subset['g_CO2'], c=subset['model_size'],
-                        cmap=cmap, norm=norm, marker=marker, s=50,
-                        label=label, alpha=0.8, edgecolor='black')
+            ax2.scatter(
+                subset["f1"],
+                subset["g_CO2"],
+                c=subset["model_size"],
+                cmap=cmap,
+                norm=norm,
+                marker=marker,
+                s=marker_size,
+                alpha=0.8,
+                edgecolor="black",
+                linewidth=edge_width,
+            )
 
-    ax2.set_title('NQ Dataset', fontsize=14)
-    ax2.set_xlabel('F1 Score', fontsize=12)
-    ax2.grid(True, linestyle='--', alpha=0.4)
-    ax2.legend()
+    ax2.set_title("NQ Dataset", fontsize=14, fontweight="bold")
+    ax2.set_xlabel("F1 Score", fontsize=12)
+    ax2.grid(True, linestyle="--", alpha=0.4)
     ax2.set_ylim(0, y_max)
 
-    # --- 4. Colorbar ---
+    # --- 4. Colorbar with improved ticks and labels ---
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])
 
-    unique_sizes = sorted(df['model_size'].unique())
-    cbar = fig.colorbar(sm, ax=axes, shrink=0.8, location='right', ticks=unique_sizes)
-    cbar.set_label('Model Size (B)', fontsize=12)
-    cbar.ax.set_yticklabels([f'{s}B' for s in unique_sizes])
+    # Get unique model sizes and create nicely spaced ticks
+    unique_sizes = sorted(df["model_size"].unique())
+
+    # Create a colorbar with model sizes clearly labeled
+    cbar = fig.colorbar(
+        sm, ax=axes, shrink=0.8, location="right", pad=0.02, ticks=unique_sizes
+    )
+    cbar.set_label(
+        "Model Size (Billions of Parameters)", fontsize=11, fontweight="bold"
+    )
+    cbar.ax.set_yticklabels([f"{s:g}B" for s in unique_sizes], fontsize=10)
+
+    # --- 5. Unified context type legend ---
+    # Create a single unified legend for context types
+    grey_colour = "#777777"
+    legend_marker_size = 10
+
+    # For HotpotQA plot
+    hotpot_legend_elements = [
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            label="Base (No Context)",
+            markerfacecolor=grey_colour,
+            markersize=legend_marker_size,
+            markeredgecolor="black",
+            markeredgewidth=1.5,
+            linewidth=0,
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="s",
+            color="w",
+            label="GS Paragraph",
+            markerfacecolor=grey_colour,
+            markersize=legend_marker_size,
+            markeredgecolor="black",
+            markeredgewidth=1.5,
+            linewidth=0,
+        ),
+    ]
+
+    # For NQ plot (includes triangle for First Paragraph)
+    nq_legend_elements = [
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            label="Base (No Context)",
+            markerfacecolor=grey_colour,
+            markersize=legend_marker_size,
+            markeredgecolor="black",
+            markeredgewidth=1.5,
+            linewidth=0,
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="s",
+            color="w",
+            label="GS Paragraph",
+            markerfacecolor=grey_colour,
+            markersize=legend_marker_size,
+            markeredgecolor="black",
+            markeredgewidth=1.5,
+            linewidth=0,
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="^",
+            color="w",
+            label="First Paragraph",
+            markerfacecolor=grey_colour,
+            markersize=legend_marker_size,
+            markeredgecolor="black",
+            markeredgewidth=1.5,
+            linewidth=0,
+        ),
+    ]
+
+    # Add legends to respective plots
+    ax1.legend(
+        handles=hotpot_legend_elements,
+        loc="upper right",
+        frameon=True,
+        framealpha=0.9,
+        title="Context Type",
+        title_fontsize=11,
+        fontsize=10,
+    )
+
+    ax2.legend(
+        handles=nq_legend_elements,
+        loc="upper right",
+        frameon=True,
+        framealpha=0.9,
+        title="Context Type",
+        title_fontsize=11,
+        fontsize=10,
+    )
 
     output_dir = Path(csv_path).parent
-    model_name = Path(csv_path).stem.split('_')[0]
+    model_name = Path(csv_path).stem.split("_")[0]
     save_path = output_dir / f"{model_name.capitalize()}_dataset_breakdown.png"
 
     # Use bbox_inches='tight' to ensure the title isn't cut off!
-    plt.savefig(save_path, bbox_inches='tight')
+    plt.savefig(save_path, bbox_inches="tight", dpi=300)
     plt.close()
     print(f"Plot saved to: {save_path}")
+
 
 def main(csv_path: str):
     # Load Data
     try:
-        df = pd.read_csv(
-            fr"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\{csv_path}"
-        )
+        script_dir = Path(__file__).parent  # Directory where visualize.py is located
+        project_root = script_dir.parent  # Go up one level to project root
+        results_dir = project_root / "results"
+        df = pd.read_csv(results_dir / csv_path)
     except FileNotFoundError:
         print(
-            "Error: 'qwen3_summary.csv' not found. Please ensure the file is in the same directory."
+            f"Error: '{csv_path}.csv' not found. Please ensure the file is in the same directory."
         )
         return
 
@@ -365,8 +631,13 @@ def main(csv_path: str):
     # Create config labels for annotations
     df["config_label"] = df.apply(create_config_label, axis=1)
 
-    generate_scatter_plots(fr"C:\Users\Ethan\Documents\PhD\LMPowerConsuption\results\{csv_path}")
     generate_final_pareto_plots()
+    csv_files = ["deepseek_summary.csv", "gemma3_summary.csv", "qwen3_summary.csv"]
+    for csv_file in csv_files:
+        csv_path = results_dir / csv_file
+        if csv_path.exists():
+            print(f"\nGenerating scatter plot for: {csv_file}")
+            generate_scatter_plots(str(csv_path))
 
     # Set general style
     sns.set_theme(style="whitegrid")
@@ -746,4 +1017,4 @@ def main(csv_path: str):
 
 
 if __name__ == "__main__":
-    main("gemma3_summary.csv")
+    main("qwen3_summary.csv")
