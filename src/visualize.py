@@ -206,7 +206,7 @@ def generate_final_pareto_plots():
         plt.grid(True, linestyle='--', alpha=0.4)
         plt.tight_layout()
 
-        save_path = results_dir / f'pareto_all_families_{dataset.lower()}.svg'
+        save_path = results_dir / f'pareto_all_families_{dataset.lower()}.png'
         plt.savefig(save_path, bbox_inches='tight')
         plt.close()
         print(f"Plot saved to: {save_path}")
@@ -250,7 +250,7 @@ def generate_scatter_plots(csv_path):
 
     # 2. Setup Plot (sharey=True ensures axes are synced)
     fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True, layout='constrained')
-    fig.suptitle('Qwen3 Model Performance vs Carbon Emissions', fontsize=16, fontweight='bold')
+    fig.suptitle('Gemma 3 Model Performance vs Carbon Emissions', fontsize=16, fontweight='bold')
 
     # 3. Logarithmic Normalization for color contrast
     cmap = plt.cm.plasma
@@ -312,7 +312,7 @@ def generate_scatter_plots(csv_path):
 
     output_dir = Path(csv_path).parent
     model_name = Path(csv_path).stem.split('_')[0]
-    save_path = output_dir / f"{model_name.capitalize()}_dataset_breakdown.svg"
+    save_path = output_dir / f"{model_name.capitalize()}_dataset_breakdown.png"
 
     # Use bbox_inches='tight' to ensure the title isn't cut off!
     plt.savefig(save_path, bbox_inches='tight')
@@ -420,8 +420,8 @@ def main(csv_path: str):
         ax.grid(True, which="both", ls="-", alpha=0.2)
 
     plt.tight_layout()
-    plt.savefig("efficiency_comparison.svg", bbox_inches="tight")
-    print("Generated efficiency_comparison.svg")
+    plt.savefig("efficiency_comparison.png", bbox_inches="tight")
+    print("Generated efficiency_comparison.png")
 
     # Performance-Energy Trade-off Scatter Plot
     plt.figure(figsize=(10, 6))
@@ -441,8 +441,8 @@ def main(csv_path: str):
     plt.title("Performance vs Total Energy Trade-off")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig("performance_energy_tradeoff.svg", bbox_inches="tight")
-    print("Generated performance_energy_tradeoff.svg")
+    plt.savefig("performance_energy_tradeoff.png", bbox_inches="tight")
+    print("Generated performance_energy_tradeoff.png")
 
     # Pareto Frontier Analysis
 
@@ -671,8 +671,8 @@ def main(csv_path: str):
     plt.legend(handles=legend_elements, loc="lower right", framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig("pareto_frontier.svg", format="svg", dpi=300, bbox_inches="tight")
-    print("Generated pareto_frontier.svg")
+    plt.savefig("pareto_frontier.png", format="svg", dpi=300, bbox_inches="tight")
+    print("Generated pareto_frontier.png")
 
     # Print the Pareto optimal configurations with details
     print("\n" + "=" * 70)
