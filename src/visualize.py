@@ -1,3 +1,5 @@
+import math
+
 import seaborn as sns
 import re
 from matplotlib.colors import LogNorm
@@ -5,6 +7,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+import matplotlib.patches as mpatches
+from matplotlib.ticker import ScalarFormatter, NullFormatter
 from pathlib import Path
 
 
@@ -94,52 +98,44 @@ def get_pareto_frontier_detailed(df, x_col, y_col):
 
 
 def generate_final_pareto_plots():
-    # 1. Define Paths - Use absolute path
-    # The script is in project/src/, results are in project/results/
-    script_dir = Path(__file__).parent  # Directory where visualize.py is located
-    project_root = script_dir.parent  # Go up one level to project root
+    # 1. Define Paths
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent
     results_dir = project_root / "results"
 
-    print(f"Looking for CSV files in: {results_dir}")
-
-    # 2. Load and Combine Data with better error handling
     csv_files = ["deepseek_summary.csv", "gemma3_summary.csv", "qwen3_summary.csv"]
     dfs = []
-
-    # Check each file individually
     for csv_file in csv_files:
         file_path = results_dir / csv_file
         if file_path.exists():
             try:
-                df_temp = pd.read_csv(file_path)
-                dfs.append(df_temp)
-            except Exception as e:
-                print(f"Error reading {csv_file}: {e}")
-        else:
-            print(f"Not found: {csv_file}")
+                dfs.append(pd.read_csv(file_path))
+            except Exception:
+                pass
 
     if not dfs:
-        print("Error: No CSV files were successfully loaded.")
-        # List what's actually in the directory
-        for f in results_dir.iterdir():
-            if f.is_file():
-                print(f"  - {f.name}")
         return
-
-    # Combine dataframes
     df = pd.concat(dfs, ignore_index=True)
 
-    # 3. Preprocessing
-    df["g_CO2"] = df["emissions_kg_per_question"] * 1000
+    # --- 2. UPDATED METRIC LOGIC ---
+    # Using 'total_energy_kg' as requested (converting kg -> g)
+    # Note: Ensure your CSV has exactly this column name.
+    # If standard 'emissions' are needed, swapping this string is easy.
+    target_col = "total_energy_kg"
+
+    # Fallback safety in case the column name was a typo
+    if target_col not in df.columns and "total_emissions_kg" in df.columns:
+        print(f"Warning: '{target_col}' not found. Using 'total_emissions_kg' instead.")
+        target_col = "total_emissions_kg"
+
+    df["g_CO2"] = df[target_col] * 1000
     df["short_model"] = df["model"].apply(lambda x: x.split("(")[0].strip())
 
-    # 4. Marker Assignment Logic
+    # Marker Assignment
     def assign_marker(row):
         if row["dataset"] == "HotpotQA":
-            # Hotpot: Base (False) vs Gold Standard (True)
             return "o" if not row["context_used"] else "s"
         else:
-            # NQ: Map based on dataset_version
             mapping = {
                 "Question Only": "o",
                 "GS Paragraph": "s",
@@ -149,9 +145,8 @@ def generate_final_pareto_plots():
 
     df["marker"] = df.apply(assign_marker, axis=1)
 
-    # 5. Pareto Frontier Logic
+    # Pareto Logic
     def get_pareto_frontier(ds_df, x_col, y_col):
-        """Finds non-dominated points (Maximize X, Minimize Y)"""
         points = ds_df[[x_col, y_col]].values
         pareto_mask = np.ones(len(points), dtype=bool)
         for i, point in enumerate(points):
@@ -164,21 +159,18 @@ def generate_final_pareto_plots():
                         break
         return ds_df[pareto_mask].sort_values(by=x_col)
 
-    # 6. Plotting
     model_colors = {"DeepSeek": "#1f77b4", "Gemma3": "#2ca02c", "Qwen3": "#ff7f0e"}
 
     for dataset in ["HotpotQA", "NQ"]:
         ds_df = df[df["dataset"] == dataset]
         if ds_df.empty:
-            print(f"No data found for dataset: {dataset}")
             continue
 
-        print(f"\nProcessing {dataset}: {len(ds_df)} rows")
         pareto_df = get_pareto_frontier(ds_df, "f1", "g_CO2")
 
-        plt.figure(figsize=(12, 5))
+        plt.figure(figsize=(12, 6))
 
-        # Plot background (All points with their specific shapes/colors)
+        # Plot Background
         for fam, color in model_colors.items():
             fam_df = ds_df[ds_df["model"].str.contains(fam, case=False)]
             if not fam_df.empty:
@@ -189,106 +181,126 @@ def generate_final_pareto_plots():
                         sub["g_CO2"],
                         color=color,
                         marker=marker,
-                        s=60,
-                        alpha=0.5,
+                        s=50,
+                        alpha=0.7,
                         edgecolors="none",
-                        label=f"{fam}_{marker}",
                     )
 
-        # Draw the Frontier Line (DOTTED BLACK)
-        plt.step(
+        # Plot Frontier Line
+        plt.plot(
             pareto_df["f1"],
             pareto_df["g_CO2"],
-            where="post",
             color="black",
             linestyle=":",
-            lw=2.5,
-            label="Pareto Frontier",
+            lw=2,
             zorder=4,
         )
 
-        # Draw Frontier points with HEAVY BLACK OUTLINE and original colors
-        for i, (idx, row) in enumerate(pareto_df.iterrows()):
-            # Determine color based on model
-            color = None
-            for fam, fam_color in model_colors.items():
-                if fam.lower() in row["model"].lower():
-                    color = fam_color
-                    break
+        pareto_rows = list(pareto_df.iterrows())
+
+        for i, (idx, row) in enumerate(pareto_rows):
+            color = next(
+                (
+                    c
+                    for f, c in model_colors.items()
+                    if f.lower() in row["model"].lower()
+                ),
+                "gray",
+            )
 
             plt.scatter(
                 row["f1"],
                 row["g_CO2"],
                 color=color,
                 marker=row["marker"],
-                s=180,
+                s=150,
                 edgecolor="black",
-                linewidth=3,
+                linewidth=2,
                 zorder=5,
             )
 
-            # Spaced labels with arrows (use black border for consistency)
-            y_off = 45 if i % 2 == 0 else -55
+            base_height = 25
+            horizontal_shift = 45
+            if dataset == "NQ":
+                if i == 3 or i == 7:
+                    xytext_offset = (-horizontal_shift, base_height - 10)
+                    connection_style = "arc3,rad=0.1"
+                elif i == 5:
+                    xytext_offset = (-horizontal_shift, base_height + 10)
+                    connection_style = "arc3,rad=0.1"
+                else:
+                    xytext_offset = (-horizontal_shift, base_height)
+                    connection_style = "arc3,rad=0.1"
+            else:
+                xytext_offset = (-horizontal_shift, base_height)
+                connection_style = "arc3,rad=0.1"
+
             plt.annotate(
                 row["short_model"],
-                (row["f1"], row["g_CO2"]),
-                xytext=(35, y_off),
+                xy=(row["f1"], row["g_CO2"]),
+                xytext=xytext_offset,
                 textcoords="offset points",
-                fontsize=11,
+                fontsize=9,
                 fontweight="bold",
                 ha="center",
                 va="center",
                 bbox=dict(
-                    boxstyle="round,pad=0.3", fc="white", alpha=0.9, ec="black", lw=1.5
+                    boxstyle="round,pad=0.2", fc="white", alpha=0.9, ec=color, lw=1.5
                 ),
                 arrowprops=dict(
                     arrowstyle="->",
                     color="black",
-                    alpha=0.8,
-                    connectionstyle="arc3,rad=0.1",
+                    lw=1,
+                    connectionstyle=connection_style,
+                    shrinkB=8,
+                    shrinkA=2,
                 ),
-                zorder=6,
+                zorder=10,
             )
+
+        # Y-Axis Formatting
+        plt.yscale("log")
+        ax = plt.gca()
+
+        # Apply the ticks and the formatter
+        y_max_val = df["g_CO2"].max()
+        y_upper_limit = math.ceil(y_max_val / 1000) * 1000
+        custom_ticks = [100, 500, 1000, 2000, y_upper_limit]
+        ax.set_yticks(custom_ticks)
+        ax.get_yaxis().set_major_formatter(ScalarFormatter())
+        # Clean up minor ticks so they don't add clutter
+        ax.yaxis.set_minor_formatter(NullFormatter())
+
+        plt.grid(True, which="major", linestyle="--", alpha=0.7)
 
         plt.title(
-            f"Pareto Frontier: Performance vs Carbon Emissions ({dataset})",
-            fontsize=18,
+            f"Pareto Frontier: Performance vs Total Emissions ({dataset})",
+            fontsize=16,
             fontweight="bold",
-            pad=25,
         )
-        plt.xlabel("F1 Score", fontsize=14)
-        plt.ylabel("g of CO$_2$ per question", fontsize=14)
+        plt.xlabel("F1 Score", fontsize=12)
+        plt.ylabel("Model Emissions (g of CO$_2$)", fontsize=12)  # Updated Label
 
-        # UPDATED LEGEND with better visual distinction
-        import matplotlib.patches as mpatches
-
+        # Legend
         legend_elements = [
             Line2D(
-                [0], [0], color="black", linestyle=":", lw=2.5, label="Pareto Frontier"
+                [0], [0], color="black", linestyle=":", lw=2, label="Pareto Frontier"
             )
         ]
-
-        # Model families - use COLORED SQUARES instead of circles
         for k, v in model_colors.items():
             legend_elements.append(
-                mpatches.Patch(color=v, label=k, edgecolor="black", linewidth=1)
+                mpatches.Patch(facecolor=v, edgecolor="black", label=k)
             )
-
-        legend_elements.append(Line2D([0], [0], color="w", label=""))  # Spacer
-
-        # Context types - use black outlines on grey shapes
-        grey_colour = "#777777"
+        legend_elements.append(Line2D([0], [0], color="w", label=""))
         legend_elements.append(
             Line2D(
                 [0],
                 [0],
                 marker="o",
                 color="w",
-                label="Base (No Context)",
-                markerfacecolor=grey_colour,
-                markersize=12,
+                label="Base",
+                markerfacecolor="none",
                 markeredgecolor="black",
-                markeredgewidth=1.5,
             )
         )
         legend_elements.append(
@@ -297,11 +309,9 @@ def generate_final_pareto_plots():
                 [0],
                 marker="s",
                 color="w",
-                label="GS Paragraph",
-                markerfacecolor=grey_colour,
-                markersize=12,
+                label="GS",
+                markerfacecolor="none",
                 markeredgecolor="black",
-                markeredgewidth=1.5,
             )
         )
         if dataset == "NQ":
@@ -311,28 +321,19 @@ def generate_final_pareto_plots():
                     [0],
                     marker="^",
                     color="w",
-                    label="First Paragraph",
-                    markerfacecolor=grey_colour,
-                    markersize=12,
+                    label="FP",
+                    markerfacecolor="none",
                     markeredgecolor="black",
-                    markeredgewidth=1.5,
                 )
             )
 
-        plt.legend(
-            handles=legend_elements,
-            loc="upper left",
-            frameon=True,
-            shadow=True,
-            framealpha=0.95,
-        )
-        plt.grid(True, linestyle="--", alpha=0.4)
+        plt.legend(handles=legend_elements, loc="best", fontsize=9)
         plt.tight_layout()
 
-        save_path = results_dir / f"pareto_all_families_{dataset.lower()}.png"
+        save_path = results_dir / f"pareto_manual_{dataset.lower()}.png"
         plt.savefig(save_path, bbox_inches="tight", dpi=300)
         plt.close()
-        print(f"  Plot saved to: {save_path}")
+        print(f"Saved: {save_path}")
 
 
 def create_config_label(row):
@@ -360,7 +361,7 @@ def generate_scatter_plots(csv_path):
     """
     # 1. Load and Clean Data
     df = pd.read_csv(csv_path)
-    df["g_CO2"] = df["emissions_kg_per_question"] * 1000
+    df["g_CO2"] = df["total_energy_kg"] * 1000
 
     def extract_size(model_name):
         match = re.search(r"(\d+(\.\d+)?)B", model_name)
@@ -370,7 +371,9 @@ def generate_scatter_plots(csv_path):
     df = df.sort_values("model_size")
 
     # Determine global y-axis limit
-    y_max = df["g_CO2"].max() * 1.1  # Add 10% headroom
+    y_max_val = df["g_CO2"].max()
+    y_upper_limit = math.ceil(y_max_val / 1000) * 1000
+    custom_ticks = [100, 500, 1000, 2000, y_upper_limit]
 
     # 2. Setup Plot with constrained_layout to avoid tight_layout issues
     fig, axes = plt.subplots(
@@ -393,6 +396,24 @@ def generate_scatter_plots(csv_path):
     # Define distinct marker properties for better visibility
     marker_size = 60
     edge_width = 1.5
+
+    for ax in axes:
+        # 1. Set to Log Scale
+        ax.set_yscale("log")
+
+        # 2. Set Custom Ticks (matches your Pareto logic)
+        ax.set_yticks(custom_ticks)
+
+        # 3. Prevent Scientific Notation (shows 1000 instead of 10^3)
+        ax.get_yaxis().set_major_formatter(ScalarFormatter())
+        ax.yaxis.set_minor_formatter(NullFormatter())
+
+        # 4. Set Limits (Start at 100 since that is your lowest custom tick)
+        ax.set_ylim(df["g_CO2"].min() * 0.9, y_upper_limit * 1.1)
+
+        # 5. Improve Grid Visibility for Log Scale
+        ax.grid(True, which="major", linestyle="--", alpha=0.6)
+        ax.grid(False, which="minor")  # Hide the dense log minor lines
 
     # --- Plot 1: HotpotQA ---
     ax1 = axes[0]
@@ -430,17 +451,16 @@ def generate_scatter_plots(csv_path):
 
     ax1.set_title("HotpotQA Dataset", fontsize=14, fontweight="bold")
     ax1.set_xlabel("F1 Score", fontsize=12)
-    ax1.set_ylabel("g of CO$_2$ per question", fontsize=12)
+    ax1.set_ylabel("Model Emissions (g of CO$_2$)", fontsize=12)
     ax1.grid(True, linestyle="--", alpha=0.4)
-    ax1.set_ylim(0, y_max)
 
     # --- Plot 2: NQ ---
     ax2 = axes[1]
     nq = df[df["dataset"] == "NQ"]
     nq_markers = {
-        "Question Only": ("o", "Base (No Context)"),
-        "GS Paragraph": ("s", "GS Paragraph"),
-        "First Paragraph": ("^", "First Paragraph"),
+        "Question Only": ("o", "Base"),
+        "GS Paragraph": ("s", "GS"),
+        "First Paragraph": ("^", "FP"),
     }
 
     for version, (marker, label) in nq_markers.items():
@@ -462,7 +482,6 @@ def generate_scatter_plots(csv_path):
     ax2.set_title("NQ Dataset", fontsize=14, fontweight="bold")
     ax2.set_xlabel("F1 Score", fontsize=12)
     ax2.grid(True, linestyle="--", alpha=0.4)
-    ax2.set_ylim(0, y_max)
 
     # --- 4. Colorbar with improved ticks and labels ---
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
@@ -482,7 +501,6 @@ def generate_scatter_plots(csv_path):
 
     # --- 5. Unified context type legend ---
     # Create a single unified legend for context types
-    grey_colour = "#777777"
     legend_marker_size = 10
 
     # For HotpotQA plot
@@ -492,8 +510,8 @@ def generate_scatter_plots(csv_path):
             [0],
             marker="o",
             color="w",
-            label="Base (No Context)",
-            markerfacecolor=grey_colour,
+            label="Base",
+            markerfacecolor="none",
             markersize=legend_marker_size,
             markeredgecolor="black",
             markeredgewidth=1.5,
@@ -504,8 +522,8 @@ def generate_scatter_plots(csv_path):
             [0],
             marker="s",
             color="w",
-            label="GS Paragraph",
-            markerfacecolor=grey_colour,
+            label="GS",
+            markerfacecolor="none",
             markersize=legend_marker_size,
             markeredgecolor="black",
             markeredgewidth=1.5,
@@ -520,8 +538,8 @@ def generate_scatter_plots(csv_path):
             [0],
             marker="o",
             color="w",
-            label="Base (No Context)",
-            markerfacecolor=grey_colour,
+            label="Base",
+            markerfacecolor="none",
             markersize=legend_marker_size,
             markeredgecolor="black",
             markeredgewidth=1.5,
@@ -532,8 +550,8 @@ def generate_scatter_plots(csv_path):
             [0],
             marker="s",
             color="w",
-            label="GS Paragraph",
-            markerfacecolor=grey_colour,
+            label="GS",
+            markerfacecolor="none",
             markersize=legend_marker_size,
             markeredgecolor="black",
             markeredgewidth=1.5,
@@ -544,8 +562,8 @@ def generate_scatter_plots(csv_path):
             [0],
             marker="^",
             color="w",
-            label="First Paragraph",
-            markerfacecolor=grey_colour,
+            label="FP",
+            markerfacecolor="none",
             markersize=legend_marker_size,
             markeredgecolor="black",
             markeredgewidth=1.5,
@@ -556,7 +574,7 @@ def generate_scatter_plots(csv_path):
     # Add legends to respective plots
     ax1.legend(
         handles=hotpot_legend_elements,
-        loc="upper right",
+        loc="best",
         frameon=True,
         framealpha=0.9,
         title="Context Type",
@@ -566,7 +584,7 @@ def generate_scatter_plots(csv_path):
 
     ax2.legend(
         handles=nq_legend_elements,
-        loc="upper right",
+        loc="best",
         frameon=True,
         framealpha=0.9,
         title="Context Type",
@@ -939,7 +957,7 @@ def main(csv_path: str):
         ),
     ]
 
-    plt.legend(handles=legend_elements, loc="lower right", framealpha=0.9)
+    plt.legend(handles=legend_elements, loc="best", framealpha=0.9)
 
     plt.tight_layout()
     plt.savefig("pareto_frontier.png", format="svg", dpi=300, bbox_inches="tight")
