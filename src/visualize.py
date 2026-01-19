@@ -217,8 +217,8 @@ def main(csv_path: str):
         ax.grid(True, which="both", ls="-", alpha=0.2)
 
     plt.tight_layout()
-    plt.savefig("efficiency_comparison_scale.png", bbox_inches="tight")
-    print("Generated efficiency_comparison_scale.png")
+    plt.savefig("efficiency_comparison_scale.pdf", bbox_inches="tight")
+    print("Generated efficiency_comparison_scale.pdf")
 
     # Performance-Energy Trade-off Scatter Plot
     plt.figure(figsize=(10, 6))
@@ -238,8 +238,8 @@ def main(csv_path: str):
     plt.title("Performance vs Total Energy Trade-off")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig("performance_energy_tradeoff_scale.png", bbox_inches="tight")
-    print("Generated performance_energy_tradeoff_scale.png")
+    plt.savefig("performance_energy_tradeoff_scale.pdf", bbox_inches="tight")
+    print("Generated performance_energy_tradeoff_scale.pdf")
 
     # Pareto Frontier Analysis
     pareto_points = get_pareto_frontier_detailed(df, "total_energy_kg", "f1")
@@ -467,8 +467,8 @@ def main(csv_path: str):
     plt.legend(handles=legend_elements, loc="best", framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig("pareto_frontier_scale.png", format="svg", dpi=300, bbox_inches="tight")
-    print("Generated pareto_frontier_scale.png")
+    plt.savefig("pareto_frontier_scale.pdf", format="svg", bbox_inches="tight")
+    print("Generated pareto_frontier_scale.pdf")
 
     # Print the Pareto optimal configurations with details
     print("\n" + "=" * 70)
@@ -874,8 +874,8 @@ def generate_final_pareto_plots():
         )
         plt.tight_layout()
 
-        save_path = results_dir / f"pareto_manual_{dataset.lower()}_scale.png"
-        plt.savefig(save_path, bbox_inches="tight", dpi=300)
+        save_path = results_dir / f"pareto_manual_{dataset.lower()}_scale.pdf"
+        plt.savefig(save_path, bbox_inches="tight")
         plt.close()
         print(f"Saved: {save_path}")
 
@@ -1038,13 +1038,6 @@ def generate_scatter_plots(csv_path):
         {min(target_sizes, key=lambda x: abs(x - s)) for s in present_sizes}
     )
 
-    # Optional: cap legend entries to avoid clutter
-    MAX_LEGEND_SIZES = 5
-    if len(present_sizes) > MAX_LEGEND_SIZES:
-        # evenly sample across range
-        idxs = np.linspace(0, len(present_sizes) - 1, MAX_LEGEND_SIZES, dtype=int)
-        present_sizes = [present_sizes[i] for i in idxs]
-
     size_handles = []
     for s in present_sizes:
         size_handles.append(
@@ -1142,8 +1135,8 @@ def generate_scatter_plots(csv_path):
 
     # Save
     output_dir = Path(csv_path).parent
-    save_path = output_dir / f"{family_name}_dataset_breakdown_scale.png"
-    plt.savefig(save_path, bbox_inches="tight", dpi=300)
+    save_path = output_dir / f"{family_name}_dataset_breakdown_scale.pdf"
+    plt.savefig(save_path, bbox_inches="tight")
     plt.close()
     print(f"Plot saved to: {save_path}")
 
