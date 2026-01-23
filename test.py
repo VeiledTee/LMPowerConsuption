@@ -1,38 +1,43 @@
-import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-# 1. Load the data
-df = pd.read_csv("results/gemma3_summary.csv")
+# x^2 curve up to x=1
+x = np.linspace(0, 1, 400)
+y = x**2
 
-# 2. Data Preparation
-# Convert emissions from kg per question to grams per question
-df['emissions_g_per_question'] = df['emissions_kg_per_question'] * 1000
+plt.figure(figsize=(6, 6))
 
-# Extract model size for better labeling (reusing your logic)
-df['params_B'] = df['model'].str.extract(r'(\d+\.?\d*)B').astype(float)
+# --- FILLING THE SECTIONS ---
+# Top Right (Red)
+plt.fill_between([1, 2], 1, 2, color='red', alpha=0.3)
+# Bottom Right (Green)
+plt.fill_between([1, 2], 0, 1, color='green', alpha=0.3)
+# Left Above Curve (Orange)
+plt.fill_between(x, y, 2, color='orange', alpha=0.3)
+# Area Under Curve (Blue)
+plt.fill_between(x, 0, y, color='blue', alpha=0.3)
 
-# 3. Plotting
-plt.figure(figsize=(10, 6))
-sns.set_style("whitegrid")
+# --- ADDING LABELS ---
+# Syntax: plt.text(x, y, "label", fontsize, ha='center', va='center')
+plt.text(0.4, 1.2, "Bad", fontsize=20, ha='center', va='center') # Orange section
+plt.text(0.7, 0.2, "Good", fontsize=20, ha='center', va='center') # Blue section
+plt.text(1.5, 1.5, "Power-Hungry", fontsize=20, ha='center', va='center') # Red section
+plt.text(1.5, 0.5, "Great", fontsize=20, ha='center', va='center') # Green section
 
-# Create the scatter plot
-# X-axis: f1 score | Y-axis: emissions in grams
-plot = sns.scatterplot(
-    data=df,
-    x='f1',
-    y='emissions_g_per_question',
-    hue='model',
-    style='dataset_version',
-    s=100,
-    palette='viridis'
-)
+# --- PLOTTING LINES AND MARKS ---
+plt.plot(x, y, color='C0')
+x_marks = [0.25, 0.5, 0.75, 1.0]
+plt.scatter(x_marks, [xm**2 for xm in x_marks], color='C0')
 
-# 4. Formatting
-plt.title("Model Efficiency: Emissions (g $CO_2$) vs. F1 Score", fontsize=14)
-plt.xlabel("F1 Score (Accuracy)", fontsize=12)
-plt.ylabel("Emissions per Question (g $CO_2$)", fontsize=12)
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', title="Models & Versions")
+plt.axvline(x=1, linestyle="-", color='C0')
+plt.hlines(y=1, xmin=1, xmax=2, linestyles="-", color='C0')
 
-plt.tight_layout()
-plt.show()
+# Limits and Formatting
+plt.xlim(0, 2)
+plt.ylim(0, 2)
+plt.xticks([])
+plt.yticks([])
+plt.xlabel("F1 Score")
+plt.ylabel("Model Emissions (g of CO$_2$)")
+
+plt.savefig('Objective Space Partitioning and Pareto Frontier Analysis.pdf')
