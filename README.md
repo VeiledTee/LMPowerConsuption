@@ -15,7 +15,7 @@ Lightweight framework to evaluate the **accuracy ↔️ energy trade-off** of sm
 ```
 .
 ├── src/
-│   ├── cache/            # .pkl files representing the Wikipedia text used fro retrieval
+│   ├── cache/            # .pkl files representing the Wikipedia text used for retrieval
 │   ├── config.py         # Experiment configuration (models, batch_size, modes, file paths)
 │   ├── experiment.py     # Orchestrates experiment workflow
 │   ├── inference.py      # Loads models & generates answers
