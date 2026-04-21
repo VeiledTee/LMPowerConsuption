@@ -2,6 +2,8 @@
 
 Lightweight framework to evaluate the **accuracy ↔️ energy trade-off** of small and large language models (SLMs/LLMs) on QA benchmarks, with focus on how environmental impact and performance are intertwined.
 
+Accepted to Canadian AI 2026 as a long paper!
+
 ## 🔍 Features
 
 * Tracks energy usage and CO₂ emissions of LLM inference and document retrieval using CodeCarbon
